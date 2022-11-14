@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="platform.education.generalTeachingAffair.dao.MoralEvaluationStudentDao">
+
+	<resultMap id="MoralEvaluationStudentResult"
+		type="platform.education.generalTeachingAffair.model.MoralEvaluationStudent">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="teamId" column="team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="totalEvaluation" column="total_evaluation" />
+		<result property="remark" column="remark" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+	
+	<resultMap id="MoralEvaluationStudentResultMore"
+		type="platform.education.generalTeachingAffair.vo.MoralEvaluationStudentVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="teamId" column="team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="totalEvaluation" column="total_evaluation" />
+		<result property="remark" column="remark" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="teamName" column="tn" />
+		<result property="schoolYear" column="sy" />
+		<result property="studentName" column="sn" /> 
+		<result property="gradeId" column="gi" /> 
+<!-- 		<result property="studentId" column="si" />  -->
+<!-- 		<result property="teamId" column="ti" />  -->
+	</resultMap>
+
+	<insert id="create"
+		parameterType="platform.education.generalTeachingAffair.model.MoralEvaluationStudent">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_moral_evaluation_student (
+		id,
+		school_id,
+		team_id,
+		student_id,
+		total_evaluation,
+		remark,
+		is_delete,
+		create_date,
+		modify_date
+		)
+		VALUES (
+		#{id},
+		#{schoolId},
+		#{teamId},
+		#{studentId},
+		#{totalEvaluation},
+		#{remark},
+		<choose>
+			<when test="isDelete != null">
+				#{isDelete},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+
+		#{createDate},
+		#{modifyDate})
+	</insert>
+
+	<select id="read" resultMap="MoralEvaluationStudentResult"
+		useCache="false">
+		SELECT * FROM pj_moral_evaluation_student WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findMoralEvaluationStudentByCondition" resultMap="MoralEvaluationStudentResult"
+		useCache="false">
+		SELECT s.* FROM pj_moral_evaluation_student s LEFT JOIN pj_team t ON t.id=s.team_id
+		<if test="args[0] != null">
+			WHERE 1=1 AND s.is_delete=0 AND t.is_delete=0
+			<if test="args[0].id != null and args[0].id != ''">
+				AND s.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND s.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null and args[0].teamId != ''">
+				AND s.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null and args[0].studentId != ''">
+				AND s.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if
+				test="args[0].totalEvaluation != null and args[0].totalEvaluation != ''">
+				AND s.total_evaluation =
+				#{args[0].totalEvaluation,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND s.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND s.is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+				AND s.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+				AND s.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			
+			<!-- 查询条件  -->
+			<if test="args[0].schoolId != null">
+			AND t.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''" >
+			AND t.school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null">
+			AND t.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			
+		</if>
+	</select>
+	
+<!-- 	<select id="findMoralEvaluationStudentByConditionMore" resultMap="MoralEvaluationStudentResultMore" -->
+<!-- 		useCache="false"> -->
+<!-- 		SELECT m.*, t.name tn, t.school_year sy, s.name sn, s.student_id si, s.grade_id gi,s.team_id ti FROM pj_moral_evaluation_student m  -->
+<!-- 		INNER JOIN pj_team_student s ON s.id=m.team_student_id -->
+<!-- 		INNER JOIN pj_team t ON s.team_id = t.id -->
+<!-- 		<if test="args[0] != null"> -->
+<!-- 			WHERE 1=1 -->
+<!-- 			<if test="args[0].id != null and args[0].id != ''"> -->
+<!-- 				AND m.id = #{args[0].id,javaType=java.lang.Integer} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].schoolId != null and args[0].schoolId != ''"> -->
+<!-- 				AND m.school_id = #{args[0].schoolId,javaType=java.lang.Integer} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].teamId != null and args[0].teamId != ''"> -->
+<!-- 				AND m.team_id = #{args[0].teamId,javaType=java.lang.Integer} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].studentId != null and args[0].studentId != ''"> -->
+<!-- 				AND m.student_id = #{args[0].studentId,javaType=java.lang.Integer} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].totalEvaluation != null and args[0].totalEvaluation != ''"> -->
+<!-- 				AND m.total_evaluation = -->
+<!-- 				#{args[0].totalEvaluation,javaType=java.lang.String} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].remark != null and args[0].remark != ''"> -->
+<!-- 				AND m.remark = #{args[0].remark,javaType=java.lang.String} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].isDelete != null"> -->
+<!-- 				AND m.is_delete = #{args[0].isDelete} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].createDate != null and args[0].createDate != ''"> -->
+<!-- 				AND m.create_date = #{args[0].createDate,javaType=java.util.Date} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].modifyDate != null and args[0].modifyDate != ''"> -->
+<!-- 				AND m.modify_date = #{args[0].modifyDate,javaType=java.util.Date} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].schoolYear != null and args[0].schoolYear != ''"> -->
+<!-- 				AND t.school_year = #{args[0].schoolYear,javaType=java.lang.String} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].studentId != null and args[0].studentId != ''"> -->
+<!-- 				AND s.student_id = #{args[0].studentId,javaType=java.lang.Integer} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].gradeId != null and args[0].gradeId != ''"> -->
+<!-- 				AND s.grade_id = #{args[0].gradeId,javaType=java.lang.Integer} -->
+<!-- 			</if> -->
+<!-- 			<if test="args[0].teamId != null and args[0].teamId != ''"> -->
+<!-- 				AND s.team_id = #{args[0].teamId,javaType=java.lang.Integer} -->
+<!-- 			</if> -->
+			
+<!-- 		</if> -->
+<!-- 	</select> -->
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_moral_evaluation_student
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null and args[0].teamId != ''">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null and args[0].studentId != ''">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if
+				test="args[0].totalEvaluation != null and args[0].totalEvaluation != ''">
+				AND total_evaluation =
+				#{args[0].totalEvaluation,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="MoralEvaluationStudentResult"
+		useCache="false">
+		SELECT * FROM pj_moral_evaluation_student WHERE id =
+		#{args[0],javaType=java.lang.Integer} AND is_delete = 0
+	</select>
+	
+	<select id="findUnique" resultMap="MoralEvaluationStudentResult"
+		useCache="false">
+		SELECT * FROM pj_moral_evaluation_student 
+		WHERE team_id = #{args[0],javaType=java.lang.Integer} AND student_id = #{args[1],javaType=java.lang.Integer} AND is_delete = 0
+	</select>
+	
+	<update id="update"
+		parameterType="platform.education.generalTeachingAffair.model.MoralEvaluationStudent">
+		UPDATE pj_moral_evaluation_student
+		SET
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="totalEvaluation != null">
+			total_evaluation=#{totalEvaluation},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="isDelete != null">
+			is_delete=#{isDelete},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">   
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_moral_evaluation_student
+		WHERE id =
+		#{id}
+	</delete>
+
+	<delete id="deleteByCondition">
+		DELETE FROM pj_moral_evaluation_student
+		WHERE 1=1
+		<if test="id != null and id != ''">
+			AND id = #{id,javaType=java.lang.Integer}
+		</if>
+		<if test="schoolId != null and schoolId != ''">
+			AND school_id = #{schoolId,javaType=java.lang.Integer}
+		</if>
+		<if test="teamId != null and teamId != ''">
+			AND team_id = #{teamId,javaType=java.lang.Integer}
+		</if>
+		<if test="studentId != null and studentId != ''">
+			AND student_id = #{studentId,javaType=java.lang.Integer}
+		</if>
+		<if test="totalEvaluation != null and totalEvaluation != ''">
+			AND total_evaluation = #{totalEvaluation,javaType=java.lang.String}
+		</if>
+		<if test="remark != null and remark != ''">
+			AND remark = #{remark,javaType=java.lang.String}
+		</if>
+		<if test="isDelete != null">
+			AND is_delete = #{isDelete}
+		</if>
+		<if test="createDate != null and createDate != ''">
+			AND create_date = #{createDate,javaType=java.util.Date}
+		</if>
+		<if test="modifyDate != null and modifyDate != ''">
+			AND modify_date = #{modifyDate,javaType=java.util.Date}
+		</if>
+	</delete>
+</mapper>

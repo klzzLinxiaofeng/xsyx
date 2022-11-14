@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.team.dao.ClassPhotoDao">
+    <resultMap id="yearBookResult" type="com.xunyunedu.team.pojo.ClassYearbookPojo">
+        <result column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="name" property="name"/>
+        <result column="team_id" property="teamId"/>
+        <result column="teacher_id" property="teacherId"/>
+        <result column="uuid" property="uuid"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="is_archiving" property="isArchiving"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="total" property="total"/>
+        <result column="term_id" property="termId"/>
+    </resultMap>
+
+    <resultMap id="classPhotoResult" type="com.xunyunedu.team.pojo.ClassPhotoPojo">
+        <result column="id" property="id"/>
+        <result column="class_yearbook_id" property="classYearbookId"/>
+        <result column="uuid" property="uuid"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+    </resultMap>
+
+    <resultMap id="stuPhotoArchiveResult" type="com.xunyunedu.team.pojo.ClassStudentPhotoPojo">
+
+        <result column="id" property="id"/>
+        <result column="class_yearbook_id" property="classYearbookId"/>
+        <result column="student_id" property="studentId"/>
+        <result column="term_id" property="termId"/>
+        <result column="team_id" property="teamId"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+    </resultMap>
+
+    <insert id="createYearBook" useGeneratedKeys="true" keyProperty="id">
+        insert into pj_class_yearbook(school_id, name, team_id, teacher_id, uuid, create_date, modify_date,term_id)
+        values(
+            #{schoolId},
+            #{name},
+            #{teamId},
+            #{teacherId},
+            #{uuid},
+            #{createDate},
+            #{modifyDate},
+            #{termId}
+        )
+    </insert>
+    <insert id="createClassPhoto">
+        insert into pj_class_photo(class_yearbook_id, uuid, create_date, modify_date)
+        values
+        <foreach collection="uuids" item="item" index="index" separator=",">
+            (#{id},#{item},now(), now())
+        </foreach>
+    </insert>
+
+
+
+    <select id="findTeamStu" resultType="java.lang.Integer">
+        select ps.id from pj_team_student pts
+        join pj_student ps
+        on pts.student_id = ps.id
+        join pj_team pt on pts.team_id = pt.id
+        where pts.team_id = #{teamId} and pts.is_delete = 0 and ps.school_id = #{schoolId} and ps.is_delete = 0
+        and pt.school_id = #{schoolId} and pt.is_delete = 0
+    </select>
+
+    <insert id="createStuPhotos">
+        insert into pj_class_stu_photo_archive(class_yearbook_id, student_id, term_id, create_date, modify_date)
+        values
+        <foreach collection="listStuId" item="item" index="index" separator=",">
+            (#{id},#{item},#{termId},now(), now())
+        </foreach>
+    </insert>
+
+    <update id="updateYearBook">
+        update pj_class_yearbook
+        <set>
+            <if test="uuid != null and uuid != ''">
+                uuid = #{uuid},
+            </if>
+            <if test="modifyDate != null">
+                 modify_date = #{modifyDate},
+            </if>
+            <if test="name != null and name != ''">
+                 name = #{name},
+            </if>
+            <if test="isDelete != null">
+                 is_delete = #{isDelete},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateClassPhoto">
+        update pj_class_photo  set is_delete = 1, modify_date = now()
+        where class_yearbook_id = #{id}
+    </update>
+
+    <select id="findYearBook" resultMap="yearBookResult">
+        select pcy.*, count(pcp.id)  total
+        from (select * from pj_class_yearbook) pcy
+        left join (select id,class_yearbook_id from pj_class_photo where is_delete = 0 ) pcp
+        on pcp.class_yearbook_id = pcy.id
+        where pcy.is_delete = 0
+        <if test="id != null">
+            and pcy.id =  #{id}
+        </if>
+        <if test="isArchiving != null">
+             and pcy.is_archiving = #{isArchiving}
+        </if>
+        <if test="teamId != null">
+             and pcy.team_id = #{teamId}
+        </if>
+        <if test="teacherId != null">
+             and pcy.teacher_id = #{teacherId}
+        </if>
+        <if test="schoolId != null">
+            and pcy.school_id = #{schoolId}
+        </if>
+        <if test="termId != null">
+            and pcy.term_id = #{termId}
+        </if>
+            group by pcy.id
+            order by pcy.create_date desc
+    </select>
+
+    <select id="getClassPhoto" resultMap="classPhotoResult">
+        select * from pj_class_photo
+        where is_delete = 0
+            <if test="id != null"> and  class_yearbook_id = #{id}</if>
+    </select>
+
+
+    <select id="findStuPhotoArchive" resultMap="stuPhotoArchiveResult">
+        select * from pj_class_stu_photo_archive
+        <where>
+            <if test="classYearbookId != null"> class_yearbook_id = #{classYearbookId}</if>
+            <if test="studentId != null"> and student_id = #{studentId}</if>
+        </where>
+    </select>
+
+</mapper>

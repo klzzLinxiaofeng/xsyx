@@ -1,0 +1,224 @@
+.qrxz{text-align:center;}
+.qrxz .p1{font-size:18px;color:#444444;margin-top:40px;line-height:33px;}
+.qrxz .p1 span{color:#0d7bd5;}
+.qrxz .p2{color:#999999;font-size:16px;margin-bottom:30px;}
+.qrxz .btn{width:84px;height:34px;text-align:center;padding:0;line-height:34px;background-color:#0d7bd5;color:#fff;}
+.commond_top{
+	border:1px solid #cccccc;
+	height:120px;
+	background-color:#fff;
+	padding-top:30px;
+	margin:5px 5px 15px;
+}
+.commond_top ul li{
+	float:left;
+	width:16%;
+	height: 59px;
+    border-right:2px solid rgb( 217, 223, 231 );
+}
+.commond_top ul li:last-child{
+	border-right:0 none;
+}
+.commond_top ul li.main{
+	width:32%;
+}
+.commond_top ul li p{margin:0;}
+.commond_top ul li .p1{
+	text-align:center;
+	line-height:22px;
+	color:#5591c2;
+	font-size:14px;
+}
+.commond_top ul li .p2{
+	text-align:center;
+	color:#444444;
+	font-size:30px;
+	line-height:40px;
+}
+.commond_top ul li.main img{
+	width:54px;
+	height:54px;
+	border:3px solid rgb( 13, 123, 213 );
+	border-radius: 50%;
+	float:left;
+}
+.commond_top ul li.main .nr_right{
+	margin-left:70px;
+}
+.commond_top ul li.main .nr_right .name{
+	font-size:16px;
+	color:#0d7bd5;
+	line-height:32px;
+	font-weight:bold;
+}
+.commond_top ul li.main .nr_right .p3{
+	color:#999999;
+	font-size:14px;
+	float:left;
+	margin-right:5px;
+}
+.nr_right .x1{
+	background:url(images/star_x1.png) repeat 0 -15px;
+	width:115px;
+	height:15px;
+	float:left
+}
+.nr_right .x1 p{
+	background:url(images/star_x1.png) repeat;
+	height:15px;
+}
+.nr_right .x2{
+	background:url(images/star_x1.png) repeat 0 -47px;
+	width:115px;
+	height:15px;
+	float:left
+}
+.nr_right .x2 p{
+	background:url(images/star_x1.png) repeat 0 -32px;
+	height:15px;
+}
+.nr_right .x3{
+	background:url(images/star_x1.png) repeat 0 -78px;
+	width:115px;
+	height:14px;
+	float:left
+}
+.nr_right .x3 p{
+	background:url(images/star_x1.png) repeat 0 -64px;
+	height:14px;
+}
+.nr_right .x4{
+	background:url(images/star_x1.png) repeat 0 -111px;
+	width:115px;
+	height:15px;
+	float:left
+}
+.nr_right .x4 p{
+	background:url(images/star_x1.png) repeat 0 -94px;
+	height:15px;
+}
+.wdgz_1{
+	border:1px solid #cccccc;
+	height:40px;
+}
+.wdgz_1 p{
+	float:right;
+	padding-top:3px;
+}
+.wdgz_1 p input{
+	margin:0;
+}
+.wdgz_2{
+	padding:10px 0;
+	border-left:1px solid #cccccc;
+	border-right:1px solid #cccccc;
+}
+.wdgz_2 a{
+	display:inline-block;
+	height:30px;
+	line-height:30px;
+	padding:0 17px;
+	background-color:#a8a8a8;
+	margin-left:10px;
+	color:#fff;
+}
+.wdgz_2 a.on{
+	background-color:#0d7bd5;
+}
+.wdgz_3{
+	border:1px solid #cccccc
+}
+.wdgz_3{
+	padding-bottom:20px;
+}
+.wdgz_3 li{
+	width:317px;
+	height:118px;
+	margin:24px 0 0 16px;
+	border:1px solid #cccccc;
+	float:left;
+}
+.wdgz_3 li img{
+	width:60px;
+	height:60px;
+	border-radius: 50%;
+	float:left;
+	margin:30px 0 0 22px;
+}
+.wdgz_3 .nr_right{
+	margin-left:102px;
+}
+.wdgz_3 .nr_right p{
+	margin:0;
+}
+.wdgz_3 .nr_right .name{
+	font-weight:bold;
+	color:#444444;
+	font-size:16px;
+	padding-top:20px;
+}
+.wdgz_3 .nr_right .p1{
+	color:#999999;
+}
+.wdgz_3 .nr_right  .p1 span{
+	color:#cccccc;
+}
+.zy_list{
+	
+}
+.zy_list table{
+	font-size:13px;
+	font-family:"Î¢ÈíÑÅºÚ";
+}
+.zy_list .wztt{
+}
+.zy_list .wztt a{
+	margin:0;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    word-wrap:normal;
+    display:inline-block;
+    width:400px;
+    color:#666;
+}
+.zy_list .wztt a:hover{
+	color:#000;
+}
+.zy_list .wztt i{
+	display:inline-block;
+	width:16px;
+	height:16px;
+    position: relative;
+    top:-1px;
+    margin-right:10px;
+	background:url("images/zy_icon.png") no-repeat;
+}
+.zy_list .wztt i.lx_word{
+	background-position:0 0;
+}
+.zy_list .wztt i.lx_rar{
+	background-position:0 -46px;
+}
+.zy_list .wztt i.lx_pdf{
+	background-position:0 -92px;
+}
+.zy_list .wztt i.lx_excel{
+	background-position:0 -138px;
+}
+.zy_list .wztt i.lx_ppt{
+	background-position:0 -184px;
+}
+.zy_list .wztt i.lx_video{
+	background-position:0 -232px;
+}
+.zy_list .wztt i.lx_img{
+	background-position:0 -278px;
+}
+.zy_list .wztt i.lx_mp3{
+	background-position:0 -324px;
+}
+.no_wdgz{
+	background:url(images/no_gz.png) no-repeat 50% 200px;
+	min-height:500px;
+}

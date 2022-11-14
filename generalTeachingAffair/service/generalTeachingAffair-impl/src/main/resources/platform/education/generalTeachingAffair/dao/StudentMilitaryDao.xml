@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentMilitaryDao">
+
+	<resultMap id="StudentMilitaryResult" type="platform.education.generalTeachingAffair.model.StudentMilitary">
+		<result property="id" column="id" />
+		<result property="teamId" column="team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="name" column="name" />
+		<result property="studentNumber" column="student_number" />
+		<result property="teamName" column="team_name" />
+		<result property="number" column="number" />
+		<result property="status" column="status" />
+		<result property="leaveDay" column="leave_day" />
+		<result property="score" column="score" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.StudentMilitary">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_student_military (
+			id, 
+			team_id, 
+			student_id, 
+			name, 
+			student_number, 
+			team_name, 
+			number, 
+			status, 
+			leave_day, 
+			score, 
+			is_deleted, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{teamId}, 
+			#{studentId}, 
+			#{name}, 
+			#{studentNumber}, 
+			#{teamName}, 
+			#{number}, 
+			#{status}, 
+			#{leaveDay}, 
+			#{score}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="StudentMilitaryResult" useCache="false">
+		SELECT * FROM pj_student_military WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findStudentMilitaryByCondition" resultMap="StudentMilitaryResult" useCache="false">
+		SELECT * FROM pj_student_military 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				<!-- AND name = #{args[0].name,javaType=java.lang.String} -->
+				AND name like "%"#{args[0].name,javaType=java.lang.String}"%"
+			</if>
+			<if test="args[0].studentNumber != null and args[0].studentNumber != ''">
+				AND student_number = #{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamName != null and args[0].teamName != ''">
+				AND team_name = #{args[0].teamName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].status != null and args[0].status != ''">
+				AND status = #{args[0].status,javaType=java.lang.String}
+			</if>
+			<if test="args[0].leaveDay != null and args[0].leaveDay != ''">
+				AND leave_day = #{args[0].leaveDay,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null and args[0].score != ''">
+				AND score = #{args[0].score,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_student_military 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber != null and args[0].studentNumber != ''">
+				AND student_number = #{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamName != null and args[0].teamName != ''">
+				AND team_name = #{args[0].teamName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].status != null and args[0].status != ''">
+				AND status = #{args[0].status,javaType=java.lang.String}
+			</if>
+			<if test="args[0].leaveDay != null and args[0].leaveDay != ''">
+				AND leave_day = #{args[0].leaveDay,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null and args[0].score != ''">
+				AND score = #{args[0].score,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="StudentMilitaryResult" useCache="false">
+		SELECT * FROM pj_student_military WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.StudentMilitary">
+		UPDATE pj_student_military
+		SET 
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="studentNumber != null">
+			student_number=#{studentNumber},
+		</if>
+		<if test="teamName != null">
+			team_name=#{teamName},
+		</if>
+		<if test="number != null">
+			number=#{number},
+		</if>
+		<if test="status != null">
+			status=#{status},
+		</if>
+		<if test="leaveDay != null">
+			leave_day=#{leaveDay},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_student_military
+		WHERE id = #{id}
+	</delete>
+</mapper>

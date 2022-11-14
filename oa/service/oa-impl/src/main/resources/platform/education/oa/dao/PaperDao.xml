@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.PaperDao">
+
+	<resultMap id="PaperResult" type="platform.education.oa.model.Paper">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="appId" column="app_id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="ownerType" column="owner_type" />
+		<result property="title" column="title" />
+		<result property="author" column="author" />
+		<result property="posterId" column="poster_id" />
+		<result property="posterName" column="poster_name" />
+		<result property="documentType" column="document_type" />
+		<result property="emergencyLevel" column="emergency_level" />
+		<result property="secretLevel" column="secret_level" />
+		<result property="receiverType" column="receiver_type" />
+		<result property="receiverCount" column="receiver_count" />
+		<result property="readCount" column="read_count" />
+		<result property="receiver" column="receiver" />
+		<result property="content" column="content" />
+		<result property="attachmentUuid" column="attachment_uuid" />
+		<result property="isDeleted" column="is_deleted" />
+<!--		<result property="publishStatus" column="publish_status" />-->
+		<result property="remark" column="remark" />
+		<result property="publishDate" column="publish_date" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+
+	<resultMap id="PaperResult1" type="platform.education.oa.vo.PaperVo">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="appId" column="app_id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="ownerType" column="owner_type" />
+		<result property="title" column="title" />
+		<result property="author" column="author" />
+		<result property="posterId" column="poster_id" />
+		<result property="posterName" column="poster_name" />
+		<result property="documentType" column="document_type" />
+		<result property="emergencyLevel" column="emergency_level" />
+		<result property="secretLevel" column="secret_level" />
+		<result property="receiverType" column="receiver_type" />
+		<result property="receiverCount" column="receiver_count" />
+		<result property="readCount" column="read_count" />
+		<result property="receiver" column="receiver" />
+		<result property="content" column="content" />
+		<result property="attachmentUuid" column="attachment_uuid" />
+		<result property="isDeleted" column="is_deleted" />
+<!--		<result property="publishStatus" column="publish_status" />-->
+		<result property="remark" column="remark" />
+		<result property="publishDate" column="publish_date" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="readNumber" column="read_number" />
+		<result property="departmentName" column="department_name" />
+		<result property="realFileName" column="realFile_name" />
+		<result property="isPublishOrReceiver" column="is_publish_or_receiver" />
+		<result property="readNumber" column="read_number" />
+		<result property="readStatus" column="read_status" />
+	</resultMap>
+
+
+	<insert id="create" parameterType="platform.education.oa.model.Paper">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_paper (
+		id,
+		uuid,
+		app_id,
+		owner_id,
+		owner_type,
+		title,
+		author,
+		poster_id,
+		poster_name,
+		document_type,
+		emergency_level,
+		secret_level,
+		receiver_type,
+		receiver_count,
+		read_count,
+		receiver,
+		content,
+		attachment_uuid,
+		is_deleted,
+		remark,
+		publish_date,
+		create_date,
+		modify_date
+		)
+		VALUES (
+		#{id},
+		#{uuid},
+		#{appId},
+		#{ownerId},
+		#{ownerType},
+		#{title},
+		#{author},
+		#{posterId},
+		#{posterName},
+		#{documentType},
+		#{emergencyLevel},
+		#{secretLevel},
+		#{receiverType},
+		#{receiverCount},
+		#{readCount},
+		#{receiver},
+		#{content},
+		#{attachmentUuid},
+		<choose>
+			<when test="isDeleted != null">
+				<choose>
+					<when test="isDeleted == true">
+						1,
+					</when>
+					<otherwise>
+						0,
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{remark},
+		#{publishDate},
+		#{createDate},
+		#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="PaperResult" useCache="false">
+		SELECT * FROM oa_paper WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findPaperByRelated" resultMap="PaperResult1" useCache="false">
+		select paper.*,r.read_status
+		from oa_paper paper
+		left join oa_paper_user_read r on r.paper_id=paper.id and r.user_id= #{args[0].posterId}
+
+		<where>
+			<if test="args[0].ownerId!=null and args[0].ownerId!=''">
+				AND paper.owner_id = #{args[0].ownerId}
+			</if>
+			<if test="args[0].ownerType!=null and args[0].ownerType!=''">
+				AND paper.owner_type = #{args[0].ownerType}
+			</if>
+			<if test="args[0].searchWord != null and args[0].searchWord!=''">
+				AND
+				CONCAT_WS(",",paper.title,paper.poster_name,paper.remark) LIKE
+				CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+			</if>
+			<if test="args[0].isRelatedWithMe != null and args[0].isRelatedWithMe == true">
+				and r.id is not null
+			</if>
+
+			<if test="args[0].isMyPublish != '' and args[0].isMyPublish == true">
+				AND paper.poster_id = #{args[0].posterId}
+			</if>
+		</where>
+	</select>
+
+
+
+
+	<select id="findPaperByCondition" resultMap="PaperResult"
+		useCache="false">
+		SELECT * FROM oa_paper
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].author != null and args[0].author != ''">
+				AND author = #{args[0].author,javaType=java.lang.String}
+			</if>
+			<if test="args[0].posterId != null">
+				AND poster_id =
+				#{args[0].posterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].posterName != null and args[0].posterName != ''">
+				AND poster_name =
+				#{args[0].posterName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].documentType != null and args[0].documentType != ''">
+				AND document_type =
+				#{args[0].documentType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].emergencyLevel != null and args[0].emergencyLevel != ''">
+				AND emergency_level =
+				#{args[0].emergencyLevel,javaType=java.lang.String}
+			</if>
+			<if test="args[0].secretLevel != null and args[0].secretLevel != ''">
+				AND secret_level =
+				#{args[0].secretLevel,javaType=java.lang.String}
+			</if>
+			<if test="args[0].receiverType != null">
+				AND receiver_type =
+				#{args[0].receiverType,javaType=Integer}
+			</if>
+			<if test="args[0].receiverCount != null">
+				AND receiver_count =
+				#{args[0].receiverCount,javaType=Integer}
+			</if>
+			<if test="args[0].readCount != null">
+				AND read_count = #{args[0].readCount,javaType=Integer}
+			</if>
+			<if test="args[0].receiver != null and args[0].receiver != ''">
+				AND receiver =
+				#{args[0].receiver,javaType=java.lang.String}
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+				AND content =
+				#{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attachmentUuid != null and args[0].attachmentUuid != ''">
+				AND attachment_uuid =
+				#{args[0].attachmentUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].searchWord != null and args[0].searchWord!=''">
+				AND CONCAT_WS(",",title,poster_name,remark) LIKE
+				CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+			</if>
+
+
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+
+			<if test="args[0].publishDate != null">
+				AND publish_date =
+				#{args[0].publishDate}
+			</if>
+
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_paper
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].author != null and args[0].author != ''">
+				AND author = #{args[0].author,javaType=java.lang.String}
+			</if>
+			<if test="args[0].posterId != null">
+				AND poster_id =
+				#{args[0].posterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].posterName != null and args[0].posterName != ''">
+				AND poster_name =
+				#{args[0].posterName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].documentType != null and args[0].documentType != ''">
+				AND document_type =
+				#{args[0].documentType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].emergencyLevel != null and args[0].emergencyLevel != ''">
+				AND emergency_level =
+				#{args[0].emergencyLevel,javaType=java.lang.String}
+			</if>
+			<if test="args[0].secretLevel != null and args[0].secretLevel != ''">
+				AND secret_level =
+				#{args[0].secretLevel,javaType=java.lang.String}
+			</if>
+			<if test="args[0].receiverType != null">
+				AND receiver_type =
+				#{args[0].receiverType,javaType=Integer}
+			</if>
+			<if test="args[0].receiverCount != null">
+				AND receiver_count =
+				#{args[0].receiverCount,javaType=Integer}
+			</if>
+			<if test="args[0].readCount != null">
+				AND read_count = #{args[0].readCount,javaType=Integer}
+			</if>
+			<if test="args[0].receiver != null and args[0].receiver != ''">
+				AND receiver =
+				#{args[0].receiver,javaType=java.lang.String}
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+				AND content =
+				#{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attachmentUuid != null and args[0].attachmentUuid != ''">
+				AND attachment_uuid =
+				#{args[0].attachmentUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+
+
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+
+			<if test="args[0].publishDate != null">
+				AND publish_date =
+				#{args[0].publishDate}
+			</if>
+
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	<select id="findPaperToUser" resultMap="PaperResult" useCache="false">
+		SELECT n.* FROM oa_paper n, oa_paper_user u WHERE 1=1 AND n.is_deleted
+		= 0
+		AND n.owner_id= #{args[0],javaType=java.lang.Integer}
+		AND
+		n.owner_type=
+		#{args[1],javaType=java.lang.String}
+		AND n.id = u.paper_id
+		AND u.receiver_id =
+		#{args[2],javaType=java.lang.Integer}
+
+	</select>
+	<select id="findById" resultMap="PaperResult" useCache="false">
+		SELECT *
+		FROM oa_paper WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<select id="findById1" resultMap="PaperResult1" useCache="false">
+		SELECT
+		*
+		FROM oa_paper WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+
+	<update id="update" parameterType="platform.education.oa.model.Paper">
+		UPDATE oa_paper
+		SET
+		<if test="uuid != null">
+			uuid=#{uuid},
+		</if>
+		<if test="appId != null">
+			app_id=#{appId},
+		</if>
+		<if test="ownerId != null">
+			owner_id=#{ownerId},
+		</if>
+		<if test="ownerType != null">
+			owner_type=#{ownerType},
+		</if>
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="author != null">
+			author=#{author},
+		</if>
+		<if test="posterId != null">
+			poster_id=#{posterId},
+		</if>
+		<if test="posterName != null">
+			poster_name=#{posterName},
+		</if>
+		<if test="documentType != null">
+			document_type=#{documentType},
+		</if>
+		<if test="emergencyLevel != null">
+			emergency_level=#{emergencyLevel},
+		</if>
+		<if test="secretLevel != null">
+			secret_level=#{secretLevel},
+		</if>
+		<if test="receiverType != null">
+			receiver_type=#{receiverType},
+		</if>
+		<if test="receiverCount != null">
+			receiver_count=#{receiverCount},
+		</if>
+		<if test="readCount != null">
+			read_count=#{readCount},
+		</if>
+		<if test="receiver != null">
+			receiver=#{receiver},
+		</if>
+		<if test="content != null">
+			content=#{content},
+		</if>
+		<if test="attachmentUuid != null">
+			attachment_uuid=#{attachmentUuid},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted = 1,
+				</when>
+				<otherwise>
+					is_deleted = 0,
+				</otherwise>
+			</choose>
+		</if>
+
+		<if test="remark != null ">
+			remark = #{remark},
+		</if>
+
+		<if test="publishDate != null">
+			publish_date = #{publishDate},
+		</if>
+
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM oa_paper
+		WHERE id = #{id}
+	</delete>
+</mapper>

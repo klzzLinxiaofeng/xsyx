@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.teacher.dao.TeacherHomeDao">
+    <resultMap id="StudentAskingResult" type="com.xunyunedu.student.pojo.StudentAskingPojo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="student_id" jdbcType="INTEGER" property="studentId"/>
+        <result column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="upload_id" jdbcType="CHAR" property="uploadId"/>
+        <result column="india_status" jdbcType="INTEGER" property="indiaStatus"/>
+        <result column="review_date" jdbcType="TIMESTAMP" property="reviewDate"/>
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="rejected" property="rejected"/>
+        <result column="time_consuming" property="timeConsuming"/>
+        <result column="number" property="number"/>
+    </resultMap>
+
+    <resultMap id="TeacherResult" type="com.xunyunedu.teacher.pojo.TeacherPojo">
+        <result property="id" column="id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="persionId" column="persion_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="name" column="name"/>
+        <result property="alias" column="alias"/>
+        <result property="sex" column="sex"/>
+        <result property="jobNumber" column="job_number"/>
+        <result property="enrollDate" column="enroll_date"/>
+        <result property="leaveDate" column="leave_date"/>
+        <result property="workBeginDate" column="work_begin_date"/>
+        <result property="qualification" column="qualification"/>
+        <result property="occupationCode" column="occupation_code"/>
+        <result property="position" column="position"/>
+        <result property="mobile" column="mobile"/>
+        <result property="telephone" column="telephone"/>
+        <result property="postStaffing" column="post_staffing"/>
+        <result property="jobState" column="job_state"/>
+        <result property="isExternal" column="is_external"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result column="emp_code" property="empCode"/>
+        <result column="emp_card" property="empCard"/>
+        <result column="isClassTeacher" property="isClassTeacher"/>
+        <result column="education" property="education"/>
+        <result column="job_title" property="jobTitle"/>
+    </resultMap>
+
+
+    <resultMap id="publicTeacherResult" type="com.xunyunedu.teacher.pojo.PublicTeacherPojo">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="isDelete" column="is_deleted"/>
+        <result property="coverUuid" column="cover_uuid"/>
+        <result property="teacherDesc" column="teacher_desc"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="schoolId" column="school_id"/>
+    </resultMap>
+
+    <resultMap id="departmentResult" type="com.xunyunedu.teacher.pojo.DepartmentTeacherPojo">
+        <result column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="department_id" property="departmentId"/>
+        <result column="department_name" property="departmentName"/>
+        <result column="teacher_id" property="teacherId"/>
+        <result column="teacher_name" property="teacherName"/>
+        <result column="order_number" property="orderNumber"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+    </resultMap>
+
+    <update id="modifyIndiaSatus">
+        update pj_student_asking
+        <set>
+            <if test="reviewDate != null">
+                review_date = #{reviewDate},
+            </if>
+            <if test="indiaStatus != null">
+                india_status = #{indiaStatus},
+            </if>
+            <if test="rejected != null and rejected != ''">
+                rejected = #{rejected},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getTeacherByCondition" resultMap="TeacherResult">
+        select pt.* FROM pj_teacher pt
+        where pt.is_delete = 0 and job_state = '11'
+        <if test="schoolId != null">
+              and  pt.school_id = #{schoolId}
+        </if>
+        <if test="id != null">
+              and  pt.id = #{id}
+        </if>
+        <if test="userName != null and userName != ''">
+              and  pt.user_name = #{userName}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            and pt.mobile = #{mobile}
+        </if>
+        <if test="userId != null">
+            and pt.user_id = #{userId}
+        </if>
+
+    </select>
+
+    <select id="findByPublicClassIdAndSchoolId" resultMap="publicTeacherResult">
+        select ppt.* from pj_public_teacher ppt inner join pj_public_teacher_related pptr
+        on ppt.id = pptr.teacher_id
+        where ppt.is_deleted = 0 and pptr.is_deleted = 0 and public_class_id =  #{cid}
+        and ppt.school_id =  #{schoolId} and pptr.school_id =  #{schoolId}
+    </select>
+    <update id="update">
+        UPDATE pj_teacher
+		<set>
+            <if test="schoolId != null">
+                school_id=#{schoolId},
+            </if>
+            <if test="persionId != null">
+                persion_id=#{persionId},
+            </if>
+            <if test="userId != null">
+                user_id=#{userId},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name=#{userName},
+            </if>
+            <if test="name != null and name != ''">
+                name=#{name},
+            </if>
+            <if test="alias != null and alias != ''">
+                alias=#{alias},
+            </if>
+            <if test="sex != null">
+                sex=#{sex},
+            </if>
+            <if test="jobNumber != null">
+                job_number=#{jobNumber},
+            </if>
+            <if test="enrollDate != null">
+                enroll_date=#{enrollDate},
+            </if>
+            <if test="leaveDate != null">
+                leave_date=#{leaveDate},
+            </if>
+            <if test="workBeginDate != null">
+                work_begin_date=#{workBeginDate},
+            </if>
+            <if test="qualification != null">
+                qualification=#{qualification},
+            </if>
+            <if test="occupationCode != null">
+                occupation_code=#{occupationCode},
+            </if>
+            <if test="position != null">
+                position=#{position},
+            </if>
+            <if test="mobile != null and mobile != ''">
+                mobile=#{mobile},
+            </if>
+            <if test="telephone != null and telephone != ''">
+                telephone=#{telephone},
+            </if>
+            <if test="postStaffing != null">
+                post_staffing=#{postStaffing},
+            </if>
+            <if test="jobState != null">
+                job_state=#{jobState},
+            </if>
+            <if test="isExternal != null">
+                is_external=#{isExternal},
+            </if>
+            <if test="isDelete != null">
+                is_delete=#{isDelete},
+            </if>
+            <if test="createDate != null">
+                create_date=#{createDate},
+            </if>
+            <if test="modifyDate != null">
+                modify_date=#{modifyDate},
+            </if>
+            <if test="empCard != null">
+                emp_card = #{empCard},
+            </if>
+            <if test="empCode != null">
+                emp_code = #{empCode},
+            </if>
+            <if test="jobTitle != null"> job_title = #{jobTitle},</if>
+		</set>
+		WHERE id = #{id}
+    </update>
+
+    <select id="getTeacherDeparment" resultMap="departmentResult">
+        select * from pj_department_teacher where teacher_id = #{id}
+    </select>
+
+    <select id="selectById" resultMap="TeacherResult">
+        select * from pj_teacher where id = #{id} and is_delete = 0
+    </select>
+
+    <select id="selectBySchoolId" resultMap="TeacherResult">
+         select * from pj_teacher where school_id = #{schoolId} and is_deleted = 0
+    </select>
+
+    <select id="selectTeacherCoreInfo" resultType="map">
+        select t.id,t.`name`,t.user_id as userId
+        from pj_teacher t
+        inner join yh_user u on u.id=t.user_id
+        where t. is_delete=0 and u.is_deleted=0 and u.state=0 and t.school_id=215
+        <if test="name != null and name!=''">
+            and t.`name` like concat('%',#{name},'%')
+        </if>
+        <if test="departId != null">
+            and exists (select 1 from pj_department_teacher where  teacher_id=pj_teacher.id and department_id=#{departId} and is_deleted=0)
+        </if>
+    </select>
+
+    <select id="getTeacherClass" resultType="java.util.Map">
+        select pt.id,pt.name from pj_team_teacher ptt
+        join pj_team pt on pt.id = ptt.team_id
+        join pj_school_term_current pstc on pstc.school_year = ptt.school_year and pstc.school_year = pt.school_year
+        where ptt.is_delete = 0 and pt.is_delete = 0
+        <if test="schoolId != null"> and pt.school_id = #{schoolId} and pstc.school_id = #{schoolId} </if>
+        <if test="isClassTeacher != null"> and ptt.type = #{isClassTeacher} </if>
+        <if test="id != null"> and ptt.teacher_id = #{id} </if>
+    </select>
+</mapper>

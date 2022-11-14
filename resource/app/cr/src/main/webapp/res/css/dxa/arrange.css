@@ -1,0 +1,280 @@
+@charset "utf-8";
+body{
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+}
+.clear{
+    clear:both;
+}
+/*布置导学案*/
+.bzdxa{
+    border:1px #ccc solid;
+    margin: 15px;
+    height: 100%;
+    background: #f4f4f4;
+}
+.position{
+    border-bottom: 1px #d9dfe7 solid;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 25px;
+    color: #7f88a3;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    background: #fff;
+}
+.bzdxa_class label{
+    width: 105px;
+    height: 30px;
+    line-height: 30px;
+    text-align: right;
+    float: left;
+    color: #444;
+    font-size: 12px;
+}
+.bzdxa_class label i{
+    color: #f62222;
+    margin-right: 5px;
+    font-style: normal;
+}
+.choose_class{
+    margin-left: 105px;
+    color: #444;
+    font-size: 12px;
+}
+.choose_class input[type="radio"],.choose_class input[type="checkbox"]{
+    margin: 6px 5px 0 10px;
+    position: relative;
+    top: 3px;
+}
+.selected_class{
+    height: 35px;
+    margin-bottom: 10px;
+}
+.choose,.choose_subject,.execution_class{
+    height: 41px;
+}
+.choose_grade a,.execution_class a{
+    height: 40px;
+    line-height: 40px;
+    padding: 0 28px;
+    background: #f3f3f3;
+    border-top:1px #ccc solid;
+    border-right:1px #ccc solid;
+    border-left:1px #ccc solid;
+    float: left;
+    color: #9b9b9b;
+    font-size: 14px;
+}
+a.display_grade,a.display_subject,a.execution{
+    background: #fff;
+    color: #444;
+    position: relative;
+    top: 1px;
+}
+.grade,.grade2{
+    background: #fff;
+    width: 860px;
+    float: left;
+    border:1px #ccc solid;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    padding-top: 10px;
+}
+.check{
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    color: #333;
+    width: 220px;
+}
+.arrange_button{
+    width: 100%;
+    float: left;
+}
+.arrange_button button{
+    height: 35px;
+    border:none;
+    width: 85px;
+    font-size: 14px;
+    color: #fff;
+    background: #0d7bd5;
+    margin:35px 20px 35px 0;
+}
+
+/*完成情况统计*/
+.spacing{
+    margin: 20px;
+}
+.statistics{
+    border:1px #ccc solid;
+    background: #fff;
+}
+.ranking {
+    margin: 60px 11.6% 60px;
+}
+.publish {
+    width: 18.2%;
+    height: 190px;
+    border: 1px #ccc solid;
+    float: left;
+    margin-right: 8.6%;
+    margin-bottom: 30px;
+}
+.publish p {
+    height: 75px;
+    text-align: center;
+    line-height: 75px;
+    background: #0d7bd5;
+    font-size: 28px;
+    font-family: '微软雅黑';
+    color: #fff;
+    margin: 0;
+    padding: 0 50px;
+}
+@media screen and (min-width: 700px) and (max-width: 1600px){
+  .publish p
+  {
+    font-size:20px;
+    padding: 0;
+  }
+  .publish span
+  {
+    font-size:30px;
+  }
+}
+.publish span {
+    text-align: center;
+    display: block;
+    line-height: 115px;
+    height: 115px;
+    font-size: 52px;
+    font-family: '微软雅黑';
+    color: #0d7bd5;
+}
+.head {
+    color: #0d7bd5;
+    font-family: '微软雅黑';
+    font-size: 22px;
+    text-align: center;
+    font-weight: bold;
+    margin: 55px 0 35px;
+}
+.ranking table {
+    width: 100%;
+    margin: 0 auto;
+    border-top: 1px #ccc solid;
+    border-left: 1px #ccc solid;
+    background: #fff;
+}
+.ranking table th, .ranking table td {
+    border-bottom: 1px #ccc solid;
+    border-right: 1px #ccc solid;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+.ranking table tbody tr {
+    font-family: '微软雅黑';
+    color: #333;
+}
+.ranking table thead tr {
+    background: #e4f5ff;
+    font-family: '微软雅黑';
+    font-size: 14px;
+    font-weight: bold;
+    color: #0d7bd5;
+}
+.population{
+    height: 200px;
+    margin-bottom: 60px;
+}
+.population span{
+    font-family: '微软雅黑';
+    color: #0d7bd5;
+    font-size: 24px;
+    line-height: 200px;
+    float: left;
+    margin-right: 20px;
+}
+.already,.not{
+    float: left;
+    height: 200px;
+}
+.already p,.not p{
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    font-family: '微软雅黑';
+    margin: 0;
+}
+.already canvas,.not canvas{
+    width: 110px;
+    height: 110px;
+    margin: 38px auto 20px;
+    display: block;
+}
+.not{
+    float: right;
+}
+.kuang{
+    width: 50%;
+    margin: 0 auto;
+}
+
+/*管理导学案*/
+.frame{
+    border:1px #89c6ec solid;
+    margin: 20px;
+}
+.pull-down{
+    color: #333;
+    font-size: 16px;
+    float: left;
+    line-height: 35px;
+    font-family: '微软雅黑';
+    margin: 15px 0 15px 40px;
+}
+.pull-down select{
+    border:1px #ccc solid;
+    height: 35px;
+    width: 130px;
+}
+.pull-down button{
+    width: 50px;
+    height: 35px;
+    border-radius: 5px;
+    border:0;
+    background: #0d7bd5;
+    color: #fff;
+}
+.see,.state,.delete{
+    border:0;
+    color: #fff;
+    border-radius: 3px;
+}
+.see{
+    background: #f0ad4e;
+    width: 55px;
+    height: 30px;
+}
+.delete{
+    width: 55px;
+    height: 30px;
+    background: #ff8d72;
+}
+.state{
+    width: 80px;
+    height: 30px;
+    background: #0d7bd5;
+    margin-right:2px;
+}
+.grey_color{
+    width: 55px;
+    height: 30px;
+    background: #c0c0c0;
+}

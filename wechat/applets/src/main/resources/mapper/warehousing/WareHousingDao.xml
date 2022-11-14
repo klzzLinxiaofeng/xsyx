@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.wareHousing.dao.WareHousingDao">
+
+    <resultMap id="WareHousingMap" type="com.xunyunedu.wareHousing.vo.WareHousing">
+        <id column="id" property="id"></id>
+        <result column="shenqingren" property="shenqingren"></result>
+        <result column="shenqingName" property="shenqingName"></result>
+        <result column="shenheId" property="shenheId"></result>
+        <result column="shenhe_name" property="shenheName"></result>
+        <result column="fuzeren" property="fuzeren"></result>
+        <result column="fuzerenName" property="fuzerenName"></result>
+        <result column="type" property="type"></result>
+        <result column="typeName" property="typeName"></result>
+        <result column="name" property="name"></result>
+        <result column="beizhu" property="beizhu"></result>
+        <result column="create_time" property="createDate"></result>
+        <result column="modiy_time" property="modiyDate"></result>
+        <result column="liyou" property="liyou"></result>
+        <result column="is_guihuan" property="isGuihuan"></result>
+        <result column="zhuangtai" property="zhuangtai"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="guihuan_liyou" property="guiHuanliyou"></result>
+    </resultMap>
+    <select id="findByAll" resultMap="WareHousingMap">
+        select  * from zy_warehousing
+        <where>
+        is_delete=0
+        <if test="userId!=null">
+            and shenqingren=#{userId}
+        </if>
+        </where>
+         order by id desc
+    </select>
+    <select id="findById" resultMap="WareHousingMap">
+        select  * from zy_warehousing where id=#{id} and is_delete=0
+    </select>
+    <insert id="create" parameterType="com.xunyunedu.wareHousing.vo.WareHousing" useGeneratedKeys="true" keyProperty="wareHousing.id" keyColumn="id">
+        insert  into zy_warehousing(shenqingren,
+        shenqingName,
+        shenheId,
+        shenhe_name,
+        type,
+        typeName,
+        name,
+        beizhu,
+        create_time,
+        modiy_time,
+        is_delete,
+        liyou,
+        is_guihuan,
+        zhuangtai,
+        fuzeren,
+        fuzerenName,
+        guihuan_liyou)
+        value(#{wareHousing.shenqingren},
+        #{wareHousing.shenqingName},
+        #{wareHousing.shenheId},
+        #{wareHousing.shenheName},
+        #{wareHousing.type},
+        #{wareHousing.typeName},
+        #{wareHousing.name},
+        #{wareHousing.beizhu},
+        NOW(),
+        NOW(),
+        0,
+        #{wareHousing.liyou},
+        #{wareHousing.isGuihuan},
+        0,
+        #{wareHousing.fuzeren},
+        #{wareHousing.fuzerenName},
+        #{wareHousing.guiHuanliyou})
+    </insert>
+    <insert id="createshenhe">
+          insert into oa_apply_notice(title,receiver_id,
+          applicant_name,apply_explain,apply_result,data_id_type,data_id,create_date,handle_date)
+                  value(#{shenHe.title},#{shenHe.receiverId},
+                #{shenHe.applicantName},#{shenHe.applyExplain},0,#{shenHe.dataIdType},#{shenHe.dataId},NOW(),null)
+    </insert>
+    <update id="update">
+        update zy_warehousing  set modiy_time=NOW()
+        <if test="wareHousing!=null">
+            <if test="wareHousing.shenheId!=null">
+                ,shenqingren=#{wareHousing.shenheId}
+            </if>
+            <if test="wareHousing.shenheName!=null">
+                ,shenqingName=#{wareHousing.shenheName}
+            </if>
+            <if test="wareHousing.fuzeren!=null">
+                ,fuzeren=#{wareHousing.fuzeren}
+            </if>
+            <if test="wareHousing.fuzerenName!=null">
+                ,fuzerenName=#{wareHousing.fuzerenName}
+            </if>
+            <if test="wareHousing.type!=null">
+                ,type=#{wareHousing.type}
+            </if>
+            <if test="wareHousing.typeName!=null">
+                ,typeName=#{wareHousing.typeName}
+            </if>
+            <if test="wareHousing.name!=null">
+                ,name=#{wareHousing.name}
+            </if>
+            <if test="wareHousing.beizhu!=null">
+                ,beizhu=#{args[0].beizhu}
+            </if>
+            <if test="wareHousing.liyou!=null">
+                ,liyou=#{wareHousing.liyou}
+            </if>
+            <if test="wareHousing.isGuihuan!=null">
+                ,is_guihuan=#{wareHousing.isGuihuan}
+            </if>
+            <if test="wareHousing.zhuangtai!=null">
+                ,zhuangtai=#{wareHousing.zhuangtai}
+            </if>
+            <if test="wareHousing.isDelete!=null">
+                ,is_delete=#{wareHousing.isDelete}
+            </if>
+            <if test="wareHousing.guiHuanliyou!=null">
+                ,guihuan_liyou=#{wareHousing.guiHuanliyou}
+            </if>
+
+        </if>
+        where id=#{wareHousing.id} and is_delete=0
+    </update>
+
+</mapper>

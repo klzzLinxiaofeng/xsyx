@@ -1,0 +1,8 @@
+platform\education\hnzxx\ui\model\Setting.class
+platform\education\hnzxx\ui\service\SettingService.class
+platform\education\hnzxx\ui\service\PjPermissionService.class
+platform\education\hnzxx\ui\vo\PjPermissionVo.class
+platform\education\hnzxx\ui\vo\SettingCondition.class
+platform\education\hnzxx\ui\model\PjPermission.class
+platform\education\hnzxx\ui\vo\PjPermissionCondition.class
+platform\education\hnzxx\ui\vo\SettingVo.class

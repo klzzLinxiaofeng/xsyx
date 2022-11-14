@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  配置为包名+接口名  实现 代理模式
+  接口中 每一个方法  都与  标签的id对应
+-->
+<mapper namespace="platform.szxyzxx.resultsStatistical.dao.PerformanceAnalysisMapper">
+    <insert id="create">
+                insert into performance_analysis
+        (xn,xq,grade,subjects,testName,average,percentPass,proficiency)
+        values (#{args[0].xn},
+        #{args[0].xq},
+        #{args[0].grade},
+        #{args[0].subjects},
+        #{args[0].testName},
+        #{args[0].average},
+        #{args[0].percentPass},
+        #{args[0].proficiency})
+        </insert>
+
+    <select id="findByAll" parameterType="platform.szxyzxx.resultsStatistical.pojo.vo.PaQuery"
+            resultType="platform.szxyzxx.resultsStatistical.pojo.PerformanceAnalysis">
+        select * from performance_analysis
+        <where>
+            <if test="args[0]!=null">
+                <if test="args[0].xn!=null and args[0].xn!='null'">
+                    xn=#{args[0].xn}
+                </if>
+                <if test="args[0].xq!=null  and args[0].xq!='null'">
+                    and xq=#{args[0].xq}
+                </if>
+                <if test="args[0].testName!=null  and args[0].testName!='null'">
+                    and testName like concat('%', #{args[0].testName}, '%')
+                </if>
+            </if>
+        </where>
+    </select>
+    <select id="findByQuery" resultType="java.util.Map" parameterType="platform.szxyzxx.resultsStatistical.pojo.PerformanceAnalysis">
+        select id,grade,subjects,testName from performance_analysis
+        where xn=#{args[0].xn} and xq=#{args[0].xq}
+    </select>
+
+    <delete id="deleteById" parameterType="Integer">
+        delete from performance_analysis where id=#{args[0]}
+    </delete>
+
+</mapper>

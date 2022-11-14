@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.MeetingDao">
+
+	<resultMap id="MeetingResult" type="platform.education.oa.model.Meeting">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="createuserId" column="createuser_id" />
+		<result property="createname" column="createname" />
+		<result property="userimage" column="userimage" />
+		<result property="departmentId" column="department_id" />
+		<result property="starttime" column="starttime" />
+		<result property="endtime" column="endtime" />
+		<result property="meetingName" column="meeting_name" />
+		<result property="meetingType" column="meeting_type" />
+		<result property="address" column="address" />
+		<result property="zhuchi" column="zhuchi" />
+		<result property="meetingContent" column="meeting_content" />
+		<result property="quanbu" column="quanbu" />
+		<result property="summaryId" column="summary_id" />
+		<result property="uuid" column="uuid" /> 
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="fanwei" column="fanwei" />
+		<result property="meetingNum" column="meeting_num" />
+		<result property="uploadFile" column="upload_file" />
+	</resultMap>
+	
+	<resultMap id="MeetingVoResult" type="platform.education.oa.vo.MeetingVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="createuserId" column="createuser_id" />
+		<result property="createname" column="createname" />
+		<result property="userimage" column="userimage" />
+		<result property="departmentId" column="department_id" />
+		<result property="starttime" column="starttime" />
+		<result property="endtime" column="endtime" />
+		<result property="meetingName" column="meeting_name" />
+		<result property="meetingType" column="meeting_type" />
+		<result property="address" column="address" />
+		<result property="zhuchi" column="zhuchi" />
+		<result property="meetingContent" column="meeting_content" />
+		<result property="quanbu" column="quanbu" />
+		<result property="summaryId" column="summary_id" />
+		<result property="uuid" column="uuid" /> 
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="fanwei" column="fanwei" />
+		<result property="meetingNum" column="meeting_num" />
+		<result property="uploadFile" column="upload_file" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.Meeting">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_meeting (
+			id, 
+			school_id, 
+			createuser_id, 
+			createname, 
+			userimage, 
+			department_id, 
+			starttime, 
+			endtime, 
+			meeting_name, 
+			meeting_type, 
+			address, 
+			zhuchi, 
+			meeting_content, 
+			quanbu,
+			summary_id,
+			uuid, 
+			create_date, 
+			modify_date,
+			fanwei,
+			meeting_num,
+			upload_file			
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{createuserId}, 
+			#{createname}, 
+			#{userimage}, 
+			#{departmentId}, 
+			#{starttime}, 
+			#{endtime}, 
+			#{meetingName}, 
+			#{meetingType}, 
+			#{address}, 
+			#{zhuchi}, 
+			#{meetingContent}, 
+			#{quanbu},
+			#{summaryId}, 
+			#{uuid}, 
+			#{createDate}, 
+			#{modifyDate},
+			#{fanwei},
+			#{meetingNum},
+			#{uploadFile}
+		)
+	</insert>
+
+	<select id="findMeetingByRelatedWithMe" resultMap="MeetingVoResult" useCache="false">
+		select resultOfsreach.* from (
+		select meeting.* from oa_meeting meeting where 1=1
+		<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND meeting.school_id = #{args[0].schoolId}
+		</if>
+		<if test="args[0].baselineDate != null and args[0].baselineDate != ''">
+			<choose>
+					<when test="args[0].new_or_old == 0">
+						AND meeting.create_date &lt; #{args[0].new_or_old}
+					</when>
+					<otherwise>
+						AND meeting.create_date &gt; #{args[0].new_or_old}
+					</otherwise>
+			</choose>
+		</if>
+		<if test="args[0].ssWord != null and args[0].ssWord != ''">
+			AND CONCAT_WS(",",meeting.meeting_name,meeting.createname,meeting.zhuchi) like CONCAT('%',#{args[0].ssWord},'%')
+		</if>
+			)as resultOfsreach
+		left join oa_meeting_user meetingUser
+		on resultOfsreach.id = meetingUser.meeting_id
+		where 1=1
+		<if test="args[0].isRelatedWithMe != '' and args[0].isRelatedWithMe == true">
+			<if test="args[0].fanwei != null">
+				AND resultOfsreach.fanwei = #{args[0].fanwei}
+			</if>
+			<if test="args[0].teacherId != null and args[0].teacherId != ''">
+				OR meetingUser.department_id in (select department_id from pj_department_teacher where is_deleted = 0 AND teacher_id = #{args[0].teacherId})
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				OR meetingUser.user_id = #{args[0].userId}
+			</if>
+<!-- 			<if test="args[0].createuserId != null and args[0].createuserId != ''"> -->
+<!-- 				OR resultOfsreach.createuser_id = #{args[0].createuserId} -->
+<!-- 			</if> -->
+		</if>
+		<if test="args[0].isDepartmentRecord != '' and args[0].isDepartmentRecord == true">
+			<if test="args[0].teacherId != null and args[0].teacherId != ''">
+				AND meetingUser.department_id in (select department_id from pj_department_teacher where is_deleted = 0 AND teacher_id = #{args[0].teacherId})
+			</if>
+		</if>
+		<if test="args[0].isMePublish != '' and args[0].isMePublish == true">
+			and resultOfsreach.createuser_id = #{args[0].createuserId}
+		</if>
+		<if test="args[0].isAllRecord != '' and args[0].isAllRecord == true">
+			<if test="args[0].departmentId != null and args[0].departmentId != ''">
+				and meetingUser.department_id = #{args[0].departmentId}
+			</if>
+		</if>
+			GROUP BY resultOfsreach.id
+	</select>
+	
+	<select id="read" resultMap="MeetingResult" useCache="false">
+		SELECT * FROM oa_meeting WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findMeetingByCondition" resultMap="MeetingResult" useCache="false">
+		SELECT * FROM oa_meeting 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createuserId != null">
+				AND createuser_id = #{args[0].createuserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createname != null and args[0].createname != ''">
+				AND createname = #{args[0].createname,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userimage != null and args[0].userimage != ''">
+				AND userimage = #{args[0].userimage,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].starttime != null and args[0].starttime != ''">
+				AND starttime = #{args[0].starttime,javaType=java.lang.String}
+			</if>
+			<if test="args[0].endtime != null and args[0].endtime != ''">
+				AND endtime = #{args[0].endtime,javaType=java.lang.String}
+			</if>
+			<if test="args[0].meetingName != null and args[0].meetingName != ''">
+				AND meeting_name = #{args[0].meetingName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].meetingType != null">
+				AND meeting_type = #{args[0].meetingType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].address != null and args[0].address != ''">
+				AND address = #{args[0].address,javaType=java.lang.String}
+			</if>
+			<if test="args[0].zhuchi != null and args[0].zhuchi != ''">
+				AND zhuchi = #{args[0].zhuchi,javaType=java.lang.String}
+			</if>
+			<if test="args[0].meetingContent != null and args[0].meetingContent != ''">
+				AND meeting_content = #{args[0].meetingContent,javaType=java.lang.String}
+			</if>
+			<if test="args[0].quanbu != null">
+				AND quanbu = #{args[0].quanbu,javaType=java.lang.Integer}
+			</if>
+			 
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].fanwei != null">
+				AND fanwei = #{args[0].fanwei,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].meetingNum != null">
+				AND meeting_num = #{args[0].meetingNum,javaType=java.lang.Integer}
+			</if>
+			
+		</if>
+	</select>
+	
+	
+	 
+	
+	<select id="findMeetingToUser" resultMap="MeetingResult" useCache="false">
+		SELECT n.* FROM oa_meeting n, oa_meeting_user u  WHERE 1=1  
+		AND n.school_id= #{args[0],javaType=java.lang.Integer}
+		 AND n.id = u.meeting_id AND u.user_id = #{args[1],javaType=java.lang.Integer}
+		 <if test="args[3] != null and args[3] != ''">
+				<choose>
+					<when test="args[2] == 0">
+						AND n.create_date &lt; #{args[3]}
+					</when>
+					<otherwise>
+						AND n.create_date &gt; #{args[3]}
+					</otherwise>
+				</choose>
+			</if>
+	</select>
+	
+		<select id="findMeeting" resultMap="MeetingResult" useCache="false">
+		SELECT * FROM oa_meeting n  
+		 WHERE 1=1 
+	   AND n.school_id= #{args[0],javaType=java.lang.Integer}
+	   <if test="args[1] != null and args[1] != ''">
+	     AND createuser_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		 <if test="args[2] != null and args[2] != ''">
+	     AND n.fanwei= #{args[2],javaType=java.lang.Integer}
+		</if> 
+		<if test="args[3] != null and args[3] != ''">
+	     AND n.department_id= #{args[3],javaType=java.lang.Integer}
+		</if> 
+		
+		<if test="args[5] != null and args[5] != ''">
+				<choose>
+					<when test="args[4] == 0">
+						AND n.create_date &lt; #{args[5]}
+					</when>
+					<otherwise>
+						AND n.create_date &gt; #{args[5]}
+					</otherwise>
+				</choose>
+			</if>
+			 
+	</select>
+	
+	
+	<select id="findMeetingToSummary" resultMap="MeetingResult" useCache="false">
+		SELECT * FROM oa_meeting n  WHERE 1=1  
+		AND n.school_id= #{args[0],javaType=java.lang.Integer}
+		 AND  #{args[1],javaType=java.lang.String}>=n.endtime   
+		 
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_meeting 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createuserId != null">
+				AND createuser_id = #{args[0].createuserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createname != null and args[0].createname != ''">
+				AND createname = #{args[0].createname,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userimage != null and args[0].userimage != ''">
+				AND userimage = #{args[0].userimage,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].starttime != null and args[0].starttime != ''">
+				AND starttime = #{args[0].starttime,javaType=java.lang.String}
+			</if>
+			<if test="args[0].endtime != null and args[0].endtime != ''">
+				AND endtime = #{args[0].endtime,javaType=java.lang.String}
+			</if>
+			<if test="args[0].meetingName != null and args[0].meetingName != ''">
+				AND meeting_name = #{args[0].meetingName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].meetingType != null">
+				AND meeting_type = #{args[0].meetingType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].address != null and args[0].address != ''">
+				AND address = #{args[0].address,javaType=java.lang.String}
+			</if>
+			<if test="args[0].zhuchi != null and args[0].zhuchi != ''">
+				AND zhuchi = #{args[0].zhuchi,javaType=java.lang.String}
+			</if>
+			<if test="args[0].meetingContent != null and args[0].meetingContent != ''">
+				AND meeting_content = #{args[0].meetingContent,javaType=java.lang.String}
+			</if>
+			<if test="args[0].quanbu != null">
+				AND quanbu = #{args[0].quanbu,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].fanwei != null">
+				AND fanwei = #{args[0].fanwei,javaType=java.lang.Integer}
+			</if>
+			
+			<if test="args[0].meetingNum != null">
+				AND meeting_num = #{args[0].meetingNum,javaType=java.lang.Integer}
+			</if>
+			
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="MeetingResult" useCache="false">
+		SELECT * FROM oa_meeting WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.Meeting">
+		UPDATE oa_meeting
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="createuserId != null">
+			createuser_id=#{createuserId},
+		</if>
+		<if test="createname != null">
+			createname=#{createname},
+		</if>
+		<if test="userimage != null">
+			userimage=#{userimage},
+		</if>
+		<if test="departmentId != null">
+			department_id=#{departmentId},
+		</if>
+		<if test="starttime != null">
+			starttime=#{starttime},
+		</if>
+		<if test="endtime != null">
+			endtime=#{endtime},
+		</if>
+		<if test="meetingName != null">
+			meeting_name=#{meetingName},
+		</if>
+		<if test="meetingType != null">
+			meeting_type=#{meetingType},
+		</if>
+		<if test="address != null">
+			address=#{address},
+		</if>
+		<if test="zhuchi != null">
+			zhuchi=#{zhuchi},
+		</if>
+		<if test="meetingContent != null">
+			meeting_content=#{meetingContent},
+		</if>
+		<if test="quanbu != null">
+			quanbu=#{quanbu},
+		</if>
+		
+	 
+			summary_id=#{summaryId},
+ 
+		<if test="uuid != null">
+			uuid=#{uuid},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="fanwei != null">
+			fanwei=#{fanwei},
+		</if>
+		<if test="fanwei != null">
+			meeting_num=#{meetingNum},
+		</if>
+		
+		
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_meeting
+		WHERE id = #{id}
+	</delete>
+</mapper>

@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<models>
+	<model id="test" class="platform.education.generalTeachingAffair.vo.ParentVo">
+		<property name="schoolYear" column="1" excelTitleName="学年" dataType="String"/>
+		<property name="gradeName" column="2" excelTitleName="年级" dataType="String"/>
+		<property name="teamName" column="3" excelTitleName="班级" dataType="String"/>
+		<property name="studentName" column="4" excelTitleName="学生姓名" dataType="String"/>
+		<property name="studentNumber" column="5" excelTitleName="学生学籍号" dataType="String"/>
+		<property name="parentRelation" column="6" excelTitleName="与学生关系" dataType="String"/>
+		<property name="rank" column="7" excelTitleName="类型" dataType="String"/>
+		<property name="name" column="8" excelTitleName="家长姓名" dataType="String"/>
+		<property name="mobile" column="9" excelTitleName="手机号码" dataType="Long"/>
+		<property name="email" column="10" excelTitleName="邮箱" dataType="String"/>
+	</model>
+
+	<!-- 某个学生考勤情况导出配置 -->
+	<!-- @Author 黄艳春 -->
+	<!-- @Date 15.05.08 -->
+	<model id="checkOutOne" class="platform.education.generalTeachingAffair.model.StudentCheckAttendance">
+		<!-- <property name="schoolYearId" column="1" excelTitleName="学年" dataType="Integer"  useConvert="true" convertType="pj" dmTableName="pj_school_year" echoField="name"/>
+       <property name="teamNumber" column="2" excelTitleName="班级" dataType="Integer"  useConvert="true" convertType="pj" dmTableName="pj_team" echoField="name" /> -->
+		<property name="schoolYearId" column="1" excelTitleName="学年" dataType="Integer" useConvert="true" convertType="map"  codeTableName="schoolYearName" />
+		<property name="teamNumber" column="2" excelTitleName="班级" dataType="Integer"  useConvert="true" convertType="map"  codeTableName="teamName"/>
+		<property name="studentName" column="3" excelTitleName="姓名 " dataType="String" />
+		<property name="attendanceType" column="4" excelTitleName="考勤类别" dataType="String" useConvert="true" convertType="map"  codeTableName="attendanceTypeMap" />
+		<property name="beginDate" column="5" excelTitleName="开始时间" dataType="Date"/>
+		<property name="endDate" column="6" excelTitleName="结束时间" dataType="Date"/>
+		<property name="dayNumber" column="7" excelTitleName="天数" dataType="Integer" />
+		<property name="nodeNumber" column="8" excelTitleName="节数" dataType="Integer" />
+		<property name="orderNumber" column="9" excelTitleName="次数" dataType="Integer" />
+		<property name="remark" column="10" excelTitleName="备注" dataType="String" />
+
+	</model>
+
+	<!-- 根据查询条件考勤情况导出配置 -->
+	<!-- @Author 黄艳春 -->
+	<!-- @Date 15.05.09 -->
+	<model id="checkOutAll" class="platform.education.generalTeachingAffair.vo.StudentCheckAttendanceVo">
+		<property name="schoolYearId" column="1" excelTitleName="学年" dataType="Integer" useConvert="true" convertType="map"  codeTableName="schoolYearName" />
+		<property name="teamNumber" column="2" excelTitleName="班级" dataType="Integer"  useConvert="true" convertType="map"  codeTableName="teamName"/>
+		<property name="studentName" column="3" excelTitleName="姓名 " dataType="String" />
+		<property name="attendanceType" column="4" excelTitleName="考勤类别" dataType="String" useConvert="true" convertType="map"  codeTableName="attendanceTypeMap" />
+		<property name="beginDate" column="5" excelTitleName="开始时间" dataType="Date"/>
+		<property name="endDate" column="6" excelTitleName="结束时间" dataType="Date"/>
+		<property name="dayNumber" column="7" excelTitleName="天数" dataType="Integer" />
+		<property name="nodeNumber" column="8" excelTitleName="节数" dataType="Integer" />
+		<property name="orderNumber" column="9" excelTitleName="次数" dataType="Integer" />
+		<property name="remark" column="10" excelTitleName="备注" dataType="String" />
+
+	</model>
+
+
+	<!-- 宿舍信息导出配置 -->
+	<!-- @Author 黄艳春 -->
+	<!-- @Date 15.06.12 -->
+	<model id="dormitoryVo" class="platform.education.school.affair.vo.DormitoryVo">
+		<property name="floorCode" column="1"  excelTitleName="宿舍楼号" dataType="String"  useConvert="true" convertType="map"  codeTableName="name" />
+		<property name="dormitoryCode" column="2"  excelTitleName="寝室编号" dataType="String" />
+		<property name="sex" column="3"  excelTitleName="入住性别" dataType="String"  useConvert="true" convertType="jcGc"  dmTableName="GB-XB" echoField="name" />
+		<property name="capacity" column="4"  excelTitleName="可住人数" dataType="String" />
+	</model>
+
+	<!-- 宿舍人员信息导出配置 -->
+	<!-- @Author 黄艳春 -->
+	<!-- @Date 15.07.15 -->
+	<model id="dormitoryPersonVo" class="platform.education.school.affair.vo.DormitoryPersonVo">
+		<property name="floorName" column="1"  excelTitleName="宿舍楼号" dataType="String"  />
+		<property name="dormitoryCode" column="2"  excelTitleName="寝室编号" dataType="String" />
+		<property name="sex" column="3"  excelTitleName="入住性别" dataType="String"  useConvert="true" convertType="jcGc"  dmTableName="GB-XB" echoField="name" />
+		<property name="capacity" column="4"  excelTitleName="可住人数" dataType="Integer" />
+		<property name="studentNames" column="5"  excelTitleName="入住人员" dataType="String" />
+	</model>
+
+
+
+	<!-- 根据查询条件宿舍考勤导出配置 -->
+	<!-- @Author 黄艳春 -->
+	<!-- @Date 15.07.15 -->
+	<model id="dormitoryAttendanceVo" class="platform.education.school.affair.vo.DormitoryAttendanceVo">
+		<property name="createDate" column="1"  excelTitleName="日期" dataType="Date" />
+		<property name="attendanceType" column="2"  excelTitleName="考勤类型" dataType="String"  useConvert="true" convertType="jcGc"  dmTableName="XY-YH-KQLX" echoField="name"/>
+		<property name="floorName" column="3"  excelTitleName="宿舍楼号" dataType="String"   />
+		<property name="dormitoryCode" column="4"  excelTitleName="寝室编号" dataType="String" />
+		<property name="teamNumber" column="5"  excelTitleName="班级" dataType="Integer"  useConvert="true" convertType="map"  codeTableName="teamName" />
+		<property name="studentName" column="6"  excelTitleName="姓名" dataType="String" />
+		<property name="studentNumber" column="7"  excelTitleName="学籍号" dataType="String" />
+	</model>
+
+	<!-- 根据查询条件宿舍日常检查导出配置 -->
+	<!-- @Author 黄艳春 -->
+	<!-- @Date 15.07.15 -->
+	<model id="dormitoryDaycheckVo" class="platform.education.school.affair.vo.DormitoryDaycheckVo">
+		<property name="createDate" column="1"  excelTitleName="日期" dataType="Date" />
+		<property name="checkType" column="2"  excelTitleName="检查类型" dataType="String"  useConvert="true" convertType="jcGc"  dmTableName="XY-YH-RCJCLX" echoField="name"/>
+		<property name="floorName" column="3"  excelTitleName="宿舍楼号" dataType="String"   />
+		<property name="dormitoryCode" column="4"  excelTitleName="寝室编号" dataType="String" />
+		<property name="checkResult" column="5"  excelTitleName="检查结果" dataType="String" />
+		<property name="remark" column="6"  excelTitleName="检查说明" dataType="String" />
+	</model>
+
+	<!-- 宿舍信息导入配置 -->
+	<!-- @Author 黄艳春 -->
+	<!-- @Date 15.06.12 -->
+	<!-- <model id="dormitoryVoInsert" calss="platform.education.school.affair.vo.DormitoryVo">
+	   <property name="floorName" column="1"  excelTitleName="大楼名称" dataType="String"   />
+	   <property name="floorCode" column="2"  excelTitleName="宿舍楼号" dataType="String" />
+	   <property name="dormitoryCode" column="3"  excelTitleName="寝室编号" dataType="String" />
+	   <property name="sex" column="4"  excelTitleName="入住性别" dataType="String" /> useConvert="true" convertType="jcGc"  dmTableName="GB-XB" echoField="name"
+	   <property name="capacity" column="5"  excelTitleName="可住人数" dataType="String" />
+	   <property name="remark" column="6"  excelTitleName="备注" dataType="String" />
+	</model> -->
+
+	<!-- 家长信息导出导入配置 -->
+	<!-- @Author 王志家 -->
+	<model id="parentvo" class="platform.education.generalTeachingAffair.vo.ParentVo">
+		<property name="schoolYear" column="1" excelTitleName="学年" dataType="String"/>
+		<property name="gradeName" column="2" excelTitleName="年级" dataType="String"/>
+		<property name="teamName" column="3" excelTitleName="班级" dataType="String"/>
+		<property name="studentName" column="4" excelTitleName="学生姓名" dataType="String"/>
+		<property name="studentNumber" column="5" excelTitleName="学生学籍号" dataType="String"/>
+		<property name="parentRelation" column="6" excelTitleName="与学生关系(父母，父亲，母亲，兄，弟)" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="GB-JTGX" echoField="name"/>
+		<property name="rank" column="7" excelTitleName="类型(普通，主监护人)" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="XY-JY-JZLB" echoField="name"/>
+		<property name="name" column="8" excelTitleName="家长姓名" dataType="String"/>
+		<property name="mobile" column="9" excelTitleName="手机号码" dataType="String"/>
+		<property name="email" column="10" excelTitleName="邮箱" dataType="String"/>
+
+	</model>
+
+	<!-- 成绩模板导出导入配置 -->
+	<!-- @Author 王志家 -->
+	<model id="studentscorevo" class="platform.education.generalTeachingAffair.vo.StudentScoreVo">
+		<property name="examTeamSubjectId" column="1" excelTitleName="考试程序标示（不要改变）" dataType="Integer"/>
+		<property name="id" column="2" excelTitleName="成绩程序标示（不要改变）" dataType="Integer"/>
+		<property name="studentId" column="3" excelTitleName="学生程序标示（不要改变）" dataType="Integer"/>
+		<property name="studentNumber" column="4" excelTitleName="学籍号" dataType="String"/>
+		<property name="studentName" column="5" excelTitleName="姓名" dataType="String"/>
+		<property name="score" column="6" excelTitleName="成绩(小数最多两位，0-100.00)" dataType="String"/>
+		<property name="comment" column="6" excelTitleName="评语" dataType="String"/>
+	</model>
+
+	<!-- 教材目录内容 -->
+	<!-- @Author 王志家 -->
+	<model id="catalog" class="platform.education.generalcode.vo.TextbookCatalogVo">
+		<property name="name" column="1" excelTitleName="目录名称" dataType="String"/>
+		<property name="page" column="2" excelTitleName="页码" dataType="String"/>
+		<property name="level" column="3" excelTitleName="目录层次" dataType="String"/>
+		<property name="listOrder" column="4" excelTitleName="目录顺序" dataType="Integer"/>
+		<property name="backCode" column="5" excelTitleName="关联资源代码" dataType="String"/>
+	</model>
+
+	<!-- 学生资助导出内容 -->
+	<!-- @Author 王志家 -->
+	<model id="studentAidVo" class="platform.education.generalTeachingAffair.vo.StudentAidVo">
+		<property name="schoolYearName" column="1" excelTitleName="学年" dataType="String"/>
+		<property name="gradeName" column="2" excelTitleName="年级" dataType="String"/>
+		<property name="teamName" column="3" excelTitleName="班级" dataType="String"/>
+		<property name="studentName" column="4" excelTitleName="姓名" dataType="String"/>
+		<!-- <jcgc:cache tableCode="JY-KNCD" value="${item.povertyCategory}"></jcgc:cache> -->
+		<property name="povertyCategory" column="5" excelTitleName="贫困类别" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="JY-KNCD" echoField="name"/>
+		<!-- <property name="povertyCategory" column="5" excelTitleName="贫困类别" dataType="String"/> -->
+		<!-- <td><jcgc:cache tableCode="JY-KNYY" value="${item.povertyCauses}"></jcgc:cache></td> -->
+		<property name="povertyCause" column="6" excelTitleName="贫困原因" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="JY-KNYY" echoField="name"/>
+		<!-- <property name="povertyCauses" column="6" excelTitleName="贫困原因" dataType="String"/> -->
+		<property name="aidForm" column="7" excelTitleName="助困形式" dataType="String"/>
+		<property name="familyIncome" column="8" excelTitleName="家庭收入/人口" dataType="String"/>
+		<property name="aidAmount" column="9" excelTitleName="资助金额" dataType="String"/>
+		<property name="aidDate" column="10" excelTitleName="资助日期" dataType="String"/>
+		<property name="remark" column="11" excelTitleName="备注" dataType="String"/>
+	</model>
+
+	<!-- 学生奖励导出内容 -->
+	<!-- @Author 王志家 -->
+	<model id="studentAwardVo" class="platform.education.generalTeachingAffair.vo.StudentAwardVo">
+		<property name="schoolYearName" column="1" excelTitleName="学年" dataType="String"/>
+		<property name="gradeName" column="2" excelTitleName="年级" dataType="String"/>
+		<property name="teamName" column="3" excelTitleName="班级" dataType="String"/>
+		<property name="numInTeam" column="4" excelTitleName="班内编号" dataType="String"/>
+		<property name="studentName" column="5" excelTitleName="姓名" dataType="String"/>
+		<property name="awardContent" column="6" excelTitleName="奖励内容" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="JY-JLFS" echoField="name"/>
+		<property name="awardLevel" column="7" excelTitleName="奖励级别" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="JY-XSHJLB" echoField="name"/>
+		<property name="awardRanking" column="8" excelTitleName="奖励名次" dataType="String"/>
+		<property name="awardType" column="9" excelTitleName="奖励类型" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="JY-HJLX" echoField="name"/>
+		<property name="awardUnit" column="10" excelTitleName="奖励单位" dataType="String"/>
+		<property name="remark" column="11" excelTitleName="备注" dataType="String"/>
+	</model>
+
+	<!-- 学生处分导出内容 -->
+	<!-- @Author 王志家 -->
+	<model id="studentPunishVo" class="platform.education.generalTeachingAffair.vo.StudentPunishVo">
+		<property name="schoolYearName" column="1" excelTitleName="学年" dataType="String"/>
+		<property name="gradeName" column="2" excelTitleName="年级" dataType="String"/>
+		<property name="teamName" column="3" excelTitleName="班级" dataType="String"/>
+		<property name="studentName" column="4" excelTitleName="姓名" dataType="String"/>
+		<property name="punishType" column="5" excelTitleName="处分类型" dataType="String" />
+		<property name="punishCause" column="6" excelTitleName="处分原因" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="JY-WJLB" echoField="name"/>
+		<property name="punishDay" column="7" excelTitleName="处分日期" dataType="String"/>
+		<property name="punishEndDay" column="8" excelTitleName="到期日期" dataType="String"/>
+		<property name="repealDay" column="9" excelTitleName="撤销日期" dataType="String"/>
+		<property name="isRepeal" column="10" excelTitleName="是否撤销处分" dataType="String"  useConvert="true"  convertType="map" codeTableName="isRepealMaps"/>
+		<property name="remark" column="11" excelTitleName="备注" dataType="String"/>
+	</model>
+
+	<!--     考试日程安排导出内容
+        @Author 王志家
+        <model id="examTeamSubjectVo" class="platform.education.generalTeachingAffair.vo.ExamTeamSubjectVo">
+            <property name="schoolYearName" column="1" excelTitleName="学年 " dataType="String"/>
+            <property name="termCodeName" column="2" excelTitleName="学期" dataType="String"/>
+            <property name="examName" column="3" excelTitleName="考试名称 " dataType="String"/>
+            <property name="teamName" column="4" excelTitleName="班级名称" dataType="String"/>
+            <property name="examType" column="5" excelTitleName="考试类型 " dataType="String" />
+            <property name="subjectCode" column="6" excelTitleName="考试科目" dataType="String"/>
+            <property name="taskOnlineName" column="7" excelTitleName="是否在线" dataType="String"/>
+            <property name="preciseStartDate" column="8" excelTitleName="考试开始时间" dataType="String"/>
+            <property name="preciseEndDate" column="9" excelTitleName="考试结束时间" dataType="String"/>
+            <property name="teamSum" column="10" excelTitleName="考试人数" dataType="String" />
+        </model> -->
+	<!--  useConvert="true" convertType="jcGc"  dmTableName="JY-KSXS" echoField="name" -->
+
+
+	<!-- 薪资信息导出配置 -->
+	<!-- @Author 谢美洁 -->
+	<model id="downLoadSalary" class="platform.education.personnel.vo.TeacherSalaryVo">
+		<property name="jobNumber" column="1" excelTitleName="工号" dataType="String" />
+		<property name="name" column="2" excelTitleName="姓名" dataType="String" />
+		<property name="idCardNumber" column="3" excelTitleName="身份证号" dataType="String" />
+		<property name="department" column="4" excelTitleName="部门" dataType="String" />
+		<property name="position" column="5" excelTitleName="职位" dataType="String" />
+		<property name="salary" column="6" excelTitleName="薪资金额（元）" dataType="String" />
+		<property name="validDate" column="7" excelTitleName="有效开始时间" dataType="Date" />
+		<property name="recorder" column="8" excelTitleName="录入人员" dataType="String" />
+		<property name="createDate" column="9" excelTitleName="录入时间" dataType="Date" />
+	</model>
+
+	<!-- 教室信息导出配置 -->
+	<!-- @Author 谢美洁 -->
+	<model id="downLoadClassroom" class="platform.education.school.affair.vo.ClassroomVo">
+		<property name="name" column="1" excelTitleName="教室名称" dataType="String" />
+		<property name="code" column="2" excelTitleName="编号" dataType="String" />
+		<property name="type" column="3" excelTitleName="类型" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="JY-JSLX" echoField="name"/>
+		<property name="state" column="4" excelTitleName="状态" dataType="String" />
+		<property name="floorName" column="5" excelTitleName="大楼名称" dataType="String" />
+		<property name="storey" column="6" excelTitleName="所在楼层" dataType="Integer" />
+		<property name="createDate" column="7" excelTitleName="创建时间" dataType="Date" />
+	</model>
+
+	<!-- 楼层信息导出配置 -->
+	<!-- @Author 谢美洁 -->
+	<model id="downLoadFloor" class="platform.education.school.affair.model.Floor">
+		<property name="name" column="1" excelTitleName="楼层名称" dataType="String" />
+		<property name="code" column="2" excelTitleName="编号" dataType="String" />
+		<property name="type" column="3" excelTitleName="用途" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="JY-JZWYT" echoField="name"/>
+		<property name="layerNumber" column="4" excelTitleName="楼层数" dataType="Integer" />
+		<property name="state" column="5" excelTitleName="状态" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="JY-FJSYZT" echoField="name"/>
+		<property name="createDate" column="6" excelTitleName="创建时间" dataType="Date" />
+	</model>
+
+	<!-- 健康档案信息导出配置 -->
+	<!-- @Author 谢美洁 -->
+	<model id="downloadHealth" class="platform.education.generalTeachingAffair.vo.StudentHealthArchiveVo">
+		<property name="schoolYearName" column="1" excelTitleName="学年" dataType="String" />
+		<property name="gradeName" column="2" excelTitleName="年级" dataType="String" />
+		<property name="teamName" column="3" excelTitleName="班级" dataType="String"/>
+		<property name="studentName" column="4" excelTitleName="姓名" dataType="String" />
+		<property name="type" column="5" excelTitleName="健康类型" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="GB-JKZK2" echoField="name"/>
+	</model>
+
+	<!-- 班级学生信息导出配置 -->
+	<!-- @Author 谢美洁 -->
+	<model id="downLoadTeamStudent" class="platform.education.generalTeachingAffair.vo.TeamStudentVo">
+		<property name="userName" column="1" excelTitleName="用户名" dataType="String"/>
+		<property name="studentNumber" column="2" excelTitleName="学籍号" dataType="String"/>
+		<property name="name" column="3" excelTitleName="姓名" dataType="String"/>
+		<property name="sex" column="4" excelTitleName="性别" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="GB-XB" echoField="name"/>
+		<property name="mobile" column="5" excelTitleName="手机号码" dataType="String"/>
+		<property name="position" column="6" excelTitleName="职务" dataType="String" />
+		<property name="parentName" column="7" excelTitleName="家长姓名" dataType="String" />
+		<property name="parentMobile" column="8" excelTitleName="家长手机号码" dataType="String"/>
+
+	</model>
+
+	<!-- 开课管理信息导出配置 -->
+	<!-- @Author 谢美洁 -->
+	<model id="downloadPubCla" class="platform.education.generalTeachingAffair.vo.PublicClassVo">
+		<property name="publicClassName" column="1" excelTitleName="课程名称" dataType="String" />
+		<property name="teacherName" column="2" excelTitleName="上课教师" dataType="String" />
+		<property name="classTime" column="3" excelTitleName="上课时间" dataType="String" />
+		<property name="beginDate" column="4" excelTitleName="选课开始日期" dataType="Date" />
+		<property name="classNumber" column="5" excelTitleName="课程总节数" dataType="Integer" />
+		<property name="maxMember" column="6" excelTitleName="人数上限" dataType="Integer"/>
+		<property name="expiryDate" column="7" excelTitleName="选课截止日期" dataType="Date" />
+		<property name="studentName" column="8" excelTitleName="姓名" dataType="String" />
+		<property name="sex" column="9" excelTitleName="性别" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="GB-XB" echoField="name" />
+		<property name="teamName" column="10" excelTitleName="班级" dataType="String"/>
+		<property name="studentNumber" column="11" excelTitleName="学籍号" dataType="String"/>
+	</model>
+	<!-- 知识点导入导出配置 -->
+	<!-- @Author 陈业强 -->
+	<model id="knowledgeCatalog" class="platform.education.generalcode.vo.KnowledgeCatalogVo">
+		<property name="name" column="1" excelTitleName="知识点名称" dataType="String" />
+		<property name="parentName" column="2" excelTitleName="父知识点名称" dataType="String" />
+		<property name="level" column="3" excelTitleName="知识点层次" dataType="Integer" />
+		<property name="sort" column="3" excelTitleName="排序号" dataType="Integer" />
+	</model>
+	<!-- 	<model id="xl" class="platform.szxy.jcxx.model.entity.DmGyXl"> -->
+	<!-- 		<property name="xlDm" column="1" excelTitleName="校历代码" dataType="String" maxLength="15" fixity="" codeTableName="" default=""/> -->
+	<!-- 		<property name="xxDm" column="2" excelTitleName="学校代码" dataType="String" maxLength="15" fixity="" codeTableName="" default=""/> -->
+	<!-- 		<property name="xn" column="3" excelTitleName="学年" dataType="String" maxLength="15" fixity="" codeTableName="bgqx" default="C"/> -->
+	<!-- 		<property name="xq" column="4" excelTitleName="学期" dataType="String" maxLength="15" fixity="yes" codeTableName="" default="10"/> -->
+	<!-- 	</model> -->
+
+	<!-- column :指excel没有表头名称时,可以对应所排的列号 -->
+	<!-- 	<model id="xl" class="platform.szxy.jcxx.model.entity.DmGyXl"> -->
+	<!-- 		<property name="xlDm" column="1" excelTitleName="校历代码" dataType="String" /> -->
+	<!-- 		<property name="xxDm" column="2" excelTitleName="学校代码" dataType="String"  useConvert="true" codeTableName="xxjbxx" convertType="map" dmTableName="t_dm_gy_xxjbxx" echoField="xxMc"/>  -->
+	<!-- 	convertType现阶段包括 map从用户传入的map中获取 cache 从系统自定义的缓冲组件中获取 默认为map 若用户无传入则完整返回代码 -->
+	<!-- 		<property name="xn" column="3" excelTitleName="学年" dataType="String" /> -->
+	<!-- 		<property name="xq" column="4" excelTitleName="学期" dataType="String" /> -->
+	<!-- 		<property name="ksSj" column="5" excelTitleName="开始时间" dataType="Date" /> -->
+	<!-- 		<property name="jsSj" column="6" excelTitleName="结束时间" dataType="Date" /> -->
+	<!-- 		<property name="zs" column="7" excelTitleName="周数" dataType="Integer" /> -->
+	<!-- 		<property name="zfBj" column="8" excelTitleName="作废标记" dataType="String" /> -->
+	<!-- 	</model> -->
+
+	<!-- 	<model id="dept" class="platform.szxy.web.common.util.poi.excel.test.DeptModel"> -->
+	<!-- 		<property name="id" column="1" excelTitleName="编号" dataType="String"/> -->
+	<!-- 		<property name="name" column="2" excelTitleName="名称" dataType="String" /> -->
+	<!-- 		<property name="sex" column="3" excelTitleName="性别" dataType="Boolean" useConvert="true" convertType="map" codeTableName="xingbie" /> -->
+	<!-- 		<property name="age" column="4" excelTitleName="年龄" dataType="Integer" /> -->
+	<!-- 		<property name="brithDay" column="5" excelTitleName="生日日期" dataType="Date" dataFormat="yyyy-MM-dd"/> -->
+	<!-- 	</model> -->
+
+	<!-- 统计课程 -->
+	<model id="classCount" class="platform.education.generalTeachingAffair.vo.CountPublicClassVo">
+		<property name="className" column="1" excelTitleName="课程名称" dataType="String" />
+		<property name="maxMember" column="2" excelTitleName="人数上限" dataType="Integer" />
+		<property name="enrollNumber" column="3" excelTitleName="已报名人数" dataType="Integer" />
+	</model>
+
+	<!-- 选课学生信息 -->
+	<model id="choseClassStu" class="platform.education.generalTeachingAffair.vo.CountPublicClassVo">
+		<property name="className" column="1" excelTitleName="课程名称" dataType="String" />
+		<property name="stuName" column="2" excelTitleName="学生名称" dataType="String" />
+		<property name="teamName" column="3" excelTitleName="班级名称" dataType="String" />
+	</model>
+
+	<!-- 未选课学生信息 -->
+	<model id="noChoseClassStu" class="platform.education.generalTeachingAffair.vo.CountPublicClassVo">
+		<property name="stuName" column="2" excelTitleName="学生名称" dataType="String" />
+		<property name="teamName" column="3" excelTitleName="班级名称" dataType="String" />
+	</model>
+
+	<!--全镇成绩信息导出-->
+	<model id="perfer" class="platform.szxyzxx.resultsStatistical.pojo.PerformanceAnalysis">
+		<!--<property name="grade" column="1" excelTitleName="学年" dataType="String"/>-->
+		<property name="grade" column="1" excelTitleName="年级" dataType="String"/>
+		<property name="subjects" column="2" excelTitleName="科目" dataType="String"/>
+		<property name="testName" column="3" excelTitleName="考试类型" dataType="String"/>
+		<property name="average" column="4" excelTitleName="全镇平均分" dataType="Double"/>
+		<property name="percentPass" column="5" excelTitleName="全镇合格率" dataType="Double"/>
+		<property name="proficiency" column="6" excelTitleName="全镇优秀率" dataType="Double"/>
+		<!--<property name="awardType" column="9" excelTitleName="奖励类型" dataType="String" useConvert="true" convertType="jcGc"  dmTableName="JY-HJLX" echoField="name"/>
+		<property name="awardUnit" column="10" excelTitleName="奖励单位" dataType="String"/>
+		<property name="remark" column="11" excelTitleName="备注" dataType="String"/>-->
+	</model>
+	<!--作业列表导出-->
+	<model id="Subject" class="platform.szxyzxx.homewoke.pojo.StudentHomeWoke">
+		<!--<property name="grade" column="1" excelTitleName="学年" dataType="String"/>-->
+		<property name="jobId" column="1" excelTitleName="作业标识（不要改变）" dataType="Integer"/>
+		<property name="studentId" column="2" excelTitleName="学生标示（不要改变）" dataType="Integer"/>
+		<property name="studentName" column="3" excelTitleName="姓名" dataType="String"/>
+		<property name="zhuangzhongwen" column="4" excelTitleName="状态" dataType="String"/>
+		<property name="dengji" column="5" excelTitleName="作业等级(A,B,C))" dataType="String"/>
+		<property name="pingyu" column="6" excelTitleName="作业评语" dataType="String"/>
+	</model>
+	<!--周工作表导出-->
+	<model id="ZhouQi" class="platform.szxyzxx.wokeBiao.pojo.DaoChuPojo">
+		<!--<property name="grade" column="1" excelTitleName="学年" dataType="String"/>-->
+		<property name="shijian" column="1" excelTitleName="时间" dataType="String"/>
+		<property name="zhouyi" column="2" excelTitleName="星期一" dataType="String"/>
+		<property name="zhouer" column="3" excelTitleName="星期二" dataType="String"/>
+		<property name="zhousan" column="4" excelTitleName="星期三" dataType="String"/>
+		<property name="zhousi" column="5" excelTitleName="星期四" dataType="String"/>
+		<property name="zhouwu" column="6" excelTitleName="星期五" dataType="String"/>
+		<property name="zhouliu" column="7" excelTitleName="星期六" dataType="String"/>
+		<property name="zhouqi" column="8" excelTitleName="星期七" dataType="String"/>
+	</model>
+	<!--级组工作表导出-->
+	<model id="teacherWoke" class="platform.szxyzxx.jizuBiao.pojo.TeacherWoke">
+		<property name="zhoushu" column="1" excelTitleName="周数" dataType="Integer"/>
+		<property name="teacherName" column="2" excelTitleName="教师名称" dataType="String"/>
+		<property name="numenjizuName" column="3" excelTitleName="级组名称" dataType="String"/>
+		<property name="wokeContent" column="4" excelTitleName="工作内容" dataType="String"/>
+	</model>
+	<!--学习纪律细则导出-->
+	<model id="HabitsDaoChu" class="platform.szxyzxx.ishangkelilu.pojo.HabitsDaoChu">
+		<property name="xueHao" column="1" excelTitleName="学号" dataType="String"/>
+		<property name="studentName" column="2" excelTitleName="学生姓名" dataType="String"/>
+		<property name="teacherName" column="3" excelTitleName="评价教师" dataType="String"/>
+		<property name="teamName" column="4" excelTitleName="班级" dataType="String"/>
+		<property name="subjectName" column="5" excelTitleName="科目名称" dataType="String"/>
+		<property name="type" column="6" excelTitleName="评价类型" dataType="String"/>
+		<property name="pingjiaJiafen" column="7" excelTitleName="加分" dataType="Integer"/>
+		<property name="pingjiaJianfen" column="8" excelTitleName="减分" dataType="Integer"/>
+		<property name="pingyu" column="9" excelTitleName="评语" dataType="String"/>
+	</model>
+	<!--学习纪律总和导出-->
+	<model id="HabitsDaoChuZongHe" class="platform.szxyzxx.ishangkelilu.pojo.HabitsDaoChu">
+		<property name="xueHao" column="1" excelTitleName="学号" dataType="String"/>
+		<property name="studentName" column="2" excelTitleName="学生姓名" dataType="String"/>
+		<property name="teamName" column="3" excelTitleName="班级" dataType="String"/>
+		<property name="subjectName" column="4" excelTitleName="科目名称" dataType="String"/>
+		<property name="score" column="5" excelTitleName="总分" dataType="Integer"/>
+		<property name="pingjiaJiafen" column="6" excelTitleName="加分" dataType="Integer"/>
+		<property name="pingjiaJianfen" column="7" excelTitleName="减分" dataType="Integer"/>
+	</model>
+	<!--维修记录导出-->
+	<model id="WeiXiu" class="platform.szxyzxx.oa.vo.WeiXiuDaoChu">
+		<property name="shenqingren" column="1" excelTitleName="申请人" dataType="String"/>
+		<property name="title" column="2" excelTitleName="主题" dataType="String"/>
+		<property name="shenqingmiaoshu" column="3" excelTitleName="申请描述" dataType="String"/>
+		<property name="type" column="4" excelTitleName="维修类型" dataType="String"/>
+		<property name="place" column="5" excelTitleName="地点" dataType="String"/>
+		<property name="weixiuren" column="6" excelTitleName="维修人" dataType="String"/>
+		<property name="weixiumiaoshu" column="7" excelTitleName="维修描述" dataType="String"/>
+		<property name="xingji" column="8" excelTitleName="评价星级" dataType="Integer"/>
+		<property name="pingyu" column="9" excelTitleName="评语/备注" dataType="String"/>
+		<property name="createTime" column="10" excelTitleName="申请时间" dataType="String"/>
+		<property name="acceptDate" column="11" excelTitleName="维修时间" dataType="String"/>
+		<property name="haoCai" column="12" excelTitleName="是否耗材" dataType="String"/>
+	</model>
+	<!--会务列表导出-->
+	<model id="HuiYiDaoChu" class="platform.szxyzxx.huiyi.vo.HuiYi">
+		<property name="theme" column="1" excelTitleName="主题" dataType="String"/>
+		<property name="applicantName" column="2" excelTitleName="申请人" dataType="String"/>
+		<property name="eventManagerName" column="3" excelTitleName="活动负责人" dataType="String"/>
+		<property name="huiwufuzeName" column="4" excelTitleName="会务负责人" dataType="String"/>
+		<property name="reviewerName" column="5" excelTitleName="审核人" dataType="String"/>
+		<property name="kaishiTime" column="6" excelTitleName="开始时间" dataType="String"/>
+		<property name="changdiName" column="7" excelTitleName="场地" dataType="String"/>
+		<property name="leadership" column="8" excelTitleName="领导席位" dataType="Integer"/>
+		<property name="activitySupplies" column="9" excelTitleName="活动物资" dataType="String"/>
+		<property name="equipment" column="10" excelTitleName="场地设备" dataType="String"/>
+		<property name="meeting" column="11" excelTitleName="会晤细则" dataType="String"/>
+		<property name="staff" column="12" excelTitleName="工作人员" dataType="String"/>
+		<property name="attendanceNumber" column="13" excelTitleName="参会人数" dataType="Integer"/>
+	</model>
+
+</models>

@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>platform.education.generalTeachingAffair.service</groupId>
+        <artifactId>service</artifactId>
+        <version>0.0.1</version>
+    </parent>
+    <artifactId>generalTeachingAffair-api</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+    <dependencies>
+        <!-- 用户权限 -->
+        <dependency>
+            <groupId>platform.education.service</groupId>
+            <artifactId>user-api</artifactId>
+            <version>0.0.2</version>
+        </dependency>
+        <!-- 用户权限 -->
+        <dependency>
+            <groupId>platform.education.service</groupId>
+            <artifactId>user-impl</artifactId>
+            <version>0.0.2</version>
+        </dependency>
+
+        <!-- 基础代码 -->
+        <dependency>
+            <groupId>platform.education.service</groupId>
+            <artifactId>generalCode-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 基础代码 -->
+        <dependency>
+            <groupId>platform.education.service</groupId>
+            <artifactId>generalCode-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 对接海康 -->
+        <dependency>
+            <groupId>com.hikvision.ga</groupId>
+            <artifactId>artemis-http-client</artifactId>
+            <version>1.1.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.53</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,1 @@
+ALTER TABLE `pj_school_term` CHANGE COLUMN `school_year` `school_year` varchar(10) NOT NULL COMMENT '学年的开始年份（冗余）' after `code`

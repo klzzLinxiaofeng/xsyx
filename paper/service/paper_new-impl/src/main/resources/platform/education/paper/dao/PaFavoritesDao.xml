@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.PaFavoritesDao">
+
+	<resultMap id="PaFavoritesResult" type="platform.education.paper.model.PaFavorites">
+		<result property="id" column="id" />
+		<result property="posterId" column="poster_id" />
+		<result property="objectId" column="object_id" />
+		<result property="objectType" column="object_type" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.paper.model.PaFavorites">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_favorites (
+			id, 
+			poster_id, 
+			object_id, 
+			object_type, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{posterId}, 
+			#{objectId}, 
+			#{objectType}, 
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="PaFavoritesResult" useCache="false">
+		SELECT * FROM pa_favorites WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPaFavoritesByCondition" resultMap="PaFavoritesResult" useCache="false">
+		SELECT * FROM pa_favorites 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].posterId != null">
+				AND poster_id = #{args[0].posterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectId != null">
+				AND object_id = #{args[0].objectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectType != null">
+				AND object_type = #{args[0].objectType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_favorites 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].posterId != null">
+				AND poster_id = #{args[0].posterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectId != null">
+				AND object_id = #{args[0].objectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectType != null">
+				AND object_type = #{args[0].objectType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PaFavoritesResult" useCache="false">
+		SELECT * FROM pa_favorites WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.paper.model.PaFavorites">
+		UPDATE pa_favorites
+		SET 
+		<if test="posterId != null">
+			poster_id=#{posterId},
+		</if>
+		<if test="objectId != null">
+			object_id=#{objectId},
+		</if>
+		<if test="objectType != null">
+			object_type=#{objectType},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pa_favorites
+		WHERE id = #{id}
+	</delete>
+</mapper>

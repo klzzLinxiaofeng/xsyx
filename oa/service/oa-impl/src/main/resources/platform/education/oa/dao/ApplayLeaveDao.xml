@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.ApplayLeaveDao">
+
+	<resultMap id="ApplayLeaveResult" type="platform.education.oa.model.ApplayLeave">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="appId" column="app_id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="ownerType" column="owner_type" />
+		<result property="propserId" column="propser_id" />
+		<result property="propserName" column="propser_name" />
+		<result property="propserDepartmentId" column="propser_department_id" />
+		<result property="title" column="title" />
+		<result property="leaveType" column="leave_type" />
+		<result property="startDate" column="start_date" />
+		<result property="endDate" column="end_date" />
+		<result property="mobile" column="mobile" />
+		<result property="detail" column="detail" />
+		<result property="isDaike" column="is_daike" />
+		<result property="auditStatus" column="audit_status" />
+		<result property="approveState" column="approve_state" />
+		<result property="approveId" column="approve_id" />
+		<result property="approveName" column="approve_name" />
+		<result property="publishDate" column="publish_date" />
+		<result property="approveRemark" column="approve_remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="attachmentUuid" column="attachment_uuid"/>
+	</resultMap>
+	<resultMap id="ApplayLeaveResult1" type="platform.education.oa.vo.ApplayLeaveVo">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="appId" column="app_id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="ownerType" column="owner_type" />
+		<result property="propserId" column="propser_id" />
+		<result property="propserName" column="propser_name" />
+		<result property="propserDepartmentId" column="propser_department_id" />
+		<result property="title" column="title" />
+		<result property="leaveType" column="leave_type" />
+		<result property="startDate" column="start_date" />
+		<result property="endDate" column="end_date" />
+		<result property="mobile" column="mobile" />
+		<result property="detail" column="detail" />
+		<result property="isDaike" column="is_daike" />
+		<result property="auditStatus" column="audit_status" />
+		<result property="approveState" column="approve_state" />
+		<result property="approveId" column="approve_id" />
+		<result property="approveName" column="approve_name" />
+		<result property="publishDate" column="publish_date" />
+		<result property="approveRemark" column="approve_remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.ApplayLeave">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_applay_leave (
+		id,
+		uuid,
+		app_id,
+		owner_id,
+		owner_type,
+		propser_id,
+		propser_name,
+		propser_department_id,
+		title,
+		leave_type,
+		start_date,
+		end_date,
+		mobile,
+		detail,
+		is_daike,
+		audit_status,
+		approve_state,
+		approve_id,
+		approve_name,
+		publish_date,
+		approve_remark,
+		is_deleted,
+		create_date,
+		modify_date,
+		attachment_uuid
+		)
+		VALUES (
+		#{id},
+		#{uuid},
+		#{appId},
+		#{ownerId},
+		#{ownerType},
+		#{propserId},
+		#{propserName},
+		#{propserDepartmentId},
+		#{title},
+		#{leaveType},
+		#{startDate},
+		#{endDate},
+		#{mobile},
+		#{detail},
+		#{isDaike},
+		#{auditStatus},
+		#{approveState},
+		#{approveId},
+		#{approveName},
+		#{publishDate},
+		#{approveRemark},
+		<choose>
+			<when test="isDeleted != null">
+				<choose>
+					<when test="isDeleted == true">
+						1,
+					</when>
+					<otherwise>
+						0,
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{createDate},
+		#{modifyDate},
+		#{attachmentUuid}
+		)
+	</insert>
+
+	<select id="read" resultMap="ApplayLeaveResult" useCache="false">
+		SELECT * FROM oa_applay_leave WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findApplayLeaveByCondition" resultMap="ApplayLeaveResult"
+		useCache="false">
+		SELECT * FROM oa_applay_leave
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].propserId != null">
+				AND propser_id =
+				#{args[0].propserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].propserName != null and args[0].propserName != ''">
+				AND propser_name =
+				#{args[0].propserName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].propserDepartmentId != null">
+				AND propser_department_id =
+				#{args[0].propserDepartmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].leaveType != null ">
+				AND leave_type =
+				#{args[0].leaveType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].startDate != null and args[0].startDate!=''">
+				AND start_date =
+				#{args[0].startDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].endDate != null and args[0].endDate!='' ">
+				AND end_date =
+				#{args[0].endDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].detail != null and args[0].detail != ''">
+				AND detail = #{args[0].detail,javaType=java.lang.String}
+			</if>
+
+			<if test="args[0].isDaike != null ">
+				AND isDaike =
+				#{args[0].isDaike,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].auditStatus != null and args[0].auditStatus!='' ">
+				AND audit_status =
+				#{args[0].auditStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approveState != null and args[0].approveState!='' ">
+				AND approve_state =
+				#{args[0].approveState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approveId != null">
+				AND approve_id =
+				#{args[0].approveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].approveName != null and args[0].approveName != ''">
+				AND approve_name =
+				#{args[0].approveName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publishDate != null">
+				AND publish_date =
+				#{args[0].publishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].approveRemark != null and args[0].approveRemark != ''">
+				AND approve_remark =
+				#{args[0].approveRemark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findApplayLeaveVoByCondition" resultMap="ApplayLeaveResult1"
+		useCache="false">
+		SELECT * FROM oa_applay_leave
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].propserId != null">
+				AND propser_id =
+				#{args[0].propserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].propserName != null and args[0].propserName != ''">
+				AND propser_name =
+				#{args[0].propserName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].propserDepartmentId != null">
+				AND propser_department_id =
+				#{args[0].propserDepartmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].leaveType != null ">
+				AND leave_type =
+				#{args[0].leaveType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].startDate != null and args[0].startDate!=''">
+				AND start_date =
+				#{args[0].startDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].endDate != null and args[0].endDate!='' ">
+				AND end_date =
+				#{args[0].endDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].detail != null and args[0].detail != ''">
+				AND detail = #{args[0].detail,javaType=java.lang.String}
+			</if>
+
+			<if test="args[0].isDaike != null ">
+				AND isDaike =
+				#{args[0].isDaike,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].auditStatus != null and args[0].auditStatus!='' ">
+				AND audit_status =
+				#{args[0].auditStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approveState != null and args[0].approveState!='' ">
+				AND approve_state =
+				#{args[0].approveState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approveId != null">
+				AND approve_id =
+				#{args[0].approveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].approveName != null and args[0].approveName != ''">
+				AND approve_name =
+				#{args[0].approveName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publishDate != null">
+				AND publish_date =
+				#{args[0].publishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].approveRemark != null and args[0].approveRemark != ''">
+				AND approve_remark =
+				#{args[0].approveRemark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].searchWord != null and args[0].searchWord!=''">
+				AND CONCAT_WS(",",title,propser_name,detail) LIKE
+				CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND create_date &gt;=
+				#{args[0].beginDate,javaType=java.util.Date}
+			</if>
+
+			<if test="args[0].lastDate != null">
+				AND create_date &lt;=
+				#{args[0].lastDate,javaType=java.util.Date}
+			</if>
+
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findApplayLeaveTJByCondition" resultMap="ApplayLeaveResult1"
+		useCache="false">
+		SELECT * FROM oa_applay_leave
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].propserId != null">
+				AND propser_id =
+				#{args[0].propserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].propserName != null and args[0].propserName != ''">
+				AND propser_name =
+				#{args[0].propserName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].propserDepartmentId != null">
+				AND propser_department_id =
+				#{args[0].propserDepartmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].leaveType != null ">
+				AND leave_type =
+				#{args[0].leaveType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].startDate != null and args[0].startDate!=''">
+				AND start_date =
+				#{args[0].startDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].endDate != null and args[0].endDate!='' ">
+				AND end_date =
+				#{args[0].endDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].detail != null and args[0].detail != ''">
+				AND detail = #{args[0].detail,javaType=java.lang.String}
+			</if>
+
+			<if test="args[0].isDaike != null ">
+				AND isDaike =
+				#{args[0].isDaike,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].auditStatus != null and args[0].auditStatus!='' ">
+				AND audit_status =
+				#{args[0].auditStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approveState != null and args[0].approveState!='' ">
+				AND approve_state =
+				#{args[0].approveState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approveId != null">
+				AND approve_id =
+				#{args[0].approveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].approveName != null and args[0].approveName != ''">
+				AND approve_name =
+				#{args[0].approveName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publishDate != null">
+				AND publish_date =
+				#{args[0].publishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].approveRemark != null and args[0].approveRemark != ''">
+				AND approve_remark =
+				#{args[0].approveRemark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].searchWord != null and args[0].searchWord!=''">
+				AND CONCAT_WS(",",title,propser_name,detail) LIKE
+				CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND create_date &gt;=
+				#{args[0].beginDate,javaType=java.util.Date}
+			</if>
+
+			<if test="args[0].lastDate != null">
+				AND create_date &lt;=
+				#{args[0].lastDate,javaType=java.util.Date}
+			</if>
+
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+		GROUP BY propser_id
+	</select>
+
+
+
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_applay_leave
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].propserId != null">
+				AND propser_id =
+				#{args[0].propserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].propserName != null and args[0].propserName != ''">
+				AND propser_name =
+				#{args[0].propserName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].propserDepartmentId != null">
+				AND propser_department_id =
+				#{args[0].propserDepartmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].leaveType != null ">
+				AND leave_type =
+				#{args[0].leaveType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].startDate != null and args[0].startDate!=''">
+				AND start_date =
+				#{args[0].startDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].endDate != null and args[0].endDate!='' ">
+				AND end_date =
+				#{args[0].endDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].detail != null and args[0].detail != ''">
+				AND detail = #{args[0].detail,javaType=java.lang.String}
+			</if>
+
+			<if test="args[0].isDaike != null ">
+				AND isDaike =
+				#{args[0].isDaike,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].auditStatus != null and args[0].auditStatus!='' ">
+				AND audit_status =
+				#{args[0].auditStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approveState != null and args[0].approveState!='' ">
+				AND approve_state =
+				#{args[0].approveState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approveId != null">
+				AND approve_id =
+				#{args[0].approveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].approveName != null and args[0].approveName != ''">
+				AND approve_name =
+				#{args[0].approveName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publishDate != null">
+				AND publish_date =
+				#{args[0].publishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].approveRemark != null and args[0].approveRemark != ''">
+				AND approve_remark =
+				#{args[0].approveRemark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="ApplayLeaveResult" useCache="false">
+		SELECT * FROM oa_applay_leave WHERE id =
+		#{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<select id="findByVoId" resultMap="ApplayLeaveResult1" useCache="false">
+		SELECT * FROM oa_applay_leave WHERE id =
+		#{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<update id="update" parameterType="platform.education.oa.model.ApplayLeave">
+		UPDATE oa_applay_leave
+		SET
+		<if test="uuid != null">
+			uuid=#{uuid},
+		</if>
+		<if test="appId != null">
+			app_id=#{appId},
+		</if>
+		<if test="ownerId != null">
+			owner_id=#{ownerId},
+		</if>
+		<if test="ownerType != null">
+			owner_type=#{ownerType},
+		</if>
+		<if test="propserId != null">
+			propser_id=#{propserId},
+		</if>
+		<if test="propserName != null">
+			propser_name=#{propserName},
+		</if>
+		<if test="propserDepartmentId != null">
+			propser_department_id=#{propserDepartmentId},
+		</if>
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="leaveType != null ">
+			leave_type=#{leaveType},
+		</if>
+		<if test="startDate != null">
+			start_date=#{startDate},
+		</if>
+		<if test="endDate != null">
+			end_date=#{endDate},
+		</if>
+		<if test="mobile !=null">
+			mobile = #{mobile},
+		</if>
+		<if test="detail != null">
+			detail=#{detail},
+		</if>
+		<if test="isDaike != null ">
+			is_daike = #{isDaike},
+		</if>
+		<if test="auditStatus != null">
+			audit_status=#{auditStatus},
+		</if>
+		<if test="approveState != null">
+			approve_state=#{approveState},
+		</if>
+		<if test="approveId != null">
+			approve_id=#{approveId},
+		</if>
+		<if test="approveName != null">
+			approve_name=#{approveName},
+		</if>
+		<if test="publishDate != null">
+			publish_date = #{publishDate},
+		</if>
+		<if test="approveRemark != null">
+			approve_remark=#{approveRemark},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted = 1,
+				</when>
+				<otherwise>
+					is_deleted = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="attachmentUuid != null">
+			attachment_uuid = #{attachmentUuid}
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM oa_applay_leave
+		WHERE id = #{id}
+	</delete>
+</mapper>

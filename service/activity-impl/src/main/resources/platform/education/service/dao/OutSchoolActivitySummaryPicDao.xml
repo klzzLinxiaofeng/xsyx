@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.service.dao.OutSchoolActivitySummaryPicDao">
+
+    <resultMap id="OutSchoolActivitySummaryPicResult" type="platform.education.service.model.OutSchoolActivitySummaryPic">
+        <result property="id" column="id"/>
+        <result property="summaryId" column="summary_id"/>
+        <result property="picture" column="picture"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+    </resultMap>
+
+    <resultMap id="PictureVoResult" type="platform.education.service.vo.PictureVo">
+        <result property="uuid" column="uuid"/>
+        <result property="name" column="file_name"/>
+        <result property="url" column="relative_path"/>
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.service.model.OutSchoolActivitySummaryPic">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO at_out_school_activity_summary_pic (
+        id,
+        summary_id,
+        picture,
+        create_date,
+        modify_date
+        )
+        VALUES (
+        #{id},
+        #{summaryId},
+        #{picture},
+        #{createDate},
+        #{modifyDate}
+        )
+    </insert>
+
+    <select id="read" resultMap="OutSchoolActivitySummaryPicResult" useCache="false">
+        SELECT * FROM at_out_school_activity_summary_pic WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findOutSchoolActivitySummaryPicByCondition" resultMap="OutSchoolActivitySummaryPicResult" useCache="false">
+        SELECT * FROM at_out_school_activity_summary_pic
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].summaryId != null">
+                AND summary_id = #{args[0].summaryId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].picture != null">
+                AND picture = #{args[0].picture,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM at_out_school_activity_summary_pic
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].summaryId != null">
+                AND summary_id = #{args[0].summaryId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].picture != null">
+                AND picture = #{args[0].picture,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="OutSchoolActivitySummaryPicResult" useCache="false">
+        SELECT *
+        FROM at_out_school_activity_summary_pic
+        WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+
+    <update id="update" parameterType="platform.education.service.model.OutSchoolActivitySummaryPic">
+        UPDATE at_out_school_activity_summary_pic
+        SET
+        <if test="summaryId != null">
+            summary_id=#{summaryId},
+        </if>
+        <if test="picture != null">
+            picture=#{picture},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM at_out_school_activity_summary_pic
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findOutSchoolActivitySummaryPicByActivityId" resultMap="OutSchoolActivitySummaryPicResult" useCache="false">
+        SELECT osasp.*
+        FROM at_out_school_activity_summary_pic osasp
+                 LEFT JOIN at_out_school_activity_summary osas ON osasp.summary_id = osas.id
+        WHERE osas.activity_id = #{args[0],javaType=java.lang.Integer}
+    </select>
+
+    <select id="findPictureVoByActivityId" resultMap="PictureVoResult" useCache="false">
+        SELECT ef.uuid, ef.file_name, ef.relative_path
+        FROM at_out_school_activity_summary_pic osasp
+                 LEFT JOIN at_out_school_activity_summary osas ON osasp.summary_id = osas.id
+                 LEFT JOIN res_entity_file ef ON osasp.picture = ef.uuid
+        WHERE osas.activity_id = #{activityId}
+    </select>
+</mapper>

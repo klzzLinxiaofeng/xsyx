@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.GroupTaskDao">
+
+	<resultMap id="GroupTaskResult" type="platform.education.generalTeachingAffair.model.GroupTask">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="classHour" column="class_hour" />
+		<result property="classPeriod" column="class_period" />
+		<result property="groupId" column="group_id" />
+		<result property="name" column="name" />
+		<result property="grades" column="grades" />
+		<result property="questionNum" column="question_num" />
+		<result property="questionFiles" column="question_files" />
+		<result property="teacherId" column="teacher_id" />
+		<result property="groupNumber" column="group_number" />
+		<result property="studentId" column="student_id" />
+		<result property="studentName" column="student_name" />
+		<result property="answerFiles" column="answer_files" />
+		<result property="submissionTime" column="submission_time" />
+		<result property="score" column="score" />
+		<result property="isSubmit" column="is_submit" />
+		<result property="isAllocation" column="is_allocation" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<resultMap id="GroupTaskVoResult" type="platform.education.generalTeachingAffair.vo.GroupTaskVo" extends="GroupTaskResult">
+		<result property="myScore" column="my_score" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.GroupTask">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_group_task (
+			id, 
+			school_id, 
+			class_hour, 
+			class_period, 
+			group_id, 
+			name, 
+			grades,
+			question_num,
+			question_files,
+			teacher_id, 
+			group_number,
+			student_id,
+			student_name,
+			answer_files,
+			submission_time, 
+			score,
+			is_submit,
+			is_allocation,
+			create_date,
+			modify_date, 
+			is_deleted
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{classHour}, 
+			#{classPeriod}, 
+			#{groupId}, 
+			#{name}, 
+			#{grades},
+			#{questionNum},
+			#{questionFiles},
+			#{teacherId}, 
+			#{groupNumber},
+			#{studentId},
+			#{studentName},
+			#{answerFiles},
+			#{submissionTime}, 
+			#{score},
+			<choose>
+				<when test="isSubmit != null">
+					<choose>
+						<when test="isSubmit == true">
+							1,
+						</when>
+						<otherwise>
+							0,
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="isAllocation != null">
+					<choose>
+						<when test="isAllocation == true">
+							1,
+						</when>
+						<otherwise>
+							0,
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			#{createDate},
+			#{modifyDate}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<insert id="batchCreate">
+		INSERT INTO pj_group_task (
+		id,
+		school_id,
+		class_hour,
+		class_period,
+		group_id,
+		name,
+		grades,
+		question_num,
+		question_files,
+		teacher_id,
+		group_number,
+		student_id,
+		student_name,
+		answer_files,
+		submission_time,
+		score,
+		is_submit,
+		is_allocation,
+		create_date,
+		modify_date,
+		is_deleted
+		)
+		VALUES
+		<foreach collection="args[0]" item="item" index="index" separator="," >
+		(
+			#{item.id},
+			#{item.schoolId},
+			#{item.classHour},
+			#{item.classPeriod},
+			#{item.groupId},
+			#{item.name},
+			#{item.grades},
+			#{item.questionNum},
+			#{item.questionFiles},
+			#{item.teacherId},
+			#{item.groupNumber},
+			#{item.studentId},
+			#{item.studentName},
+			#{item.answerFiles},
+			#{item.submissionTime},
+			#{item.score},
+			0,
+			0,
+			#{item.createDate},
+			#{item.modifyDate},
+			0
+		)
+		</foreach>
+	</insert>
+
+	<select id="read" resultMap="GroupTaskResult" useCache="false">
+		SELECT * FROM pj_group_task WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findGroupTaskByCondition" resultMap="GroupTaskResult" useCache="false">
+		SELECT * FROM pj_group_task 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].classHour != null">
+				AND class_hour = #{args[0].classHour,javaType=java.util.Date}
+			</if>
+			<if test="args[0].classPeriod != null">
+				AND class_period = #{args[0].classPeriod,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupId != null">
+				AND group_id = #{args[0].groupId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].grades != null">
+				AND grades = #{args[0].grades,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].questionNum != null">
+				AND question_num = #{args[0].questionNum,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionFiles != null and args[0].questionFiles != ''">
+				AND question_files = #{args[0].questionFiles,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupNumber != null">
+				AND group_number = #{args[0].groupNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+				AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answerFiles != null and args[0].answerFiles != ''">
+				AND answer_files = #{args[0].answerFiles,javaType=java.lang.String}
+			</if>
+			<if test="args[0].submissionTime != null">
+				AND submission_time = #{args[0].submissionTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].isSubmit != null">
+				<choose>
+					<when test="args[0].isSubmit == true">
+						AND is_submit  = 1
+					</when>
+					<otherwise>
+						AND is_submit  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isAllocation != null">
+				<choose>
+					<when test="args[0].isAllocation == true">
+						AND is_allocation  = 1
+					</when>
+					<otherwise>
+						AND is_allocation  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+	<select id="findGroupIdByHourAndPeriod" resultType="java.lang.Integer" useCache="false">
+		SELECT distinct group_id FROM pj_group_task
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].classHour != null">
+				AND class_hour = #{args[0].classHour,javaType=java.util.Date}
+			</if>
+			<if test="args[0].classPeriod != null">
+				AND class_period = #{args[0].classPeriod,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupId != null">
+				AND group_id = #{args[0].groupId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].grades != null">
+				AND grades = #{args[0].grades,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].questionNum != null">
+				AND question_num = #{args[0].questionNum,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionFiles != null and args[0].questionFiles != ''">
+				AND question_files = #{args[0].questionFiles,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupNumber != null">
+				AND group_number = #{args[0].groupNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+				AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answerFiles != null and args[0].answerFiles != ''">
+				AND answer_files = #{args[0].answerFiles,javaType=java.lang.String}
+			</if>
+			<if test="args[0].submissionTime != null">
+				AND submission_time = #{args[0].submissionTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].isSubmit != null">
+				<choose>
+					<when test="args[0].isSubmit == true">
+						AND is_submit  = 1
+					</when>
+					<otherwise>
+						AND is_submit  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isAllocation != null">
+				<choose>
+					<when test="args[0].isAllocation == true">
+						AND is_allocation  = 1
+					</when>
+					<otherwise>
+						AND is_allocation  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+	<select id="findQuestionNum" resultType="java.lang.Integer" useCache="false">
+		SELECT distinct question_num FROM pj_group_task
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].classHour != null">
+				AND class_hour = #{args[0].classHour,javaType=java.util.Date}
+			</if>
+			<if test="args[0].classPeriod != null">
+				AND class_period = #{args[0].classPeriod,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupId != null">
+				AND group_id = #{args[0].groupId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].grades != null">
+				AND grades = #{args[0].grades,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].questionNum != null">
+				AND question_num = #{args[0].questionNum,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionFiles != null and args[0].questionFiles != ''">
+				AND question_files = #{args[0].questionFiles,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupNumber != null">
+				AND group_number = #{args[0].groupNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+				AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answerFiles != null and args[0].answerFiles != ''">
+				AND answer_files = #{args[0].answerFiles,javaType=java.lang.String}
+			</if>
+			<if test="args[0].submissionTime != null">
+				AND submission_time = #{args[0].submissionTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].isSubmit != null">
+				<choose>
+					<when test="args[0].isSubmit == true">
+						AND is_submit  = 1
+					</when>
+					<otherwise>
+						AND is_submit  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isAllocation != null">
+				<choose>
+					<when test="args[0].isAllocation == true">
+						AND is_allocation  = 1
+					</when>
+					<otherwise>
+						AND is_allocation  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+	<select id="findGroupTaskByGroupIdAndGroupNum" resultMap="GroupTaskVoResult" useCache="false">
+		SELECT
+			pgt.*,
+			pgts.score AS my_score
+		FROM
+			pj_group_task pgt
+			LEFT JOIN pj_group_task_student pgts ON pgt.id = pgts.group_task_id
+			AND pgts.student_id = #{args[2]}
+		WHERE
+			pgt.group_id = #{args[0]}
+			AND pgt.group_number = #{args[1]}
+			AND pgt.is_deleted = 0
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_group_task 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].classHour != null">
+				AND class_hour = #{args[0].classHour,javaType=java.util.Date}
+			</if>
+			<if test="args[0].classPeriod != null">
+				AND class_period = #{args[0].classPeriod,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupId != null">
+				AND group_id = #{args[0].groupId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].grades != null">
+				AND grades = #{args[0].grades,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].questionNum != null">
+				AND question_num = #{args[0].questionNum,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionFiles != null and args[0].questionFiles != ''">
+				AND question_files = #{args[0].questionFiles,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupNumber != null">
+				AND group_number = #{args[0].groupNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+				AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answerFiles != null and args[0].answerFiles != ''">
+				AND answer_files = #{args[0].answerFiles,javaType=java.lang.String}
+			</if>
+			<if test="args[0].submissionTime != null">
+				AND submission_time = #{args[0].submissionTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].isSubmit != null">
+				<choose>
+					<when test="args[0].isSubmit == true">
+						AND is_submit  = 1
+					</when>
+					<otherwise>
+						AND is_submit  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isAllocation != null">
+				<choose>
+					<when test="args[0].isAllocation == true">
+						AND is_allocation  = 1
+					</when>
+					<otherwise>
+						AND is_allocation  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="GroupTaskResult" useCache="false">
+		SELECT * FROM pj_group_task WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.GroupTask">
+		UPDATE pj_group_task
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="classHour != null">
+			class_hour=#{classHour},
+		</if>
+		<if test="classPeriod != null">
+			class_period=#{classPeriod},
+		</if>
+		<if test="groupId != null">
+			group_id=#{groupId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="grades != null">
+			grades=#{grades},
+		</if>
+		<if test="questionNum != null">
+			question_num=#{questionNum},
+		</if>
+		<if test="questionFiles != null">
+			question_files=#{questionFiles},
+		</if>
+		<if test="teacherId != null">
+			teacher_id=#{teacherId},
+		</if>
+		<if test="groupNumber != null">
+			group_number=#{groupNumber},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="studentName != null">
+			student_name=#{studentName},
+		</if>
+		<if test="answerFiles != null">
+			answer_files=#{answerFiles},
+		</if>
+		<if test="submissionTime != null">
+			submission_time=#{submissionTime},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="isSubmit != null">
+			<choose>
+				<when test="isSubmit == true">
+					is_submit  = 1,
+				</when>
+				<otherwise>
+					is_submit  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="isAllocation != null">
+			<choose>
+				<when test="isAllocation == true">
+					is_allocation  = 1,
+				</when>
+				<otherwise>
+					is_allocation  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_group_task
+		WHERE id = #{id}
+	</delete>
+</mapper>

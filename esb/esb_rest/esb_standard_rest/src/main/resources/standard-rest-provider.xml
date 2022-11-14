@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-autowire="byName">
+
+	<bean id="userRestService"
+		class="platform.education.rest.user.service.impl.UserRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.user.service.UserRestService"
+		ref="userRestService" protocol="rest" filter="mqtApiFilter"  timeout="2000" connections="100"
+		validation="true" />
+
+	<bean id="bbxRestService"
+		class="platform.education.rest.bbx.service.impl.BbxRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bbx.service.BbxRestService"
+		ref="bbxRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+
+	<bean id="oaRestService"
+		class="platform.education.rest.oa.service.impl.OaRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.oa.service.OaRestService"
+		ref="oaRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<bean id="generalCodeRestService"
+		class="platform.education.rest.gc.service.impl.GeneralCodeRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.gc.service.GeneralCodeRestService"
+		ref="generalCodeRestService" protocol="rest" timeout="2000"
+		connections="100" validation="true" />
+
+	<!-- 教务模块子模块接口开始 -->
+	<!-- 学生接口 -->
+	<bean id="studentRestService"
+		class="platform.education.rest.jw.service.impl.StudentRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.jw.service.StudentRestService"
+		ref="studentRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<!-- 教师接口 -->
+	<bean id="teacherRestService"
+		class="platform.education.rest.jw.service.impl.TeacherRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.jw.service.TeacherRestService"
+		ref="teacherRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<!-- 家长接口 -->
+	<bean id="parentRestService"
+		class="platform.education.rest.jw.service.impl.ParentRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.jw.service.ParentRestService"
+		ref="parentRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<!-- 多校区接口 -->
+	<bean id="membershipRestService"
+		class="platform.education.rest.jw.service.impl.MembershipRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.jw.service.MembershipRestService"
+		ref="membershipRestService" protocol="rest" timeout="2000"
+		connections="100" validation="true" />
+	<!-- 教务模块子模块接口结束 -->
+
+	<!-- 基础数据模块 子接口开始 -->
+	<!-- 年级接口 -->
+	<bean id="gradeRestService"
+		class="platform.education.rest.basic.service.impl.GradeRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.basic.service.GradeRestService"
+		ref="gradeRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<!-- 班级接口 -->
+	<bean id="teamRestService"
+		class="platform.education.rest.basic.service.impl.TeamRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.basic.service.TeamRestService"
+		ref="teamRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<!-- 学年学期接口 -->
+	<bean id="termRestService"
+		class="platform.education.rest.basic.service.impl.TermRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.basic.service.TermRestService"
+		ref="termRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<!-- 学科接口 -->
+	<bean id="subjectRestService"
+		class="platform.education.rest.basic.service.impl.SubjectRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.basic.service.SubjectRestService"
+		ref="subjectRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<!-- 教材接口 -->
+	<bean id="textbookRestService"
+		class="platform.education.rest.basic.service.impl.TextbookRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.basic.service.TextbookRestService"
+		ref="textbookRestService" protocol="rest" filter="mqtApiFilter" timeout="2000" connections="100"
+		validation="true" />
+	<!-- 基础数据模块 子接口结束 -->
+
+
+	<bean id="testRestService"
+		class="platform.education.rest.basic.service.impl.TestRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.basic.service.TestRestService"
+		ref="testRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<!-- app更新接口 -->
+	<bean id="appRestService"
+		class="platform.education.rest.user.service.impl.AppRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.user.service.AppRestService"
+		ref="appRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+
+	<!-- 德育管理接口 -->
+	<bean id="teamEvaRestService"
+		class="platform.education.rest.jw.service.impl.TeamEvaRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.jw.service.TeamEvaRestService"
+		ref="teamEvaRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<bean id="redBannerRestService"
+		class="platform.education.rest.jw.service.impl.RedBannerRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.jw.service.RedBannerRestService"
+		ref="redBannerRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<bean id="normalEvaRestService"
+		class="platform.education.rest.jw.service.impl.NormalEvaRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.jw.service.NormalEvaRestService"
+		ref="normalEvaRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<!-- 星级个人接口 -->
+	<bean id="starPersonRestService"
+		class="platform.education.rest.jw.service.impl.StarPersonRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.jw.service.StarPersonRestService"
+		ref="starPersonRestService" protocol="rest" timeout="2000"
+		connections="100" validation="true" />
+
+
+	<bean id="classOptimizingRestService"
+		class="platform.education.rest.jw.service.impl.ClassOptimizingRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.jw.service.ClassOptimizingRestService"
+		ref="classOptimizingRestService" protocol="rest" timeout="2000"
+		connections="100" validation="true" />
+
+
+	<bean id="incentiveEvaRestService"
+		class="platform.education.rest.jw.service.impl.IncentiveEvaRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.jw.service.IncentiveEvaRestService"
+		ref="incentiveEvaRestService" protocol="rest" timeout="2000"
+		connections="100" validation="true" />
+
+	<!-- 微课星微课接口 -->
+	<bean id="microCourseRestService"
+		class="platform.education.rest.resource.service.impl.MicroCourseRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.resource.service.MicroCourseRestService"
+		ref="microCourseRestService" protocol="rest" timeout="2000"
+		connections="100" validation="true" />
+
+
+	<bean id="schoolRestService"
+		class="platform.education.rest.basic.service.impl.SchoolRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.basic.service.SchoolRestService"
+		ref="schoolRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" />
+
+	<bean id="learningPlanRestService"
+		class="platform.education.rest.learningPlan.service.impl.LearningPlanRestServiceImpl" />
+		
+	<bean id="learningPlanBaseService"
+		class="platform.education.rest.learningPlan.service.impl.LearningPlanBaseServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.learningPlan.service.LearningPlanRestService"
+		ref="learningPlanRestService" protocol="rest" filter="mqtApiFilter" timeout="2000"
+		connections="100" validation="true"/>
+
+	<!-- 题库模块接口 -->
+	<bean id="paperRestService"
+		class="platform.education.rest.paper.service.impl.PaperRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.paper.service.PaperRestService"
+		ref="paperRestService" protocol="rest" filter="mqtApiFilter" timeout="2000" validation="true" />
+
+	<!-- 错题本模块接口 -->
+	<bean id="paperWrongQuestionRestService"
+		class="platform.education.rest.paper.service.impl.PaperWrongQuestionRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.paper.service.PaperWrongQuestionRestService"
+		ref="paperWrongQuestionRestService" protocol="rest" filter="mqtApiFilter" timeout="2000"
+		connections="100" validation="true" />
+
+	<!-- 试卷模块接口 -->
+	<bean id="examRestService"
+		class="platform.education.rest.exam.service.impl.ExamRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.exam.service.ExamRestService"
+		ref="examRestService" protocol="rest" filter="mqtApiFilter" timeout="2000" connections="100"
+		validation="true" />			<!-- 推荐接口 -->
+	<bean id="knowledgeRestService"
+		class="platform.education.rest.resource.service.impl.KnowledgeRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.resource.service.KnowledgeRestService"
+		ref="knowledgeRestService" protocol="rest" filter="mqtApiFilter" timeout="2000" connections="100"
+		validation="true" />
+	<!-- 试卷管理接口 -->
+	<bean id="examPublishRestService"
+		class="platform.education.rest.exam.service.impl.ExamPublishRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.exam.service.ExamPublishRestService"
+		ref="examPublishRestService" protocol="rest" filter="mqtApiFilter" timeout="2000"
+		connections="100" validation="true" />
+		<!-- 试卷管理接口 -->
+	<bean id="paperTaskRestService"
+		class="platform.education.rest.paper.service.impl.PaperTaskRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.paper.service.PaperTaskRestService"
+		ref="paperTaskRestService" protocol="rest" filter="mqtApiFilter" timeout="2000"
+		connections="100" validation="true" />
+
+	<bean id="paperTaskStudentRestService"
+		class="platform.education.rest.paper.service.impl.PaperTaskStudentRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.paper.service.PaperTaskStudentRestService"
+		ref="paperTaskStudentRestService" protocol="rest" timeout="2000"
+		connections="100" validation="true"  filter="mqtApiFilter"/>
+
+		<!-- 登录中间层 -->
+		<bean id="mesosphereUserRestService"
+		class="platform.education.rest.user.service.impl.MesosphereUserRestServiceImpl" />
+
+	<dubbo:service
+		interface="platform.education.rest.user.service.MesosphereUserRestService"
+		ref="mesosphereUserRestService" filter="mqtApiFilter" protocol="rest" timeout="2000"
+		connections="100" validation="true" />
+
+
+	<!-- 教育基础数据 -->
+	<bean id="basicRestService" class="platform.education.rest.open.service.impl.BasicRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.open.service.BasicRestService"
+				   ref="basicRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" filter="openApiFilter" />
+
+	<!-- 用户业务接口 -->
+	<bean id="businessRestService" class="platform.education.rest.open.service.impl.BusinessRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.open.service.BusinessRestService"
+				   ref="businessRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" filter="openApiFilter" />
+
+	<!-- 单个基础数据接口 -->
+	<bean id="basicSingleRestService" class="platform.education.rest.open.service.impl.BasicSingleRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.open.service.BasicSingleRestService"
+				   ref="basicSingleRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" filter="openApiFilter" />
+
+	<!-- 教材接口 -->
+	<bean id="openTextbookRestService"
+		class="platform.education.rest.open.service.impl.TextbookRestServiceImpl" />
+	<dubbo:service
+		interface="platform.education.rest.open.service.TextbookRestService"
+		ref="openTextbookRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" filter="openApiFilter,paramFilter"/>
+
+	<!-- 资源接口接口 -->
+	<bean id="openResourceRestService" class="platform.education.rest.open.service.impl.ResourceRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.open.service.ResourceRestService"
+				   ref="openResourceRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" filter="openApiFilter,paramFilter"/>
+
+	<!-- 资源行为接口 -->
+	<bean id="resourceActionRestService" class="platform.education.rest.open.service.impl.ResourceActionRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.open.service.ResourceActionRestService"
+				   ref="resourceActionRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" filter="openApiFilter,paramFilter"/>
+
+
+	<!-- 批量基础数据接口 -->
+	<bean id="basicBatchRestService" class="platform.education.rest.open.service.impl.BasicBatchRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.open.service.BasicBatchRestService"
+				   ref="basicBatchRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" filter="openApiFilter" />
+
+	<bean id="openKnowledgeRestService"
+		class="platform.education.rest.open.service.impl.KnowledgeRestServiceImpl" />
+	<dubbo:service
+		interface="platform.education.rest.open.service.KnowledgeRestService"
+		ref="openKnowledgeRestService" protocol="rest" timeout="2000" connections="100"
+		validation="true" filter="openApiFilter,paramFilter"/>
+
+	<!-- 考务信息接口 -->
+	<bean id="examWorksRestService" class="platform.education.rest.jw.service.impl.ExamWorksRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.jw.service.ExamWorksRestService"
+				   ref="examWorksRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="tokenRestService" class="platform.education.rest.open.service.impl.TokenRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.open.service.TokenRestService"
+				   ref="tokenRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" filter="openApiFilter,paramFilter"/>
+
+
+	<bean id="appValidator" class="platform.education.rest.common.code.AppValidatorImpl">
+		<property name="appMaps">
+			<map>
+				<entry key="mqt" value="educloud" />
+				<entry key="mqteducloud_ShiQiM3" value="mqteducloud_ShiQiM3_secret" />
+				<entry key="mqteducloud_xbull" value="mqteducloud_xbull" />
+				<entry key="mqteducloud_youban" value="awO1wHYfRj" />
+				<entry key="mqteducloud_xunyun" value="awO1wHYfRj" />
+				<entry key="mqteducloud_dn_library" value="k4E3cBsRDn"/>
+				<entry key="mqt1" value="education1" />
+			</map>
+		</property>
+	</bean>
+		<!-- 评师接口 -->
+	<bean id="aptsTaskRestService" class="platform.education.rest.ps.service.impl.AptsTaskRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.ps.service.AptsTaskRestService"
+				   ref="aptsTaskRestService" protocol="rest" timeout="2000" connections="100" filter="mqtApiFilter"
+				   validation="true" />
+	<bean id="aptsTaskTeacherRestService" class="platform.education.rest.ps.service.impl.AptsTaskTeacherRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.ps.service.AptsTaskTeacherRestService"
+				   ref="aptsTaskTeacherRestService" protocol="rest" timeout="2000" connections="100" filter="mqtApiFilter"
+				   validation="true" />
+
+
+
+
+
+	<!-- 班牌模块接口 -->
+	<bean id="bpBwSignageRestService"
+		  class="platform.education.rest.bp.service.impl.BpBwSignageRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpBwSignageRestService"
+				   ref="bpBwSignageRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpCommonRestService"
+		  class="platform.education.rest.bp.service.impl.BpCommonRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpCommonRestService"
+				   ref="bpCommonRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpBwFileRestService"
+		  class="platform.education.rest.bp.service.impl.BpBwFileRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.bp.service.BpBwFileRestService"
+				   ref="bpBwFileRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+
+	<bean id="bpInfoMoreRestService"
+		  class="platform.education.rest.bp.service.impl.BpInfoMoreRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpInfoMoreRestService"
+				   ref="bpInfoMoreRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpAwardRestService"
+		  class="platform.education.rest.bp.service.impl.BpAwardRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpAwardRestService"
+				   ref="bpAwardRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpNoticeRestService"
+		  class="platform.education.rest.bp.service.impl.BpNoticeRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpNoticeRestService"
+				   ref="bpNoticeRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpActivityRestService"
+		  class="platform.education.rest.bp.service.impl.BpActivityRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpActivityRestService"
+				   ref="bpActivityRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpPraiseRestService"
+		  class="platform.education.rest.bp.service.impl.BpPraiseRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpPraiseRestService"
+				   ref="bpPraiseRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpDutyStudentRestService"
+		  class="platform.education.rest.bp.service.impl.BpDutyStudentRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpDutyStudentRestService"
+				   ref="bpDutyStudentRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpCircleRestService"
+		  class="platform.education.rest.bp.service.impl.BpCircleRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpCircleRestService"
+				   ref="bpCircleRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpBwInfoRestService"
+		  class="platform.education.rest.bp.service.impl.BpBwInfoRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpBwInfoRestService"
+				   ref="bpBwInfoRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpExamRestService"
+		  class="platform.education.rest.bp.service.impl.BpExamRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpExamRestService"
+				   ref="bpExamRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpStudyShareRestService"
+		  class="platform.education.rest.bp.service.impl.BpStudyShareRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpStudyShareRestService"
+				   ref="bpStudyShareRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpPictureAlbumRestService"
+		  class="platform.education.rest.bp.service.impl.BpPictureAlbumRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpPictureAlbumRestService"
+				   ref="bpPictureAlbumRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpTeamImageRestService"
+		  class="platform.education.rest.bp.service.impl.BpTeamImageRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpTeamImageRestService"
+				   ref="bpTeamImageRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpSyllabusRestService"
+		  class="platform.education.rest.bp.service.impl.BpSyllabusRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpSyllabusRestService"
+				   ref="bpSyllabusRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="BpTeamRestService"
+		  class="platform.education.rest.bp.service.impl.BpTeamRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpTeamRestService"
+				   ref="BpTeamRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpAttendanceRestService"
+		  class="platform.education.rest.bp.service.impl.BpAttendanceRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpAttendanceRestService"
+				   ref="bpAttendanceRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpSignageAutoService"
+		  class="platform.education.rest.bp.service.impl.BpSignageAutoRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpSignageAutoRestService"
+				   ref="bpSignageAutoService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpAdvertService"
+		  class="platform.education.rest.bp.service.impl.BpAdvertRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpAdvertRestService"
+				   ref="bpAdvertService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpCourseRestService"
+		  class="platform.education.rest.bp.service.impl.BpCourseRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpCourseRestService"
+				   ref="bpCourseRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpIndividuationDisplayRestService"
+		  class="platform.education.rest.bp.service.impl.BpIndividuationDisplayRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpIndividuationDisplayRestService"
+				   ref="bpIndividuationDisplayRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+	<bean id="bpPersonalSearchRestService"
+		  class="platform.education.rest.bp.service.impl.BpPersonalSearchRestServiceImpl" />
+
+	<dubbo:service interface="platform.education.rest.bp.service.BpPersonalSearchRestService"
+				   ref="bpPersonalSearchRestService" protocol="rest" timeout="2000" connections="100"
+				   validation="true" />
+
+			<!-- 普华接口 -->
+	<bean id="fastCourseRestService" class="platform.education.rest.ph.service.impl.FastCourseRestServiceImpl" />
+	<dubbo:service interface="platform.education.rest.ph.service.FastCourseRestService"
+				   ref="fastCourseRestService" protocol="rest" timeout="2000" connections="100" filter="mqtApiFilter"
+				   validation="true" />
+	<!-- 分组方案 -->
+	<bean id="groupSummarizeService" class="platform.education.rest.jw.service.impl.GroupSummarizeServiceImpl" />
+	<dubbo:service interface="platform.education.rest.jw.service.GroupSummarizeService"
+				   ref="groupSummarizeService" protocol="rest" timeout="2000" connections="100" filter="mqtApiFilter"
+				   validation="true" />
+	<!-- 师生讨论 -->
+	<bean id="conversationService" class="platform.education.rest.jw.service.impl.ConversationServiceImpl" />
+	<dubbo:service interface="platform.education.rest.jw.service.ConversationService"
+				   ref="conversationService" protocol="rest" timeout="2000" connections="100" filter="mqtApiFilter"
+				   validation="true" />
+</beans>

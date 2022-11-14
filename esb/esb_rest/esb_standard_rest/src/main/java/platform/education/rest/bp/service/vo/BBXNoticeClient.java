@@ -1,0 +1,288 @@
+package platform.education.rest.bp.service.vo;
+
+import platform.education.clazz.model.BBXNoticeFile;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * 切换公用通知组件后的手机、pc端通知实体
+ * @author huangyanchun
+ * @date 2016-07-28
+ *
+ */
+public class BBXNoticeClient implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 主键
+	 */
+	private Integer id;
+
+
+	/**
+	 * 通知的ＵＵＩＤ
+	 */
+	private String uuid;
+	/**
+	 * yh_app_edition.key
+	 */
+	private String appKey;
+	/**
+	 * 通知标题
+	 */
+	private String title;
+	/**
+	 * 发送者ID
+	 */
+	private Integer posterId;
+	/**
+	 * 发送者
+	 */
+	private String posterName;
+	/**
+	 * 发送者头像
+	 */
+	private String posterIcon;
+	/**
+	 * 定时发送的时间
+	 */
+	private Date postTime;
+	/**
+	 * 接收类型
+	 */
+	private String receiverType;
+	/**
+	 * 接收者姓名
+	 */
+	private String receiverName;
+	/**
+	 * 通知内容
+	 */
+	private String content;
+	
+	/**
+	 * 阅读人数
+	 */
+	private Integer readCount;
+	
+	/**
+	 * 发送的总人数
+	 */
+	private Integer userCount;
+	
+	/**
+	 * 触发时间
+	 */
+	private Long startTime;
+	/**
+	 * 结束时间
+	 */
+	private Long finishTime;
+	
+	/**
+	 * 创建时间
+	 */
+	private Date createDate;
+	
+	
+	/**
+	 *通知附件 
+	 */
+	private List<BBXNoticeFile>files;
+	
+	
+	/**
+	 * 阅读标志
+	 */
+	private Integer hasRead;
+	
+	
+
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
+	public String getUuid() {
+		return uuid;
+	}
+
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+
+	public String getAppKey() {
+		return appKey;
+	}
+
+
+	public void setAppKey(String appKey) {
+		this.appKey = appKey;
+	}
+
+
+	public String getTitle() {
+		return title;
+	}
+
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+	public Integer getPosterId() {
+		return posterId;
+	}
+
+
+	public void setPosterId(Integer posterId) {
+		this.posterId = posterId;
+	}
+
+
+	public String getPosterName() {
+		return posterName;
+	}
+
+
+	public void setPosterName(String posterName) {
+		this.posterName = posterName;
+	}
+
+	public String getPosterIcon() {
+		return posterIcon;
+	}
+
+	public void setPosterIcon(String posterIcon) {
+		this.posterIcon = posterIcon;
+	}
+
+	public Date getPostTime() {
+		return postTime;
+	}
+
+
+	public void setPostTime(Date postTime) {
+		this.postTime = postTime;
+	}
+
+
+	public String getReceiverType() {
+		return receiverType;
+	}
+
+
+	public void setReceiverType(String receiverType) {
+		this.receiverType = receiverType;
+	}
+
+
+	public String getReceiverName() {
+		return receiverName;
+	}
+
+
+	public void setReceiverName(String receiverName) {
+		this.receiverName = receiverName;
+	}
+
+
+	public String getContent() {
+		return content;
+	}
+
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+
+	public Integer getReadCount() {
+		return readCount;
+	}
+
+
+	public void setReadCount(Integer readCount) {
+		this.readCount = readCount;
+	}
+
+
+	public Integer getUserCount() {
+		return userCount;
+	}
+
+
+	public void setUserCount(Integer userCount) {
+		this.userCount = userCount;
+	}
+
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	
+	
+	public List<BBXNoticeFile> getFiles() {
+		return files;
+	}
+	
+	
+	public void setFiles(List<BBXNoticeFile> files) {
+		this.files = files;
+	}
+
+
+	public Integer getHasRead() {
+		return hasRead;
+	}
+
+
+	public void setHasRead(Integer hasRead) {
+		this.hasRead = hasRead;
+	}
+
+
+	public Long getStartTime() {
+		return startTime;
+	}
+
+
+	public void setStartTime(Long startTime) {
+		this.startTime = startTime;
+	}
+
+
+	public Long getFinishTime() {
+		return finishTime;
+	}
+
+
+	public void setFinishTime(Long finishTime) {
+		this.finishTime = finishTime;
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+}

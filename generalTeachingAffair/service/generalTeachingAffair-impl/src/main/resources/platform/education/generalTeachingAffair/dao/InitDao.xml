@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.InitDao">
+
+
+	<resultMap id="CanteenStudentResult" type="platform.education.generalTeachingAffair.model.CanteenStudent">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="ic_number" property="icNumber"/>
+		<result column="grade_name" property="gradeName"/>
+		<result column="emp_code" property="empCode"/>
+		<result column="class_number" property="classNum"/>
+	</resultMap>
+
+	<resultMap id="StudentResultVo"
+			   type="platform.education.generalTeachingAffair.model.Student">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="personId" column="person_id" />
+		<result property="userId" column="user_id" />
+		<result property="teamId" column="team_id" />
+		<result property="userName" column="user_name" />
+		<result property="teamName" column="team_name" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="studentNumber" column="student_number" />
+		<result property="studentNumber2" column="student_number2" />
+		<result property="isBoarded" column="is_boarded" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="mobile" column="mobile" />
+		<result property="studyState" column="study_state" />
+		<result property="studentType" column="student_type" />
+		<result property="position" column="position" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="alias" column="alias" />
+		<result property="empCard" column="emp_card"></result>
+	</resultMap>
+
+	<select id="findCanteenUser" resultMap="CanteenStudentResult">
+		select id,`name` ,ic_number,grade_name,emp_code,class_number from pj_canteen_student
+    </select>
+
+	<select id="findByTeamNameAndName" resultMap="StudentResultVo" useCache="false">
+		SELECT
+		id, `name` ,team_name ,emp_card
+		FROM pj_student
+		where is_delete = 0
+		<if test="args[0] != null and args[0] != ''">
+			and team_name = #{args[0]}
+		</if>
+		<if test="args[1] != null and args[1] != ''">
+			and name = #{args[1]}
+		</if>
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.Student">
+		UPDATE pj_student SET emp_card = #{empCard},emp_code = #{empCode}
+		WHERE id = #{id}
+	</update>
+
+	<select id="read" resultMap="StudentResultVo" useCache="false">
+		SELECT * FROM pj_student WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findCanteenTeacherUser" resultType="platform.education.generalTeachingAffair.model.CanteenTeacher">
+		select id,`name` ,ic_number 'icNumber',emp_code 'empCode',sex from pj_canteen_teacher
+    </select>
+
+	<select id="findTeacherByNameAndSex" resultType="platform.education.generalTeachingAffair.model.Teacher">
+		SELECT
+		id, `name` ,emp_card
+		FROM pj_teacher
+		where is_delete = 0
+		<if test="args[0] != null and args[0] != ''">
+			and name = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			and sex = #{args[1]}
+		</if>
+	</select>
+</mapper>

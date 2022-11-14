@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.character.dao.EvaluationDao">
+
+    <resultMap id="EvationMap" type="com.xunyunedu.character.pojo.Evaluation">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="initscore" property="initScore"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="create_time" property="createTime"></result>
+    </resultMap>
+    <resultMap id="studentConMap" type="com.xunyunedu.character.pojo.StudentContion">
+        <id column="id" property="stidentId"></id>
+        <result column="name" property="studnetName"></result>
+        <result column="evaluation_id" property="entityId"></result>
+        <result column="team_id" property="teamId"></result>
+        <result column="team_name" property="teamName"></result>
+        <result column="scores" property="score"></result>
+        <result column="recordName" property="recordName"></result>
+        <result column="gradeName" property="gradeName"></result>
+        <result column="grade_id" property="gradeId"></result>
+        <result column="photo_uuid" property="uuid"></result>
+
+    </resultMap>
+    <resultMap id="studentResult" type="com.xunyunedu.student.pojo.StudentPojo">
+        <id property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+        <result property="isDelete" column="is_delete" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+        <result property="isSendHikdoor" column="is_send_hikdoor"/>
+        <result property="isSendLibrary" column="is_send_library"/>
+        <result property="teacherId" column="teacher_id"/>
+    </resultMap>
+
+    <resultMap id="RecordsMap" type="com.xunyunedu.character.pojo.Records">
+        <id column="id" property="id"></id>
+        <result column="student_id" property="studentId"></result>
+        <result column="stuName" property="stuName"></result>
+        <result column="evaluation_id" property="evaluationId"></result>
+        <result column="evlaName" property="evName"></result>
+        <result column="message" property="message"></result>
+        <result column="voice" property="voice"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="teacher_id" property="teacherId"></result>
+        <result column="teaName" property="teaName"></result>
+        <result column="picture_id" property="pictureId"></result>
+        <result column="score" property="score"></result>
+        <result column="pictureUrl" property="pictureUrl"></result>
+
+
+    </resultMap>
+    <select id="findByAll" resultMap="EvationMap">
+    select * from pj_evaluation where is_delete=0
+  </select>
+
+    <select id="defenqingkuang" resultType="java.lang.Integer">
+        select  sum(pr.score)+pe.initscore as score  from pj_records_student prs inner join pj_records pr on pr.id=prs.record_id
+        inner join pj_evaluation pe on pe.id=pr.evaluation_id
+        <where>
+            pe.is_delete=0 and prs.is_delete=0 and pr.is_delete=0
+            and pr.evaluation_id=#{evalenId} and prs.student_id=#{studentId}
+        </where>
+        group by pe.id
+
+    </select>
+
+
+
+    <select id="findById" resultMap="EvationMap">
+    select * from pj_evaluation where is_delete=0 and id=#{id}
+  </select>
+
+    <select id="findByStu" resultMap="studentConMap">
+        select pr.evaluation_id, ps.id,ps.name,(sum(pr.score)+#{score}) as scores,ps.team_name  from  pj_records pr
+        inner join pj_records_student prs on prs.record_id=pr.id
+        inner join pj_student ps on prs.student_id=ps.id
+          where  pr.evaluation_id=#{evaluationId} and ps.is_delete=0 and ps.school_id=#{schoolId}
+            and prs.student_id=#{studentId}
+         group by prs.student_id
+        order by scores desc
+    </select>
+
+    <select id="findByNianJi" resultMap="studentConMap">
+        select ps.id,ps.name,(sum(pr.score)+#{score}) as scores,ps.team_name  from  pj_records pr
+                inner join pj_records_student prs on prs.record_id=pr.id
+				inner join pj_student ps on prs.student_id=ps.id
+				inner join pj_team_student pts on ps.id=pts.student_id
+				where pr.evaluation_id=#{evaluationId} and ps.is_delete=1 and ps.school_id=#{schoolId}
+				 and pts.grade_id=#{gradeId}
+         group by prs.student_id
+        order by scores desc
+    </select>
+    <select id="findByJiLu" resultMap="RecordsMap">
+            select ps.id  as student_id,ps.name as stuName,  pr.evaluation_id,pr.picture_id,pr.message,pr.score,pr.teacher_id,pr.voice,pt.`name` as teaName,pr.create_time, pe.name as evlaName from pj_records pr
+                inner join pj_records_student prs on prs.record_id=pr.id
+				inner join pj_student ps on prs.student_id=ps.id
+				inner join pj_evaluation pe on pr.evaluation_id=pe.id
+				inner join pj_teacher pt on pr.teacher_id=pt.id
+				<where>
+                    prs.student_id=#{studentId} and ps.school_id=#{schoolId}
+                    <if test="evaluationId!=null and evaluationId!=''">
+                        and pr.evaluation_id=#{evaluationId}
+                    </if>
+                </where>
+    </select>
+
+    <select id="evaluationDaofindByquanxiao" resultMap="studentConMap">
+     select pp.photo_uuid, ps.id,ps.name,pg.id as grade_id,ps.team_name as gradeName from pj_student ps
+      inner join pj_team_student pts   on pts.student_id=ps.id
+     left join pj_person pp on pp.id = ps.person_id
+        inner join pj_grade pg on pg.id=pts.grade_id
+     <where>
+          ps.school_id=#{schoolId} and ps.is_delete=0 and pts.is_delete=0
+         <if test="gradeId!=null">
+             and pts.grade_id=#{gradeId}
+         </if>
+         <if test="teamId!=null">
+             and ps.team_id=#{teamId}
+         </if>
+
+     </where>
+     group by ps.id
+ </select>
+    <select id="findByAllStudent" resultType="java.lang.Integer">
+        select count(*) from  pj_student
+        where team_id=(select team_id from pj_student where id=#{studentId} and school_id=#{schoolId} and is_delete=0)
+         and is_delete=0 and school_id=#{schoolId}
+    </select>
+    <select id="findByAllStudent2" resultType="java.lang.Integer">
+        select count(*) from  pj_student  ps
+          inner join pj_team_student pts on pts.student_id=ps.id
+          where pts.grade_id=(select pg.id from  pj_student  ps
+          inner join pj_team_student pts on pts.student_id=ps.id
+        inner join pj_grade pg on pg.id=pts.grade_id
+        where ps.id=#{studentId} and pg.school_year=#{schoolYear})
+        and pts.is_delete=0  and ps.is_delete=0 and ps.school_id=#{schoolId}
+    </select>
+
+    <select id="findByasd" resultType="java.lang.Integer">
+        select sum(pr.score) from  pj_records pr
+         inner join pj_records_student prs on prs.record_id=pr.id
+          inner join pj_student ps on prs.student_id=ps.id
+          inner join pj_team_student pts on pts.student_id=ps.id
+           where  pr.evaluation_id=#{evaluationId} and ps.is_delete=0
+           and ps.school_id=#{schoolId} and pts.grade_id=#{gradeId}
+    </select>
+    <select id="findByGrsa" resultType="java.lang.Integer">
+        select pg.id from  pj_student  ps
+          inner join pj_team_student pts on pts.student_id=ps.id
+        inner join pj_grade pg on pg.id=pts.grade_id
+        where ps.id=#{studentId} and pg.school_year=#{schoolYear} and ps.school_id=#{schoolId}
+    </select>
+
+    <select id="findByeeee" resultType="java.lang.Integer">
+         select sum(pr.score) from  pj_records pr
+         inner join pj_records_student prs on prs.record_id=pr.id
+          inner join pj_student ps on prs.student_id=ps.id
+           where  pr.evaluation_id=#{evaluationId} and ps.is_delete=0
+           and ps.school_id=#{schoolId}
+            and ps.team_id=(select team_id from pj_student where id=#{studentId} and school_id=#{schoolId} and is_delete=0)
+    </select>
+
+    <select id="getByStudentIda" resultType="java.lang.Integer">
+        select sum(pr.score) from  pj_records pr
+         inner join pj_records_student prs on prs.record_id=pr.id
+         where prs.student_id=#{studentId} and pr.evaluation_id=#{evaluationId}
+         and prs.is_delete=0 and pr.is_delete=0
+    </select>
+    <select id="findBySaoMa" resultMap="studentResult">
+        select * from pj_student where id=#{studentId} and is_delete=0 and school_id=#{schoolId}
+    </select>
+</mapper>

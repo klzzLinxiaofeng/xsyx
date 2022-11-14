@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.development.dao.StudentDevelopmentDao">
+
+  <resultMap id="StudentDevelopmentMap" type="com.xunyunedu.development.vo.StudentDevelopment">
+        <id column="id"  property="id" />
+        <result column="development_id"  property="developmentId" />
+        <result column="dpName"  property="developmentName" />
+        <result column="score"  property="score" />
+        <result column="create_time"  property="createTime" />
+        <result column="modiy_time"  property="modiyTime" />
+        <result column="is_delete" property="isDelete"/>
+      <result column="school_year"  property="schoolYear" />
+        <result column="school_trem" property="schoolTrem"/>
+      <result column="student_id" property="studentId"/>
+      <result column="stuName" property="studentName"/>
+      <result column="grade_id" property="gradeId"/>
+      <result column="gradeName" property="gradeName"/>
+      <result column="team_id" property="teamId"/>
+      <result column="pingjia_id" property="pingjiaId"/>
+      <result column="pingjia_name" property="pingjiaName"/>
+      <result column="team_name" property="teamName"/>
+
+  </resultMap>
+    <resultMap id="DevelopmentIndicatorsMap" type="com.xunyunedu.development.vo.DevelopmentIndicators">
+        <id column="id"  property="id" />
+        <result column="name"  property="name" />
+        <result column="code"  property="code" />
+        <result column="score"  property="score" />
+        <result column="create_time"  property="createTime" />
+        <result column="modiy_time"  property="modiyTime" />
+        <result column="is_delete" property="isDelete"/>
+        <result column="school_year"  property="xn" />
+        <result column="school_trem" property="xq"/>
+    </resultMap>
+    <select id="findByStudentAll" resultMap="StudentDevelopmentMap">
+        select zds.*,ps.name as stuName,pt.name as team_name,pg.name as gradeName,
+         zdi.name as dpName from zy_development_student zds
+         inner join pj_team_student pts on pts.student_id=zds.student_id
+         inner join zy_development_indicators zdi on zdi.id=zds.development_id
+         inner join pj_student ps on ps.id=pts.student_id
+         inner join pj_team pt on pt.id=pts.team_id
+         inner join pj_grade pg on pg.id=pt.grade_id
+         where zds.is_delete=0 and ps.is_delete=0 and ps.study_state='01'
+        <if test="schoolYear!=null">
+           and  zds.school_year=#{schoolYear} and pg.school_year=#{schoolYear}
+        </if>
+        <if test="schoolTrem!=null">
+            and  zds.school_trem=#{schoolTrem}
+        </if>
+        <if test="pingjiaId!=null">
+            and zds.pingjia_id=#{pingjiaId}
+        </if>
+    </select>
+
+    <select id="findByStudentId" resultMap="StudentDevelopmentMap">
+         select zds.*,ps.name as stuName,pt.name as team_name,pg.name as gradeName,
+         zdi.name as dpName from zy_development_student zds
+         inner join pj_team_student pts on pts.student_id=zds.student_id
+         inner join zy_development_indicators zdi on zdi.id=zds.development_id
+         inner join pj_student ps on ps.id=pts.student_id
+         inner join pj_team pt on pt.id=pts.team_id
+         inner join pj_grade pg on pg.id=pt.grade_id
+         where pg.school_year=zds.school_year and zds.is_delete=0 and ps.is_delete=0 and zds.id=#{id} group by zds.id
+    </select>
+    <select id="findByAll" resultMap="DevelopmentIndicatorsMap">
+        select * from zy_development_indicators where is_delete=0
+        <if test="schoolYear!=null">
+            and school_year=#{schoolYear}
+        </if>
+        <if test="schoolTrem!=null">
+            and school_trem=#{schoolTrem}
+        </if>
+        <if test="code!=null">
+            and code like concat('%',#{code},'%')
+        </if>
+    </select>
+    <insert id="create">
+        insert  into zy_development_student(
+        development_id,
+        pingjia_id,
+        school_year,
+        school_trem,
+        score,
+        pingjia_name,
+        create_time,
+        modiy_time,
+        is_delete,
+        pinyu,
+        student_id)value(
+        #{studentDevelopment.developmentId},
+        #{studentDevelopment.pingjiaId},
+        #{studentDevelopment.schoolYear},
+        #{studentDevelopment.schoolTrem},
+        #{studentDevelopment.score},
+        #{studentDevelopment.pingjiaName},
+        NOW(),
+        NOW(),
+        0,
+        null,
+        #{studentDevelopment.studentId}
+        )
+    </insert>
+
+</mapper>

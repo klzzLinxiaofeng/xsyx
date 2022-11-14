@@ -1,0 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file="/views/embedded/taglib.jsp" %>
+<tr>
+	<td style="padding:0;border:0 none;">
+		<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}" />
+		<input type="hidden" id="totalPages" name="totalPages" value="${page.currentPage}" />
+		<input type="hidden" id="totalRows" name="totalPages" value="${page.totalRows}" />
+	</td>
+</tr>
+<c:forEach items="${items}" var="item">
+	<tr id="${item.id}_tr">
+				<td>${item.id}</td>
+				<td>${item.name}</td>
+				<td>${item.isbn}</td>
+				<td>${item.domain}</td>
+				<td>${item.publisherId}</td>
+				<td>${item.stageCode}</td>
+				<td>${item.subjectCode}</td>
+				<td>${item.gradeCode}</td>
+				<td>${item.volumn}</td>
+				<td>${item.version}</td>
+	    		<td><fmt:formatDate value="${item.publishDate}" pattern="yyyy-MM-dd" /></td>
+				<td>${item.description}</td>
+				<td>${item.image}</td>
+		
+		<td class="caozuo">
+			<c:if test="${acl:hasPermission(sessionScope[sca:currentUserKey()].id, param.dm, 1)}">
+			</c:if>
+				<button class="btn btn-blue" type="button" onclick="loadViewerPage('${item.id}');">教材显示</button>
+			
+			<c:if test="${acl:hasPermission(sessionScope[sca:currentUserKey()].id, param.dm, 2)}">
+			</c:if>
+				<button class="btn btn-blue" type="button" onclick="loadEditPage('${item.id}');">教材编辑</button>
+			
+			<c:if test="${acl:hasPermission(sessionScope[sca:currentUserKey()].id, param.dm, 3)}">
+			</c:if>
+				<button class="btn btn-blue" type="button" onclick="deleteObj(this, '${item.id}');">删除</button>
+				<button class="btn btn-blue" type="button" onclick="loadViewerCatalogPage('${item.id}');">目录查看</button>
+				<button class="btn btn-blue" type="button" onclick="loadEditCatalogPage('${item.id}');">目录编辑</button>
+		</td>
+	</tr>
+</c:forEach>

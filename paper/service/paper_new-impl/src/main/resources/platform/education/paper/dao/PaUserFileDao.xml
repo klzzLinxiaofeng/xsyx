@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.PaUserFileDao">
+
+	<resultMap id="PaUserFileResult" type="platform.education.paper.model.PaUserFile">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="userPaperId" column="user_paper_id" />
+		<result property="userQuestionId" column="user_question_id" />
+		<result property="sourceFileUuid" column="source_file_uuid" />
+		<result property="markedFileUuid" column="marked_file_uuid" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="userQuestionUuid" column="user_question_uuid" />
+	</resultMap>
+		<resultMap id="PaUserFileVoResult" type="platform.education.paper.vo.PaUserFileVo">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="userPaperId" column="user_paper_id" />
+		<result property="userQuestionId" column="user_question_id" />
+		<result property="sourceFileUuid" column="source_file_uuid" />
+		<result property="markedFileUuid" column="marked_file_uuid" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="userQuestionUuid" column="user_question_uuid" />
+		<result property="realUserQuestionUuid" column="real_user_question_uuid" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.paper.model.PaUserFile">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_user_file (
+			id, 
+			user_id, 
+			user_paper_id, 
+			user_question_id, 
+			source_file_uuid, 
+			marked_file_uuid, 
+			create_date, 
+			modify_date, 
+			is_deleted, 
+			user_question_uuid
+		)
+		VALUES (
+			#{id}, 
+			#{userId}, 
+			#{userPaperId}, 
+			#{userQuestionId}, 
+			#{sourceFileUuid}, 
+			#{markedFileUuid}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{userQuestionUuid}
+		)
+	</insert>
+
+	<select id="read" resultMap="PaUserFileResult" useCache="false">
+		SELECT * FROM pa_user_file WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPaUserFileByCondition" resultMap="PaUserFileResult" useCache="false">
+		SELECT * FROM pa_user_file 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userPaperId != null">
+				AND user_paper_id = #{args[0].userPaperId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userQuestionId != null">
+				AND user_question_id = #{args[0].userQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].sourceFileUuid != null and args[0].sourceFileUuid != ''">
+				AND source_file_uuid = #{args[0].sourceFileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].markedFileUuid != null and args[0].markedFileUuid != ''">
+				AND marked_file_uuid = #{args[0].markedFileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].userQuestionUuid != null and args[0].userQuestionUuid != ''">
+				AND user_question_uuid = #{args[0].userQuestionUuid,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_user_file 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userPaperId != null">
+				AND user_paper_id = #{args[0].userPaperId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userQuestionId != null">
+				AND user_question_id = #{args[0].userQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].sourceFileUuid != null and args[0].sourceFileUuid != ''">
+				AND source_file_uuid = #{args[0].sourceFileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].markedFileUuid != null and args[0].markedFileUuid != ''">
+				AND marked_file_uuid = #{args[0].markedFileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].userQuestionUuid != null and args[0].userQuestionUuid != ''">
+				AND user_question_uuid = #{args[0].userQuestionUuid,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PaUserFileResult" useCache="false">
+		SELECT * FROM pa_user_file WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.paper.model.PaUserFile">
+		UPDATE pa_user_file
+		SET 
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="userPaperId != null">
+			user_paper_id=#{userPaperId},
+		</if>
+		<if test="userQuestionId != null">
+			user_question_id=#{userQuestionId},
+		</if>
+		<if test="sourceFileUuid != null">
+			source_file_uuid=#{sourceFileUuid},
+		</if>
+		<if test="markedFileUuid != null">
+			marked_file_uuid=#{markedFileUuid},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="userQuestionUuid != null">
+			user_question_uuid=#{userQuestionUuid},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pa_user_file
+		WHERE id = #{id}
+	</delete>
+	<select id="findPaUserFilesByUuids"  resultMap="PaUserFileVoResult">
+	SELECT puf.*,pufq.user_question_uuid AS real_user_question_uuid FROM pa_user_file_question pufq INNER JOIN
+pa_user_file puf ON pufq.user_file_id=puf.id
+WHERE
+pufq.user_question_uuid
+IN
+<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">
+			#{item}
+</foreach>
+	
+	</select>
+</mapper>

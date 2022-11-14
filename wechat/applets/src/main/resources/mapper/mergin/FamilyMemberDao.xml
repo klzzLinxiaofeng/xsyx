@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.FamilyMemberDao">
+
+
+    <resultMap id="FamilyMemberResult" type="com.xunyunedu.mergin.vo.FamilyMember">
+        <result property="id" column="id" />
+        <result property="studentId" column="student_id" />
+        <result property="name" column="name" />
+        <result property="mobile" column="mobile" />
+        <result property="relation" column="relation" />
+        <result property="relationRemarks" column="relation_remarks" />
+        <result property="race" column="race" />
+        <result property="workingPlace" column="working_place" />
+        <result property="position" column="position" />
+        <result property="address" column="address" />
+        <result property="residenceAddress" column="residence_address" />
+        <result property="rank" column="rank" />
+        <result property="idCardType" column="id_card_type" />
+        <result property="idCardNumber" column="id_card_number" />
+        <result property="isDeleted" column="is_deleted" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+    <select id="findByStudentId" resultMap="FamilyMemberResult" useCache="false">
+		SELECT * FROM pj_family_member
+		WHERE is_deleted = 0
+		AND student_id = #{jw,javaType=java.lang.Integer}
+		ORDER BY id ASC
+		LIMIT 2
+	</select>
+</mapper>

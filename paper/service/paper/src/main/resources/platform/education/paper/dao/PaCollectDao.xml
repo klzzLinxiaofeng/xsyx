@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.PaCollectDao">
+
+    <resultMap id="PaCollectResult" type="platform.education.paper.model.PaCollect">
+        <result property="id" column="id" />
+        <result property="createDate" column="create_date" />
+        <result property="collectType" column="collect_type" />
+        <result property="relateId" column="relate_id" />
+        <result property="userId" column="user_id" />
+        <result property="uuid" column="uuid" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.paper.model.PaCollect">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO pa_collect (id, create_date, collect_type, relate_id, user_id, uuid, modify_date)
+        VALUES (#{id}, #{createDate}, #{collectType}, #{relateId}, #{userId}, #{uuid}, #{modifyDate})
+    </insert>
+
+    <select id="read" resultMap="PaCollectResult" useCache="false">
+        SELECT * FROM pa_collect WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>  
+        ORDER BY id DESC
+    </select>
+	
+    <select id="findPaCollectByCondition" resultMap="PaCollectResult" useCache="false">
+        SELECT * FROM pa_collect 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null and args[0].id != ''">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null and args[0].createDate != ''">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].collectType != null and args[0].collectType != ''">
+                AND collect_type = #{args[0].collectType,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].relateId != null and args[0].relateId != ''">
+                AND relate_id = #{args[0].relateId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].userId != null and args[0].userId != ''">
+                AND user_id = #{args[0].userId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+	
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM pa_collect 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null and args[0].id != ''">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null and args[0].createDate != ''">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].collectType != null and args[0].collectType != ''">
+                AND collect_type = #{args[0].collectType,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].relateId != null and args[0].relateId != ''">
+                AND relate_id = #{args[0].relateId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].userId != null and args[0].userId != ''">
+                AND user_id = #{args[0].userId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+	
+    <select id="findById" resultMap="PaCollectResult" useCache="false">
+        SELECT * FROM pa_collect WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+	
+    <update id="update" parameterType="platform.education.paper.model.PaCollect">
+        UPDATE pa_collect
+        SET 
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="collectType != null">
+            collect_type=#{collectType},
+        </if>
+        <if test="relateId != null">
+            relate_id=#{relateId},
+        </if>
+        <if test="userId != null">
+            user_id=#{userId},
+        </if>
+        <if test="uuid != null">
+            uuid=#{uuid},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+	
+    <delete id="delete">
+        DELETE FROM pa_collect
+        WHERE id = #{id}
+    </delete>
+	
+    <delete id="deleteByCondition">
+        DELETE FROM pa_collect
+        WHERE 1=1
+        <if test="id != null and id != ''">
+            AND id = #{id,javaType=java.lang.Integer}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            AND create_date = #{createDate,javaType=java.util.Date}
+        </if>
+        <if test="collectType != null and collectType != ''">
+            AND collect_type = #{collectType,javaType=java.lang.Integer}
+        </if>
+        <if test="relateId != null and relateId != ''">
+            AND relate_id = #{relateId,javaType=java.lang.String}
+        </if>
+        <if test="userId != null and userId != ''">
+            AND user_id = #{userId,javaType=java.lang.String}
+        </if>
+        <if test="uuid != null and uuid != ''">
+            AND uuid = #{uuid,javaType=java.lang.String}
+        </if>
+        <if test="modifyDate != null and modifyDate != ''">
+            AND modify_date = #{modifyDate,javaType=java.util.Date}
+        </if>
+    </delete>
+    
+    <!--以下是业务方法-->
+    
+    <select id="findByUuid" resultMap="PaCollectResult" useCache="false">
+        SELECT * FROM pa_collect WHERE uuid = #{args[0],javaType=java.lang.String}
+    </select>
+    
+        
+    <select id="confirmCollect" resultMap="PaCollectResult" useCache="false">
+        SELECT * FROM pa_collect 
+        WHERE 
+        user_id = #{args[0],javaType=java.lang.String}
+        AND
+        <foreach item="id" index="index" collection="args[1]" open="(" separator="OR" close=")">  
+            relate_id = #{id}  
+        </foreach>  
+        AND
+        collectType = #{args[2],javaType=java.lang.String}
+    </select>
+
+</mapper>

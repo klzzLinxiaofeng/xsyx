@@ -1,0 +1,92 @@
+
+body {
+    margin: 0;
+    padding: 0;
+}
+p{
+    margin: 0;
+}
+ol, ul {
+    list-style: none ;
+    margin: 0;
+    padding: 0;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+a{
+    text-decoration: none;
+}
+img{
+    padding: 0;
+    margin: 0;
+}
+.clear {
+    clear: both;
+    display: block;
+    font-size: 0;
+    line-height: 0;
+    visibility: hidden;
+}
+.catalog{
+    font-size: 12px;
+    font-family: "微软雅黑";
+    line-height: 20px;
+    padding-top:10px;
+}
+.catalog .title{
+     background-color: #484848;
+    font-size: 14px;
+    font-weight: bold;
+    width: 36px;
+    color: #ffffff;
+    cursor: pointer;
+}
+.catalog  .cata_list{
+  
+    overflow: auto;
+}
+.catalog  .cata_list ul{
+   padding-left: 25px;
+}
+.catalog  .cata_list ul  .MLNR:hover{
+	background-color:#E8E8E8;
+	padding-left:5px;
+}
+.catalog  .cata_list ul  li a{
+     text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        display: block;
+        width: 250px;
+       word-wrap:normal;
+       color: #666;
+       float: left;
+}
+.catalog  .cata_list ul  .MLNR input[type="checkbox"]{
+	width:16px;
+	height:16px;	
+	position:relative;
+	top:3px;
+}
+.catalog  .cata_list ul  li .CZ{
+    text-align: right;
+    font-size:12px;
+    font-weight:normal;
+    color:#555;
+}
+.catalog  .cata_list ul  li .SQ{
+    margin-left: 15px;
+}
+.catalog  .cata_list ul  li .MLNR{
+    padding-right: 15px;
+}
+.catalog  .cata_list ul .hide {
+    background: url("images/show.png") no-repeat  left 7px ;
+    padding-left: 12px;
+}
+.catalog  .cata_list ul .show {
+    background: url("images/hide.png") no-repeat  left 5px ;
+    padding-left: 12px;
+}

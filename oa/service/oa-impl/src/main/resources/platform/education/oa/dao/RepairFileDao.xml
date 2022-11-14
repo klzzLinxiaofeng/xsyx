@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.RepairFileDao">
+
+	<resultMap id="RepairFileResult" type="platform.education.oa.model.RepairFile">
+		<result property="id" column="id" />
+		<result property="repairId" column="repair_id" />
+		<result property="posterId" column="poster_id" />
+		<result property="postTime" column="post_time" />
+		<result property="fileUuid" column="file_uuid" />
+		<result property="thumbUrl" column="thumb_url" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+	</resultMap>
+	
+	<resultMap id="RepairFileResult1" type="platform.education.oa.vo.RepairFileVo">
+		<result property="id" column="id" />
+		<result property="repairId" column="repair_id" />
+		<result property="posterId" column="poster_id" />
+		<result property="postTime" column="post_time" />
+		<result property="fileUuid" column="file_uuid" />
+		<result property="thumbUrl" column="thumb_url" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.RepairFile">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_repair_file (
+			id, 
+			repair_id, 
+			poster_id, 
+			post_time, 
+			file_uuid, 
+			thumb_url, 
+			create_date, 
+			modify_date, 
+			is_delete
+		)
+		VALUES (
+			#{id}, 
+			#{repairId}, 
+			#{posterId}, 
+			#{postTime}, 
+			#{fileUuid}, 
+			#{thumbUrl}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="RepairFileResult" useCache="false">
+		SELECT * FROM oa_repair_file WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findRepairFileAllByCondition" resultMap="RepairFileResult1" useCache="false">
+		SELECT * FROM oa_repair_file 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].repairId != null">
+				AND repair_id = #{args[0].repairId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].posterId != null">
+				AND poster_id = #{args[0].posterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].postTime != null">
+				AND post_time = #{args[0].postTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].thumbUrl != null and args[0].thumbUrl != ''">
+				AND thumb_url = #{args[0].thumbUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findRepairFileByCondition" resultMap="RepairFileResult" useCache="false">
+		SELECT * FROM oa_repair_file 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].repairId != null">
+				AND repair_id = #{args[0].repairId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].posterId != null">
+				AND poster_id = #{args[0].posterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].postTime != null">
+				AND post_time = #{args[0].postTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].thumbUrl != null and args[0].thumbUrl != ''">
+				AND thumb_url = #{args[0].thumbUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_repair_file 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].repairId != null">
+				AND repair_id = #{args[0].repairId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].posterId != null">
+				AND poster_id = #{args[0].posterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].postTime != null">
+				AND post_time = #{args[0].postTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].thumbUrl != null and args[0].thumbUrl != ''">
+				AND thumb_url = #{args[0].thumbUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="RepairFileResult" useCache="false">
+		SELECT * FROM oa_repair_file WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.RepairFile">
+		UPDATE oa_repair_file
+		SET 
+		<if test="repairId != null">
+			repair_id=#{repairId},
+		</if>
+		<if test="posterId != null">
+			poster_id=#{posterId},
+		</if>
+		<if test="postTime != null">
+			post_time=#{postTime},
+		</if>
+		<if test="fileUuid != null">
+			file_uuid=#{fileUuid},
+		</if>
+		<if test="thumbUrl != null">
+			thumb_url=#{thumbUrl},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_repair_file
+		WHERE id = #{id}
+	</delete>
+</mapper>

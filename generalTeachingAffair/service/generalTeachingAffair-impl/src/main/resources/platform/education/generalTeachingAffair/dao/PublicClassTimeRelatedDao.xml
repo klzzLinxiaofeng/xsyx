@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PublicClassTimeRelatedDao">
+
+    <select id="read" resultType="platform.education.generalTeachingAffair.model.PublicTimeRelatedVo" useCache="false">
+
+		SELECT * FROM pj_public_time_related WHERE 1=1
+
+        <if test="args != null and args[0] != null">
+
+		    AND id = #{args[0],javaType=java.lang.Integer}
+
+        </if>
+
+		ORDER BY id DESC
+
+    </select>
+
+    <insert id="create" parameterType="platform.education.generalTeachingAffair.model.PublicTimeRelatedVo">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+
+			SELECT LAST_INSERT_ID() AS id
+
+        </selectKey>
+        insert into pj_public_time_related(id,time_id,public_class_id,school_id,is_deleted,created_at,modify_date)
+            values(
+                null,
+                #{timeId},
+                #{publicClassId},
+                #{schoolId},
+                #{isDeleted},
+                #{createdAt},
+                #{modifyDate}
+            )
+    </insert>
+    <update id="deleteTimeRelated">
+
+        update pj_public_time_related set is_deleted = 1,modify_date= #{args[1],javaType=java.util.Date} where public_class_id = #{args[0],javaType=java.lang.Integer}
+
+    </update>
+
+</mapper>

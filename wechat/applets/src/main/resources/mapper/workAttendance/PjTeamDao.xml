@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.workAttendance.dao.PjTeamDao">
+  <resultMap id="BaseResultMap" type="com.xunyunedu.workAttendance.model.PjTeam">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="school_id" jdbcType="INTEGER" property="schoolId" />
+    <result column="grade_id" jdbcType="INTEGER" property="gradeId" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="team_number" jdbcType="INTEGER" property="teamNumber" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="code2" jdbcType="VARCHAR" property="code2" />
+    <result column="team_type" jdbcType="VARCHAR" property="teamType" />
+    <result column="team_property" jdbcType="VARCHAR" property="teamProperty" />
+    <result column="school_year" jdbcType="VARCHAR" property="schoolYear" />
+    <result column="member_count" jdbcType="SMALLINT" property="memberCount" />
+    <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate" />
+    <result column="finish_date" jdbcType="TIMESTAMP" property="finishDate" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="student_count" jdbcType="VARCHAR" property="studentCount" />
+    <result column="teacher_count" jdbcType="VARCHAR" property="teacherCount" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+    <result column="altered_status" jdbcType="INTEGER" property="alteredStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, school_id, grade_id, full_name, `name`, team_number, code, code2, team_type, 
+    team_property, school_year, member_count, begin_date, finish_date, is_delete, create_date, 
+    modify_date, student_count, teacher_count, uuid, altered_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pj_team
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pj_team
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.workAttendance.model.PjTeam" useGeneratedKeys="true">
+    insert into pj_team (school_id, grade_id, full_name, 
+      `name`, team_number, code, 
+      code2, team_type, team_property, 
+      school_year, member_count, begin_date, 
+      finish_date, is_delete, create_date, 
+      modify_date, student_count, teacher_count, 
+      uuid, altered_status)
+    values (#{schoolId,jdbcType=INTEGER}, #{gradeId,jdbcType=INTEGER}, #{fullName,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{teamNumber,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, 
+      #{code2,jdbcType=VARCHAR}, #{teamType,jdbcType=VARCHAR}, #{teamProperty,jdbcType=VARCHAR}, 
+      #{schoolYear,jdbcType=VARCHAR}, #{memberCount,jdbcType=SMALLINT}, #{beginDate,jdbcType=TIMESTAMP}, 
+      #{finishDate,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=BIT}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{modifyDate,jdbcType=TIMESTAMP}, #{studentCount,jdbcType=VARCHAR}, #{teacherCount,jdbcType=VARCHAR}, 
+      #{uuid,jdbcType=VARCHAR}, #{alteredStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.workAttendance.model.PjTeam" useGeneratedKeys="true">
+    insert into pj_team
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="schoolId != null">
+        school_id,
+      </if>
+      <if test="gradeId != null">
+        grade_id,
+      </if>
+      <if test="fullName != null">
+        full_name,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="teamNumber != null">
+        team_number,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="code2 != null">
+        code2,
+      </if>
+      <if test="teamType != null">
+        team_type,
+      </if>
+      <if test="teamProperty != null">
+        team_property,
+      </if>
+      <if test="schoolYear != null">
+        school_year,
+      </if>
+      <if test="memberCount != null">
+        member_count,
+      </if>
+      <if test="beginDate != null">
+        begin_date,
+      </if>
+      <if test="finishDate != null">
+        finish_date,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="modifyDate != null">
+        modify_date,
+      </if>
+      <if test="studentCount != null">
+        student_count,
+      </if>
+      <if test="teacherCount != null">
+        teacher_count,
+      </if>
+      <if test="uuid != null">
+        uuid,
+      </if>
+      <if test="alteredStatus != null">
+        altered_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="schoolId != null">
+        #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeId != null">
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="fullName != null">
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="teamNumber != null">
+        #{teamNumber,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="code2 != null">
+        #{code2,jdbcType=VARCHAR},
+      </if>
+      <if test="teamType != null">
+        #{teamType,jdbcType=VARCHAR},
+      </if>
+      <if test="teamProperty != null">
+        #{teamProperty,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolYear != null">
+        #{schoolYear,jdbcType=VARCHAR},
+      </if>
+      <if test="memberCount != null">
+        #{memberCount,jdbcType=SMALLINT},
+      </if>
+      <if test="beginDate != null">
+        #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null">
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="studentCount != null">
+        #{studentCount,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherCount != null">
+        #{teacherCount,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null">
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="alteredStatus != null">
+        #{alteredStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunyunedu.workAttendance.model.PjTeam">
+    update pj_team
+    <set>
+      <if test="schoolId != null">
+        school_id = #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeId != null">
+        grade_id = #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="fullName != null">
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="teamNumber != null">
+        team_number = #{teamNumber,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="code2 != null">
+        code2 = #{code2,jdbcType=VARCHAR},
+      </if>
+      <if test="teamType != null">
+        team_type = #{teamType,jdbcType=VARCHAR},
+      </if>
+      <if test="teamProperty != null">
+        team_property = #{teamProperty,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolYear != null">
+        school_year = #{schoolYear,jdbcType=VARCHAR},
+      </if>
+      <if test="memberCount != null">
+        member_count = #{memberCount,jdbcType=SMALLINT},
+      </if>
+      <if test="beginDate != null">
+        begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null">
+        finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="studentCount != null">
+        student_count = #{studentCount,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherCount != null">
+        teacher_count = #{teacherCount,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null">
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="alteredStatus != null">
+        altered_status = #{alteredStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xunyunedu.workAttendance.model.PjTeam">
+    update pj_team
+    set school_id = #{schoolId,jdbcType=INTEGER},
+      grade_id = #{gradeId,jdbcType=INTEGER},
+      full_name = #{fullName,jdbcType=VARCHAR},
+      `name` = #{name,jdbcType=VARCHAR},
+      team_number = #{teamNumber,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      code2 = #{code2,jdbcType=VARCHAR},
+      team_type = #{teamType,jdbcType=VARCHAR},
+      team_property = #{teamProperty,jdbcType=VARCHAR},
+      school_year = #{schoolYear,jdbcType=VARCHAR},
+      member_count = #{memberCount,jdbcType=SMALLINT},
+      begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=BIT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      student_count = #{studentCount,jdbcType=VARCHAR},
+      teacher_count = #{teacherCount,jdbcType=VARCHAR},
+      uuid = #{uuid,jdbcType=VARCHAR},
+      altered_status = #{alteredStatus,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

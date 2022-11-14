@@ -1,0 +1,186 @@
+
+.ellipsisWidth {
+	width: 100%
+}
+
+banner{
+	height:242px;
+	overflow:hidden;
+	
+}
+
+banner .banner_1{
+	background: url("../microcourse/images/banner_bg.jpg") repeat-x;
+	
+	}
+banner .banner_1 .banner_show{
+	width:1000px;
+	height:242px;
+	overflow:hidden;
+	margin:0 auto;
+	}	
+banner .banner_1 .banner_show ul{	
+	overflow:hidden;
+	width:10000px;
+}
+ .banner_show ul li{
+	float:left;
+}
+
+.main-content {
+	width: 1082px;
+	margin: 0px auto;
+	background: #F4F4F4;
+	min-height: 1300px;
+	clear:both;
+	border-radius : 5px 5px 5px 5px;
+}
+
+.main-nav ul{
+	width:1000px;
+	margin:0 auto;
+	height:38px;
+	/*background: url("images/nav_back.png") no-repeat left bottom ;*/
+	/*bottom: -1px;;*/
+    /*position: relative;*/
+}
+
+.main-nav ul li a{
+	color: #000;
+	font-family: "微软雅黑";
+	line-height: 38px;
+}
+.main-nav ul li.search{
+	/* position: relative; */
+	float:right;
+	/* margin-right: -170px; */
+	width: 175px;
+}
+.main-nav .search form{
+	margin-bottom:0;
+}
+
+.category-names a {
+	color: #555555;
+	display: block;
+	margin: 4px 0;
+}
+.wrapper-right {
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-left: 0px;
+    margin-top: -24px;
+}
+.course-list-wrapper {
+	margin-top: 40px !important;
+}
+.discover-courses-list.one-line {
+	text-align: left;
+	width:800px;
+}
+.discover-courses-list {
+	font-size: 0;
+	text-align: left;
+	width:800px;
+}
+.course-card-wide {
+background: #fff;
+border-radius: 5px;
+overflow: hidden;
+box-shadow: 0 1px 2px #777;
+margin-bottom: 20px;
+margin-top: 20px;
+}
+.course-card-wide .thumb {
+float: left;
+width: 276px;
+border-radius: 3px;
+overflow: hidden;
+}
+.course-card-wide .details {
+margin-left: 276px;
+display: block;
+padding: 10px;
+}
+.course-card-wide .desc {
+display: block;
+text-align: left;
+font-size: 14px;
+}
+
+.course-card-wide .ins {
+line-height: 15px;
+width: 233px;
+float: left;
+}
+.course-card-wide .ins-thumb {
+float: left;
+margin-right: 11px;
+width: 30px;
+border-radius: 3px;
+overflow: hidden;
+}
+.course-card-wide .ins-name {
+font-weight: bold;
+display: block;
+font-size: 14px;
+text-align: left;
+}
+
+.course-card-wide .ins-job-title {
+	color: #555555;
+	font-family: georgia;
+	font-size: 12px;
+	font-style: italic;
+	font-weight: lighter;
+	line-height: 2.0;
+	margin-top: 2px;
+}
+
+.manage-fields-wrapper .media-preview-wrapper .media {
+    background-size: cover;
+    border: 1px dotted #C2CBD7;
+    height: 270px;
+    overflow: hidden;
+    text-align: center;
+}
+.manage-fields-wrapper .media-preview-wrapper .notes-table {
+    height: 100%;
+    width: 100%;
+}
+.media-preview img {
+    max-width: inherit;
+}
+.categories{
+	height: 35px;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+.categories ul{
+	height:20px;
+}
+ .categories ul li{
+	float:left;
+    display: inline-block;
+    text-align: center;
+    width: 60px;
+    display:inline-block;
+   
+}
+.categories ul li a{
+	 color:#747474;
+	 display:block;
+	 border-radius: 4px 4px 4px 4px;
+}
+
+.categories ul li .all{
+	background-color:#767676;
+	color:white;
+}
+
+.res-null H1{
+	text-align:center; 
+	color:#dddddd;
+	padding-top: 10%;
+	padding-bottom: 10%;
+}

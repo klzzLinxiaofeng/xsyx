@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.PaperQuestionDao">
+
+	<resultMap id="PaperQuestionResult" type="platform.education.paper.model.PaperQuestion">
+		<result property="id" column="id" />
+		<result property="createDate" column="create_date" />
+		<result property="pos" column="pos" />
+		<result property="score" column="score" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="questionUuid" column="question_uuid" />
+		<result property="paperUuid" column="paper_uuid" />
+		<result property="paperId" column="paper_id" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.paper.model.PaperQuestion">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_paper_question (
+			id, 
+			create_date, 
+			pos, 
+			score, 
+			modify_date, 
+			question_uuid, 
+			paper_uuid
+		)
+		VALUES (
+			#{id}, 
+			#{createDate}, 
+			#{pos}, 
+			#{score}, 
+			#{modifyDate}, 
+			#{questionUuid}, 
+			#{paperUuid}
+		)
+	</insert>
+
+	<select id="read" resultMap="PaperQuestionResult" useCache="false">
+		SELECT * FROM pa_paper_question WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPaperQuestionByCondition" resultMap="PaperQuestionResult" useCache="false">
+		SELECT * FROM pa_paper_question 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].pos != null">
+				AND pos = #{args[0].pos,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid = #{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid = #{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_paper_question 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].pos != null">
+				AND pos = #{args[0].pos,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid = #{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid = #{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PaperQuestionResult" useCache="false">
+		SELECT * FROM pa_paper_question WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.paper.model.PaperQuestion">
+		UPDATE pa_paper_question
+		SET 
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="pos != null">
+			pos=#{pos},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="questionUuid != null">
+			question_uuid=#{questionUuid},
+		</if>
+		<if test="paperUuid != null">
+			paper_uuid=#{paperUuid},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pa_paper_question
+		WHERE id = #{id}
+	</delete>
+	
+	<resultMap id="PaperQuestionResultData" type="platform.education.paper.model.PaperQuestionResult">
+		<result property="paperTitle" column="title" />
+		<result property="questionUuid" column="question_uuid" />
+		<result property="groupId" column="group_id" />
+		<result property="pos" column="pos" />
+		<result property="questionAnswer" column="answer" />
+		<result property="content" column="content" />
+		<result property="complexTitle" column="extra_content" />
+		<result property="correctAnswer" column="correct_answer" />
+		<result property="explanation" column="explanation" />
+		<result property="questionType" column="question_type" />
+	</resultMap>
+	
+	<select id="findPaperQuestionByPaperId" resultMap="PaperQuestionResultData"  useCache="false">
+		SELECT
+			ppq.question_uuid,
+			p.title,
+			q.group_id,
+			q.content,
+			q.pos,
+			q.answer,
+			q.correct_answer,
+			q.extra_content,
+			q.explanation,
+			q.question_type
+		FROM
+			pa_paper p
+		JOIN pa_paper_question ppq
+		JOIN pa_question q
+		on p.paper_uuid = ppq.paper_uuid
+		and ppq.question_uuid = q.question_uuid
+		<if test="args[0] != null">
+			and p.id=#{args[0]}
+		</if>
+		<if test="args[1] != null">
+			and q.question_uuid= #{args[1]}
+		</if>
+		order by pos
+	</select>
+		
+	<select id="findPaperQuestionByUuid" resultMap="PaperQuestionResult" useCache="false">
+		SELECT * FROM pa_paper_question 
+		where question_uuid = #{args[0]}
+	</select>
+
+	<select id="findPaperQuestionByUUIDs" resultMap="PaperQuestionResult" useCache="false">
+		SELECT
+		*
+		FROM
+		pa_paper_question
+		WHERE
+		question_uuid
+		IN
+		<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+	</select>
+	
+</mapper>

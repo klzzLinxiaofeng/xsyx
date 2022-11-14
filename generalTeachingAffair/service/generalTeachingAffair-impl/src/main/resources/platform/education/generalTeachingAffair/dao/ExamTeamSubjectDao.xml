@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ExamTeamSubjectDao">
+
+	<resultMap id="examTeamSubjectResult" type="platform.education.generalTeachingAffair.model.ExamTeamSubject">
+		<result property="id" column="id" />
+		<result property="teamId" column="team_id" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="schoolYear" column="school_year" />
+		<result property="examType" column="exam_type" />
+		<result property="examName" column="exam_name" />
+		<result property="preciseStartDate" column="precise_start_date" />
+		<result property="preciseEndDate" column="precise_end_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="term" column="term_code" />
+		<result property="taskType" column="task_type" />
+		<result property="taskOnline" column="task_online" />
+		<result property="taskRate" column="task_rate" />
+		<result property="rateType" column="rate_type" />
+		<result property="schoolId" column="school_id" />
+		<result property="code" column="code" />
+		<result property="examNumber" column="exam_number" />
+		<result property="gradeId" column="gradeId" />
+		<result property="isSuoDing" column="is_suoding"/>
+		
+	</resultMap>
+
+	<resultMap id="ExamTeamSubjectVoRest" type="platform.education.generalTeachingAffair.vo.ExamTeamSubjectVo">
+		<result property="id" column="id" />
+		<result property="teamId" column="team_id" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="subjectName" column="subject_name" />
+		<result property="schoolYear" column="school_year" />
+		<result property="examType" column="exam_type" />
+		<result property="examName" column="exam_name" />
+		<result property="preciseStartDate" column="precise_start_date" />
+		<result property="preciseEndDate" column="precise_end_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="term" column="term_code" />
+		<result property="taskType" column="task_type" />
+		<result property="taskOnline" column="task_online" />
+		<result property="taskRate" column="task_rate" />
+		<result property="rateType" column="rate_type" />
+		<result property="schoolId" column="school_id" />
+		<result property="code" column="code" />
+		<result property="examNumber" column="exam_number" />
+		<result property="gradeId" column="gradeId" />
+		<result property="isSuoDing" column="is_suoding"/>
+
+	</resultMap>
+
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ExamTeamSubject">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_exam_team_subject (
+			id, 
+			team_id, 
+			subject_code, 
+			school_year, 
+			exam_type, 
+			exam_name, 
+			precise_start_date, 
+			precise_end_date, 
+			is_delete, 
+			create_date, 
+			modify_date,
+			term_code,
+			task_type,
+			task_online,
+			task_rate,
+			rate_type,
+			code,
+			school_id,
+			uuid,
+		    exam_number,
+		    is_suoding
+		)
+		VALUES (
+			#{id}, 
+			#{teamId}, 
+			#{subjectCode}, 
+			#{schoolYear}, 
+			#{examType}, 
+			#{examName}, 
+			#{preciseStartDate}, 
+			#{preciseEndDate}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate},
+			#{term},
+			#{taskType},
+			#{taskOnline},
+			#{taskRate},
+			#{rateType},
+			#{id},
+			#{schoolId},
+			#{uuid},
+			#{examNumber},
+			0
+		)
+	</insert>
+
+	<insert id="createquest" parameterType="platform.education.generalTeachingAffair.model.ExamQuestionVo">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="args[0].id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_exam_team_subject_question (exam_team_subject_id,
+		subject_code,
+		is_delete,
+		create_time,
+		modiy_time,
+		title,
+		school_year,
+		school_trem,
+		grade_id,
+		team_id,
+		exam_type,
+		exam_name,
+		school_id,
+		ordere,
+		fenzhi)
+		value(#{args[0].examTeamSubjectId},
+		#{args[0].subjectCode},
+		0,
+		#{args[0].createTime},
+		#{args[0].modiyTime},
+		#{args[0].title},
+		#{args[0].schoolYear},
+		#{args[0].schoolTrem},
+		#{args[0].gradeId},
+		#{args[0].teamId},
+		#{args[0].examType},
+		#{args[0].examName},
+		#{args[0].schoolId},
+		#{args[0].order},
+		0)
+	</insert>
+
+	<insert id="createquestScore" parameterType="platform.education.generalTeachingAffair.model.ExamQuestionScoreVo">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_exam_team_subject_question_score (exam_queaction_id,
+		subject_code,
+		is_delete,
+		create_time,
+		modiy_time,
+		student_id,
+		fenzhi,
+		score,
+		school_year,
+		school_trem,
+		grade_id,
+		team_id,
+		school_id,
+		exam_type,
+		exam_name)
+		value(#{args[0].examQueactionId},
+		#{args[0].subjectCode},
+		0,
+		#{args[0].createTime},
+		#{args[0].modiyTime},
+		#{args[0].studentId},
+		0,
+		0,
+		#{args[0].schoolYear},
+		#{args[0].schoolTrem},
+		#{args[0].gradeId},
+		#{args[0].teamId},
+		#{args[0].schoolId},
+		#{args[0].examType},
+		#{args[0].examName}
+		)
+	</insert>
+
+	<select id="read" resultMap="examTeamSubjectResult" useCache="false">
+		SELECT * FROM pj_exam_team_subject WHERE 1=1 and is_delete = 0 
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+
+	<select id="findGradeByCondition" resultMap="ExamTeamSubjectVoRest">
+		SELECT pets.*,ps.name as subject_name FROM pj_exam_team_subject pets
+		INNER JOIN pj_team pt on pets.team_id = pt.id
+		inner join pj_subject ps on ps.code=pets.subject_code WHERE 1=1
+		AND pets.is_delete  = 0
+		AND pt.is_delete  = 0
+			<if test="args[2] != null">
+				AND pets.school_year =#{args[2]}
+			</if>
+			<if test="args[4] != null">
+				AND pets.exam_type = #{args[4]}
+			</if>
+
+			<if test="args[3] != null">
+				AND pets.term_code = #{args[3]}
+			</if>
+			<if test="args[1]!= null">
+				AND pets.school_id = #{args[1]}
+			</if>
+			<if test="args[0] != null">
+				AND pt.grade_id = #{args[0]}
+			</if>
+			group by pets.subject_code
+	</select>
+
+	<select id="findExamTeamSubjectByCondition" resultMap="examTeamSubjectResult" useCache="false">
+		
+		 SELECT pets.* FROM pj_exam_team_subject pets INNER JOIN pj_team pt on pets.team_id = pt.id WHERE 1=1 
+		 	 AND pets.is_delete  = 0
+			 AND pt.is_delete  = 0
+		<if test="args[0] != null">
+			
+			<if test="args[0].id != null">
+				AND pets.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND pets.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND pets.subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND pets.school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].examType != null and args[0].examType != ''">
+				AND pets.exam_type = #{args[0].examType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].examName != null and args[0].examName != ''">
+				AND pets.exam_name = #{args[0].examName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].preciseStartDate != null">
+				AND pets.precise_start_date = #{args[0].preciseStartDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].preciseEndDate != null">
+				AND pets.precise_end_date = #{args[0].preciseEndDate,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].createDate != null">
+				AND pets.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND pets.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].term != null">
+				AND pets.term_code = #{args[0].term}
+			</if>
+			
+			<if test="args[0].taskType != null">
+				AND pets.task_type = #{args[0].taskType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskOnline != null">
+				AND pets.task_online = #{args[0].taskOnline,javaType=java.lang.Integer}
+			</if>
+			
+			<if test="args[0].taskRate != null">
+				<choose>
+					<when test="args[0].taskRate == true">
+						AND pets.task_rate  = 1
+					</when>
+					<otherwise>
+						AND pets.task_rate  = 0
+					</otherwise>
+				</choose>
+			</if>
+			
+			<if test="args[0].rateType != null">
+				AND pets.rate_type = #{args[0].rateType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND pets.code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND pets.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND pt.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_exam_team_subject 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].examType != null and args[0].examType != ''">
+				AND exam_type = #{args[0].examType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].examName != null and args[0].examName != ''">
+				AND exam_name = #{args[0].examName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].preciseStartDate != null">
+				AND precise_start_date = #{args[0].preciseStartDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].preciseEndDate != null">
+				AND precise_end_date = #{args[0].preciseEndDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].term != null">
+				AND term_code = #{args[0].term}
+			</if>
+			
+			<if test="args[0].taskType != null">
+				AND task_type = #{args[0].taskType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskOnline != null">
+				AND task_online = #{args[0].taskOnline,javaType=java.lang.Integer}
+			</if>
+			
+			
+			<if test="args[0].taskRate != null">
+				<choose>
+					<when test="args[0].taskRate == true">
+						AND task_rate  = 1
+					</when>
+					<otherwise>
+						AND task_rate  = 0
+					</otherwise>
+				</choose>
+			</if>
+			
+			<if test="args[0].rateType != null">
+				AND rate_type = #{args[0].rateType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="examTeamSubjectResult" useCache="false">
+		SELECT * FROM pj_exam_team_subject WHERE id = #{args[0],javaType=java.lang.Integer} and is_delete = 0 
+	</select>
+	<select id="findByExamId" resultMap="examTeamSubjectResult" useCache="false">
+		SELECT pext.*,pt.grade_id as gradeId FROM pj_exam_team_subject pext inner join pj_team pt on pt.id=pext.team_id
+		WHERE pext.id = #{args[0],javaType=java.lang.Integer} and pext.is_delete = 0  and pt.is_delete=0
+	</select>
+	<select id="findAvgScoreTeam" resultType="java.lang.Double">
+		select CAST(avg(pss.score) as decimal(10,2)) as avgScore from pj_student_score pss
+		inner join pj_exam_team_subject pets  on pets.id=pss.exam_team_subject_id
+		inner join pj_team pt on pt.id=pets.team_id
+		inner join pj_subject ps on ps.code=pss.subject_code
+		where pets.school_year=#{args[1]} and pets.exam_type=#{args[5]}
+		and pets.is_delete=0 and pt.grade_id=#{args[3]}
+		and pets.term_code =#{args[2]} and ps.code=#{args[4]} and pss.school_id=#{args[0]}
+		group by pt.id ,ps.id
+		order by pt.team_number asc;
+	</select>
+
+	<select id="findAvgScoreGrade" resultType="java.lang.Double">
+		select CAST(avg(pss.score) as decimal(10,2)) as avgScore from pj_student_score pss
+		inner join pj_exam_team_subject pets  on pets.id=pss.exam_team_subject_id
+		inner join pj_team pt on pt.id=pets.team_id
+		inner join pj_subject ps on ps.code=pss.subject_code
+		where pets.school_year=#{args[1]} and pets.exam_type in (1,2)
+		and pets.is_delete=0 and pt.grade_id=#{args[3]}
+		and pets.term_code =#{args[2]} and ps.code=#{args[4]} and pss.school_id=#{args[0]}
+		group by ps.id,pets.exam_type
+		order by pt.team_number asc;
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ExamTeamSubject">
+		UPDATE pj_exam_team_subject pje
+		SET 
+		<if test="teamId != null">
+			pje.team_id=#{teamId},
+		</if>
+		<if test="subjectCode != null">
+			pje.subject_code=#{subjectCode},
+		</if>
+		<if test="schoolYear != null">
+			pje.school_year=#{schoolYear},
+		</if>
+		<if test="examType != null">
+			pje.exam_type=#{examType},
+		</if>
+		<if test="examName != null">
+			pje.exam_name=#{examName},
+		</if>
+		<if test="preciseStartDate != null">
+			pje.precise_start_date=#{preciseStartDate},
+		</if>
+		<if test="preciseEndDate != null">
+			pje.precise_end_date=#{preciseEndDate},
+		</if>
+		
+		
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					pje.is_delete  = 1,
+				</when>
+				<otherwise>
+					pje.is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		
+		<if test="createDate != null">
+			pje.create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			pje.modify_date=#{modifyDate},
+		</if>
+		<if test="term != null">
+		 	pje.term_code = #{term},
+		</if>
+		
+		<if test="taskType != null">
+			 pje.task_type = #{taskType,javaType=java.lang.Integer},
+		</if>
+		<if test="taskOnline != null">
+			 pje.task_online = #{taskOnline,javaType=java.lang.Integer},
+		</if>
+		
+		
+		<if test="taskRate != null">
+				<choose>
+					<when test="taskRate == true">
+						task_rate  = 1,
+					</when>
+					<otherwise>
+						task_rate  = 0,
+					</otherwise>
+				</choose>
+		</if>
+			
+			<if test="rateType != null">
+				rate_type = #{rateType,javaType=java.lang.Integer},
+			</if>
+			<if test="code != null and args[0].code != ''">
+				code = #{code,javaType=java.lang.String},
+			</if>
+			<if test="schoolId != null">
+				school_id = #{schoolId,javaType=java.lang.Integer},
+			</if>
+			<if test="uuid != null and uuid != ''"> uuid = #{uuid,javaType=java.lang.String},  </if>
+		    <if test="examNumber != null and examNumber != ''">
+			exam_number = #{examNumber},
+			</if>
+		pje.id = #{id}
+		WHERE pje.id = #{id}
+		and pje.is_delete = 0 
+	</update>
+	
+	<update id="delete">
+		update pj_exam_team_subject 
+		set is_delete = 1,
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+</mapper>

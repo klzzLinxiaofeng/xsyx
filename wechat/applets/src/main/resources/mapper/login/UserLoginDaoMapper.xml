@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.login.dao.UserLoginDao">
+    <resultMap id="UserLoginDaoResult" type="com.xunyunedu.login.pojo.UserPojo">
+        <result property="id" column="id"/>
+        <result property="personId" column="person_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="password" column="password"/>
+        <result property="validDate" column="valid_date"/>
+        <result property="state" column="state"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createDate" column="create_date"/>
+
+        <result property="modifyDate" column="modify_date"/>
+    </resultMap>
+
+    <resultMap id="userBindingResult" type="com.xunyunedu.login.pojo.UserBindingPojo">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="binding_name" property="bindingName"/>
+        <result column="binding_type" property="bindingType"/>
+        <result column="enabled" property="enabled"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+    </resultMap>
+
+
+    <select id="getUserInfoByName" resultMap="UserLoginDaoResult">
+          select user.* from yh_user_binding b join
+          yh_user user on user.id = b.user_id
+            where b.is_deleted = 0  and b.binding_name = #{name}  and b.binding_type = #{bindType}
+            and user.is_deleted = 0 and user.state = 0
+    </select>
+
+    <select id="getRoleType" resultType="com.xunyunedu.login.pojo.RolePojo">
+        select id,name,user_type userType from yh_role where id in (
+            select role_id from yh_user_role where user_id = #{id} and is_deleted = 0
+        ) and yh_role.user_type = #{type}
+    </select>
+
+    <select id="findByUserName" resultMap="UserLoginDaoResult" useCache="false">
+		SELECT * FROM yh_user WHERE user_name = #{userName} AND is_deleted = 0
+	</select>
+
+    <update id="update" parameterType="com.xunyunedu.login.pojo.UserPojo">
+        UPDATE yh_user
+        SET
+        <if test="personId != null">
+            person_id=#{personId},
+        </if>
+        <if test="userName != null">
+            user_name=#{userName},
+        </if>
+        <if test="password != null">
+            password=#{password},
+        </if>
+        <if test="validDate != null">
+            valid_date=#{validDate},
+        </if>
+        <if test="state != null">
+            state=#{state},
+        </if>
+        <if test="isDeleted != null">
+            is_deleted=#{isDeleted},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        <if test="openId != null and openId != ''">
+            open_id= #{openId},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateBindMobile">
+        update yh_user_binding
+        <set>
+            <if test="modifyDate != null"> modify_date = #{modifyDate}, </if>
+            <if test="bindingName != null and bindingName != ''"> binding_name = #{bindingName}, </if>
+        </set>
+        <where>
+            <if test="userId != null"> user_id = #{userId}</if>
+            <if test="bindingType != null and bindingType != ''"> and binding_type = #{bindingType}</if>
+        </where>
+    </update>
+
+
+
+    <select id="findByBindName" resultMap="userBindingResult">
+        SELECT * FROM yh_user_binding
+			WHERE is_deleted = 0
+			<if test="bindingName != null and bindingName != ''"> and binding_name = #{bindingName} </if>
+			<if test="bindingType != null and bindingType != ''"> and binding_type = #{bindingType} </if>
+			<if test="userId != null"> and user_id = #{userId} </if>
+    </select>
+
+    <select id="selectById" resultMap="UserLoginDaoResult">
+        select * from yh_user where id = #{id}
+    </select>
+</mapper>

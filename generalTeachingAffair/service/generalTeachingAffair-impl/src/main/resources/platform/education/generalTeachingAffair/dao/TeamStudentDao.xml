@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.TeamStudentDao">
+
+	<resultMap id="TeamStudentResult" type="platform.education.generalTeachingAffair.model.TeamStudent">
+		<result property="id" column="id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="name" column="name" />
+		<result property="number" column="number" />
+		<result property="joinDate" column="join_date" />
+		<result property="finishDate" column="finish_date" />
+		<result property="recordDate" column="record_date" />
+		<result property="position" column="position" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+
+		<result property="isDelete" column="is_delete" />
+		<!-- 用户ID（2015-12-15） -->
+		<result property="userId" column="user_id" />
+		<!-- 迁入/迁出状态（2015-12-22） -->
+		<result property="inState" column="in_state" />
+
+	</resultMap>
+		<resultMap id="TeamStudentVoResult" type="platform.education.generalTeachingAffair.vo.TeamStudentVo">
+		<result property="id" column="id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="name" column="name" />
+		<result property="number" column="number" />
+		<result property="joinDate" column="join_date" />
+		<result property="finishDate" column="finish_date" />
+		<result property="recordDate" column="record_date" />
+		<result property="position" column="position" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+
+		<result property="isDelete" column="is_delete" />
+		<!-- 用户ID（2015-12-15） -->
+		<result property="userId" column="user_id" />
+		<!-- 迁入/迁出状态（2015-12-22） -->
+		<result property="inState" column="in_state" />
+		<result property="studentNumber" column="student_number" />
+		<result property="teamName" column="team_name" />
+		<result property="gradeName" column="grade_name" />
+		<result property="teamCode" column="team_code" />
+	</resultMap>
+
+	<resultMap id="TeamStudentResultMore" type="platform.education.generalTeachingAffair.vo.TeamStudentVo">
+		<result property="id" column="id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="name" column="name" />
+		<result property="number" column="number" />
+		<result property="joinDate" column="join_date" />
+		<result property="finishDate" column="finish_date" />
+		<result property="recordDate" column="record_date" />
+		<result property="position" column="position" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="schoolYearName" column="syn" />
+		<result property="gradeName" column="gn" />
+		<result property="schoolYear" column="sy" />
+		<result property="teamName" column="tn" />
+		<result property="healthType" column="ht" />
+	</resultMap>
+
+	<resultMap id="TeamStudentResult1" type="platform.education.generalTeachingAffair.vo.TeamStudentVo">
+		<result property="id" column="id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="name" column="name" />
+		<result property="number" column="number" />
+		<result property="joinDate" column="join_date" />
+		<result property="finishDate" column="finish_date" />
+		<result property="recordDate" column="record_date" />
+		<result property="position" column="position" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="studentNumber" column="student_number" />
+		<result property="sex" column="sex" />
+		<result property="mobile" column="mobile" />
+		<result property="studyState" column="study_state" />
+		<result property="empCard" column="emp_card" />
+		<result property="empCode" column="emp_code" />
+	</resultMap>
+
+	<resultMap id="TeamStudentResult2" type="platform.education.generalTeachingAffair.vo.TeamStudentVo">
+		<result property="teamId" column="team_id" />
+		<result property="stuNum" column="stuNum" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.TeamStudent">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_team_student (id, grade_id, team_id, student_id, name, number, join_date, finish_date, record_date, position, create_date, modify_date, is_delete, user_id, in_state)
+		VALUES (#{id}, #{gradeId}, #{teamId}, #{studentId}, #{name}, #{number}, #{joinDate}, #{finishDate}, #{recordDate}, #{position}, #{createDate}, #{modifyDate}, #{isDelete}, #{userId}, #{inState})
+	</insert>
+
+	<select id="read" resultMap="TeamStudentResult" useCache="false">
+		SELECT * FROM pj_team_student WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findTeamStudentByCondition" resultMap="TeamStudentResult" useCache="false">
+		SELECT * FROM pj_team_student 
+		<if test="args[0] != null">
+			WHERE 1=1 and is_delete=0
+			<if test="args[0].id != null">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+			AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+			AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+			AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<!-- 用户ID（2015-12-15） -->
+			<if test="args[0].userId != null">
+			AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<choose>
+				<when test="args[0].pattern">
+					<if test="args[0].name != null and args[0].name != ''">
+						AND name like concat('%', #{args[0].name,javaType=java.lang.String}, '%') 
+					</if>
+				</when>
+				<otherwise>
+					<if test="args[0].name != null">
+						AND name = #{args[0].name,javaType=java.lang.String}
+					</if>
+				</otherwise>
+			</choose>
+			<if test="args[0].number != null">
+			AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].joinDate != null">
+			AND join_date = #{args[0].joinDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishDate != null">
+			AND finish_date = #{args[0].finishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].recordDate != null">
+			AND record_date = #{args[0].recordDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].position != null">
+			AND position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+
+			<!-- 迁入/迁出状态（2015-12-22） -->
+			<if test="args[0].inState != null">
+				<choose>
+					<when test="args[0].inState == true">
+						AND in_state  = 1
+					</when>
+					<otherwise>
+						AND in_state  = 0
+					</otherwise>
+				</choose>
+			</if>
+
+		</if>
+	</select>
+
+	<!-- 某学校当前学年下的所有班级学生 -->
+	<select id="findCurrentTeamStudentByCondition" resultMap="TeamStudentResult" useCache="false">
+		SELECT s.* FROM pj_team_student s
+		INNER JOIN pj_team t ON t.id=s.team_id
+		<if test="args[0] != null">
+			WHERE 1=1 AND s.is_delete=0 AND t.is_delete=0 AND s.finish_date IS NULL AND s.join_date IS NOT NULL
+			<if test="args[0].id != null">
+			AND s.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+			AND s.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+			AND s.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+			AND s.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null">
+			AND s.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].number != null">
+			AND s.number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].joinDate != null">
+			AND s.join_date = #{args[0].joinDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishDate != null">
+			AND s.finish_date = #{args[0].finishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].recordDate != null">
+			AND s.record_date = #{args[0].recordDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].position != null">
+			AND s.position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+			AND s.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+			AND s.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].schoolId != null">
+			AND t.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null">
+			AND t.school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+
+
+	<select id="findTeamStudentByConditionMore" resultMap="TeamStudentResultMore" useCache="false">
+		SELECT s.*, t.name tn, g.name gn, y.name syn, a.type ht FROM pj_team_student s 
+		INNER JOIN pj_student stu ON stu.id = s.student_id 
+		INNER JOIN pj_team t ON s.team_id = t.id 
+		INNER JOIN pj_grade g ON s.grade_id = g.id 
+		INNER JOIN pj_school_year y ON t.school_year = y.year 
+		LEFT JOIN pj_student_health_archive a ON s.id = a.team_student_id
+		<if test="args[0] != null">
+			WHERE 1=1 AND s.is_delete=0 AND t.is_delete=0 AND g.is_deleted=0 AND y.is_delete=0 AND stu.is_delete=0 AND a.is_delete=0
+			<if test="args[0].id != null">
+			AND s.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+			AND s.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+			AND s.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+			AND s.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+			AND s.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].number != null">
+			AND s.number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].joinDate != null">
+			AND s.join_date = #{args[0].joinDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishDate != null">
+			AND s.finish_date = #{args[0].finishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].recordDate != null">
+			AND s.record_date = #{args[0].recordDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].position != null">
+			AND s.position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+			AND s.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+			AND s.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+			AND t.school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].healthType != null and args[0].healthType != ''">
+			AND a.type = #{args[0].healthType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+			AND t.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+			AND g.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+			AND y.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+			AND a.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+			AND stu.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			order by a.create_date desc
+		</if>
+	</select>
+
+	<!-- 	于2016-1-21 将stu.user_name前面的一个查询列stu.user_id去掉了，因为在s.*中已包含user_id，还学校条件和学年条件放在了前面，之前放在最后面-->
+	<!-- 	这些修改 对这里的功能没有任何影响，如果对其他功能有影响  请按照上面的恢复 -->
+	<select id="findTeamStudentByConditionStudent" resultMap="TeamStudentResult1" useCache="false">
+		SELECT 
+		  s.*,
+		  stu.user_name,
+		  stu.emp_code,
+		  stu.sex,
+		  stu.mobile,
+		  stu.study_state,
+		 stu.emp_card
+		FROM
+		  pj_team_student s,
+		  pj_student stu,
+		  pj_team t 
+		WHERE stu.id = s.student_id 
+		  AND t.id = s.team_id 
+		  AND s.finish_date IS NULL
+		<if test="args[0] != null">
+			<if test="args[0].schoolId != null">
+			AND stu.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+			AND t.school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			 AND s.is_delete=0 AND stu.is_delete=0 AND t.is_delete=0
+			<if test="args[0].id != null">
+			AND s.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+			AND s.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+			AND s.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+			AND s.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<choose>
+				<when test="args[0].pattern">
+					<if test="args[0].name != null and args[0].name != ''">
+						AND s.name like concat('%', #{args[0].name,javaType=java.lang.String}, '%') 
+					</if>
+				</when>
+				<otherwise>
+					<if test="args[0].name != null">
+						AND name = #{args[0].name,javaType=java.lang.String}
+					</if>
+				</otherwise>
+			</choose>
+
+			<if test="args[0].joinDate != null">
+			AND s.join_date = #{args[0].joinDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishDate != null">
+			AND s.finish_date = #{args[0].finishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].recordDate != null">
+			AND s.record_date = #{args[0].recordDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+			AND s.position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+			AND s.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+			AND s.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+
+	<select id="findTeamStudentByConditionStudentSchoolBus" resultMap="TeamStudentResult1" useCache="false">
+		SELECT
+		  s.*,
+		  stu.user_name,
+		  stu.student_number,
+		  stu.sex,
+		  stu.mobile,
+		  stu.study_state,
+		  stu.emp_card
+		FROM
+        pj_student stu
+        inner join pj_team_student s on stu.id = s.student_id
+        inner JOIN pj_team t ON t.id = s.team_id
+        WHERE s.finish_date IS NULL and not exists (select psbm.student_id from pj_school_bus_manger psbm where psbm.student_id = stu.id )
+		<if test="args[0] != null">
+			<if test="args[0].schoolId != null">
+			AND stu.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+			AND t.school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			 AND s.is_delete=0 AND stu.is_delete=0 AND t.is_delete=0
+			<if test="args[0].id != null">
+			AND s.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+			AND s.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+			AND s.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+			AND s.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<choose>
+				<when test="args[0].pattern">
+					<if test="args[0].name != null and args[0].name != ''">
+						AND s.name like concat('%', #{args[0].name,javaType=java.lang.String}, '%')
+					</if>
+				</when>
+				<otherwise>
+					<if test="args[0].name != null">
+						AND name = #{args[0].name,javaType=java.lang.String}
+					</if>
+				</otherwise>
+			</choose>
+			<if test="args[0].number != null">
+			AND s.number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].joinDate != null">
+			AND s.join_date = #{args[0].joinDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishDate != null">
+			AND s.finish_date = #{args[0].finishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].recordDate != null">
+			AND s.record_date = #{args[0].recordDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+			AND s.position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+			AND s.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+			AND s.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="TeamStudentResult" useCache="false">
+		SELECT * FROM pj_team_student 
+		WHERE is_delete=0 
+		and id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<select id="findByIdMore" resultMap="TeamStudentResultMore" useCache="false">
+		SELECT s.*,t.school_year sy, t.name tn, g.name gn, y.name syn FROM pj_team_student s 
+			INNER JOIN pj_team t ON s.team_id = t.id 
+			INNER JOIN pj_grade g ON s.grade_id = g.id 
+			INNER JOIN pj_school_year y ON t.school_year = y.year 
+			WHERE s.id = #{args[0],javaType=java.lang.Integer}
+			AND t.school_id = #{args[1],javaType=java.lang.Integer}
+			AND g.school_id = #{args[1],javaType=java.lang.Integer} 
+			AND y.school_id = #{args[1],javaType=java.lang.Integer}
+			AND t.is_delete=0 AND g.is_deleted=0 AND y.is_delete=0 
+	</select>
+
+	<select id="findUnique" resultMap="TeamStudentResult" useCache="false">
+		SELECT * FROM pj_team_student WHERE is_delete =0 and team_id = #{args[0],javaType=java.lang.Integer} AND student_id = #{args[1],javaType=java.lang.Integer} AND finish_date IS NULL AND join_date IS NOT NULL
+	</select>
+
+	<select id="findUnique2" resultMap="TeamStudentResult" useCache="false">
+	select pts.* from pj_team_student pts inner join  pj_grade pg on pg.id=pts.grade_id
+	where pts.student_id=#{args[1]} and pts.is_delete=0 AND pts.finish_date IS NULL AND pts.join_date IS NOT NULL
+		and pts.team_id=#{args[0]} and pg.school_year=#{args[2]}
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.TeamStudent">
+		UPDATE pj_team_student
+		SET 
+				<if test="teamId != null">
+					team_id=#{teamId},
+				</if>
+				<if test="studentId != null">
+					student_id=#{studentId},
+				</if>
+				<!-- 用户ID（2015-12-15） -->
+				<if test="userId != null">
+					user_id=#{userId},
+				</if>
+				<if test="name != null">
+					name=#{name},
+				</if>
+				<if test="number != null">
+					number=#{number},
+				</if>
+				<if test="joinDate != null">
+					join_date=#{joinDate},
+				</if>
+				<if test="finishDate != null">
+					finish_date=#{finishDate},
+				</if>
+				<if test="recordDate != null">
+					record_date=#{recordDate},
+				</if>
+				<if test="position != null">
+					position=#{position},
+				</if>
+				<if test="createDate != null">
+					create_date=#{createDate},
+				</if>
+				<if test="modifyDate != null">
+					modify_date=#{modifyDate},
+				</if>
+				<if test="isDelete != null">
+					is_delete=#{isDelete},
+				</if>
+				<!-- 迁入/迁出状态（2015-12-22） -->
+				<if test="inState != null">
+					in_state=#{inState},
+				</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_team_student
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findTeamNum" resultMap="TeamStudentResult2" useCache="false">
+		select pjts.team_id, COUNT(*) stuNum from pj_team_student pjts where pjts.is_delete=0 and pjts.finish_date is null GROUP BY pjts.team_id
+	</select>
+
+
+	<select id="findTeamStudentByConditionForTransfer" resultMap="TeamStudentResult" useCache="false">
+		SELECT * FROM pj_team_student 
+		<if test="args[0] != null">
+			WHERE 1=1 and is_delete=0
+			<if test="args[0].id != null">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+			AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+			AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+			AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null">
+			AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].number != null">
+			AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].joinDate != null">
+			AND join_date = #{args[0].joinDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishDate != null">
+			AND finish_date is null
+			</if>
+			<if test="args[0].recordDate != null">
+			AND record_date = #{args[0].recordDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].position != null">
+			AND position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<!-- 根据不同条件获得对应的记录数  2015-12-25 -->
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_team_student 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].joinDate != null">
+				AND join_date = #{args[0].joinDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishDate != null">
+				AND finish_date = #{args[0].finishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].recordDate != null">
+				AND record_date = #{args[0].recordDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].inState != null">
+				<choose>
+					<when test="args[0].inState == true">
+						AND in_state  = 1
+					</when>
+					<otherwise>
+						AND in_state  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+	<select id="findTeamStudentsByTeamId" resultMap="TeamStudentResult1" useCache="false">
+		SELECT ts.*, s.sex, s.user_id, s.user_name, s.mobile, s.student_number FROM pj_team_student ts INNER JOIN pj_student s ON ts.student_id = s.id
+		WHERE s.is_delete=0 AND ts.is_delete = 0 AND ts.finish_date is null
+		<if test="args[0]!=null and args[0]!=''">
+			AND ts.team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+	</select>
+
+	<select id="findByTeamId" resultMap="TeamStudentResult" useCache="false">
+		SELECT * FROM pj_team_student WHERE is_delete = 0 AND in_state = 1 AND team_id =  #{args[0],javaType=java.lang.Integer}
+	</select>
+	<select id="findByTeamId2" resultMap="TeamStudentResult" useCache="false">
+		SELECT pts.* FROM pj_team_student pts
+		inner join pj_student ps on ps.id=pts.student_id
+		WHERE pts.is_delete = 0 AND ps.is_delete=0 AND pts.in_state = 1 AND pts.team_id =  #{args[0],javaType=java.lang.Integer}
+		<if test="args[1]!=null and args[1]!=''">
+			AND ps.study_state= #{args[1],javaType=java.lang.String}
+		</if>
+	</select>
+
+	<select id="findByTeamIds" resultMap="TeamStudentResult" useCache="false">
+		SELECT * FROM pj_team_student WHERE is_delete = 0 AND in_state = 1 AND team_id IN  
+		<foreach collection="args[0]" item="item" index="index" separator="," open="(" close=")" >
+		#{item}
+		</foreach>
+	</select>
+		<select id="findTeamStudentVoByTeamIds" resultMap="TeamStudentVoResult" useCache="false">
+		SELECT ptt.*,ps.student_number FROM pj_team_student ptt 
+
+       INNER JOIN pj_student ps ON ps.id=ptt.student_id
+		
+		WHERE ptt.is_delete = 0 AND ptt.in_state = 1 
+
+        AND ptt.team_id IN  
+		<foreach collection="args[0]" item="item" index="index" separator="," open="(" close=")" >
+		#{item}
+		</foreach>
+	</select>
+
+	<select id="findGradeStudentCountByGradeId" resultType="java.lang.Integer" useCache="false">
+		SELECT
+			SUM(t.student_count) student_count
+		FROM
+			pj_team t
+		LEFT JOIN pj_grade g ON t.grade_id = g.id
+		where
+		t.is_delete = 0
+		and g.is_deleted =0 
+		<if test="args[0] != 0">
+		and g.id = #{args[0]}
+		</if>
+	</select>
+
+	<select id="findMaxTeamNumberByTeamId" resultType="java.lang.Integer" useCache="false">
+		SELECT
+			max(number)
+		FROM
+			pj_team_student
+		where team_id = #{args[0]}
+		and is_delete = 0
+	</select>
+
+	<update id="deleteByTeamId">
+		UPDATE 
+		  pj_team_student 
+		SET
+		  is_delete = 1,
+		  modify_date = NOW() 
+		WHERE team_id = #{args[0]}
+		  AND is_delete = 0 
+	</update>
+
+	<select id="findTeamStudentVo" resultMap="TeamStudentVoResult" useCache="false">
+		SELECT
+			ts.*,
+			t.`name` team_name,
+			t.`code` team_code,
+			g.`name` grade_name
+		FROM pj_team_student ts
+		LEFT JOIN pj_team t ON ts.team_id = t.id
+		LEFT JOIN pj_grade g ON ts.grade_id = g.id
+		WHERE 1=1
+		AND ts.is_delete = 0
+		AND ts.in_state = 1
+		AND t.is_delete = 0
+		AND g.is_deleted = 0
+		<if test="args[0] != null">
+			AND t.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null and args[1] != ''">
+			AND t.school_year = #{args[1],javaType=java.lang.String}
+		</if>
+		<if test="args[2] != null">
+			AND t.grade_id = #{args[2],javaType=java.lang.Integer}
+		</if>
+		<if test="args[3] != null">
+			AND t.id = #{args[3],javaType=java.lang.Integer}
+		</if>
+		ORDER BY g.uni_grade_code, t.team_number
+	</select>
+
+</mapper>

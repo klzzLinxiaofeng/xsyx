@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.knowledge.dao.KnowLedgeDao">
+
+ <resultMap id="KnowLedgeMap" type="platform.szxyzxx.knowledge.vo.KnowLedge">
+   <id column="id" property="id"></id>
+   <result column="grade_id" property="gradeId"></result>
+   <result column="gradeName" property="gradeName"></result>
+     <result column="subject_id" property="subjectId"></result>
+     <result column="subjectName" property="subjectName"></result>
+     <result column="school_year" property="schoolYear"></result>
+     <result column="school_trem" property="schoolYear"></result>
+     <result column="name" property="name"></result>
+     <result column="is_delete" property="isDelete"></result>
+     <result column="create_time" property="createTime"></result>
+     <result column="modiy_time" property="modiyTime"></result>
+ </resultMap>
+
+    <resultMap id="MenuMap" type="platform.szxyzxx.knowledge.vo.Menu">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="paixu" property="paixu"></result>
+        <result column="know_id" property="knowId"></result>
+        <result column="parent_menu" property="parentMenu"></result>
+        <result column="parent_menu_name" property="parentMenuName"></result>
+        <result column="leven" property="leven"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+    </resultMap>
+
+    <select id="findByAllMenu" resultMap="MenuMap">
+        select * from  zy_knowledge_menu
+        <where>
+            is_delete=0
+            <if test="args[0]!=null">
+                and know_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and leven=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and parent_menu=#{args[2]}
+            </if>
+        </where>
+        order by paixu asc
+    </select>
+
+    <select id="findByMenuId" resultMap="MenuMap">
+        select zk.*,zkm.name as parent_menu_name  from  zy_knowledge_menu zk
+        left join  zy_knowledge_menu zkm on zkm.id=zk.parent_menu
+        where zk.id=#{args[0]} and zk.is_delete=0
+        group by zk.id
+    </select>
+    <update id="updateMenu">
+        update  zy_knowledge_menu set name=#{args[0].name},paixu=#{args[0].paixu},parent_menu=#{args[0].parentMenu},
+        leven=#{args[0].leven}
+        where id=#{args[0].id} and is_delete=0
+    </update>
+    <update id="updateDeleteMenu">
+        update  zy_knowledge_menu set is_delete=1
+        where id=#{args[0]}
+    </update>
+    <insert id="createMenu">
+        insert into zy_knowledge_menu(name,paixu,know_id,parent_menu,leven,is_delete,create_time,modiy_time)
+        value(#{args[0].name},#{args[0].paixu},#{args[0].knowId},#{args[0].parentMenu},#{args[0].leven},0,NOW(),NOW())
+    </insert>
+
+    <select id="findByAll" resultMap="KnowLedgeMap">
+       select zk.*,pg.name as gradeName from zy_knowledge zk inner join pj_grade pg on pg.id=zk.grade_id
+       <where>
+            zk.is_delete=0
+           <if test="args[0]!=null">
+               and  zk.name like concat ('%',#{args[0]},'%')
+           </if>
+           <if test="args[1]!=null">
+               and  zk.grade_id=#{args[1]}
+           </if>
+           <if test="args[2]!=null">
+               and  zk.subject_id=#{args[2]}
+           </if>
+       </where>
+        order by zk.create_time desc
+    </select>
+
+    <insert id="create">
+        insert into zy_knowledge(grade_id,school_year,school_trem,name,subject_id,is_delete,create_time,modiy_time)
+        value(#{args[0].gradeId},#{args[0].schoolYear},#{args[0].schoolTrem},#{args[0].name},#{args[0].subjectId},0,NOW(),NOW())
+    </insert>
+
+    <update id="updateDelete">
+        update  zy_knowledge  set is_delete=1 where id=#{args[0]}
+    </update>
+    <update id="update">
+      update  zy_knowledge
+      <set>
+          is_delete=0
+          <if test="args[0].gradeId!=null">
+              ,grade_id=#{args[0].gradeId}
+          </if>
+          <if test="args[0].subjectId!=null">
+             ,subject_id=#{args[0].subjectId}
+          </if>
+          <if test="args[0].name!=null">
+             ,name=#{args[0].name}
+          </if>
+      </set>
+      where id=#{args[0].id} and is_delete=0
+    </update>
+
+    <select id="findById" resultMap="KnowLedgeMap">
+         select * from zy_knowledge zk inner join pj_grade pg on pg.id=zk.grade_id
+        where  zk.is_delete=0 and zk.id=#{args[0]}
+    </select>
+
+</mapper>

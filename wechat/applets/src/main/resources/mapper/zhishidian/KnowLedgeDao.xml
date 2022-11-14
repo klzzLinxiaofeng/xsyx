@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.zhishidian.dao.KnowLedgeDao">
+
+ <resultMap id="KnowLedgeMap" type="com.xunyunedu.zhishidian.vo.KnowLedge">
+   <id column="id" property="id"></id>
+   <result column="grade_id" property="gradeId"></result>
+   <result column="gradeName" property="gradeName"></result>
+     <result column="subject_id" property="subjectId"></result>
+     <result column="subjectName" property="subjectName"></result>
+     <result column="school_year" property="schoolYear"></result>
+     <result column="school_trem" property="schoolYear"></result>
+     <result column="name" property="name"></result>
+     <result column="is_delete" property="isDelete"></result>
+     <result column="create_time" property="createTime"></result>
+     <result column="modiy_time" property="modiyTime"></result>
+ </resultMap>
+    <resultMap id="KnowEvaluationMap" type="com.xunyunedu.zhishidian.vo.KnowEvaluation">
+        <id column="id" property="id"></id>
+        <result column="knowMenuId" property="knowMenuId"/>
+        <result column="knowMenuName" property="knowMenuName"/>
+        <result column="student_id" property="studentId"/>
+        <result column="studentName" property="studentName"/>
+        <result column="pingfen" property="pingfen"/>
+        <result column="pingyu" property="pingyu"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modiy_time" property="modiyTime"/>
+    </resultMap>
+
+
+
+    <select id="findByAll" resultMap="KnowLedgeMap">
+       select zk.*,pg.name as gradeName from zy_knowledge zk inner join pj_grade pg on pg.id=zk.grade_id
+       <where>
+            zk.is_delete=0
+           <if test="gradeId!=null">
+               and  zk.grade_id=#{gradeId}
+           </if>
+           <if test="subject!=null">
+               and  zk.subject_id=#{subject}
+           </if>
+       </where>
+        order by zk.create_time desc
+    </select>
+    <select id="findByPinjai" resultMap="KnowEvaluationMap">
+        select zkm.id as knowMenuId,zkm.name as knowMenuName from  zy_knowledge_menu zkm
+        <where>
+            zkm.is_delete=0
+            <if test="knowId!=null">
+                and zkm.know_id=#{knowId}
+            </if>
+            <if test="leven!=null">
+                and zkm.leven=#{leven}
+            </if>
+            <if test="parentMenu!=null">
+                and zkm.parent_menu=#{parentMenu}
+            </if>
+        </where>
+        order by zkm.paixu asc
+    </select>
+
+   <select id="findById" resultMap="KnowEvaluationMap">
+       select * from zy_know_evaluation
+       where student_id=#{studentId} and knowMenu_id=#{ziMenu} and is_delete=0
+   </select>
+
+</mapper>

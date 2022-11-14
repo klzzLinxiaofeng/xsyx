@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.TestAddDao">
+
+	<resultMap id="TestAddResult" type="platform.education.generalTeachingAffair.model.TestAdd">
+		<result property="id" column="id" />
+		<result property="teamId" column="team_id" />
+		<result property="studentName" column="student_name" />
+		<result property="fatherName" column="father_name" />
+		<result property="fatherMobile" column="father_mobile" />
+		<result property="motherName" column="mother_name" />
+		<result property="motherMobile" column="mother_mobile" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.TestAdd">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO test_add (
+			id, 
+			team_id, 
+			student_name, 
+			father_name, 
+			father_mobile, 
+			mother_name, 
+			mother_mobile
+		)
+		VALUES (
+			#{id}, 
+			#{teamId}, 
+			#{studentName}, 
+			#{fatherName}, 
+			#{fatherMobile}, 
+			#{motherName}, 
+			#{motherMobile}
+		)
+	</insert>
+
+	<select id="read" resultMap="TestAddResult" useCache="false">
+		SELECT * FROM test_add WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findTestAddByCondition" resultMap="TestAddResult" useCache="false">
+		SELECT * FROM test_add 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+				AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fatherName != null and args[0].fatherName != ''">
+				AND father_name = #{args[0].fatherName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fatherMobile != null and args[0].fatherMobile != ''">
+				AND father_mobile = #{args[0].fatherMobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].motherName != null and args[0].motherName != ''">
+				AND mother_name = #{args[0].motherName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].motherMobile != null and args[0].motherMobile != ''">
+				AND mother_mobile = #{args[0].motherMobile,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM test_add 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+				AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fatherName != null and args[0].fatherName != ''">
+				AND father_name = #{args[0].fatherName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fatherMobile != null and args[0].fatherMobile != ''">
+				AND father_mobile = #{args[0].fatherMobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].motherName != null and args[0].motherName != ''">
+				AND mother_name = #{args[0].motherName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].motherMobile != null and args[0].motherMobile != ''">
+				AND mother_mobile = #{args[0].motherMobile,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="TestAddResult" useCache="false">
+		SELECT * FROM test_add WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.TestAdd">
+		UPDATE test_add
+		SET 
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="studentName != null">
+			student_name=#{studentName},
+		</if>
+		<if test="fatherName != null">
+			father_name=#{fatherName},
+		</if>
+		<if test="fatherMobile != null">
+			father_mobile=#{fatherMobile},
+		</if>
+		<if test="motherName != null">
+			mother_name=#{motherName},
+		</if>
+		<if test="motherMobile != null">
+			mother_mobile=#{motherMobile},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM test_add
+		WHERE id = #{id}
+	</delete>
+</mapper>

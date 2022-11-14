@@ -1,0 +1,988 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+	default-autowire="byName">
+
+	<!-- 此配置实际生产环境需要去掉 由web项目统一配置管理 -->
+	<!-- <import resource="classpath*:generalTeachingAffair-datasource.xml"
+		/> -->
+	<!-- <import resource="classpath*:generalTeachingAffair-transaction.xml"
+		/> -->
+	<!-- baseDao -->
+
+	<bean id="personDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.PersonDao" />
+	</bean>
+	<bean id="personService"
+		class="platform.education.generalTeachingAffair.service.impl.PersonServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="teamTeacherDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.TeamTeacherDao" />
+	</bean>
+	<bean id="teamTeacherService"
+		class="platform.education.generalTeachingAffair.service.impl.TeamTeacherServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="teamStudentDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.TeamStudentDao" />
+	</bean>
+	<bean id="teamStudentService"
+		class="platform.education.generalTeachingAffair.service.impl.TeamStudentServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="teamDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.TeamDao" />
+	</bean>
+	<bean id="teamService"
+		class="platform.education.generalTeachingAffair.service.impl.TeamServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="teacherDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.TeacherDao" />
+	</bean>
+	<bean id="teacherService"
+		class="platform.education.generalTeachingAffair.service.impl.TeacherServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="subjectTeacherDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SubjectTeacherDao" />
+	</bean>
+	<bean id="subjectTeacherService"
+		class="platform.education.generalTeachingAffair.service.impl.SubjectTeacherServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="subjectDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SubjectDao" />
+	</bean>
+	<bean id="subjectService"
+		class="platform.education.generalTeachingAffair.service.impl.SubjectServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="studentDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.StudentDao" />
+	</bean>
+	<bean id="studentService" class="platform.education.generalTeachingAffair.service.impl.StudentServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="schoolYearDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SchoolYearDao" />
+	</bean>
+	<bean id="schoolYearService"
+		class="platform.education.generalTeachingAffair.service.impl.SchoolYearServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="schoolUserDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SchoolUserDao" />
+	</bean>
+	<bean id="schoolUserService"
+		class="platform.education.generalTeachingAffair.service.impl.SchoolUserServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="schoolTermCurrentDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SchoolTermCurrentDao" />
+	</bean>
+	<bean id="schoolTermCurrentService"
+		class="platform.education.generalTeachingAffair.service.impl.SchoolTermCurrentServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="schoolTermDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SchoolTermDao" />
+	</bean>
+	<bean id="schoolTermService"
+		class="platform.education.generalTeachingAffair.service.impl.SchoolTermServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="schoolDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SchoolDao" />
+	</bean>
+	<bean id="schoolService"
+		class="platform.education.generalTeachingAffair.service.impl.SchoolServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="gradeDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.GradeDao" />
+	</bean>
+	<bean id="gradeService"
+		class="platform.education.generalTeachingAffair.service.impl.GradeServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!-- -导入学生信息临时表 -->
+	<bean id="upLoadInformationDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.UpLoadInformationDao" />
+	</bean>
+	<bean id="upLoadInformationService"
+		class="platform.education.generalTeachingAffair.service.impl.UpLoadInformationServiceImpl" />
+
+	<bean id="departmentDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.DepartmentDao" />
+	</bean>
+	<bean id="departmentService"
+		class="platform.education.generalTeachingAffair.service.impl.DepartmentServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="departmentTeacherDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.DepartmentTeacherDao" />
+	</bean>
+	<bean id="departmentTeacherService"
+		class="platform.education.generalTeachingAffair.service.impl.DepartmentTeacherServiceImpl" />
+<!--	食谱管理业务层-->
+<bean id="canteenRecipesService"
+	  class="platform.education.generalTeachingAffair.service.impl.CanteenRecipesServiceImpl"/>
+	<!--	食谱管理dao层-->
+	<bean id="xwHqCanteenRecipesDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.XwHqCanteenRecipesDao" />
+	</bean>
+	<bean id="supplierCanteenRecipesDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.SupplierCanteenRecipesDao" />
+	</bean>
+	<bean id="schoolCalendarDayDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SchoolCalendarDayDao" />
+	</bean>
+	<bean id="schoolCalendarDayService"
+		class="platform.education.generalTeachingAffair.service.impl.SchoolCalendarDayServiceImpl" />
+
+	<bean id="schoolCalendarDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SchoolCalendarDao" />
+	</bean>
+	<bean id="schoolCalendarService"
+		class="platform.education.generalTeachingAffair.service.impl.SchoolCalendarServiceImpl" />
+
+	<bean id="subjectGradeService"
+		class="platform.education.generalTeachingAffair.service.impl.SubjectGradeServiceImpl" />
+	<bean id="subjectGradeDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SubjectGradeDao" />
+	</bean>
+
+	<bean id="syllabusLessonDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SyllabusLessonDao" />
+	</bean>
+
+	<bean id="studentCheckAttendanceDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.StudentCheckAttendanceDao" />
+	</bean>
+	<bean id="studentCheckAttendanceService"
+		class="platform.education.generalTeachingAffair.service.impl.StudentCheckAttendanceServiceImpl" />
+	<!-- generator-insert-location -->
+
+
+	<bean id="syllabusDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SyllabusDao" />
+	</bean>
+	<bean id="syllabusService"
+		class="platform.education.generalTeachingAffair.service.impl.SyllabusServiceImpl" />
+
+	<bean id="syllabusRuleFilterChain"
+		class="platform.education.generalTeachingAffair.ext.syllabus.rule.filter.SyllabusRuleFilterChain">
+		<property name="rules">
+			<list>
+				<bean
+					class="platform.education.generalTeachingAffair.ext.syllabus.rule.filter.DefaultSyllabusRuleTwoFilter"></bean>
+				<bean
+					class="platform.education.generalTeachingAffair.ext.syllabus.rule.filter.DefaultSyllabusRuleOneFilter"></bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="schoolSystemDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.SchoolSystemDao" />
+	</bean>
+
+
+	<bean id="schoolSystemService"
+		class="platform.education.generalTeachingAffair.service.impl.SchoolSystemServiceImpl" />
+
+	<bean id="moralEvaluationItemDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.MoralEvaluationItemDao" />
+	</bean>
+
+	<!-- 学生德育 -->
+	<bean id="moralEvaluationItemService"
+		class="platform.education.generalTeachingAffair.service.impl.MoralEvaluationItemServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="moralEvaluationStudentDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.MoralEvaluationStudentDao" />
+	</bean>
+
+	<bean id="moralEvaluationStudentService"
+		class="platform.education.generalTeachingAffair.service.impl.MoralEvaluationStudentServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="moralEvaluationResultDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.MoralEvaluationResultDao" />
+	</bean>
+
+	<bean id="moralEvaluationResultService"
+		class="platform.education.generalTeachingAffair.service.impl.MoralEvaluationResultServiceImpl" />
+	<!-- generator-insert-location -->
+
+
+
+	<!-- 学生资助 -->
+	<bean id="studentAidDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.StudentAidDao" />
+	</bean>
+	<bean id="studentAidService"
+		class="platform.education.generalTeachingAffair.service.impl.StudentAidServiceImpl" />
+
+	<!-- 学生处分 -->
+
+	<bean id="studentPunishDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.StudentPunishDao" />
+	</bean>
+	<bean id="studentPunishService"
+		class="platform.education.generalTeachingAffair.service.impl.StudentPunishServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!-- 学生奖励 -->
+	<bean id="studentAwardDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.StudentAwardDao" />
+	</bean>
+	<bean id="studentAwardService"
+		class="platform.education.generalTeachingAffair.service.impl.StudentAwardServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!-- 学生健康档案 -->
+	<bean id="studentHealthArchiveDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.StudentHealthArchiveDao" />
+	</bean>
+	<bean id="studentHealthArchiveService"
+		class="platform.education.generalTeachingAffair.service.impl.StudentHealthArchiveServiceImpl" />
+
+	<!--学生健康类型-->
+	<bean id="studentHealthArchiveTypeDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.StudentHealthArchiveTypeDao" />
+	</bean>
+	<bean id="studentHealthArchiveTypeService"
+		  class="platform.education.generalTeachingAffair.service.impl.StudentHealthArchiveTypeServiceImpl" />
+
+	<!-- generator-insert-location -->
+	<!-- 家长信息 -->
+	<bean id="parentDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.ParentDao" />
+	</bean>
+	<bean id="parentService"
+		class="platform.education.generalTeachingAffair.service.impl.ParentServiceImpl" />
+	<!-- generator-insert-location -->
+	<!-- 学生家长关系 -->
+	<bean id="parentStudentDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.ParentStudentDao" />
+	</bean>
+	<bean id="parentStudentService"
+		class="platform.education.generalTeachingAffair.service.impl.ParentStudentServiceImpl" />
+	<!-- generator-insert-location -->
+	<!-- 考试日程安排 -->
+	<bean id="examTeamSubjectDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.ExamTeamSubjectDao" />
+	</bean>
+	<bean id="examTeamSubjectService"
+		class="platform.education.generalTeachingAffair.service.impl.ExamTeamSubjectServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean
+		class="platform.education.generalTeachingAffair.holder.GeneralTeachingAffairServiceHolder" />
+
+	<context:component-scan
+		base-package="platform.education.generalTeachingAffair.service.impl" />
+	<!-- cacheManager工厂类，指定ehcache.xml的位置 -->
+	<bean id="generalTeachingAffairManagerFactory"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:configLocation="classpath:generalTeachingAffair_ehcache.xml" />
+	<!-- 声明cacheManager -->
+	<bean id="generalTeachingAffairCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+		p:cacheManager-ref="generalTeachingAffairManagerFactory" />
+
+	<!-- 成绩录入管理 -->
+	<bean id="studentScoreDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.StudentScoreDao" />
+	</bean>
+	<bean id="studentScoreService"
+		class="platform.education.generalTeachingAffair.service.impl.StudentScoreServiceImpl" />
+
+	<!-- generator-insert-location -->
+	<bean id="parentProxyService"
+		class="platform.education.generalTeachingAffair.service.impl.ParentProxyServiceImpl" />
+	<!-- 教材管理 -->
+	<bean id="textbookManagerDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.TextbookManagerDao" />
+	</bean>
+	<bean id="textbookManagerService"
+		class="platform.education.generalTeachingAffair.service.impl.TextbookManagerServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!--教学教务 此接口是提供给客户端调用 -->
+	<bean id="teachClientService"
+		class="platform.education.generalTeachingAffair.service.impl.TeachClientServiceImpl" />
+
+	<!-- 社会实践 -->
+	<bean id="practiceDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.PracticeDao" />
+	</bean>
+	<bean id="practiceService"
+		class="platform.education.generalTeachingAffair.service.impl.PracticeServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!-- 选课管理 -->
+	<bean id="classSelectionDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.ClassSelectionDao" />
+	</bean>
+
+	<!-- 开课管理 -->
+	<bean id="publicClassTeacherDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.PublicClassTeacherDao" />
+	</bean>
+
+	<bean id="publicClassTeacherRelatedDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.PublicClassTeacherRelatedDao" />
+	</bean>
+	<bean id="publicClassTimeRelatedDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.PublicClassTimeRelatedDao" />
+	</bean>
+
+	<bean id="publicClassTimeDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.PublicClassTimeDao" />
+	</bean>
+	<bean id="publicClassGradeDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.PublicClassGradeDao" />
+	</bean>
+
+	<bean id="publicClassUserDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.PublicClassUserDao" />
+	</bean>
+
+	<bean id="publicClassDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.PublicClassDao" />
+	</bean>
+
+
+	<bean id="publicClassService"
+		class="platform.education.generalTeachingAffair.service.impl.PublicClassServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!-- 科研模块 -->
+	<bean id="academicExchangeDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.AcademicExchangeDao" />
+	</bean>
+	<bean id="academicExchangeService"
+		class="platform.education.generalTeachingAffair.service.impl.AcademicExchangeServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="researchProjectDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.ResearchProjectDao" />
+	</bean>
+	<bean id="researchProjectService"
+		class="platform.education.generalTeachingAffair.service.impl.ResearchProjectServiceImpl" />
+
+	<!-- generator-insert-location -->
+	<bean id="resultDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.generalTeachingAffair.dao.ResultDao" />
+	</bean>
+	<bean id="resultService"
+		class="platform.education.generalTeachingAffair.service.impl.ResultServiceImpl" />
+
+	<!-- 座位表模块 -->
+	<bean id="seatChartDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.SeatChartDao" />
+	</bean>
+	<bean id="seatChartService" class="platform.education.generalTeachingAffair.service.impl.SeatChartServiceImpl" />
+	<!--  generator-insert-location -->
+	<bean id="seatChartItemDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.SeatChartItemDao" />
+	</bean>
+	<bean id="seatChartItemService" class="platform.education.generalTeachingAffair.service.impl.SeatChartItemServiceImpl" />
+	<!--  generator-insert-location -->
+
+	<!-- 班级用户  2015-12-04 -->
+	<bean id="teamUserDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.TeamUserDao" />
+	</bean>
+	<bean id="teamUserService" class="platform.education.generalTeachingAffair.service.impl.TeamUserServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!-- 学生变更历史表  2015-12-21 -->
+	<bean id="studentAlterationDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.StudentAlterationDao" />
+	</bean>
+	<bean id="studentAlterationService" class="platform.education.generalTeachingAffair.service.impl.StudentAlterationServiceImpl" />
+	<!--  generator-insert-location -->
+
+
+<!-- 	教学计划，教案 -->
+	<bean id="lessonPlanDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.LessonPlanDao" />
+	</bean>
+	<bean id="lessonPlanService" class="platform.education.generalTeachingAffair.service.impl.LessonPlanServiceImpl" />
+	<!--  generator-insert-location -->
+
+	<!-- 	教学计划-->
+	<bean id="pjTeachingPlanDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.PjTeachingPlanDao" />
+	</bean>
+	<bean id="pjTeachingPlanService" class="platform.education.generalTeachingAffair.service.impl.PjTeachingPlanServiceImpl" />
+	<!--  generator-insert-location -->
+
+	<!-- 学生活动 -->
+	<bean id="studentActivityDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.StudentActivityDao" />
+	</bean>
+	<bean id="studentActivityService" class="platform.education.generalTeachingAffair.service.impl.StudentActivityServiceImpl" />
+	<!--  generator-insert-location -->
+
+	<!-- 成绩录入 -->
+	<bean id="pjExamDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.PjExamDao" />
+	</bean>
+	<bean id="pjExamService" class="platform.education.generalTeachingAffair.service.impl.PjExamServiceImpl" />
+<!--  generator-insert-location -->
+	<!--  generator-insert-location -->
+	<bean id="examStudentDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ExamStudentDao" />
+	</bean>
+	<bean id="examStudentService" class="platform.education.generalTeachingAffair.service.impl.ExamStudentServiceImpl" />
+	<!--  generator-insert-location -->
+	<bean id="examStatDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ExamStatDao" />
+	</bean>
+	<bean id="examStatService" class="platform.education.generalTeachingAffair.service.impl.ExamStatServiceImpl" />
+<!--  generator-insert-location -->
+	<!-- 教师自定义排序 -->
+	<bean id="teacherSortDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.TeacherSortDao" />
+	</bean>
+	<bean id="teacherSortService" class="platform.education.generalTeachingAffair.service.impl.TeacherSortServiceImpl" />
+	<!--  generator-insert-location -->
+	<!-- 学生档案 -->
+	<bean id="studentArchiveDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.StudentArchiveDao" />
+	</bean>
+	<!-- <bean id="studentArchiveService" class="platform.education.generalTeachingAffair.service.impl.StudentArchiveServiceImpl" /> -->
+	<!--  generator-insert-location -->
+	<!-- 录入业务控制 -->
+	<bean id="jobControlDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.JobControlDao" />
+	</bean>
+	<bean id="jobControlService" class="platform.education.generalTeachingAffair.service.impl.JobControlServiceImpl" />
+	<!--  generator-insert-location -->
+
+	<!-- 多校区业务 -->
+	<bean id="membershipDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.MembershipDao" />
+	</bean>
+	<bean id="membershipService" class="platform.education.generalTeachingAffair.service.impl.MembershipServiceImpl" />
+	<!--  generator-insert-location -->
+
+
+	<!-- 德育业务 -->
+	<bean id="studentApsDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.StudentApsDao"/>
+	</bean>
+	<bean id="apsMedalDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsMedalDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsTeamSummaryDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsTeamSummaryDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsTaskScoreFileDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsTaskScoreFileDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsTaskScoreDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsTaskScoreDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsTaskJudgeDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsTaskJudgeDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsTaskItemDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsTaskItemDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsTaskDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsTaskDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsRuleMedalDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsRuleMedalDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsRuleItemDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsRuleItemDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsRuleDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsRuleDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsMedalWinnerDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsMedalWinnerDao" />
+	</bean>
+	<!--  generator-insert-location -->
+	<bean id="apsStuSummaryDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsStuSummaryDao" />
+	</bean>
+	<!-- 教师辅助信息start -->
+	<bean id="teacherAssistDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.TeacherAssistDao" />
+	</bean>
+	<bean id="teacherAssistService" class="platform.education.generalTeachingAffair.service.impl.TeacherAssistServiceImpl" />
+	<!-- 教师辅助信息end -->
+
+	<bean id="teamApsService" class="platform.education.generalTeachingAffair.service.impl.TeamApsServiceImpl" />
+
+	<bean id="studentApsService" class="platform.education.generalTeachingAffair.service.impl.StudentApsServiceImpl" />
+
+	<!-- 修改家长，新增家长（待删除） -->
+	<bean id="testAddDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.TestAddDao" />
+	</bean>
+	<bean id="testAddService" class="platform.education.generalTeachingAffair.service.impl.TestAddServiceImpl" />
+	<!-- 修改家长，新增家长（待删除） -->
+
+	<!-- 教师薪资表项管理 -->
+	<bean id="pjTeacherSalaryFieldDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.PjTeacherSalaryFieldDao" />
+	</bean>
+	<bean id="pjTeacherSalaryFieldService"
+	class="platform.education.generalTeachingAffair.service.impl.PjTeacherSalaryFieldServiceImpl" />
+	<!-- 教师薪资表项管理 -->
+
+	<!-- 教师薪资表管理 -->
+	<bean id="pjTeacherSalaryDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.PjTeacherSalaryDao" />
+	</bean>
+	<bean id="pjTeacherSalaryService" class="platform.education.generalTeachingAffair.service.impl.PjTeacherSalaryServiceImpl" />
+	<!-- 教师薪资表管理 -->
+
+	<!--  学校服务器地址 -->
+	<bean id="schoolServerManageDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.SchoolServerManageDao" />
+	</bean>
+	<bean id="schoolServerManageService" class="platform.education.generalTeachingAffair.service.impl.SchoolServerManageServiceImpl" />
+	<!--  学校服务器地址 -->
+
+<bean id="studentAidPublishDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.StudentAidPublishDao" />
+	</bean>
+	<bean id="studentAidPublishService" class="platform.education.generalTeachingAffair.service.impl.StudentAidPublishServiceImpl" />
+	<!--  学生资助信息公布 -->
+
+	<bean id="examQuestionDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ExamQuestionDao" />
+	</bean>
+	<bean id="examQuestionService" class="platform.education.generalTeachingAffair.service.impl.ExamQuestionServiceImpl" />
+
+	<!-- 班级升级 -->
+	<bean id="teamUpgradeService" class="platform.education.generalTeachingAffair.service.impl.TeamUpgradeServiceImpl" />
+
+	<!-- 家庭成员信息 -->
+	<bean id="familyMemberDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.FamilyMemberDao" />
+	</bean>
+	<bean id="familyMemberService" class="platform.education.generalTeachingAffair.service.impl.FamilyMemberServiceImpl" />
+
+
+	<bean id="complainDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ComplainDao" />
+	</bean>
+	<bean id="complainService" class="platform.education.generalTeachingAffair.service.impl.ComplainServiceImpl" />
+
+	<bean id="complainFileDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ComplainFileDao" />
+	</bean>
+	<bean id="complainFileService" class="platform.education.generalTeachingAffair.service.impl.ComplainFileServiceImpl" />
+
+	<bean id="chargeDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ChargeDao" />
+	</bean>
+	<bean id="chargeService" class="platform.education.generalTeachingAffair.service.impl.ChargeServiceImpl" />
+
+	<bean id="chargeItemDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ChargeItemDao" />
+	</bean>
+	<bean id="chargeItemService" class="platform.education.generalTeachingAffair.service.impl.ChargeItemServiceImpl"/>
+
+	<!-- 成绩分析 -->
+	<bean id="examStatMajorStudentDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ExamStatMajorStudentDao" />
+	</bean>
+	<bean id="examStatMajorStudentService" class="platform.education.generalTeachingAffair.service.impl.ExamStatMajorStudentServiceImpl" />
+
+	<bean id="examWorksTeamSubjectDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ExamWorksTeamSubjectDao" />
+	</bean>
+	<bean id="examWorksTeamSubjectService" class="platform.education.generalTeachingAffair.service.impl.ExamWorksTeamSubjectServiceImpl" />
+
+	<bean id="examWorksTeamDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ExamWorksTeamDao" />
+	</bean>
+	<bean id="examWorksTeamService" class="platform.education.generalTeachingAffair.service.impl.ExamWorksTeamServiceImpl" />
+
+	<bean id="examWorksSubjectTemplateDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ExamWorksSubjectTemplateDao" />
+	</bean>
+	<bean id="examWorksSubjectTemplateService" class="platform.education.generalTeachingAffair.service.impl.ExamWorksSubjectTemplateServiceImpl" />
+
+	<bean id="examWorksSubjectDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ExamWorksSubjectDao" />
+	</bean>
+	<bean id="examWorksSubjectService" class="platform.education.generalTeachingAffair.service.impl.ExamWorksSubjectServiceImpl" />
+
+	<bean id="examWorksGradeDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ExamWorksGradeDao" />
+	</bean>
+	<bean id="examWorksGradeService" class="platform.education.generalTeachingAffair.service.impl.ExamWorksGradeServiceImpl" />
+
+	<bean id="examWorksDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ExamWorksDao" />
+	</bean>
+	<bean id="examWorksService" class="platform.education.generalTeachingAffair.service.impl.ExamWorksServiceImpl" />
+	<!-- 成绩分析相关接口 -->
+
+	<bean id="scoreAnalysisDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ScoreAnalysisDao" />
+	</bean>
+	<bean id="scoreAnalysisHandleService" class="platform.education.generalTeachingAffair.service.impl.ScoreAnalysisHandleServiceImpl" />
+
+	<!-- 学生就业 -->
+	<bean id="studentEmploymentDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.StudentEmploymentDao" />
+	</bean>
+	<bean id="studentEmploymentService" class="platform.education.generalTeachingAffair.service.impl.StudentEmploymentServiceImpl" />
+	<!-- 学生军训 -->
+	<bean id="studentMilitaryDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.StudentMilitaryDao" />
+	</bean>
+	<bean id="studentMilitaryService" class="platform.education.generalTeachingAffair.service.impl.StudentMilitaryServiceImpl" />
+	<!-- 德育大杂烩 -->
+	<bean id="apsMoralEvaluationItemDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.ApsMoralEvaluationItemDao" />
+	</bean>
+	<bean id="apsMoralEvaluationItemService" class="platform.education.generalTeachingAffair.service.impl.ApsMoralEvaluationItemServiceImpl" />
+	<!--  generator-insert-location -->
+
+	<bean id="schoolInitDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.SchoolInitDao" />
+	</bean>
+	<bean id="schoolInitService" class="platform.education.generalTeachingAffair.service.impl.SchoolInitServiceImpl" />
+
+<bean id="teamAdminDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.TeamAdminDao" />
+	</bean>
+	<bean id="teamAdminService" class="platform.education.generalTeachingAffair.service.impl.TeamAdminServiceImpl" /><bean id="pjAptsTaskDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.PjAptsTaskDao" />
+</bean>
+<bean id="pjAptsTaskService" class="platform.education.generalTeachingAffair.service.impl.PjAptsTaskServiceImpl" />
+<!--  generator-insert-location -->
+<bean id="pjAptsTaskUserDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.PjAptsTaskUserDao" />
+</bean>
+<bean id="pjAptsTaskUserService" class="platform.education.generalTeachingAffair.service.impl.PjAptsTaskUserServiceImpl" />
+<!--  generator-insert-location -->
+<bean id="pjAptsTaskScoreDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.PjAptsTaskScoreDao" />
+</bean>
+<bean id="pjAptsTaskScoreService" class="platform.education.generalTeachingAffair.service.impl.PjAptsTaskScoreServiceImpl" />
+<!--  generator-insert-location -->
+<bean id="pjAptsTaskJudgeDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.PjAptsTaskJudgeDao" />
+</bean>
+<bean id="pjAptsTaskJudgeService" class="platform.education.generalTeachingAffair.service.impl.PjAptsTaskJudgeServiceImpl" />
+<!--  generator-insert-location -->
+<bean id="pjAptsTaskItemDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.PjAptsTaskItemDao" />
+</bean>
+<bean id="pjAptsTaskItemService" class="platform.education.generalTeachingAffair.service.impl.PjAptsTaskItemServiceImpl" />
+<bean id="pjAptsTaskItemSummaryDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.PjAptsTaskItemSummaryDao" />
+</bean>
+<bean id="pjAptsTaskItemSummaryService" class="platform.education.generalTeachingAffair.service.impl.PjAptsTaskItemSummaryServiceImpl" />
+<bean id="pjStudentGroupDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.PjStudentGroupDao" />
+</bean>
+<bean id="pjStudentGroupService" class="platform.education.generalTeachingAffair.service.impl.PjStudentGroupServiceImpl" />
+
+<bean id="pjStudentGroupInfoDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.PjStudentGroupInfoDao" />
+</bean>
+<bean id="pjStudentGroupInfoService" class="platform.education.generalTeachingAffair.service.impl.PjStudentGroupInfoServiceImpl" />
+
+<bean id="pjUserActionDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.PjUserActionDao" />
+</bean>
+<bean id="pjUserActionService" class="platform.education.generalTeachingAffair.service.impl.PjUserActionServiceImpl" />
+
+
+<bean id="schoolAttributePlatformDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.SchoolAttributePlatformDao" />
+	</bean>
+	<bean id="schoolAttributePlatformService" class="platform.education.generalTeachingAffair.service.impl.SchoolAttributePlatformServiceImpl" />
+
+	<!--罗定邦分组方案-->
+	<bean id="pjGroupDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.PjGroupDao" />
+	</bean>
+	<bean id="pjGroupService" class="platform.education.generalTeachingAffair.service.impl.PjGroupServiceImpl" />
+	<bean id="pjGroupStudentDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.PjGroupStudentDao" />
+	</bean>
+	<bean id="pjGroupStudentService" class="platform.education.generalTeachingAffair.service.impl.PjGroupStudentServiceImpl" />
+
+	<bean id="groupTaskDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.GroupTaskDao" />
+	</bean>
+	<bean id="groupTaskService" class="platform.education.generalTeachingAffair.service.impl.GroupTaskServiceImpl" />
+	<!--  generator-insert-location -->
+	<bean id="groupTaskEvaluationDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.GroupTaskEvaluationDao" />
+	</bean>
+	<bean id="groupTaskEvaluationService" class="platform.education.generalTeachingAffair.service.impl.GroupTaskEvaluationServiceImpl" />
+	<!--  generator-insert-location -->
+	<bean id="groupTaskStudentDao" parent="baseDao">
+		<property name="target" value="platform.education.generalTeachingAffair.dao.GroupTaskStudentDao" />
+	</bean>
+	<bean id="groupTaskStudentService" class="platform.education.generalTeachingAffair.service.impl.GroupTaskStudentServiceImpl" />
+		<!--  虚拟班级学生 -->
+	<bean id="virtualTeamDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.VirtualTeamDao" />
+	</bean>
+	<bean id="virtualTeamService" class="platform.education.generalTeachingAffair.service.impl.VirtualTeamServiceImpl" />
+
+		<!--  虚拟班级学生 -->
+	<bean id="virtualTeamStudentDao" parent="baseDao">
+	<property name="target" value="platform.education.generalTeachingAffair.dao.VirtualTeamStudentDao" />
+	</bean>
+	<bean id="virtualTeamStudentService" class="platform.education.generalTeachingAffair.service.impl.VirtualTeamStudentServiceImpl" />
+
+	<!-- http请求接口实现 -->
+	<bean id="httpService"
+		  class="platform.education.generalTeachingAffair.service.impl.HttpServiceImpl" />
+
+	<!-- 问卷管理 -->
+	<bean id="questionnaireDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.QuestionnaireDao" />
+	</bean>
+	<bean id="questionnaireService"
+		  class="platform.education.generalTeachingAffair.service.impl.QuestionnaireServiceImpl" />
+
+
+	<!-- 微课管理 -->
+	<bean id="microManagerDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.MicroManagerDao" />
+	</bean>
+	<bean id="stuCommentsDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.StuCommentsDao" />
+	</bean>
+	<bean id="microManagerService"
+		  class="platform.education.generalTeachingAffair.service.impl.MicroManagerServiceImpl" />
+
+
+	<!-- 问卷管理 -->
+	<bean id="initDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.InitDao" />
+	</bean>
+	<bean id="initService"
+		  class="platform.education.generalTeachingAffair.service.impl.InitServiceImpl" />
+
+	<!-- 补卡管理 -->
+	<bean id="canteenCardServiceDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.CanteenCardServiceDao" />
+	</bean>
+	<bean id="canteenCardService"
+		  class="platform.education.generalTeachingAffair.service.impl.CanteenCardServiceImpl" />
+
+	<!-- 大屏展示 -->
+	<bean id="generalDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.GeneralDao" />
+	</bean>
+	<bean id="generalService"
+		  class="platform.education.generalTeachingAffair.service.impl.GeneralServiceImpl" />
+
+	<!-- 资源路径管理 -->
+	<bean id="resPathDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.ResPathDao" />
+	</bean>
+
+	<!-- 付费资源管理 -->
+	<bean id="resPaidResourceDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.ResPaidResourceDao" />
+	</bean>
+	<bean id="resPaidResourceService"
+		  class="platform.education.generalTeachingAffair.service.impl.ResPaidResourceServiceImpl" >
+		<property name="resPaidResourceDao" ref="resPaidResourceDao"/>
+	</bean>
+	<!-- 启动页管理 -->
+	<bean id="startPageDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.StartPageDao" />
+	</bean>
+	<bean id="startPageService"
+		  class="platform.education.generalTeachingAffair.service.impl.StartPageServiceImpl" />
+	<!--家校反馈-->
+	<bean id="homeToSchoolFeedbackDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.HomeToSchoolFeedbackDao" />
+	</bean>
+	<bean id="homeToSchoolFeedbackService"
+		  class="platform.education.generalTeachingAffair.service.impl.HomeToSchoolFeedbackServiceImpl" />
+
+	<!--家校反馈内容-->
+	<bean id="homeToSchoolFeedbackContentDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.HomeToSchoolFeedbackContentDao" />
+	</bean>
+	<bean id="homeToSchoolFeedbackContentService"
+		  class="platform.education.generalTeachingAffair.service.impl.HomeToSchoolFeedbackContentServiceImpl" />
+
+	<!-- http请求接口实现 -->
+	<bean id="thredService"
+		  class="platform.education.generalTeachingAffair.service.impl.ThredServiceImpl" />
+	<!--菜系管理-->
+	<bean id="xwHqCanteenCuisineDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.XwHqCanteenCuisineDao" />
+
+	</bean>
+	<bean id="xwHqCanteenCuisineService"
+		  class="platform.education.generalTeachingAffair.service.impl.XwHqCanteenCuisineServiceImpl" />
+
+	<!--菜系菜谱中间表-->
+	<bean id="cuisineToRecipesDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.CuisineToRecipesDao" />
+
+	</bean>
+	<bean id="cuisineToRecipesService"
+		  class="platform.education.generalTeachingAffair.service.impl.CuisineToRecipesServiceImpl" />
+
+	<!-- 学生请假 -->
+	<bean id="studentAskingDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.StudentAskingDao" />
+	</bean>
+	<bean id="studentAskingService"
+		  class="platform.education.generalTeachingAffair.service.impl.StudentAskingServiceImpl" />
+
+	<!--banner管理-->
+	<bean id="bannerMicroDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.BannerMicroDao" />
+	</bean>
+
+	<bean id="bannerMicroService"
+		  class="platform.education.generalTeachingAffair.service.impl.BannerMicroServiceImpl" />
+
+
+
+<!--	<bean id="basicSQLDao" >-->
+<!--		<property name="target" value="platform.education.generalTeachingAffair.dao.BasicSQLDao" />-->
+<!--	</bean>-->
+
+	<bean id="basicSQLServiceImpl" class="platform.education.generalTeachingAffair.service.impl.BasicSQLServiceImpl"/>
+
+
+	<!--校车管理-->
+	<bean id="schoolBusDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.SchoolBusDao" />
+	</bean>
+
+	<bean id="schoolBusService"
+		  class="platform.education.generalTeachingAffair.service.impl.SchoolBusServiceImpl" />
+
+	<bean id="libraryService"
+		  class="platform.education.generalTeachingAffair.service.impl.LibraryServiceImpl" />
+
+
+	<!--学生表现-->
+	<bean id="studentShowDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.StudentShowDao" />
+	</bean>
+
+	<bean id="studentShowService"
+		  class="platform.education.generalTeachingAffair.service.impl.StudentShowServiceImpl" />
+
+	<!--学生评价-->
+	<bean id="studentAssessDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.StudentAssessDao" />
+	</bean>
+
+	<bean id="studentAssessService"
+		  class="platform.education.generalTeachingAffair.service.impl.StudentAssessServiceImpl" />
+
+	<!--周明星学生-->
+	<bean id="weekStarStuDao" parent="baseDao">
+		<property name="target"
+				  value="platform.education.generalTeachingAffair.dao.WeekStarStuDao" />
+	</bean>
+	<bean id="weekStarStuService"
+		  class="platform.education.generalTeachingAffair.service.impl.WeekStarStuServiceImpl" />
+
+</beans>
+
+
+
+
+
+

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.personinfor.dao.MyInforDao">
+    <resultMap id="StudentResult" type="com.xunyunedu.personinfor.pojo.StudentPojo">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="name" column="name"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="schoolName" column="schoolName"/>
+        <result property="teamName" column="team_name"/>
+        <result column="teamId" property="teamId"/>
+        <result column="gradeName" property="gradeName"/>
+        <result column="gradeId" property="gradeId"/>
+        <result column="number" property="number"/>
+        <result column="emp_code" property="empCode"/>
+        <result column="emp_card" property="empCard"/>
+        <result column="photo_uuid" property="photoUuid"/>
+    </resultMap>
+
+    <resultMap id="PublicClassResult" type="com.xunyunedu.personinfor.pojo.PublicClassPojo">
+        <result property="cid" column="id"/>
+        <result property="cname" column="name"/>
+        <result property="maxMember" column="max_member"/>
+        <result property="enrollNumber" column="enroll_number"/>
+        <result property="expiryDate" column="expiry_date"/>
+
+        <result property="beginDate" column="begin_date"/>
+        <result property="classDesc" column="class_desc"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="classNmber" column="class_number"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="classType" column="class_type"/>
+        <result property="coverUuid" column="cover_uuid"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="isSaveHistory" column="is_save_history"/>
+        <result property="xuefei" column="xuefei"/>
+        <result property="cailiaofei" column="cailiaofei"/>
+        <result property="leixing" column="leibie"/>
+        <result property="isCailiao" column="is_cailiao"/>
+        <result property="weekDate" column="week_date"/>
+        <result property="classEndTime" column="class_endtime"/>
+        <result property="classStartTime" column="class_starttime"/>
+
+    </resultMap>
+
+    <resultMap id="QuestionResult" type="com.xunyunedu.personinfor.pojo.QuestionnairePojo">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="object" property="object"/>
+        <result column="url" property="url"/>
+        <result column="expiry_date" property="expiryDate"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="uuid" property="uuid"/>
+    </resultMap>
+
+    <select id="getUserInfoByName" resultMap="StudentResult">
+        select a.id ,a.user_id,pts.grade_id as gradeId,pg.name as gradeName, a.name ,a.school_id schoolId ,b.name 'schoolName', a.team_name teamName,a.team_id teamId, a.emp_code,a.is_delete,a.emp_card, pp.photo_uuid
+        from pj_student a
+        inner join pj_team_student pts on a.id=pts.student_id
+        inner join pj_grade pg on pg.id=pts.grade_id
+        inner join pj_school b on a.school_id = b.id
+        left join pj_person pp on pp.id = a.person_id and pp.is_delete = 0
+        where a.user_id in (
+            select student_user_id from pj_parent_student pjs
+            inner join yh_user u on u.id = pjs.parent_user_id and u.user_name = #{name} and pjs.is_delete = 0 and u.is_deleted = 0)
+        <if test="schoolYear!=null">
+            and pg.school_year=#{schoolYear}
+        </if>
+         and b.is_deleted = 0 and a.is_delete = 0 and a.study_state = '01'
+        group by a.id
+    </select>
+
+    <select id="getPublicClass" resultMap="PublicClassResult">
+        select  c.id cid, c.name cname,c.max_member maxMember, c.enroll_number enrollNumber, c.expiry_date expiryDate,
+        c.class_desc classDesc,c.begin_date beginDate,c.is_delete,c.xuefei,c.cailiaofei,c.is_cailiao
+        from pj_public_class  c
+        inner join yh_public_user u  on  u.public_class_id = c.id and u.student_id = #{childId}
+        where  c.is_delete = 0 and c.school_id = #{schoolId}
+    </select>
+
+
+    <!-- and ppc.begin_date &lt;= now() and ppc.expiry_date &gt;= now()-->
+    <select id="getPublicClassByGrade" resultMap="PublicClassResult">
+        select ppc.*,pptr.created_at,ppt.week_date,ppt.class_endtime,ppt.class_starttime from pj_public_class ppc
+        inner join pj_public_grade_related ppgr
+        on ppc.id = ppgr.public_class_id
+        inner join pj_public_time_related pptr
+        on ppc.id=pptr.public_class_id
+        left join pj_public_time ppt on ppt.id=pptr.time_id
+        where ppc.is_delete = 0 and ppgr.is_deleted = 0 and pptr.is_deleted=0
+        and ppc.school_id = #{schoolId} and ppgr.school_id = #{schoolId}
+        and ppgr.grade = #{grade}  and ppc.class_type=#{type}
+        group by  ppc.id
+    </select>
+
+    <select id="getSelectState" resultType="java.lang.Integer">
+        select count(1) from yh_public_user where school_id = #{schoolId} and  student_id = #{stuId} and public_class_id = #{cId} and is_delete = 0
+    </select>
+
+    <insert id="addChoose">
+        insert into yh_public_user(student_id,public_class_id,school_id,is_jiao) values(#{stuId},#{cId},#{schooldId},#{isJiao})
+    </insert>
+
+    <select id="getXuankes" resultType="java.lang.Integer">
+        select count(*) from yh_public_user where student_id=#{studentid}   and public_class_id=#{cId}  and school_id=#{schooldId} and is_delete=0
+    </select>
+
+    <select id="getEnrollNumber" resultMap="PublicClassResult">
+        select enroll_number enrollNumber,max_member maxMember,is_delete from pj_public_class where school_id = #{schooldId}  and id = #{cId}
+    </select>
+
+    <update id="modifyByEnrollNumber">
+        update pj_public_class set enroll_number = enroll_number + 1 where id = #{cId} and school_id = #{schooldId}
+    </update>
+
+    <delete id="lessEnrollNumber">
+        update pj_public_class set enroll_number = enroll_number - 1 where school_id = #{schooldId} and id = #{cid}
+    </delete>
+
+
+    <update id="updateXuanke">
+        update pj_public_class set enroll_number = enroll_number - 1 where id = #{cId} and school_id = #{schooldId}
+
+    </update>
+    <update id="removeClassStuRelation">
+        <!--        delete from yh_public_user where school_id = #{schooldId} and student_id = #{stuId} and public_class_id = #{cId}-->
+        update yh_public_user set is_delete = 1 where  school_id = #{schooldId} and student_id = #{stuId} and public_class_id = #{cId}
+    </update>
+
+    <select id="findBySchoolId" resultMap="QuestionResult">
+        select * from pj_questionnaire
+        where is_delete = 0
+            <if test="schoolId != null">
+                and school_id = #{schoolId}
+            </if>
+            <if test="object != null">
+                and object = #{object}
+            </if>
+        order by modify_date desc
+    </select>
+
+    <insert id="addLocation">
+        INSERT INTO pj_location(`school_id`, `stu_id`, `pick_up_date`, `location`, `create_date`)
+        values
+        <foreach collection="stuId" item="item" index="index" separator=",">
+            (#{schooldId},#{item},#{date},#{location},#{createDate})
+        </foreach>
+    </insert>
+
+    <update id="updateLocation">
+        <foreach collection="stuId" item="item" separator=";">
+            update pj_location set location = #{location} ,modify_date = #{modify}
+            where school_id = #{schooldId} and stu_id = #{item} and pick_up_date = #{date}
+        </foreach>
+    </update>
+
+    <select id="getAllCourseHistory" resultMap="PublicClassResult">
+        SELECT c.expiry_date created_at,c.name,c.class_desc,c.class_number,c.begin_date,c.id cid,
+        c.max_member,c.enroll_number,c.expiry_date,c.cover_uuid,c.xuefei,c.cailiaofei,c.is_cailiao
+        FROM `pj_public_elective_history` u
+        join pj_public_class c on u.public_class_id = c.id and c.school_id = #{schoolId}
+        where u.school_id = #{schoolId} and u.student_id = #{stuId} and c.is_delete = 0 and c.class_type=#{type}
+    </select>
+
+    <select id="findTimeInfoBySchoolIdAndClassId" resultType="com.xunyunedu.personinfor.pojo.PublicTimePojo">
+        select ppt.id,ppt.class_time classTime,pptr.public_class_id cid from pj_public_time ppt inner join pj_public_time_related pptr
+        on ppt.id = pptr.time_id
+        where ppt.is_deleted = 0 and pptr.is_deleted = 0 and public_class_id = #{cid}
+        and ppt.school_id = #{schoolId} and pptr.school_id = #{schoolId}
+    </select>
+
+    <select id="findTimeIdByStuIdAndSchoolId" resultType="java.util.Map">
+        select distinct ppt.id,pptr.public_class_id from pj_public_time ppt
+        inner join pj_public_time_related pptr
+        on ppt.id = pptr.time_id
+        where ppt.is_deleted = 0 and pptr.is_deleted = 0
+			and ppt.school_id = #{schoolId} and pptr.school_id =  #{schoolId}
+			and pptr.public_class_id in
+				( select ppc.id from pj_public_class ppc
+					join yh_public_user ypu on ypu.public_class_id = ppc.id
+					where ppc.school_id = #{schoolId} and ppc.is_delete = 0
+					and ypu.school_id = #{schoolId} and ypu.is_delete = 0 and  ypu.student_id = #{stuId}
+					)
+    </select>
+
+    <select id="courseDetails" resultMap="PublicClassResult">
+        select * from pj_public_class where id = #{cid} and school_id = #{schooldId} and is_delete = 0
+    </select>
+    <select id="findExpireDateClass" resultMap="PublicClassResult">
+        select * from pj_public_class
+        <where>
+            <if test="isDelete != null"> is_delete = #{isDelete}</if>
+            <if test="expiryDate != null"> and expiry_date &lt; #{expiryDate} </if>
+            <if test="isSaveHistory != null"> and is_save_history = #{isSaveHistory}</if>
+        </where>
+    </select>
+
+    <select id="findByYiXuan" resultMap="PublicClassResult">
+        select * from pj_public_class ppc
+					join yh_public_user ypu on ypu.public_class_id = ppc.id
+					where ppc.school_id = #{schoolId} and ppc.is_delete = 0
+					and ypu.school_id = #{schoolId} and ypu.is_delete = 0 and  ypu.student_id = #{stuId}
+
+    </select>
+
+    <select id="findPublicUserByIdAndSchoolId" resultType="java.lang.Integer">
+        select student_id from yh_public_user where public_class_id = #{id} and school_id = #{schoolId} and is_delete = 0
+    </select>
+
+    <insert id="addChoseHistory">
+        insert into pj_public_elective_history(student_id,public_class_id,created_at,school_id)
+        values
+        <foreach collection="studentIds" index="index"  item="item" separator=",">
+            (#{item},
+            #{publicClassId},
+            #{createdAt},
+            #{schoolId})
+        </foreach>
+    </insert>
+
+    <update id="updatePublicClass">
+        update pj_public_class
+        <set>
+            <if test="isSaveHistory != null"> is_save_history = #{isSaveHistory}</if>
+        </set>
+        <where>
+            <if test="cid != null"> id = #{cid}</if>
+        </where>
+    </update>
+
+</mapper>

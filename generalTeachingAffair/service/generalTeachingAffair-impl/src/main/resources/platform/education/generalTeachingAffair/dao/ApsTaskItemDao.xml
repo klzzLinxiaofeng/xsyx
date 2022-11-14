@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ApsTaskItemDao">
+
+	<resultMap id="ApsTaskItemResult" type="platform.education.generalTeachingAffair.model.ApsTaskItem">
+		<result property="id" column="id" />
+		<result property="taskId" column="task_id" />
+		<result property="ruleItemId" column="rule_item_id" />
+		<result property="name" column="name" />
+		<result property="category" column="category" />
+		<result property="checkType" column="check_type" />
+		<result property="description" column="description" />
+		<result property="listOrder" column="list_order" />
+		<result property="code" column="code" />
+		<result property="score" column="score" />
+		<result property="scale" column="scale" />
+		<result property="enable" column="enable" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ApsTaskItem">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_aps_task_item (
+			id, 
+			task_id, 
+			rule_item_id, 
+			name, 
+			category, 
+			check_type, 
+			description, 
+			list_order, 
+			code, 
+			score, 
+			scale, 
+			enable, 
+			is_deleted, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{taskId}, 
+			#{ruleItemId}, 
+			#{name}, 
+			#{category}, 
+			#{checkType}, 
+			#{description}, 
+			#{listOrder}, 
+			#{code}, 
+			#{score}, 
+			#{scale}, 
+			<choose>
+				<when test="enable != null">
+					<choose>
+						<when test="enable == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ApsTaskItemResult" useCache="false">
+		SELECT * FROM pj_aps_task_item WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApsTaskItemByCondition" resultMap="ApsTaskItemResult" useCache="false">
+		SELECT * FROM pj_aps_task_item 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskId != null">
+				AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ruleItemId != null">
+				AND rule_item_id = #{args[0].ruleItemId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].category != null and args[0].category != ''">
+				AND category = #{args[0].category,javaType=java.lang.String}
+			</if>
+			<if test="args[0].checkType != null and args[0].checkType != ''">
+				AND check_type = #{args[0].checkType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].description != null and args[0].description != ''">
+				AND description = #{args[0].description,javaType=java.lang.String}
+			</if>
+			<if test="args[0].listOrder != null">
+				AND list_order = #{args[0].listOrder,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].scale != null">
+				AND scale = #{args[0].scale,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].enable != null">
+				<choose>
+					<when test="args[0].enable == true">
+						AND enable  = 1
+					</when>
+					<otherwise>
+						AND enable  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_aps_task_item 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskId != null">
+				AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ruleItemId != null">
+				AND rule_item_id = #{args[0].ruleItemId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].category != null and args[0].category != ''">
+				AND category = #{args[0].category,javaType=java.lang.String}
+			</if>
+			<if test="args[0].checkType != null and args[0].checkType != ''">
+				AND check_type = #{args[0].checkType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].description != null and args[0].description != ''">
+				AND description = #{args[0].description,javaType=java.lang.String}
+			</if>
+			<if test="args[0].listOrder != null">
+				AND list_order = #{args[0].listOrder,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].scale != null">
+				AND scale = #{args[0].scale,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].enable != null">
+				<choose>
+					<when test="args[0].enable == true">
+						AND enable  = 1
+					</when>
+					<otherwise>
+						AND enable  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApsTaskItemResult" useCache="false">
+		SELECT * FROM pj_aps_task_item WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ApsTaskItem">
+		UPDATE pj_aps_task_item
+		SET 
+		<if test="taskId != null">
+			task_id=#{taskId},
+		</if>
+		<if test="ruleItemId != null">
+			rule_item_id=#{ruleItemId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="category != null">
+			category=#{category},
+		</if>
+		<if test="checkType != null">
+			check_type=#{checkType},
+		</if>
+		<if test="description != null">
+			description=#{description},
+		</if>
+		<if test="listOrder != null">
+			list_order=#{listOrder},
+		</if>
+		<if test="code != null">
+			code=#{code},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="scale != null">
+			scale=#{scale},
+		</if>
+		<if test="enable != null">
+			<choose>
+				<when test="enable == true">
+					enable  = 1,
+				</when>
+				<otherwise>
+					enable  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_aps_task_item
+		WHERE id = #{id}
+	</delete>
+	
+	<select id="findAllItems" resultMap="ApsTaskItemResult" useCache="false">
+		SELECT * FROM pj_aps_task_item WHERE is_deleted = 0 AND task_id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	                                  
+	<select id="findOneTypeItems" resultMap="ApsTaskItemResult" useCache="false">
+		SELECT * FROM pj_aps_task_item WHERE is_deleted = 0 
+		AND task_id = #{args[0],javaType=java.lang.Integer} 
+		AND check_type = #{args[1],javaType=java.lang.String}  
+		ORDER BY modify_date
+	</select>
+	
+	<select id="findEnableItems" resultMap="ApsTaskItemResult" useCache="false">
+		SELECT * FROM pj_aps_task_item WHERE is_deleted = 0 AND `enable` = 1
+		AND task_id = #{args[0],javaType=java.lang.Integer} 
+		AND check_type = #{args[1],javaType=java.lang.String}  
+		ORDER BY modify_date
+	</select>
+	
+	
+<!-- 	<select id="findItems" resultMap="ApsTaskItemResult" useCache="false"> -->
+<!-- 		SELECT * FROM pj_aps_task_item WHERE task_id = #{args[0],javaType=java.lang.Integer} -->
+<!-- 	</select> -->
+	
+<!-- 	<select id="findItemsOfType" resultMap="ApsTaskItemResult" useCache="false"> -->
+<!-- 		SELECT * FROM pj_aps_task_item WHERE 1=1 -->
+<!-- 		AND task_id = #{args[0],javaType=java.lang.Integer}  -->
+<!-- 		AND check_type = #{args[1],javaType=java.lang.String}   -->
+<!-- 	</select> -->
+	
+	<select id="findItemsOfCategory" resultMap="ApsTaskItemResult" useCache="false">
+		SELECT * FROM pj_aps_task_item WHERE is_deleted = 0 
+		AND task_id = #{args[0],javaType=java.lang.Integer} 
+		AND check_type = #{args[1],javaType=java.lang.String}  
+		AND category = #{args[2],javaType=java.lang.String}  
+	</select>
+	
+	<select id="findByItemName" resultMap="ApsTaskItemResult" useCache="false">
+		SELECT * FROM pj_aps_task_item WHERE 1=1
+		AND task_id = #{args[0],javaType=java.lang.Integer} 
+		AND name = #{args[1],javaType=java.lang.String}  
+	</select>
+	
+	
+	<select id="findUnionItem" resultMap="ApsTaskItemResult" useCache="false">
+<!-- 		SELECT * FROM pj_aps_task_item  -->
+<!-- 		WHERE id IN(  -->
+<!-- 		SELECT task_item_id FROM pj_aps_task_score WHERE is_deleted = 0  -->
+<!-- 		AND task_id = #{args[0],javaType=java.lang.Integer}  -->
+<!-- 		AND check_type = #{args[1],javaType=java.lang.String}   -->
+<!-- 		AND DATE_FORMAT(`check_date`,'%Y-%m-%d')  -->
+<!-- 			BETWEEN DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m-%d')  -->
+<!-- 			AND DATE_FORMAT(#{args[3],javaType=java.util.Date} ,'%Y-%m-%d') -->
+<!-- 		GROUP BY task_item_id )  -->
+		SELECT ti.* FROM pj_aps_task_item ti 
+		LEFT JOIN pj_aps_task_score ts ON ti.id = ts.task_item_id
+		WHERE ts.is_deleted = 0
+		AND ts.task_id = #{args[0],javaType=java.lang.Integer} 
+		AND ts.check_type = #{args[1],javaType=java.lang.String}  
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') 
+			BETWEEN DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m-%d') 
+			AND DATE_FORMAT(#{args[3],javaType=java.util.Date} ,'%Y-%m-%d')
+				
+		union 
+		
+		SELECT * FROM pj_aps_task_item WHERE is_deleted = 0 AND `enable` = 1
+		AND task_id = #{args[0],javaType=java.lang.Integer} 
+		AND check_type = #{args[1],javaType=java.lang.String}  
+		
+		ORDER BY id
+<!-- 		ORDER BY modify_date -->
+	</select>
+	<update id="updateIsDeleteByTaskId">
+	  UPDATE pj_apts_task_item set is_delete =0 WHERE apts_task_id=#{args[0]}
+	</update>
+	
+	
+	
+	
+	
+</mapper>

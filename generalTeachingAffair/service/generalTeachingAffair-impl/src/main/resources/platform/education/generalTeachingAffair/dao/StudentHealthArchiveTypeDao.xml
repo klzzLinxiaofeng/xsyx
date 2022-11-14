@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentHealthArchiveTypeDao">
+
+    <resultMap id="StudentHealthArchiveTypeResult"
+               type="platform.education.generalTeachingAffair.model.StudentHealthArchiveType">
+        <result property="id" column="id" />
+        <result property="studentHealthId" column="student_health_id"/>
+        <result property="healthType" column="health_type"/>
+
+    </resultMap>
+
+
+    <select id="read" resultMap="StudentHealthArchiveTypeResult" useCache="false">
+        SELECT * FROM pj_student_health_archive_type WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+
+
+
+    <insert id="create" parameterType="platform.education.generalTeachingAffair.model.StudentHealthArchiveType">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO pj_student_health_archive_type (
+
+        student_health_id,health_type
+        )
+        VALUES (
+        #{studentHealthId},
+        #{healthType}
+        )
+    </insert>
+
+
+
+
+
+
+
+
+</mapper>

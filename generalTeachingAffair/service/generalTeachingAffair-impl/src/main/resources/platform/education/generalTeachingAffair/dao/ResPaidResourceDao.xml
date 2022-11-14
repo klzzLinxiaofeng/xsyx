@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ResPaidResourceDao">
+
+	<resultMap id="ResultResult" type="platform.education.generalTeachingAffair.model.ResPaidResource">
+		<result property="id" column="id" />
+		<result property="title" column="title"/>
+		<result property="description" column="description"/>
+		<result property="entityId" column="entity_id"/>
+		<result property="price" column="price"/>
+		<result property="uuid" column="uuid"/>
+		<result property="userId" column="user_id"/>
+		<result property="createDate" column="create_date" />
+	</resultMap>
+
+
+
+	<select id="read" resultMap="ResultResult" useCache="false">
+		SELECT * FROM res_paid_resource WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+
+	
+
+	
+	<delete id="delete">
+		DELETE FROM res_paid_resource
+		WHERE id = #{id}
+	</delete>
+
+	<insert id="create">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		insert into res_paid_resource
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			id,
+			<if test="title != null">
+				title,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="entityId != null">
+				entity_id,
+			</if>
+			<if test="price != null ">
+				price,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="uuid != null">
+				uuid,
+			</if>
+			create_date
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{id},
+			<if test="title != null">
+				#{title},
+			</if>
+			<if test="description != null">
+				#{description},
+			</if>
+			<if test="entityId != null">
+				#{entityId},
+			</if>
+			<if test="price != null ">
+				#{price},
+			</if>
+			<if test="userId != null">
+				#{userId},
+			</if>
+			<if test="uuid != null">
+				#{uuid},
+			</if>
+			NOW()
+		</trim>
+	</insert>
+
+	<select id="findByUuid" resultMap="ResultResult">
+		select * from res_paid_resource where uuid = #{args[0]}
+	</select>
+</mapper>

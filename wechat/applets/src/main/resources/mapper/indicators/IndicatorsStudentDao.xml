@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.indicators.dao.IndicatorsStudentDao">
+
+    <resultMap id="IndicatorMap" type="com.xunyunedu.indicators.pojo.IndicatorsPojo">
+        <id column="id" property="id"></id>
+        <result column="grade_id" property="gradeId"></result>
+        <result column="grade_name" property="gradeName"></result>
+        <result column="score" property="score"></result>
+        <result column="indicators_name" property="name"></result>
+        <result column="danwei" property="danwei"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modie_time" property="modieTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="school_year" property="schoolYear"></result>
+        <result column="school_id" property="schoolId"></result>
+    </resultMap>
+
+    <resultMap id="IndicatorsStudentMap" type="com.xunyunedu.indicators.pojo.IndicatorsStudent">
+        <id column="id" property="id"></id>
+        <result column="student_id" property="studentId"></result>
+        <result column="student_name" property="stuName"></result>
+        <result column="baogao_id" property="baogaoId"></result>
+        <result column="indicators_id" property="indicatorsId"></result>
+        <result column="indicators_name" property="indicatorsName"></result>
+        <result column="score" property="score"></result>
+        <result column="danwei" property="danwei"></result>
+        <result column="health_report" property="healthReport"></result>
+        <result column="cervix_report" property="cervixReport"></result>
+        <result column="yiwu" property="yiWu"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modie_time" property="modieTime"></result>
+        <result column="schoolYear" property="schoolYear"></result>
+        <result column="tianshu" property="tianshu"></result>
+        <result column="jiaDay" property="jiaDay"></result>
+    </resultMap>
+    <select id="findBystudents" resultMap="IndicatorMap">
+         select pi.id, pi.indicators_name,pis.score,pi.danwei from pj_indicators_student pis
+         inner join  pj_indicators pi on pi.id=pis.indicators_id
+         where pis.schoolYear=#{schoolYear} and pi.school_id=#{schoolId} and pi.is_delete=0
+         and pis.is_delete=0 and pi.grade_id=(select pts.grade_id from
+        pj_team_student pts inner join pj_grade pg on pg.id=pts.grade_id
+        where pg.school_year=#{schoolYear} and pts.student_id=#{studentId} and pts.is_delete=0 group by pts.grade_id)
+        and pis.student_id=#{studentId}
+    </select>
+
+    <select id="findByIndicaStudent" resultMap="IndicatorsStudentMap">
+    SELECT psb.id as baogao_id, ps.name as student_name,ps.id as student_id,psb.health_report,psb.cervix_report,psb.yiwu FROM pj_indicators_student pis
+    inner join  pj_student_baogao psb on psb.student_id=pis.student_id
+    inner join pj_student ps on ps.id=pis.student_id where ps.is_delete=0 and ps.school_id=#{schoolId}  and
+    pis.student_id=#{studentId}
+    group by psb.id
+</select>
+
+<select id="findByQingJia" resultType="java.lang.Integer">
+        select time_consuming from pj_student_asking
+        where student_id=#{studentId}  and school_id=#{schoolId} and is_deleted=0 and india_status=2
+    </select>
+</mapper>

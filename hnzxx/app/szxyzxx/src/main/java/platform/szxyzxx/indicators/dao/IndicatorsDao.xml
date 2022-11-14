@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.indicators.dao.IndicatorsDao">
+
+    <resultMap id="IndicatorMap" type="platform.szxyzxx.indicators.pojo.IndicatorsPojo">
+        <id column="id" property="id"></id>
+        <result column="grade_id" property="gradeId"></result>
+        <result column="grade_name" property="gradeName"></result>
+        <result column="indicators_name" property="name"></result>
+        <result column="danwei" property="danwei"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modie_time" property="modieTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="school_year" property="schoolYear"></result>
+        <result column="school_id" property="schoolId"></result>
+    </resultMap>
+    <resultMap id="GradeMap" type="platform.education.generalTeachingAffair.model.Grade">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="code" property="code"></result>
+    </resultMap>
+
+    <select id="findBygrade" resultMap="GradeMap">
+        select id,name,code from pj_grade where school_id=#{args[0]}  and school_year=#{args[1]} and is_deleted=0
+    </select>
+    <select id="findByAll" resultMap="IndicatorMap">
+        select pi.*,pg.name as grade_name from pj_indicators pi inner join pj_grade pg on pg.id=pi.grade_id
+        <where>
+            1=1 and pi.is_delete=0 and pi.school_id=#{args[1]}
+            <if test="args[0]!=null">
+                and pi.grade_id=#{args[0]}
+            </if>
+            <if test="args[2]!=null">
+                and pi.school_year=#{args[2]}
+            </if>
+
+        </where>
+
+    </select>
+
+    <insert id="create"   keyProperty="args[0].id" useGeneratedKeys="true" parameterType="platform.szxyzxx.indicators.pojo.IndicatorsPojo">
+        insert  into pj_indicators(id,grade_id,indicators_name,danwei,create_time,modie_time,is_delete,school_year,school_id)
+        value(null,#{args[0].gradeId},#{args[0].name},#{args[0].danwei},#{args[0].createTime},#{args[0].modieTime},#{args[0].isDelete},#{args[0].schoolYear},#{args[0].schoolId})
+    </insert>
+
+    <select id="findByGrade" resultType="java.lang.Integer">
+        select ps.id from pj_student ps inner join pj_team_student pts
+        on pts.student_id=ps.id where pts.grade_id=#{args[1]} and pts.is_delete=0 and ps.is_delete=0
+        and ps.school_id=#{args[0]} group by ps.id
+    </select>
+
+    <insert id="createStudent" parameterType="platform.szxyzxx.indicators.pojo.StudentIndicaPojo" keyProperty="id" useGeneratedKeys="true">
+        insert  into pj_indicators_student(student_id,indicators_id,score,schoolYear,is_delete,baogao_id)
+        value (#{args[0].studentId},#{args[0].indicatorsId},#{args[0].score},#{args[0].schoolYear},#{args[0].isDelete},#{args[0].baogaoId})
+    </insert>
+
+
+
+</mapper>

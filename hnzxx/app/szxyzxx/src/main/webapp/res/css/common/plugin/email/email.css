@@ -1,0 +1,11 @@
+.emailist{border:1px solid #bdbdbd; border-radius: 4px; background-color:#fff; color:#666; font-size:14px; list-style-type:0; padding:0; margin:0; overflow:hidden;top: 38px;left:110px;}
+.emailist li{padding:2px 11px; cursor:pointer;}
+.emailist .on, .emailist li:hover{background-color:#eee;}
+
+.emailist1{border:1px solid #bdbdbd; border-radius: 4px; background-color:#fff; color:#666; font-size:14px; list-style-type:0; padding:0; margin:0; overflow:hidden; top: 151px; left: 104px;}
+.emailist1 li{padding:2px 11px; cursor:pointer;}
+.emailist1 .on, .emailist1 li:hover{background-color:#eee;}
+
+.emailist2{border:1px solid #bdbdbd; border-radius: 4px; background-color:#fff; color:#666; font-size:14px; list-style-type:0; padding:0; margin:0; overflow:hidden; top: 30px;}
+.emailist2 li{padding:2px 11px; cursor:pointer;}
+.emailist2 .on, .emailist2 li:hover{background-color:#eee;}

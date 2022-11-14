@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.resource.dao.EasyResourceDao">
+
+    <resultMap id="ResourceResult" type="platform.education.resource.model.Resource">
+        <result property="id" column="id" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="title" column="title" />
+        <result property="description" column="description" />
+        <result property="uuid" column="uuid" />
+        <result property="resType" column="res_type" />
+        <result property="objectId" column="object_id" />
+        <result property="thumbnailUrl" column="thumbnail_url" />
+        <result property="iconType" column="icon_type" />
+        <result property="libraryId" column="library_id" />
+        <result property="verify" column="verify" />
+        <result property="userId" column="user_id" />
+        <result property="userName" column="user_name" />
+        <result property="isPersonal" column="is_personal" />
+        <result property="isDeleted" column="is_deleted" />
+        <result property="favCount" column="fav_count" />
+        <result property="likeCount" column="like_count" />
+        <result property="commentCount" column="comment_count" />
+        <result property="downloadCount" column="download_count" />
+        <result property="clickCount" column="click_count" />
+        <result property="integral" column="integral" />
+        <result property="score" column="score" />
+        <result property="scoringCount" column="scoring_count" />
+    </resultMap>
+
+    <select id="findResourceByCondition" resultMap="ResourceResult"
+            useCache="false">
+        SELECT * FROM res_resource as r
+        <if test="args[0] != null">
+            <where>
+            <if test="args[0].id != null">
+                AND r.id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND r.create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND r.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].title != null and args[0].title != ''">
+                AND r.title LIKE CONCAT(CONCAT('%', #{args[0].title}),'%')
+            </if>
+            <if test="args[0].description != null and args[0].description != ''">
+                AND r.description = #{args[0].description,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND r.uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].isPersonal != null">
+                <choose>
+                    <when test="args[0].isPersonal == true">
+                        AND r.is_personal  = 1
+                    </when>
+                    <otherwise>
+                        AND r.is_personal  = 0
+                    </otherwise>
+                </choose>
+            </if>
+
+            <if test="args[0].clickCount != null">
+                AND r.res_type is not null
+            </if>
+
+            <if test="args[0].resType != null">
+                AND r.res_type = #{args[0].resType,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].objectId != null and args[0].objectId != ''">
+                AND r.object_id = #{args[0].objectId,javaType=java.lang.String}
+            </if>
+
+            <if test="args[0].libraryId != null and args[0].libraryId != ''">
+                AND r.library_id = #{args[0].libraryId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].verify != null and args[0].verify != ''">
+                AND r.verify = #{args[0].verify,javaType=java.lang.String}
+            </if>
+
+            <if test="args[0].userId != null and args[0].favCount==null">
+                AND r.user_id = #{args[0].userId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].userName != null and args[0].userName != ''">
+                AND r.user_name = #{args[0].userName,javaType=java.lang.String}
+            </if>
+
+            <if test="args[0].favCount != null">
+                AND exists(select 1 from res_favorites res where res.poster_id=#{args[0].userId,javaType=java.lang.Integer} and res.resource_id=r.id)
+            </if>
+
+            AND r.is_deleted  = 0
+            </where>
+        </if>
+    </select>
+
+    <update id="updateBySql">
+        ${args[0].sql}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.WeekStarStuDao">
+
+    <resultMap id="WeekStuTermVo" type="platform.education.generalTeachingAffair.vo.WeekStuTermVo">
+        <result column="id" property="id"></result>
+        <result column="year_term_id" property="yearTermId"></result>
+        <result column="name" property="name"></result>
+        <result column="modify_date" property="modifyDate"></result>
+        <result column="create_date" property="createDate"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.generalTeachingAffair.vo.WeekStuTermVo">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+        insert into pj_week_stu_term(year_term_id, name, create_date, teacher_id, uuid)
+        VALUES (#{yearTermId},#{name},#{createDate},#{teacherId}, #{uuid})
+    </insert>
+
+    <update id="update" parameterType="platform.education.generalTeachingAffair.vo.WeekStuTermVo">
+        update pj_week_stu_term set uuid = #{uuid} where id = #{id}
+    </update>
+
+    <select id="read" resultMap="WeekStuTermVo" useCache="false">
+		SELECT * FROM pj_week_stu_term WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+    <insert id="createWeekStarStu">
+        insert into pj_week_stu (week_id, team_id, student_id, score, create_date,grade_id)
+        VALUES
+        <foreach collection="args[1]" item="val" separator="," close=";">
+            (#{args[0]},#{val.teamId},#{val.studentId},#{val.score},#{val.createDate},#{val.gradeId})
+        </foreach>
+    </insert>
+
+    <select id="findWeekStarStu" resultType="platform.education.generalTeachingAffair.vo.WeekStarResonseVo">
+        select pt.id,psy.name yearName,pst.name term,pt.name name,pt.create_date createDate,ps.team_id teamId,pjt.name teamName,pt.uuid,
+        <!-- 分组之后合并只取前五名 -->
+        substring_index(group_concat(pts.name order by score desc),',',5) studentName,pg.grade_number gradeNumber
+        from pj_week_stu_term pt
+		join pj_school_term pst on pst.id = pt.year_term_id
+        join pj_school_year psy on psy.id = pst.school_year_id
+
+        left join pj_week_stu  ps on ps.week_id = pt.id
+        left join pj_team_student pts on pts.student_id = ps.student_id and ps.team_id = pts.team_id and pts.is_delete = 0
+        left join pj_grade pg on pg.id = pts.grade_id
+        left join pj_team pjt on pjt.id = ps.team_id
+        where psy.school_id = #{args[0].schoolId}
+        <if test="args[0].name != null and args[0].name != ''">
+            and pt.name LIKE CONCAT(CONCAT('%', #{args[0].name,javaType=java.lang.String}),'%')
+        </if>
+        <!-- 查询的班级和年级是创建是学生的年级班级 -->
+        <if test="args[0].gradeId != null">
+            and ps.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+        </if>
+        <if test="args[0].teacherId != null">
+            and pt.teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+        </if>
+        <if test="args[0].teamId != null">
+            and ps.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+        </if>
+        <if test="args[0].year != null and args[0].year != ''">
+            and pt.year_term_id in (select id from pj_school_term where school_year = #{args[0].year}
+            <if test="args[0].term != null and args[0].term != ''">
+                and code = #{args[0].term}
+            </if>
+            )
+        </if>
+
+        group by pt.id
+    </select>
+
+    <select id="findCount" resultType="java.lang.Integer">
+        SELECT pt.id FROM pj_week_stu_term pt
+        left join pj_week_stu ps ON pt.id = ps.week_id
+        where name = #{args[0]} and teacher_id = #{args[1]} and year_term_id = #{args[2]}
+    </select>
+    <select id="findWeekStarStuById" resultType="java.util.Map">
+        select pws.score sumScore,ps.name from pj_week_stu pws
+        join pj_student ps on ps.id = pws.student_id
+        where week_id = #{args[0]}
+    </select>
+
+    <select id="findMonthStar" resultType="platform.education.generalTeachingAffair.vo.WeekStarResonseVo">
+        select group_concat(pt.id) ids, date_format(pt.create_date, '%Y-%m')month ,
+        psy.name yearName,pst.name term,pt.name name,pt.create_date createDate
+        from pj_week_stu_term pt
+        join pj_school_term pst on pst.id = pt.year_term_id
+        join pj_school_year psy on psy.id = pst.school_year_id
+        where
+        pt.id IN (select distinct week_id from pj_week_stu  ps
+            <where>
+                <if test="args[0].gradeId != null">
+                    and ps.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+                </if>
+                <if test="args[0].teamId != null">
+                    and ps.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+                </if>
+            </where>
+        )
+        <if test="args[0].month != null and args[0].month != ''">
+            and date_format(pt.create_date, '%Y-%m') = #{args[0].month}
+        </if>
+        <if test="args[0].year != null and args[0].year != ''">
+            and pt.year_term_id in (select id from pj_school_term where school_year = #{args[0].year}
+            <if test="args[0].term != null and args[0].term != ''">
+                and code = #{args[0].term}
+            </if>
+            )
+        </if>
+        <if test="args[0].teacherId != null">
+            and pt.teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+        </if>
+        group by date_format(pt.create_date, '%Y-%m')
+    </select>
+    <select id="findMonthStarStu" resultType="java.util.Map">
+        select sumScore,name,gradeNumber,a.teamName from (
+            select (sum(score)) as sumScore,pg.grade_number gradeNumber,pts.name name ,pjt.name teamName
+            from pj_week_stu ps
+            join pj_team_student pts on pts.student_id = ps.student_id and ps.team_id = pts.team_id
+            join pj_grade pg on pg.id = pts.grade_id
+            join pj_team pjt on pjt.id = ps.team_id
+            where week_id in
+             <foreach collection="args[0]" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+             </foreach>
+            group by ps.student_id
+        )a
+        order by a.sumScore desc
+        limit #{args[1]}
+    </select>
+    <select id="findTermStar" resultType="platform.education.generalTeachingAffair.vo.WeekStarResonseVo">
+        select group_concat(pt.id) ids, psy.name yearName,pst.name term,pt.create_date createDate
+        from pj_week_stu_term pt
+        join pj_school_term pst on pst.id = pt.year_term_id
+        join pj_school_year psy on psy.id = pst.school_year_id
+        where
+        pt.id IN (select distinct week_id from pj_week_stu  ps
+            <where>
+                <if test="args[0].gradeId != null">
+                    and ps.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+                </if>
+                <if test="args[0].teamId != null">
+                    and ps.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+                </if>
+            </where>
+        )
+        <if test="args[0].year != null and args[0].year != ''">
+            and pt.year_term_id in (select id from pj_school_term where school_year = #{args[0].year}
+            <if test="args[0].term != null and args[0].term != ''">
+                and code = #{args[0].term}
+            </if>
+            )
+        </if>
+        <if test="args[0].teacherId != null">
+            and pt.teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+        </if>
+        group by year_term_id
+    </select>
+
+    <select id="findTheTeacherScoreListMain" resultType="java.util.Map">
+        select pt.name,group_concat(ps.name) subject,pttm.self_score selfScore, pttm.team_score teamScore,pttm.school_score schoolScore,
+        pttm.school_year schoolYear,pt.id ,group_concat(pjt.name) teamName,pttm.create_date createDate,pttm.file_path filePath,pttm.sum_score sumScore
+        from pj_team_teacher ptt
+        join pj_team pjt on pjt.id = ptt.team_id and pjt.is_delete = 0 and pjt.school_id = #{args[2]}
+        join pj_subject ps on ptt.subject_code = ps.code and ps.is_delete = 0
+        join pj_teacher pt on pt.id = ptt.teacher_id and pt.is_delete = 0 and pt.school_id = #{args[2]}
+        left join pj_the_teacher_main pttm on pttm.teacher_id = pt.id and pttm.school_year = #{args[0]} and pttm.`type`=#{args[1]} and pttm.xq=#{args[3]}
+        where ptt.is_delete = 0         and ptt.school_year = #{args[0]}
+          <choose>
+            <when test="args[1]==0">
+                and ps.`name` in ('语文','数学','英语')
+            </when>
+            <otherwise>
+                and ps.`name` not in ('语文','数学','英语')
+            </otherwise>
+          </choose>
+
+            <if test="args[4]!=null and args[4]!=''">
+                and ptt.`name` like concat('%',#{args[4]},'%')
+            </if>
+
+
+        group by pt.id
+
+        order by pttm.sum_score desc
+    </select>
+
+    <select id="findTheTeacherScoreListOther" resultType="java.util.Map">
+        select pt.name,group_concat(ps.name) subject,pttm.self_score selfScore, pttm.team_score teamScore,pttm.school_score schoolScore,
+        pttm.school_year schoolYear,pt.id ,group_concat(pjt.name) teamName,pttm.create_date createDate,pttm.uuid
+        from pj_team_teacher ptt
+        join pj_team pjt on pjt.id = ptt.team_id and pjt.is_delete = 0 and pjt.school_id = #{args[2]}
+        join pj_subject ps on ptt.subject_code = ps.code and ps.is_delete = 0
+        join pj_teacher pt on pt.id = ptt.teacher_id and pt.is_delete = 0 and pt.school_id = #{args[2]}
+        left join pj_the_teacher_main pttm on pttm.teacher_id = pt.id and pttm.school_year = #{args[0]}
+        where ptt.is_delete = 0         and ptt.school_year = #{args[0]}
+        and ps.`name` not in
+        <foreach collection="args[1]" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        group by pt.id
+    </select>
+
+</mapper>

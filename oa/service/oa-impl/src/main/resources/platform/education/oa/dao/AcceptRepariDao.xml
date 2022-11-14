@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.AcceptRepariDao">
+
+	<resultMap id="AcceptRepariResult" type="platform.education.oa.model.AcceptRepari">
+		<result property="id" column="id" />
+		<result property="accepterId" column="accepter_id" />
+		<result property="accepterName" column="accepter_name" />
+		<result property="phone" column="phone" />
+		<result property="acceptDate" column="accept_date" />
+		<result property="appraise" column="appraise" />
+		<result property="remark" column="remark" />
+		<result property="picture" column="picture" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="repariId" column="repari_id" />
+		<result property="schoolId" column="school_id" />
+		<result property="solution" column="solution" />
+		<result property="isHaoCai" column="is_haocai" />
+	</resultMap>
+	
+	<resultMap id="AcceptRepariResultMore" type="platform.education.oa.vo.AcceptRepariVo">
+		<result property="id" column="id" />
+		<result property="accepterId" column="accepter_id" />
+		<result property="accepterName" column="accepter_name" />
+		<result property="phone" column="phone" />
+		<result property="acceptDate" column="accept_date" />
+		<result property="appraise" column="appraise" />
+		<result property="remark" column="remark" />
+		<result property="picture" column="picture" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="repariId" column="repari_id" />
+		<result property="number" column="number" />
+		<result property="appraiseNum" column="appraiseNum" />
+		<result property="solution" column="solution" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.AcceptRepari">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_accept_repair (
+			id, 
+			accepter_id, 
+			accepter_name, 
+			phone, 
+			accept_date, 
+			appraise, 
+			remark, 
+			picture, 
+			create_date, 
+			modify_date,
+			school_id,
+			is_delete, 
+			repari_id,
+			solution,
+			is_haocai
+		)
+		VALUES (
+			#{id}, 
+			#{accepterId}, 
+			#{accepterName}, 
+			#{phone}, 
+			#{acceptDate}, 
+			#{appraise}, 
+			#{remark}, 
+			#{picture}, 
+			#{createDate}, 
+			#{modifyDate},
+			#{schoolId},
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{repariId},
+			#{solution},
+			#{isHaoCai}
+		)
+	</insert>
+
+	<select id="read" resultMap="AcceptRepariResult" useCache="false">
+		SELECT * FROM oa_accept_repair WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findAcceptRepariByConditionAndGroup" resultMap="AcceptRepariResultMore" useCache="false">
+		SELECT *,count(accepter_name) as number,round(sum(appraise)/count(accepter_name)) as appraiseNum FROM oa_accept_repair 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId}
+			</if>
+			<if test="args[0].accepterId != null">
+				AND accepter_id = #{args[0].accepterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].accepterName != null and args[0].accepterName != ''">
+				AND accepter_name = #{args[0].accepterName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].phone != null and args[0].phone != ''">
+				AND phone = #{args[0].phone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].acceptDate != null">
+				AND accept_date = #{args[0].acceptDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND accept_date &gt;= #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null">
+				AND accept_date &lt;= #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].appraise != null">
+				AND appraise = #{args[0].appraise,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].picture != null and args[0].picture != ''">
+				AND picture = #{args[0].picture,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].repariId != null">
+				AND repari_id = #{args[0].repariId,javaType=java.lang.Integer}
+			</if>
+		</if>
+		GROUP BY accepter_id,accepter_name
+	</select>
+	<select id="findAcceptRepariByCondition" resultMap="AcceptRepariResult" useCache="false">
+		SELECT * FROM oa_accept_repair 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].accepterId != null">
+				AND accepter_id = #{args[0].accepterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].accepterName != null and args[0].accepterName != ''">
+				AND accepter_name = #{args[0].accepterName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].phone != null and args[0].phone != ''">
+				AND phone = #{args[0].phone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].acceptDate != null">
+				AND accept_date = #{args[0].acceptDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].appraise != null">
+				AND appraise = #{args[0].appraise,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].picture != null and args[0].picture != ''">
+				AND picture = #{args[0].picture,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].repariId != null">
+				AND repari_id = #{args[0].repariId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_accept_repair 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].accepterId != null">
+				AND accepter_id = #{args[0].accepterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].accepterName != null and args[0].accepterName != ''">
+				AND accepter_name = #{args[0].accepterName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].phone != null and args[0].phone != ''">
+				AND phone = #{args[0].phone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].acceptDate != null">
+				AND accept_date = #{args[0].acceptDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].appraise != null">
+				AND appraise = #{args[0].appraise,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].picture != null and args[0].picture != ''">
+				AND picture = #{args[0].picture,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].repariId != null">
+				AND repari_id = #{args[0].repariId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="AcceptRepariResult" useCache="false">
+		SELECT * FROM oa_accept_repair WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.AcceptRepari">
+		UPDATE oa_accept_repair
+		SET 
+		<if test="accepterId != null">
+			accepter_id=#{accepterId},
+		</if>
+		<if test="accepterName != null">
+			accepter_name=#{accepterName},
+		</if>
+		<if test="phone != null">
+			phone=#{phone},
+		</if>
+		<if test="acceptDate != null">
+			accept_date=#{acceptDate},
+		</if>
+		<if test="appraise != null">
+			appraise=#{appraise},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="picture != null">
+			picture=#{picture},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="repariId != null">
+			repari_id=#{repariId},
+		</if>
+		<if test="repariId != null">
+			solution=#{solution},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_accept_repair
+		WHERE id = #{id}
+	</delete>
+</mapper>

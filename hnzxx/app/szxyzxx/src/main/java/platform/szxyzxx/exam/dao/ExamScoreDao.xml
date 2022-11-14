@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.exam.dao.ExamScoreDao">
+    <resultMap id="ExamQuestionScoreVoMap" type="platform.education.generalTeachingAffair.model.ExamQuestionScoreVo">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="examQueactionId" column="exam_queaction_id" />
+        <result property="studentId" column="student_id" />
+        <result property="subjectCode" column="subject_code" />
+        <result property="isDelete" column="is_delete" />
+        <result property="createTime" column="create_time" />
+        <result property="modiyTime" column="modiyt_ime" />
+        <result property="schoolYear" column="school_year" />
+        <result property="schoolTrem" column="school_trem" />
+        <result property="gradeId" column="grade_id" />
+        <result property="teamId" column="team_id" />
+        <result property="examType" column="exam_type" />
+        <result property="examName" column="exam_name" />
+        <result property="score" column="score" />
+        <result property="fenzhi" column="fenzhi" />
+        <result property="teacherName" column="teacherName"/>
+    </resultMap>
+
+
+    <select id="findById" resultMap="ExamQuestionScoreVoMap">
+        select  psa.*,(select name from pj_team_teacher where subject_code=#{args[4]} and school_year=#{args[3]} and is_delete=0 and team_id=#{args[2]}) as teacherName  from pj_exam_team_subject_question_score  psa
+        where psa.student_id=#{args[0]} and psa.is_delete=0 and psa.exam_queaction_id=#{args[1]}
+    </select>
+    <select id="findByTeamZongfen" resultType="java.lang.Double">
+        select sum(score) from  pj_exam_team_subject_question_score
+        where is_delete=0
+        <if test="args[0]!=null">
+           and  exam_queaction_id=#{args[0]}
+        </if>
+        <if test="args[1]!=null">
+            and team_id=#{args[1]}
+        </if>
+        <if test="args[2]!=null">
+            and school_year=#{args[2]}
+        </if>
+        <if test="args[3]!=null">
+            and school_trem=#{args[3]}
+        </if>
+        <if test="args[4]!=null">
+            and subject_code=#{args[4]}
+        </if>
+        <if test="args[5]!=null">
+            and exam_name=#{args[5]}
+        </if>
+    </select>
+    <select id="findByZongfen" resultType="java.lang.Double">
+        select count(*) from  pj_exam_team_subject_question_score
+        where is_delete=0
+        <if test="args[0]!=null">
+            and  exam_queaction_id=#{args[0]}
+        </if>
+        <if test="args[1]!=null">
+            and team_id=#{args[1]}
+        </if>
+        <if test="args[2]!=null">
+            and school_year=#{args[2]}
+        </if>
+        <if test="args[3]!=null">
+            and school_trem=#{args[3]}
+        </if>
+        <if test="args[4]!=null">
+            and subject_code=#{args[4]}
+        </if>
+        <if test="args[5]!=null">
+            and exam_name=#{args[5]}
+        </if>
+        and score=100
+    </select>
+
+</mapper>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentPunishDao">
+
+	<resultMap id="StudentPunishResult" type="platform.education.generalTeachingAffair.model.StudentPunish">
+		<result property="id" column="id" />
+		<result property="teamId" column="team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="remark" column="remark" />
+		<result property="isDelete" column="is_delete"/>
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="punishType" column="punish_type" />
+		<result property="punishCause" column="punish_cause" />
+		<result property="punishDay" column="punish_day" />
+		<result property="punishEndDay" column="punish_end_day" />
+		<result property="repealDay" column="repeal_day" />
+		<result property="isRepeal" column="is_repeal" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.StudentPunish">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_student_punish (id, team_id, student_id, remark, is_delete, create_date, modify_date, punish_type, punish_cause, punish_day, punish_end_day, repeal_day, is_repeal)
+		VALUES (#{id}, #{teamId}, #{studentId}, #{remark}, #{isDelete}, #{createDate}, #{modifyDate}, #{punishType}, #{punishCause}, #{punishDay}, #{punishEndDay}, #{repealDay}, #{isRepeal})
+	</insert>
+
+	<select id="read" resultMap="StudentPunishResult" useCache="false">
+		SELECT id,
+			team_id,
+			student_id,
+			remark,
+			punish_cause,
+			punish_type,
+			punish_day,
+			punish_end_day,
+			repeal_day,
+			is_repeal,
+			is_delete,
+			create_date,
+			modify_date
+			from pj_student_punish 
+		WHERE 1=1
+		AND is_delete = 0  
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findStudentPunishByCondition" resultMap="StudentPunishResult" useCache="false">
+		SELECT id,
+			pu.team_id,
+			pu.student_id,
+			pu.remark,
+			pu.punish_cause,
+			pu.punish_type,
+			pu.punish_day,
+			pu.punish_end_day,
+			pu.repeal_day,
+			pu.is_repeal,
+			pu.is_delete,
+			pu.create_date,
+			pu.modify_date
+			from pj_student_punish pu 
+			where 1 = 1
+			AND pu.is_delete = 0   
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+			AND pu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+			AND pu.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+			AND pu.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].remark != null">
+			AND pu.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+			AND pu.is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null">
+			AND pu.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+			AND pu.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].punishType != null">
+			AND pu.punish_type = #{args[0].punishType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].punishCause != null">
+			AND pu.punish_cause = #{args[0].punishCause,javaType=java.lang.String}
+			</if>
+			<if test="args[0].punishDay != null">
+			AND pu.punish_day = #{args[0].punishDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].punishEndDay != null">
+			AND pu.punish_end_day = #{args[0].punishEndDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].repealDay != null">
+			AND pu.repeal_day = #{args[0].repealDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isRepeal != null">
+			AND pu.is_repeal = #{args[0].isRepeal}
+			</if>
+			
+			<!-- 学生处分页面查询条件 -->
+			<if test="args[0].studentId != null">
+			AND pu.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			and pu.team_id in (SELECT t.id from pj_team t where 1 = 1
+			<if test="args[0].schoolId != null">
+			and t.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null">
+			and t.school_year = #{args[0].schoolYear}
+			</if>
+			<if test="args[0].gradeId != null">
+			and t.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+			and t.id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+		    )
+			
+			
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_student_punish WHERE 1=1 and is_delete = 0 
+		<if test="args[0] != null">
+			
+			<if test="args[0].id != null">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+			AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+			AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].remark != null">
+			AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+			AND is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].punishType != null">
+			AND punish_type = #{args[0].punishType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].punishCause != null">
+			AND punish_cause = #{args[0].punishCause,javaType=java.lang.String}
+			</if>
+			<if test="args[0].punishDay != null">
+			AND punish_day = #{args[0].punishDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].punishEndDay != null">
+			AND punish_end_day = #{args[0].punishEndDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].repealDay != null">
+			AND repeal_day = #{args[0].repealDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isRepeal != null">
+			AND is_repeal = #{args[0].isRepeal}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="StudentPunishResult" useCache="false">
+		 SELECT id,
+			team_id,
+			student_id,
+			remark,
+			punish_cause,
+			punish_type,
+			punish_day,
+			punish_end_day,
+			repeal_day,
+			is_repeal,
+			is_delete,
+			create_date,
+			modify_date  
+			from pj_student_punish
+		WHERE id = #{args[0],javaType=java.lang.Integer}
+		and is_delete = 0 
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.StudentPunish">
+		UPDATE pj_student_punish
+		SET 
+				<if test="teamId != null">
+					team_id=#{teamId},
+				</if>
+				<if test="studentId != null">
+					student_id=#{studentId},
+				</if>
+				<!-- <if test="remark != null">
+					remark=#{remark},
+				</if> -->
+				remark=#{remark},
+				<if test="isDelete != null">
+					is_delete=#{isDelete},
+				</if>
+				<if test="createDate != null">
+					create_date=#{createDate},
+				</if>
+				<if test="modifyDate != null">
+					modify_date=#{modifyDate},
+				</if>
+				<if test="punishType != null">
+					punish_type=#{punishType},
+				</if>
+				<if test="punishCause != null">
+					punish_cause=#{punishCause},
+				</if>
+				<if test="punishDay != null">
+					punish_day=#{punishDay},
+				</if>
+				
+				repeal_day=#{repealDay},
+				punish_end_day=#{punishEndDay},
+				<if test="punishEndDay != null">
+					punish_end_day=#{punishEndDay},
+				</if>
+				<!-- <if test="repealDay != null">
+					repeal_day=#{repealDay},
+				</if> -->
+				
+				<if test="isRepeal != null">
+					is_repeal=#{isRepeal},
+				</if>
+		id = #{id}
+		WHERE id = #{id}
+		and is_delete = 0 
+	</update>
+	
+	<update id="delete">
+ 	  update pj_student_punish 
+		 set is_delete =#{isDelete},
+	
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate,javaType=java.util.Date},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+		and is_delete = 0 
+	</update>
+
+</mapper>

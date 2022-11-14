@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.NoticeImgDao">
+
+	<resultMap id="NoticeImgResult" type="platform.education.oa.model.NoticeImg">
+		<result property="id" column="id" />
+		<result property="imgUuid" column="img_uuid" />
+		<result property="imgUrl" column="img_url" />
+		<result property="noticeId" column="notice_id" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.NoticeImg">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_notice_img (
+			id, 
+			img_uuid, 
+			img_url, 
+			notice_id, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{imgUuid}, 
+			#{imgUrl}, 
+			#{noticeId}, 
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="NoticeImgResult" useCache="false">
+		SELECT * FROM oa_notice_img WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findNoticeImgByCondition" resultMap="NoticeImgResult" useCache="false">
+		SELECT * FROM oa_notice_img 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].imgUuid != null and args[0].imgUuid != ''">
+				AND img_uuid = #{args[0].imgUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].imgUrl != null and args[0].imgUrl != ''">
+				AND img_url = #{args[0].imgUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].noticeId != null">
+				AND notice_id = #{args[0].noticeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_notice_img 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].imgUuid != null and args[0].imgUuid != ''">
+				AND img_uuid = #{args[0].imgUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].imgUrl != null and args[0].imgUrl != ''">
+				AND img_url = #{args[0].imgUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].noticeId != null">
+				AND notice_id = #{args[0].noticeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="NoticeImgResult" useCache="false">
+		SELECT * FROM oa_notice_img WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.NoticeImg">
+		UPDATE oa_notice_img
+		SET 
+		<if test="imgUuid != null">
+			img_uuid=#{imgUuid},
+		</if>
+		<if test="imgUrl != null">
+			img_url=#{imgUrl},
+		</if>
+		<if test="noticeId != null">
+			notice_id=#{noticeId},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_notice_img
+		WHERE id = #{id}
+	</delete>
+</mapper>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.ApplayLeaveDepartmentCountDao">
+
+	<resultMap id="ApplayLeaveDepartmentCountResult" type="platform.education.oa.model.ApplayLeaveDepartmentCount">
+		<result property="id" column="id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="ownerType" column="owner_type" />
+		<result property="departmentId" column="department_id" />
+		<result property="auditStatus" column="audit_status" />
+		<result property="count" column="count" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.ApplayLeaveDepartmentCount">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_applay_leave_department_count (
+			id, 
+			owner_id, 
+			owner_type, 
+			department_id,
+			audit_status, 
+			count, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{ownerId}, 
+			#{ownerType}, 
+			#{departmentId}, 
+			#{auditStatus},
+			#{count}, 
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ApplayLeaveDepartmentCountResult" useCache="false">
+		SELECT * FROM oa_applay_leave_department_count WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApplayLeaveDepartmentCountByCondition" resultMap="ApplayLeaveDepartmentCountResult" useCache="false">
+		SELECT * FROM oa_applay_leave_department_count 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id = #{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type = #{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].auditStatus != null and args[0].auditStatus!=''">
+				AND audit_status = #{args[0].auditStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].count != null">
+				AND count = #{args[0].count,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findApplayLeaveSqnumByCondition" resultMap="ApplayLeaveDepartmentCountResult" useCache="false">
+	   SELECT id,department_id,sum(count) as count FROM oa_applay_leave_department_count
+	   <if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id = #{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type = #{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].auditStatus != null and args[0].auditStatus!=''">
+				AND audit_status = #{args[0].auditStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].count != null">
+				AND count = #{args[0].count,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	   GROUP BY  department_id
+	</select>
+	
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_applay_leave_department_count 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id = #{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type = #{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].auditStatus != null and args[0].auditStatus!=''">
+				AND audit_status = #{args[0].auditStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].count != null">
+				AND count = #{args[0].count,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApplayLeaveDepartmentCountResult" useCache="false">
+		SELECT * FROM oa_applay_leave_department_count WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.ApplayLeaveDepartmentCount">
+		UPDATE oa_applay_leave_department_count
+		SET 
+		<if test="ownerId != null">
+			owner_id=#{ownerId},
+		</if>
+		<if test="ownerType != null">
+			owner_type=#{ownerType},
+		</if>
+		<if test="departmentId != null">
+			department_id=#{departmentId},
+		</if>
+		<if test="auditStatus != null ">
+			audit_status = #{auditStatus}
+			</if>
+		<if test="count != null">
+			count=#{count},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_applay_leave_department_count
+		WHERE id = #{id}
+	</delete>
+</mapper>

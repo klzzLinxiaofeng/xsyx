@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.leave.dao.OaApplayLeaveDepartmentCountDao">
+<resultMap id="ResultMap" type="com.xunyunedu.leave.pojo.OaApplayLeaveDepartmentCount">
+  <id property="id" column="id" />
+  <result property="ownerId" column="owner_id"/>
+  <result property="ownerType" column="owner_type"/>
+  <result property="departmentId" column="department_id"/>
+  <result property="auditStatus" column="audit_status"/>
+  <result property="count" column="count"/>
+  <result property="createDate" column="create_date"/>
+  <result property="modifyDate" column="modify_date"/>
+</resultMap>
+
+<insert id="insert">
+  insert into oa_applay_leave_department_count
+  <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="ownerId != null">
+      owner_id,
+    </if>
+    <if test="ownerType != null and ownerType != ''">
+      owner_type,
+    </if>
+    <if test="departmentId != null">
+      department_id,
+    </if>
+    <if test="auditStatus != null and auditStatus != ''">
+      audit_status,
+    </if>
+    <if test="count != null">
+      count,
+    </if>
+    create_date
+  </trim>
+  values
+  <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="ownerId != null">
+      #{ownerId},
+    </if>
+    <if test="ownerType != null and ownerType != ''">
+      #{ownerType},
+    </if>
+    <if test="departmentId != null">
+      #{departmentId},
+    </if>
+    <if test="auditStatus != null and auditStatus != ''">
+      #{auditStatus},
+    </if>
+    <if test="count != null">
+      #{count},
+    </if>
+    NOW()
+  </trim>
+
+
+
+</insert>
+
+<select id="selectByCondition" resultMap="ResultMap">
+    select * from  oa_applay_leave_department_count
+    <where>
+      <if test="departmentId != null">
+        department_id = #{departmentId}
+      </if>
+      <if test="auditStatus != null">
+        and audit_status = #{auditStatus}
+      </if>
+      <if test="ownerType != null and ownerType != ''">
+        and owner_type = #{ownerType}
+      </if>
+      <if test="ownerId != null">
+        and owner_id = #{ownerId}
+      </if>
+    </where>
+</select>
+
+  <update id="update">
+    UPDATE oa_applay_leave_department_count
+    <set>
+      <if test="ownerId != null">
+        owner_id=#{ownerId},
+      </if>
+      <if test="ownerType != null">
+        owner_type=#{ownerType},
+      </if>
+      <if test="departmentId != null">
+        department_id=#{departmentId},
+      </if>
+      <if test="auditStatus != null ">
+        audit_status = #{auditStatus},
+      </if>
+      <if test="count != null">
+        `count`=#{count},
+      </if>
+      <if test="createDate != null">
+        create_date=#{createDate},
+      </if>
+      <if test="modifyDate != null">
+        modify_date=#{modifyDate},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+</mapper>

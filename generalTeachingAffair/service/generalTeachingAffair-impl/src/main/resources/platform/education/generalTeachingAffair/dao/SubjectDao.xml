@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SubjectDao">
+
+	<resultMap id="SubjectResult"  type="platform.education.generalTeachingAffair.model.Subject">
+		<result property="id" column="id" />
+		<result property="code" column="code" />
+		<result property="schoolId" column="school_id" />
+		<result property="stageCode" column="stage_code" />
+		<result property="name" column="name" />
+		<result property="listOrder" column="list_order" />
+		<result property="subjectClass" column="subject_class" />
+		<result property="subjectType" column="subject_type" />
+		<result property="subjectProperty" column="subject_property" />
+		<result property="subjectCharacter" column="subject_character" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<resultMap id="SubjectResultVo" type="platform.education.generalTeachingAffair.vo.SubjectVo">
+		<result property="id" column="id" />
+		<result property="code" column="code" />
+		<result property="schoolId" column="school_id" />
+		<result property="stageCode" column="stage_code" />
+		<result property="name" column="name" />
+		<result property="listOrder" column="list_order" />
+		<result property="subjectClass" column="subject_class" />
+		<result property="subjectType" column="subject_type" />
+		<result property="subjectProperty" column="subject_property" />
+		<result property="subjectCharacter" column="subject_character" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<!-- 2017-12-11 -->
+		<result property="stageNames" column="stage_names" />
+		<result property="teacherNumber" column="teacher_number" />
+	</resultMap>
+
+	<insert id="create"
+		parameterType="platform.education.generalTeachingAffair.model.Subject">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_subject (id, code, school_id, stage_code, name,
+		list_order, subject_class, subject_type, subject_property,
+		subject_character, is_delete, create_date, modify_date)
+		VALUES (#{id},
+		#{code}, #{schoolId}, #{stageCode}, #{name}, #{listOrder},
+		#{subjectClass}, #{subjectType}, #{subjectProperty},
+		#{subjectCharacter}, #{isDelete}, #{createDate}, #{modifyDate})
+	</insert>
+
+	<select id="read" resultMap="SubjectResult" useCache="false">
+		SELECT * FROM pj_subject WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+	
+	
+
+	<select id="findSubjectByCondition" resultMap="SubjectResult" useCache="false">
+		SELECT * FROM pj_subject WHERE 1=1 and is_delete=0
+		<if test="args[0] != null">
+			<if test="args[0].id != null and args[0].id != ''">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].stageCode != null and args[0].stageCode != ''">
+				AND stage_code LIKE CONCAT(CONCAT('%', #{args[0].stageCode}),'%')
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].listOrder != null and args[0].listOrder != ''">
+				AND list_order = #{args[0].listOrder,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].subjectClass != null and args[0].subjectClass != ''">
+				AND subject_class = #{args[0].subjectClass,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectType != null and args[0].subjectType != ''">
+				AND subject_type = #{args[0].subjectType,javaType=java.lang.String}
+			</if>
+			<if
+				test="args[0].subjectProperty != null and args[0].subjectProperty != ''">
+				AND subject_property =
+				#{args[0].subjectProperty,javaType=java.lang.String}
+			</if>
+			<if
+				test="args[0].subjectCharacter != null and args[0].subjectCharacter != ''">
+				AND subject_character =
+				#{args[0].subjectCharacter,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null and args[0].isDelete != ''">
+				AND is_delete = #{args[0].isDelete,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="SubjectResult" useCache="false">
+		SELECT
+		* FROM pj_subject WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<!-- 功能描述：获得本学校的授课科目 -->
+	<select id="findSubjectsOfSchool" resultMap="SubjectResult" useCache="false">
+		SELECT * FROM pj_subject WHERE school_id = #{args[0],javaType=java.lang.Integer} AND is_delete = 0
+	</select>
+	
+	<select id="findSubjectByName" resultMap="SubjectResult" useCache="false">
+		SELECT
+		* FROM pj_subject WHERE 
+		name = #{args[0],javaType=java.lang.String}
+		and school_id= #{args[1],javaType=java.lang.Integer}
+		<if test="args[2] != null and args[2] != ''">
+			and stage_code LIKE CONCAT(CONCAT('%', #{args[2],javaType=java.lang.String}),'%')
+		</if>
+		<if test="args[3] != null and args[3] != ''">
+		  and subject_class = #{args[3],javaType=java.lang.String}
+		</if>
+		and is_delete=0
+	</select>
+	
+
+	<select id="findUnique" resultMap="SubjectResult"
+		useCache="false">
+		SELECT * FROM pj_subject
+		WHERE school_id = #{args[0],javaType=java.lang.Integer} AND is_delete = 0
+		<if test="args[1] != null">
+			AND stage_code LIKE CONCAT(CONCAT('%', #{args[1]}),'%')
+		</if>
+			AND code = #{args[2],javaType=java.lang.String}
+	</select>
+	<select id="findAllSubjectName" resultMap="SubjectResult">
+	SELECT * FROM pj_subject ps  
+	
+	WHERE
+	
+	ps.is_delete=0
+	
+	GROUP BY ps.code
+	</select>
+	<update id="update"
+		parameterType="platform.education.generalTeachingAffair.model.Subject">
+		UPDATE pj_subject
+		SET
+		<if test="code != null">
+			code=#{code},
+		</if>
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+
+		<if test="stageCode != null">
+			stage_code=#{stageCode},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="listOrder != null">
+			list_order=#{listOrder},
+		</if>
+		<if test="subjectClass != null">
+			subject_class=#{subjectClass},
+		</if>
+		<if test="subjectType != null">
+			subject_type=#{subjectType},
+		</if>
+		<if test="subjectProperty != null">
+			subject_property=#{subjectProperty},
+		</if>
+		<if test="subjectCharacter != null">
+			subject_character=#{subjectCharacter},
+		</if>
+		<if test="isDelete != null">
+			is_delete=#{isDelete},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_subject
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findIncrementDataByModifyDate" resultMap="SubjectResultVo" useCache="false">
+		SELECT *FROM pj_subject
+		WHERE 1=1
+		<if test="args[0] != null">
+			AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND subject_class = #{args[1],javaType=java.lang.String}
+		</if>
+		<if test="args[2] != null">
+			<choose>
+				<when test="args[2] == true">
+					AND is_delete = 1
+				</when>
+				<otherwise>
+					AND is_delete = 0
+				</otherwise>
+			</choose>
+		</if>
+		<if test="args[3] != null">
+			AND modify_date > #{args[3],javaType=java.util.Date}
+		</if>
+		<if test="args[4] != null">
+			<choose>
+				<when test="args[5] == true">
+					AND id > #{args[4],javaType=java.lang.Integer}
+				</when>
+				<otherwise>
+					AND id BETWEEN 0 AND #{args[4],javaType=java.lang.Integer}
+				</otherwise>
+			</choose>
+		</if>
+		ORDER BY modify_date, id
+	</select>
+
+</mapper>

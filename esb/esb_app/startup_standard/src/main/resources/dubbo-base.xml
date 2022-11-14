@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+     	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     	http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+     	http://code.alibabatech.com/schema/dubbo 
+		http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-autowire="byName">
+	<context:property-placeholder location="classpath:dubbo.properties"
+		ignore-unresolvable="true" />
+	<import resource="classpath*:/esb_service_common.xml" />
+	<dubbo:application name="${dubbo.application.name}" />
+
+	<!-- DUBBOX ADDR -->
+	<dubbo:registry address="${dubbo.registry.address}" />
+	<!-- 协议类型： -->
+	<!-- dubbo 采用单一长连接和NIO异步通讯，适合于小数据量大并发的服务调用，以及服务消费者机器数远大于服务提供者机器数的情况。不适合传送大数据量的服务，比如传文件，传视频等，除非请求量很低。 -->
+	<!-- 连接个数：单连接； -->
+	<!-- 连接方式：长连接； -->
+	<!-- 传输协议：TCP； -->
+	<!-- 传输方式：NIO异步传输； -->
+	<!-- 序列化：Hessian二进制序列化； -->
+	<!-- 适用范围：传入传出参数数据包较小（建议小于100k），消费者比提供者个数多，单一消费者这无法压满提供者，尽量不要用dubbo协议传输大文件或超大字符串。 -->
+	<!-- 适用场景：常规远程服务方法调用 -->
+
+	<!-- rmi rmi协议采用JDK标准的java.rmi.*实现，采用阻塞式短连接和JDK标准序列化方式。 -->
+	<!-- 连接个数：多连接 -->
+	<!-- 连接方式：短连接 -->
+	<!-- 传输协议：TCP -->
+	<!-- 传输方式：同步传输 -->
+	<!-- 序列化：Java标准二进制序列化 -->
+	<!-- 适用范围：传入传出参数数据大小混合，消费者与提供者差不多，可传文件 -->
+	<!-- hessian Hessian协议用于集成Hessian的服务，Hessian底层采用Http通讯，采用Servlet暴露服务，Dubbo缺省内嵌Jetty作为服务器实现。 -->
+	<!-- 连接个数：多连接 -->
+	<!-- 连接方式：短连接 -->
+	<!-- 传输协议：HTTP -->
+	<!-- 传输方式：同步传输 -->
+	<!-- 序列化：Hessian二进制序列化 -->
+	<!-- 适用范围：传入传出参数数据包较大，提供者比消费者个数多，提供者压力较大，可传文件。 -->
+	<!-- 适用场景：页面传输、文件传输，或与原生hessian服务互操作。 -->
+	<!-- http -->
+	<!-- 连接个数：多连接 -->
+	<!-- 连接方式：短连接 -->
+	<!-- 传输协议：HTTP -->
+	<!-- 传输方式：同步传输 -->
+	<!-- 序列化：表单序列化 -->
+	<!-- 适用范围：传入传出参数数据包大小混合，提供者比消费者个数多，可用浏览器看，可用表单或URL传入参数，暂不支持传文件。 -->
+	<!-- 适用场景：需同时给应用程序和浏览器JS使用的服务。 -->
+	<!-- webservice -->
+	<!-- 连接个数：多连接 -->
+	<!-- 连接方式:短连接 -->
+	<!-- 传输方式：同步传输 -->
+	<!-- 序列化：SOAP文本序列化 -->
+	<!-- 使用场景：系统集成，跨语言调用 -->
+	<!-- thrift dubbo thrift协议 当前 dubbo 支持的 thrift 协议是对 thrift 原生协议的扩展，在原生协议的基础上添加了一些额外的头信息，比如service 
+		name，magic number等。使用dubbo thrift协议同样需要使用thrift的idl compiler编译生成相应的java代码，后续版本中会在这方面做一些增强。 -->
+	<!-- 不能在协议中传递null值 -->
+	<dubbo:protocol name="dubbo" port="${dubbo.protocol.dubbo.port}"
+		serialization="kryo"
+		optimizer="platform.basis.esb.service.common.soi.SerializationOptimizerImpl"
+		dispatcher="${dubbo.protocol.dubbo.dispatcher}" threadpool="${dubbo.protocol.dubbo.threadpool}"
+		threads="${dubbo.protocol.dubbo.threads}" />
+
+	<dubbo:protocol name="rest" port="${dubbo.protocol.rest.port}"
+		threads="${dubbo.protocol.rest.threads}" contextpath="${dubbo.protocol.rest.contextpath}"
+		dispatcher="${dubbo.protocol.rest.dispatcher}" threadpool="${dubbo.protocol.rest.threadpool}"
+		server="tomcat" accepts="5000"
+		extension="com.alibaba.dubbo.rpc.protocol.rest.support.LoggingFilter, platform.esb.rest.common.filter.CharacterEncodingFilter" />
+</beans>

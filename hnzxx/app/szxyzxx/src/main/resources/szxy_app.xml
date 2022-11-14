@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+      http://www.springframework.org/schema/task
+      http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+       default-autowire="byName">
+
+    <!-- 用于监听修改事件扫描包 -->
+    <context:component-scan base-package="platform.szxyzxx.listener" />
+    <!-- 用于定时任务 -->
+    <context:component-scan base-package="platform.szxyzxx.web.broadcast"/>
+
+    <!--    <context:property-placeholder location="classpath:jdbc.properties"/>-->
+
+    <!-- 打开定时器开关 -->
+    <task:annotation-driven scheduler="myScheduler"/>
+    <task:scheduler id="myScheduler" pool-size="40"/>
+    <!-- 加载整个应用的配置文件,请注意次序. -->
+    <!--数据源以及事务配置-->
+    <import resource="classpath*:/config/core/app-disconf.xml"/>
+    <import resource="classpath*:/config/core/app-dao.xml"/>
+    <import resource="classpath*:/config/core/app-datasources.xml"/>
+    <import resource="classpath*:/config/core/app-transaction.xml"/>
+    <!--<import resource="classpath:/generic-cache-redis-cluster.xml" />-->
+    <import resource="classpath:/generic-cache.xml"/>
+    <!--shiro 权限配置-->
+    <import resource="classpath*:/config/shiro/shiro-core.xml"/>
+    <!--基础设施-->
+    <import resource="classpath*:/generic-facility.xml"/>
+    <!--基础代码配置-->
+    <!--<import resource="classpath*:/generalCode-cache-services.xml" />-->
+    <import resource="classpath*:/generalCode-services.xml"/>
+    <!--用户模块业务配置-->
+    <import resource="classpath*:/user-services.xml"/>
+    <!--教务模块业务配置-->
+    <import resource="classpath*:generalTeachingAffair-services.xml"/>
+    <!--人事模块业务配置-->
+    <import resource="classpath*:personnelManagement-services.xml"/>
+    <!--校务模块业务配置-->
+    <import resource="classpath*:/schoolAffair-services.xml"/>
+    <!--OA模块业务配置-->
+    <import resource="classpath*:/oa-services.xml"/>
+    <!--招生管理模块业务配置-->
+    <import resource="classpath*:/enrollStudent-services.xml"/>
+    <!--班务模块 -->
+    <import resource="classpath*:/classService-services.xml"/>
+
+    <import resource="classpath*:/szxy-common-services.xml"/>
+
+    <import resource="classpath*:/activity-services.xml"/>
+
+    <import resource="classpath*:hnzxx-services.xml"/>
+
+    <import resource="classpath*:/push_taskExecutor.xml"/>
+
+    <import resource="classpath*:/oauth2-services.xml"/>
+    <!--banner页管理模块业务配置	-->
+    <import resource="classpath*:/sysbanner-services.xml"/>
+    <!--启动页管理模块业务配置	-->
+    <import resource="classpath*:/startup-services.xml"/>
+    <!--资源库模块 -->
+    <!--其中引入storage-services.xml-->
+    <import resource="classpath*:/resource-services.xml"/>
+    <!--微课模块业务配置-->
+    <import resource="classpath*:/micro-services.xml"/>
+    <!--试卷模块业务配置-->
+    <import resource="classpath*:/exam-services.xml"/>
+    <!--导学案模块业务配置-->
+    <import resource="classpath*:/learningDesign-services.xml"/>
+    <!--教务模块业务配置-->
+    <import resource="classpath*:/teachingPlan-services.xml"/>
+    <!--素材模块业务配置-->
+    <import resource="classpath*:/material-services.xml"/>
+    <!--作业模块业务配置-->
+    <import resource="classpath*:/homework-services.xml"/>
+    <!--题库模块业务配置 -->
+    <import resource="classpath*:/paper-new-services.xml"/>
+    <import resource="classpath*:/paper-services.xml"/>
+    <!--消息模块业务配置-->
+    <import resource="classpath*:/message-services.xml"/>
+
+    <!--社区班级动态模块 -->
+    <import resource="classpath*:/sns-services.xml"/>
+
+    <!-- 通知公用组件 -->
+    <import resource="classpath*:/notice-services.xml"/>
+
+    <import resource="classpath*:/config/core/app-beans.xml"/>
+    <import resource="classpath*:/config/core/app-cache.xml"/>
+    <import resource="classpath*:/config/core/app-excel.xml"/>
+
+    <!--ucenter-client 模块业务配置-->
+    <import resource="classpath*:/ucenter-client.xml"/>
+    <!--优因模块业务配置-->
+    <import resource="classpath*:/service-uin.xml"/>
+
+    <import resource="classpath*:/config/services/teach-services.xml"/>
+
+    <import resource="classpath*:/config/services/dwr-services.xml"/>
+
+    <import resource="classpath*:/config/services/statistic-services.xml"/>
+
+
+    <!-- 文档转换服务 -->
+    <import resource="classpath*:/dctClient-beans.xml"/>
+    <!-- 视频转换服务 -->
+    <import resource="classpath*:/javeClient-beans.xml"/>
+    <!-- 即时通讯 -->
+    <import resource="classpath*:/im-services.xml"/>
+
+    <!-- 定时任务 -->
+    <import resource="classpath*:/config/quartz/quartz.xml"/>
+
+
+    <!-- 资源路径服务 -->
+    <import resource="classpath*:/config/services/res-services.xml"/>
+</beans>

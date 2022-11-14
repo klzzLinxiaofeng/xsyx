@@ -1,0 +1,66 @@
+.f {
+     border: solid 1px #dddddd;
+     width: 100px;
+     height: 40px;
+     position: relative;
+     background-color: transparent;
+ }
+
+.f:before {
+    position: absolute;
+    top: 0px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    border-bottom: 40px solid #dddddd;
+    border-right: 100px solid transparent;
+    content: "";
+}
+.f:after {
+    position: absolute;
+    left: 0;
+    right: 1px;
+    top: 1px;
+    bottom: 0;
+    border-bottom: 39px solid white;
+    border-right: 99px solid transparent;
+    content: "";
+}
+table th.f{padding:0}
+.f .span1{
+	position: absolute;
+	right: 10px;
+	top: -1px;
+	display: block;
+	width: 100px;
+	text-align: right;
+	 z-index:999;
+    }
+.f .span2{
+	position:absolute;
+	left:10px;
+	bottom:-1px;
+	display: block;
+	width: 100px;
+	text-align: left;
+	z-index:999;
+     }
+.table th,.table td{text-align:center;}
+.nav_1{float:left;}
+.nav_1 ul{margin:0}
+.nav_1 ul li{float:left;margin:0 10px;padding:0 10px;}
+.nav_1 ul li.on{border-bottom:2px solid #0d7bd5}
+.nav_1 ul li a{color:#666;display:block;line-height:40px;}
+.cx_div{float:left}
+.cx_div .select_div{float: left;margin: 5px 0;}
+.cx_div .select_div span{padding-left: 30px;float: left;line-height: 31px;}
+.cx_div  button{    margin-top: 5px;}
+.main_p2{text-align:center;line-height:80px;font-size:20px;}
+.main_p2 .s1{margin-left:40px;}
+.main_p2 .sp_green{font-size:28px;color:#45cfab}
+.main_p2 .sp_blue{font-size:28px;color:#4ec2e9}
+.main_p2 .sp_yellow{font-size:28px;color:#ffb229}
+.main_p2 .sp_green1{font-size:28px;color:#a0b569}
+.main_p2 .sp_red{font-size:28px;color:#fa0202}
+.table_left tbody td{padding-left:40px;text-align:left}
+.table_left thead th{padding:0}

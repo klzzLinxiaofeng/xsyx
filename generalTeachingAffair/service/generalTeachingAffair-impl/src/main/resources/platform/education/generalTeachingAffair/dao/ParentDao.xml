@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ParentDao">
+
+	<resultMap id="ParentResult" type="platform.education.generalTeachingAffair.model.Parent">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="personId" column="person_id" />
+		<result property="name" column="name" />
+		<result property="mobile" column="mobile" />
+		<result property="email" column="email" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="licensePlate" column="license_plate" />
+	</resultMap>
+
+	<resultMap id="ParentVoResult" type="platform.education.generalTeachingAffair.vo.ParentVo">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="personId" column="person_id" />
+		<result property="name" column="name" />
+		<result property="mobile" column="mobile" />
+		<result property="email" column="email" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="sex" column="sex" />
+		<result property="studentInfo" column="student_info" />
+	</resultMap>
+	<resultMap id="ParentStudentResult" type="platform.education.generalTeachingAffair.model.ParentStudent">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="personId" column="person_id" />
+		<result property="name" column="name" />
+		<result property="mobile" column="mobile" />
+		<result property="email" column="email" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="schoolName" column="schoolName"/>
+		<result property="stuName" column="studentName"/>
+		<result property="teamName" column="teamName"/>
+		<result property="userState" column="state"/>
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.Parent">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_parent (id, user_id, user_name, person_id, name, mobile, email, is_delete, create_date, modify_date)
+		VALUES (#{id}, #{userId}, #{userName}, #{personId}, #{name}, #{mobile}, #{email}, #{isDelete}, #{createDate}, #{modifyDate})
+	</insert>
+
+	<select id="read" resultMap="ParentResult" useCache="false">
+		SELECT * FROM pj_parent WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findParentByCondition" resultMap="ParentResult" useCache="false">
+		SELECT * FROM pj_parent WHERE 1=1 and is_delete=0
+		<if test="args[0] != null">
+
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null">
+				AND user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].personId != null">
+				AND person_id = #{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+
+			<choose>
+				<when test="args[0].mobile != null and args[0].mobile != ''">
+					<choose>
+						<when test="args[0].parentMobileLike == true">
+							and mobile LIKE CONCAT(CONCAT('%', #{args[0].mobile}),'%')
+						</when>
+						<otherwise>
+							and mobile = #{args[0].mobile,javaType=java.lang.String}
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+
+				</otherwise>
+			</choose>
+
+
+			<if test="args[0].email != null">
+				AND email = #{args[0].email,javaType=java.lang.String}
+			</if>
+			<!-- <if test="args[0].isDelete != null">
+			AND is_delete = #{args[0].isDelete}
+			</if> -->
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+
+
+	<select id="findParentByCondition2" resultMap="ParentResult" useCache="false">
+		SELECT * FROM pj_parent WHERE 1=1 and is_delete=0
+		<if test="args[0] != null">
+
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null">
+				AND user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].personId != null">
+				AND person_id = #{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].mobile != null">
+				AND mobile = #{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].email != null">
+				AND email = #{args[0].email,javaType=java.lang.String}
+			</if>
+			<!-- <if test="args[0].isDelete != null">
+			AND is_delete = #{args[0].isDelete}
+			</if> -->
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_parent WHERE 1=1 and is_delete=0
+		<if test="args[0] != null">
+
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null">
+				AND user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].personId != null">
+				AND person_id = #{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].mobile != null">
+				AND mobile = #{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].email != null">
+				AND email = #{args[0].email,javaType=java.lang.String}
+			</if>
+			<!-- <if test="args[0].isDelete != null">
+			AND is_delete = #{args[0].isDelete}
+			</if> -->
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="ParentResult" useCache="false">
+		SELECT * FROM pj_parent WHERE id = #{args[0],javaType=java.lang.Integer} and is_delete = 0 
+	</select>
+
+
+
+
+	<select id="findUniqueByUserId" resultMap="ParentResult" useCache="false">
+		SELECT * FROM pj_parent WHERE user_id = #{args[0],javaType=java.lang.Integer} and is_delete = 0 
+	</select>
+
+	<update id="updateNoRead">
+		UPDATE pj_parent
+		SET
+		<if test="args[0].userId != null">
+			user_id=#{args[0].userId},
+		</if>
+		<if test="args[0].userName != null">
+			user_name=#{args[0].userName},
+		</if>
+		<if test="args[0].personId != null">
+			person_id=#{args[0].personId},
+		</if>
+		<if test="args[0].name != null">
+			name=#{args[0].name},
+		</if>
+		<if test="args[0].mobile != null">
+			mobile=#{args[0].mobile},
+		</if>
+		<if test="args[0].email != null">
+			email=#{args[0].email},
+		</if>
+		<if test="args[0].isDelete != null">
+			is_delete=#{args[0].isDelete},
+		</if>
+		<if test="args[0].createDate != null">
+			create_date=#{args[0].createDate},
+		</if>
+		<if test="args[0].modifyDate != null">
+			modify_date=#{args[0].modifyDate},
+		</if>
+		id = #{args[0].id}
+		WHERE id = #{args[0].id}
+		and is_delete=0
+	</update>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.Parent">
+		UPDATE pj_parent
+		SET
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="userName != null">
+			user_name=#{userName},
+		</if>
+		<if test="personId != null">
+			person_id=#{personId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="mobile != null">
+			mobile=#{mobile},
+		</if>
+		<if test="email != null">
+			email=#{email},
+		</if>
+		<if test="isDelete != null">
+			is_delete=#{isDelete},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+
+		<choose>
+			<when test="licensePlate != null and licensePlate != ''">
+				license_plate = #{licensePlate}
+			</when>
+			<otherwise>
+				license_plate = null
+			</otherwise>
+		</choose>
+
+		WHERE id = #{id}
+		and is_delete=0
+	</update>
+
+	<update id="delete">
+		update pj_parent
+		set is_delete = 1,
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+
+		id = #{id}
+		WHERE id = #{id}
+		and is_delete=0
+	</update>
+
+
+	<select id="findIncrementDataByModifyDate" resultMap="ParentVoResult" useCache="false">
+		SELECT p.*, pp.sex,
+		GROUP_CONCAT(ps.student_user_id, ',', s.`name`, ',', ps.parent_relation, ',', ps.rank SEPARATOR ';') student_info
+		FROM pj_parent p
+		LEFT JOIN pj_parent_student ps ON p.user_id = ps.parent_user_id
+		LEFT JOIN pj_student s ON ps.student_user_id = s.user_id
+		LEFT JOIN pj_person pp ON p.person_id = pp.id
+		WHERE 1=1
+-- 		AND ps.is_delete = 0
+-- 		AND s.is_delete = 0
+		<if test="args[0] != null">
+			AND s.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			<choose>
+				<when test="args[1] == true">
+					AND p.is_delete = 1
+				</when>
+				<otherwise>
+					AND p.is_delete = 0
+					AND s.is_delete = 0
+					AND ps.is_delete = 0
+				</otherwise>
+			</choose>
+		</if>
+		<if test="args[2] != null">
+			AND p.modify_date > #{args[2],javaType=java.util.Date}
+		</if>
+		<if test="args[3] != null">
+			<choose>
+				<when test="args[4] == true">
+					AND p.id > #{args[3],javaType=java.lang.Integer}
+				</when>
+				<otherwise>
+					AND p.id BETWEEN 0 AND #{args[3],javaType=java.lang.Integer}
+				</otherwise>
+			</choose>
+		</if>
+		GROUP BY p.id
+		ORDER BY p.modify_date, p.id
+	</select>
+
+	<select id="findByUser" resultMap="ParentStudentResult">
+			select pp.*,ps.name as studentName,ps.team_name as teamName,yu.state from pj_parent_student  pps
+			inner join pj_parent pp on pp.user_id=pps.parent_user_id
+			inner join pj_student ps on ps.user_id=pps.student_user_id
+			inner join yh_user yu on yu.id=pps.parent_user_id
+			<where>
+				ps.school_id=215 and
+				ps.is_delete=0 and pp.is_delete=0 and pps.is_delete=0 and yu.is_deleted=0
+				and ps.study_state='01'
+				<if test="args[0]!=null">
+					and ps.name like concat('%',#{args[0]},'%')
+				</if>
+				<if test="args[1]!=null">
+					and pp.name like concat('%',#{args[1]},'%')
+				</if>
+				<if test="args[2]!=null">
+					and yu.state=#{args[2]}
+				</if>
+				<if test="args[3]!=null">
+					and pp.user_name like concat('%',#{args[3]},'%')
+				</if>
+				<if test="args[4]!=null">
+					and pp.mobile=#{args[2]}
+				</if>
+			</where>
+	</select>
+	<select id="findParentVoByUserId" resultMap="ParentVoResult" useCache="false">
+		SELECT p.*, pp.sex,
+		GROUP_CONCAT(ps.student_user_id, ',', s.`name`, ',', ps.parent_relation, ',', ps.rank SEPARATOR ';') student_info
+		FROM pj_parent p
+		LEFT JOIN pj_parent_student ps ON p.user_id = ps.parent_user_id
+		LEFT JOIN pj_student s ON ps.student_user_id = s.user_id
+		LEFT JOIN pj_person pp ON p.person_id = pp.id
+		WHERE 1=1
+		AND ps.is_delete = 0
+		AND s.is_delete = 0
+		AND p.is_delete = 0
+		<if test="args[0] != null">
+			AND p.user_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+
+	</select>
+
+	<select id="findParentsByStudentUserId" resultMap="ParentVoResult" useCache="false">
+		SELECT p.*, pp.sex
+		FROM pj_parent p
+		LEFT JOIN pj_parent_student ps ON p.user_id = ps.parent_user_id
+		LEFT JOIN pj_person pp ON p.person_id = pp.id
+		WHERE 1=1
+		AND p.is_delete = 0
+		AND ps.is_delete = 0
+		AND p.is_delete = 0
+		<if test="args[0] != null">
+			AND ps.student_user_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+
+	</select>
+
+</mapper>

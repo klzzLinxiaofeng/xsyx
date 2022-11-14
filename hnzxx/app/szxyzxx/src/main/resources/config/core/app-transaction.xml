@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="byName">
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="globalRollbackOnParticipationFailure" value="false" />
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!--定义规则*统配 -->
+		<tx:attributes>
+			<!-- <tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception"/> -->
+			<tx:method name="modify*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+
+			<tx:method name="del*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="create*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			
+			<tx:method name="batch*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="statistic*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="upload*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<!-- <tx:method name="batch*" propagation="REQUIRED" rollback-for="java.lang.Exception"/> -->
+			
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="find*" read-only="true"/>
+			<tx:method name="retrieve*" read-only="true"/>
+			<tx:method name="read*" read-only="true"/>
+
+			<tx:method name="*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<!--定义一个切入点 -->
+<!-- 		<aop:pointcut id="tranPointCut" expression="execution(* platform.education.*.service.impl.*.*(..))" /> -->
+		<!--定义方面: 通知织入到切面 -->
+<!-- 		<aop:advisor advice-ref="txAdvice" pointcut-ref="tranPointCut" /> -->
+<!-- 		<aop:advisor pointcut="execution(* *..dao.*Dao.*(..))" advice-ref="txAdvice" order="1" /> -->
+		<aop:advisor pointcut="execution(* *..service.*Service.*(..))" advice-ref="txAdvice" order="1" />
+	</aop:config>
+	
+	
+	
+	
+</beans>

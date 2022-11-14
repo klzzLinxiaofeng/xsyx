@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.oa.dao.NoticesDao">
+
+    <resultMap id="NoticeResult" type="platform.szxyzxx.oa.vo.Notices">
+        <result property="id" column="id" />
+        <result property="uuid" column="uuid" />
+        <result property="appKey" column="app_key" />
+        <result property="title" column="title" />
+        <result property="posterId" column="poster_id" />
+        <result property="posterName" column="poster_name" />
+        <result property="postTime" column="post_time" />
+        <result property="receiverType" column="receiver_type" />
+        <result property="receiverName" column="receiver_name" />
+        <result property="content" column="content" />
+        <result property="userCount" column="user_count" />
+        <result property="readCount" column="read_count" />
+        <result property="startTime" column="start_time" />
+        <result property="finishTime" column="finish_time" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="isDeleted" column="is_deleted" />
+        <result property="zhuangtai" column="zhuangtai" />
+    </resultMap>
+
+
+    <insert id="create" parameterType="platform.szxyzxx.oa.vo.Notices" useGeneratedKeys="true" keyProperty="args[0].id">
+        INSERT INTO pub_notice (
+        uuid,
+        app_key,
+        title,
+        poster_id,
+        poster_name,
+        post_time,
+        receiver_type,
+        receiver_name,
+        content,
+        user_count,
+        read_count,
+        start_time,
+        finish_time,
+        create_date,
+        modify_date,
+        is_deleted,
+        zhuangtai
+        )
+        VALUES (
+        #{args[0].uuid},
+        #{args[0].appKey},
+        #{args[0].title},
+        #{args[0].posterId},
+        #{args[0].posterName},
+        #{args[0].postTime},
+        #{args[0].receiverType},
+        "tzsp",
+        #{args[0].content},
+        #{args[0].userCount},
+        #{args[0].readCount},
+        #{args[0].startTime},
+        #{args[0].finishTime},
+        #{args[0].createDate},
+        #{args[0].modifyDate},
+        <choose>
+            <when test="args[0].isDeleted != null">
+                <choose>
+                    <when test="args[0].isDeleted == true">
+                        1
+                    </when>
+                    <otherwise>
+                        0
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                0
+            </otherwise>
+        </choose>,
+        0
+        )
+    </insert>
+    <update id="updateShenpi">
+        update pub_notice set zhuangtai=#{args[1]} where id=#{args[0]}
+    </update>
+
+    <update id="updateNotice">
+        update pub_notice set title=#{args[0].title},content=#{args[0].content}  where id=#{args[0].id}
+    </update>
+
+    <select id="findById" resultMap="NoticeResult">
+        select * from pub_notice where id=#{args[0]}
+    </select>
+
+</mapper>

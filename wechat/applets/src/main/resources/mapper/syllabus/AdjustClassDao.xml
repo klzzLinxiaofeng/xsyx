@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.syllabus.dao.AdjustClassDao">
+
+    <resultMap type="com.xunyunedu.syllabus.pojo.AdjustClassPojo" id="AdjustClassMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="reason" column="reason" jdbcType="VARCHAR"/>
+        <result property="applicantId" column="applicant_id" jdbcType="INTEGER"/>
+        <result property="approverId" column="approver_id" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="approveDate" column="approve_date" jdbcType="TIMESTAMP"/>
+        <result property="rejectionReason" column="rejection_reason" jdbcType="VARCHAR"/>
+        <result property="applicantName" column="applicant_name" jdbcType="VARCHAR"/>
+        <result property="approverName" column="approver_name" jdbcType="VARCHAR"/>
+        <result property="applyLesson" column="apply_lesson" jdbcType="VARCHAR"/>
+        <result property="setLesson" column="set_lesson" jdbcType="VARCHAR"/>
+        <result property="applyDate" column="apply_date" jdbcType="TIMESTAMP"/>
+        <result property="setDate" column="set_date" jdbcType="TIMESTAMP"/>
+        <result property="receivers" column="receivers" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AdjustClassMap">
+        select
+          id, create_date, title, reason, applicant_id, approver_id, status, approve_date, rejection_reason, applicant_name, approver_name, apply_lesson, set_lesson, apply_date, set_date,receivers
+        from oa_adjust_class
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AdjustClassMap">
+        select
+          id, create_date, title, reason, class_time, set_time, applicant_id, approver_id, status, approve_date, rejection_reason
+        from oa_adjust_class
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="AdjustClassMap">
+        select
+        id, create_date, title, reason, class_time, set_time, applicant_id, approver_id, status, approve_date,
+        rejection_reason
+        from oa_adjust_class
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="reason != null and reason != ''">
+                and reason = #{reason}
+            </if>
+            <if test="classTime != null and classTime != ''">
+                and class_time = #{classTime}
+            </if>
+            <if test="setTime != null and setTime != ''">
+                and set_time = #{setTime}
+            </if>
+            <if test="applicantId != null">
+                and applicant_id = #{applicantId}
+            </if>
+            <if test="approverId != null">
+                and approver_id = #{approverId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="approveDate != null">
+                and approve_date = #{approveDate}
+            </if>
+            <if test="rejectionReason != null and rejectionReason != ''">
+                and rejection_reason = #{rejectionReason}
+            </if>
+        </where>
+    </select>
+    <select id="selectBy" parameterType="com.xunyunedu.syllabus.pojo.AdjustClassPojo" resultMap="AdjustClassMap">
+        SELECT *FROM oa_adjust_class
+        <where>
+            <if test="approverId != null">
+                approver_id = #{approverId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="applicantId!=null">
+                and applicant_id=#{applicantId}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+
+    </select>
+    <select id="findAdjustClassByDate" resultType="com.xunyunedu.syllabus.pojo.AdjustClassPojo">
+        SELECT * FROM `oa_adjust_class` WHERE set_lesson LIKE concat('[%', '${applyLesson}', '%]') AND set_date = concat('${applyDateStr}') AND status = 0
+        UNION SELECT * FROM `oa_adjust_class` WHERE set_lesson LIKE concat('[%', '${setLesson}', '%]') AND set_date = concat('${setDateStr}') AND status = 0
+    </select>
+    <select id="listByLesson" resultMap="AdjustClassMap">
+            SELECT * FROM `oa_adjust_class`
+            WHERE set_lesson LIKE concat('%',#{lesson},'%')
+            AND set_date = concat('${applyDateStr}')
+            AND status = 0
+    </select>
+    <select id="listBySetDateSetLesson" resultMap="AdjustClassMap">
+         SELECT * FROM `oa_adjust_class`
+            WHERE set_lesson LIKE concat('%',#{lesson},'%')
+            AND set_date = concat('${setDateStr}')
+            AND status = 0
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT
+	        COUNT(*)
+        FROM
+            oa_adjust_class
+        WHERE
+            apply_lesson LIKE CONCAT('%',#{lesson},'%')
+        AND apply_date = #{applyDate}
+        AND applicant_id = #{applicantId}
+        AND status = 0
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into oa_adjust_class(create_date, title, reason, applicant_id, approver_id, status, approve_date, rejection_reason, applicant_name, approver_name, apply_lesson, set_lesson, apply_date, set_date,receivers)
+        values (#{createDate}, #{title}, #{reason}, #{applicantId}, #{approverId}, #{status}, #{approveDate}, #{rejectionReason}, #{applicantName}, #{approverName}, #{applyLesson}, #{setLesson}, #{applyDate}, #{setDate},#{receivers})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update oa_adjust_class
+        <set>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="reason != null and reason != ''">
+                reason = #{reason},
+            </if>
+            <if test="applicantId != null">
+                applicant_id = #{applicantId},
+            </if>
+            <if test="approverId != null">
+                approver_id = #{approverId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="approveDate != null">
+                approve_date = #{approveDate},
+            </if>
+            <if test="rejectionReason != null and rejectionReason != ''">
+                rejection_reason = #{rejectionReason},
+            </if>
+            <if test="applicantName != null and applicantName != ''">
+                applicant_name = #{applicantName},
+            </if>
+            <if test="approverName != null and approverName != ''">
+                approver_name = #{approverName},
+            </if>
+            <if test="applyLesson != null and applyLesson != ''">
+                apply_lesson = #{applyLesson},
+            </if>
+            <if test="setLesson != null and setLesson != ''">
+                set_lesson = #{setLesson},
+            </if>
+            <if test="applyDate != null">
+                apply_date = #{applyDate},
+            </if>
+            <if test="setDate != null">
+                set_date = #{setDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from oa_adjust_class where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<!-- RPC SERVICE -->
+	<dubbo:service interface="platform.education.content.service.ChannelService" ref="channelService" protocol="dubbo"  />
+	<dubbo:service interface="platform.education.content.service.ColumnService" ref="columnService" protocol="dubbo"  />
+	<dubbo:service interface="platform.education.content.service.NewsService" ref="newsService" protocol="dubbo"  />
+	<dubbo:service interface="platform.education.content.service.HelloService" ref="helloService" protocol="dubbo"  />
+	
+	<!-- REST SERVICE -->
+	<dubbo:service interface="platform.education.content.service.ChannelService" ref="channelService" protocol="rest" timeout="2000" connections="100" validation="true" />
+</beans>

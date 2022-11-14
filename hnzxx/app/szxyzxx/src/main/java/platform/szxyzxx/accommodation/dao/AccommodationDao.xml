@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.accommodation.dao.AccommodationDao">
+
+    <resultMap id="AccommdationMap" type="platform.szxyzxx.accommodation.pojo.Accommodation">
+        <result property="id" column="id"/>
+        <result property="teacherUserId" column="teacherUserId"/>
+        <result property="teacherName" column="teacherName"/>
+        <result property="fangshiHao" column="fanshihao"/>
+        <result property="area" column="area"/>
+        <result property="coldWater" column="coldWater"/>
+        <result property="hotWater" column="hotWater"/>
+        <result property="electricity" column="electricity"/>
+        <result property="coldPictureUUid" column="coldPictureUUid"/>
+        <result property="hotPictureUUid" column="hotPictureUUid"/>
+        <result property="electricityUUid" column="electricityUUid"/>
+        <result property="shangBaoTime2" column="shangBao_time"/>
+        <result property="fujianUUID" column="fujian_uuid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modiyTime" column="modiy_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="tontent" column="leirong"/>
+    </resultMap>
+
+    <select id="findByAll" resultMap="AccommdationMap">
+        select  * from zy_accontion
+        <where>
+            is_delete=0
+            <if test="args[1]!=null">
+                and fanshihao=#{args[1]}
+            </if>
+            <if test="args[0]!=null">
+                and teacherName like concat('%',#{args[0]},'%')
+            </if>
+            <if test="args[2]!=null and args[3]!=null">
+                and shangBao_time between #{args[2]} and #{args[3]}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="findById" resultMap="AccommdationMap">
+    select  *   from zy_accontion
+    where id=#{args[0]} and is_delete=0
+    </select>
+
+    <insert id="create" parameterType="platform.szxyzxx.accommodation.pojo.Accommodation" useGeneratedKeys="true" keyProperty="args[0].id" keyColumn="id">
+        insert  into zy_accontion(
+        teacherUserId,
+        teacherName,
+        fanshihao,
+        area,
+        coldWater,
+        hotWater,
+        electricity,
+        coldPictureUUid,
+        hotPictureUUid,
+        electricityUUid,
+        shangBao_time,
+        fujian_uuid,
+        create_time,
+        modiy_time,
+        is_delete,
+        leirong
+        )value(
+        #{args[0].teacherUserId},
+        #{args[0].teacherName},
+        #{args[0].fangshiHao},
+        #{args[0].area},
+        #{args[0].coldWater},
+        #{args[0].hotWater},
+        #{args[0].electricity},
+        #{args[0].coldPictureUUid},
+        #{args[0].hotPictureUUid},
+        #{args[0].electricityUUid},
+        #{args[0].shangBaoTime},
+        #{args[0].fujianUUID},
+        NOW(),
+        NOW(),
+        0,
+        #{args[0].tontent});
+    </insert>
+
+    <update id="update">
+        update  zy_accontion
+        set is_delete=0
+         <if test="args[0]!=null">
+             <if test="args[0].teacherUserId!=null">
+                 ,teacherUserId=#{args[0].teacherUserId}
+             </if>
+             <if test="args[0].teacherName!=null">
+                ,teacherName=#{args[0].teacherName}
+             </if>
+             <if test="args[0].shangBaoTime!=null">
+                ,shangBao_time=#{args[0].shangBaoTime}
+             </if>
+             <if test="args[0].fangshiHao!=null">
+                ,fanshihao=#{args[0].fangshiHao}
+             </if>
+             <if test="args[0].fujianUUID!=null">
+                ,fujian_uuid=#{args[0].fujianUUID}
+             </if>
+             <if test="args[0].tontent!=null">
+                ,leirong=#{args[0].tontent}
+             </if>
+             <if test="args[0].area!=null">
+                ,area=#{args[0].area}
+             </if>
+             <if test="args[0].hotWater!=null">
+                ,hotWater=#{args[0].hotWater}
+             </if>
+             <if test="args[0].hotPictureUUid!=null">
+                ,hotPictureUUid=#{args[0].hotPictureUUid}
+             </if>
+             <if test="args[0].coldWater!=null">
+                ,coldWater=#{args[0].coldWater}
+             </if>
+             <if test="args[0].coldPictureUUid!=null">
+                ,coldPictureUUid=#{args[0].coldPictureUUid}
+             </if>
+             <if test="args[0].electricity!=null">
+                ,electricity=#{args[0].electricity}
+             </if>
+             <if test="args[0].electricityUUid!=null">
+                ,electricityUUid=#{args[0].electricityUUid}
+             </if>
+         </if>
+         where id=#{args[0].id} and is_delete=0
+    </update>
+    <update id="updateId">
+         update  zy_accontion set is_delete=1 where id=#{args[0]} and is_delete=0
+    </update>
+
+</mapper>

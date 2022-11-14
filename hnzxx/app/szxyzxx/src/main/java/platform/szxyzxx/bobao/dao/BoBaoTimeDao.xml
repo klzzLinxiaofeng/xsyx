@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.bobao.dao.BoBaoTimeDao">
+
+ <resultMap id="BoBaoTimeMap" type="platform.szxyzxx.bobao.vo.BoBaoTime">
+   <id column="id" property="id"></id>
+   <result column="haoma" property="haoma"></result>
+   <result column="start_time" property="startTime"></result>
+   <result column="is_delete" property="isDelete"></result>
+   <result column="end_time" property="endTime"></result>
+ </resultMap>
+
+    <insert id="createBoBaoTime" parameterType="platform.szxyzxx.bobao.vo.BoBaoTime">
+    insert into bobao_times(haoma,start_time,end_time,is_delete,shezhiren)
+    value(#{args[0].haoma},#{args[0].startTime},#{args[0].endTime},0,null)
+    </insert>
+
+    <update id="deleteBoBaoTime">
+        update bobao_times  set is_delete=1 where id=#{args[0]}
+    </update>
+    <update id="updateBoBaoTime" parameterType="platform.szxyzxx.bobao.vo.BoBaoTime">
+     update  bobao_times set start_time=#{args[0].startTime},end_time=#{args[0].endTime},haoma=#{args[0].haoma} where id=#{args[0].id} and is_delete=0
+    </update>
+
+</mapper>

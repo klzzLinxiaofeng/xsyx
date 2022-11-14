@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.teacher.dao.PersonDao">
+    <resultMap id="personResult" type="com.xunyunedu.teacher.pojo.PersonPojo">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="english_name" property="englishName"/>
+        <result column="pinyin_name" property="pinyinName"/>
+        <result column="used_name" property="usedName"/>
+        <result column="sex" property="sex"/>
+        <result column="birthday" property="birthday"/>
+        <result column="id_card_type" property="idCardType"/>
+        <result column="id_card_number" property="idCardNumber"/>
+        <result column="id_card_date" property="idCardDate"/>
+        <result column="nationality" property="nationality"/>
+        <result column="native_place" property="nativePlace"/>
+        <result column="birth_place" property="birthPlace"/>
+        <result column="race" property="race"/>
+        <result column="marriage" property="marriage"/>
+        <result column="political_status" property="politicalStatus"/>
+        <result column="religion" property="religion"/>
+        <result column="abroad_code" property="abroadCode"/>
+        <result column="health_status" property="healthStatus"/>
+        <result column="blood_type" property="bloodType"/>
+        <result column="region_code" property="regionCode"/>
+        <result column="province" property="province"/>
+        <result column="city" property="city"/>
+        <result column="district" property="district"/>
+        <result column="street" property="street"/>
+        <result column="village" property="village"/>
+        <result column="zip_code" property="zipCode"/>
+        <result column="residence_remark" property="residenceRemark"/>
+        <result column="address" property="address"/>
+        <result column="reside_address" property="resideAddress"/>
+        <result column="home_address" property="homeAddress"/>
+        <result column="house_authority" property="houseAuthority"/>
+        <result column="residence_type" property="residenceType"/>
+        <result column="residence_address" property="residenceAddress"/>
+        <result column="working_place" property="workingPlace"/>
+        <result column="position" property="position"/>
+        <result column="mobile" property="mobile"/>
+        <result column="telephone" property="telephone"/>
+        <result column="email" property="email"/>
+        <result column="resume" property="resume"/>
+        <result column="homepage" property="homepage"/>
+        <result column="special_skill" property="specialSkill"/>
+        <result column="is_only_child" property="isOnlyChild"/>
+        <result column="is_floating_population" property="isFloatingPopulation"/>
+        <result column="remark" property="remark"/>
+        <result column="photo_uuid" property="photoUuid"/>
+        <result column="entity_id" property="entityId"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+    </resultMap>
+
+    <select id="findPersonByparam" resultMap="personResult">
+        select * from pj_person
+        where is_delete = 0
+        <if test="id != null"> and id = #{id}</if>
+    </select>
+
+
+    <update id="update">
+        UPDATE pj_person
+		<set>
+            <if test="photoUuid != null and photoUuid != ''"> photo_uuid = #{photoUuid},</if>
+		</set>
+		WHERE id = #{id}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into pj_person
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="photoUuid != null and photoUuid != ''"> photo_uuid,</if>
+            <if test="name != null and name != ''"> name,</if>
+            <if test="createDate != null"> create_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+          <if test="photoUuid != null and photoUuid != ''"> #{photoUuid},</if>
+          <if test="name != null and name != ''"> #{name},</if>
+          <if test="createDate != null"> #{createDate},</if>
+        </trim>
+    </insert>
+</mapper>

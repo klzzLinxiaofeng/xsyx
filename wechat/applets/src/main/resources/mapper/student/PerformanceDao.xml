@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.student.dao.PerformanceDao">
+    <resultMap id="BaseResultMap" type="com.xunyunedu.student.pojo.PerformancePojo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="student_id" jdbcType="INTEGER" property="studentId"/>
+        <result column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <result column="team_id" jdbcType="INTEGER" property="teamId"/>
+        <result column="performance_type" jdbcType="INTEGER" property="performanceType"/>
+        <result column="stars" jdbcType="INTEGER" property="stars"/>
+        <result column="show_title" jdbcType="VARCHAR" property="showTitle"/>
+        <result column="show_content" jdbcType="VARCHAR" property="showContent"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
+        <result column="stuName" jdbcType="VARCHAR" property="stuName"/>
+        <result column="teamName" jdbcType="VARCHAR" property="teamName"/>
+    </resultMap>
+
+
+    <insert id="addMatureShow" useGeneratedKeys="true" keyProperty="id">
+        insert into ${assesName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+             teacher_id, performance_type, show_title, show_content, create_date, uuid
+             <if test="stars != null "> ,stars</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+          #{teacherId},#{performanceType},#{showTitle},#{showContent},#{createDate},#{uuid}
+          <if test="stars != null "> ,#{stars}</if>
+        </trim>
+    </insert>
+
+    <select id="getTeacherReleaseShowList" resultMap="BaseResultMap">
+        select * from ${tableName} where teacher_id = #{pojo.teacherId}
+        <if test="pojo.id != null"> and id = #{pojo.id}</if>
+    </select>
+    <insert id="addStuShow">
+        insert into ${assesStuName}(student_id, team_id, performance_id) values (#{stuId},#{teamId},#{id})
+    </insert>
+
+    <select id="getOneStuInfo" resultMap="BaseResultMap">
+        select ps.name stuName,pt.name teamName from ${assesStuName} pps
+        join pj_student ps on ps.id = pps.student_id and ps.is_delete = 0
+        join pj_team pt on pt.id = pps.team_id and pt.is_delete = 0
+        where performance_id = #{id}
+        limit 1
+    </select>
+    <select id="getReleaseObjects" resultType="com.xunyunedu.student.pojo.StudentDO">
+        select ps.name stuName,pt.name teamName from ${assesStuName} pps
+        join pj_student ps on ps.id = pps.student_id and ps.is_delete = 0
+        join pj_team pt on pt.id = pps.team_id and pt.is_delete = 0
+        where performance_id = #{id}
+    </select>
+
+    <select id="getStuReleaseShowList" resultMap="BaseResultMap">
+        select pp.* from ${assesStuName} pps
+        join ${assesName} pp on pps.performance_id = pp.id
+        where student_id = #{studentId}
+        <if test="id != null"> and pp.id = #{id}</if>
+    </select>
+</mapper>

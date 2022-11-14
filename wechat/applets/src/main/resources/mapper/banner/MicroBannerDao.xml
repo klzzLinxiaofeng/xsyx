@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.banner.dao.MicroBannerDao">
+    <resultMap id="MicroBannerResult" type="com.xunyunedu.banner.pojo.MicroBanner">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="url" column="url"/>
+        <result property="description" column="description"/>
+        <result property="entityId" column="entity_id"/>
+        <result property="pushState" column="push_state"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, title, entity_id, push_state
+    </sql>
+
+    <select id="all" resultMap="MicroBannerResult">
+        select  <include refid="Base_Column_List"/>
+         from mi_micro_banner where push_state = 0
+    </select>
+
+    <select id="getContent" resultType="java.util.Map">
+        select title,content from mi_micro_banner where push_state = 0 and id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>platform.education</groupId>
+        <artifactId>education</artifactId>
+        <version>0.0.1</version>
+    </parent>
+    <groupId>platform.education.service</groupId>
+    <artifactId>service</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <!--		<module>generalCode-api</module>-->
+        <!--		<module>generalCode-impl</module>-->
+        <!--		<module>personnelManagement-api</module>-->
+        <!--		<module>personnelManagement-impl</module>-->
+        <!--		<module>user-api</module>-->
+        <!--		<module>user-impl</module>-->
+        <!--		<module>schoolAffair-api</module>-->
+        <!--		<module>schoolAffair-impl</module>-->
+        <!--		<module>enrollStudent-api</module>-->
+        <!--		<module>enrollStudent-impl</module>-->
+        <!--		<module>content-api</module>-->
+        <!--		<module>content-impl</module>-->
+        <!--		<module>push-api</module>-->
+        <!--		<module>push-huanxin-impl</module>-->
+        <!--		<module>message-api</module>-->
+        <!--		<module>message-impl</module>-->
+        <!--		<module>sns-api</module>-->
+        <!--		<module>sns-impl</module>-->
+        <!--		<module>im-api</module>-->
+        <!--		<module>im-impl</module>-->
+        <!--		<module>notice-api</module>-->
+        <!--		<module>notice-impl</module>-->
+        <module>oauth2-api</module>
+        <module>oauth2-impl</module>
+        <module>activity-api</module>
+        <module>activity-impl</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

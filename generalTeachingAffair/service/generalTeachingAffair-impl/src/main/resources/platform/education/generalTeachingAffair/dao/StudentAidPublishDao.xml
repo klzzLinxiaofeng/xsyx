@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentAidPublishDao">
+
+	<resultMap id="StudentAidPublishResult" type="platform.education.generalTeachingAffair.model.StudentAidPublish">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="schoolYear" column="school_year" />
+		<result property="isPublish" column="is_publish" />
+		<result property="count" column="count" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.StudentAidPublish">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_student_aid_publish (
+			id, 
+			school_id, 
+			school_year, 
+			is_publish, 
+			count, 
+			is_deleted, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{schoolYear}, 
+			<choose>
+				<when test="isPublish != null">
+					<choose>
+						<when test="isPublish == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{count}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="StudentAidPublishResult" useCache="false">
+		SELECT * FROM pj_student_aid_publish WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findStudentAidPublishByCondition" resultMap="StudentAidPublishResult" useCache="false">
+		SELECT * FROM pj_student_aid_publish 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isPublish != null">
+				<choose>
+					<when test="args[0].isPublish == true">
+						AND is_publish  = 1
+					</when>
+					<otherwise>
+						AND is_publish  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].count != null">
+				AND count = #{args[0].count,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_student_aid_publish 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isPublish != null">
+				<choose>
+					<when test="args[0].isPublish == true">
+						AND is_publish  = 1
+					</when>
+					<otherwise>
+						AND is_publish  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].count != null">
+				AND count = #{args[0].count,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="StudentAidPublishResult" useCache="false">
+		SELECT * FROM pj_student_aid_publish WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.StudentAidPublish">
+		UPDATE pj_student_aid_publish
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="schoolYear != null">
+			school_year=#{schoolYear},
+		</if>
+		<if test="isPublish != null">
+			<choose>
+				<when test="isPublish == true">
+					is_publish  = 1,
+				</when>
+				<otherwise>
+					is_publish  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="count != null">
+			count=#{count},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_student_aid_publish
+		WHERE id = #{id}
+	</delete>
+	
+	<select id="findBySchoolIdAndSchoolYear" resultMap="StudentAidPublishResult" useCache="false">
+		SELECT * FROM pj_student_aid_publish WHERE is_deleted = 0
+		AND school_id = #{args[0],javaType=java.lang.Integer}
+		AND school_year = #{args[1],javaType=java.lang.String}
+	</select>
+	
+	
+</mapper>

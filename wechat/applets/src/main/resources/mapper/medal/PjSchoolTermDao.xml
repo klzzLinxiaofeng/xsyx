@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.medal.dao.PjSchoolTermDao">
+  <resultMap id="BaseResultMap" type="com.xunyunedu.medal.model.PjSchoolTerm">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="school_year_id" jdbcType="INTEGER" property="schoolYearId" />
+    <result column="school_id" jdbcType="INTEGER" property="schoolId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="gb_code" jdbcType="VARCHAR" property="gbCode" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="school_year" jdbcType="VARCHAR" property="schoolYear" />
+    <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate" />
+    <result column="finish_date" jdbcType="TIMESTAMP" property="finishDate" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, school_year_id, school_id, `name`, gb_code, code, school_year, begin_date, finish_date, 
+    is_delete, create_date, modify_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pj_school_term
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pj_school_term
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.medal.model.PjSchoolTerm" useGeneratedKeys="true">
+    insert into pj_school_term (school_year_id, school_id, `name`, 
+      gb_code, code, school_year, 
+      begin_date, finish_date, is_delete, 
+      create_date, modify_date)
+    values (#{schoolYearId,jdbcType=INTEGER}, #{schoolId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{gbCode,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{schoolYear,jdbcType=VARCHAR}, 
+      #{beginDate,jdbcType=TIMESTAMP}, #{finishDate,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=BIT}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{modifyDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.medal.model.PjSchoolTerm" useGeneratedKeys="true">
+    insert into pj_school_term
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="schoolYearId != null">
+        school_year_id,
+      </if>
+      <if test="schoolId != null">
+        school_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="gbCode != null">
+        gb_code,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="schoolYear != null">
+        school_year,
+      </if>
+      <if test="beginDate != null">
+        begin_date,
+      </if>
+      <if test="finishDate != null">
+        finish_date,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="modifyDate != null">
+        modify_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="schoolYearId != null">
+        #{schoolYearId,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null">
+        #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gbCode != null">
+        #{gbCode,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolYear != null">
+        #{schoolYear,jdbcType=VARCHAR},
+      </if>
+      <if test="beginDate != null">
+        #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null">
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunyunedu.medal.model.PjSchoolTerm">
+    update pj_school_term
+    <set>
+      <if test="schoolYearId != null">
+        school_year_id = #{schoolYearId,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null">
+        school_id = #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gbCode != null">
+        gb_code = #{gbCode,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolYear != null">
+        school_year = #{schoolYear,jdbcType=VARCHAR},
+      </if>
+      <if test="beginDate != null">
+        begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null">
+        finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xunyunedu.medal.model.PjSchoolTerm">
+    update pj_school_term
+    set school_year_id = #{schoolYearId,jdbcType=INTEGER},
+      school_id = #{schoolId,jdbcType=INTEGER},
+      `name` = #{name,jdbcType=VARCHAR},
+      gb_code = #{gbCode,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      school_year = #{schoolYear,jdbcType=VARCHAR},
+      begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=BIT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findYearTerm" parameterType="Map" resultMap="BaseResultMap">
+
+SELECT st.name from pj_school_term st LEFT JOIN pj_school_year sy on st.school_id=sy.school_id and st.begin_date=sy.begin_date WHERE st.school_id=#{schoolId} and sy.year=#{year}
+  </select>
+</mapper>

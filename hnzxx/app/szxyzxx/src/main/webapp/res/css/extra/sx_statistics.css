@@ -1,0 +1,842 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: '微软雅黑';
+}
+ul{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+.line{
+    border:1px #bfbfbf solid;
+    width: 100%;
+    float: left;
+    margin-bottom: 20px;
+}
+/*资产统计*/
+h3{
+    border-bottom:1px #d8dfe7 solid;
+    font-weight: normal;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;
+    margin: 0;
+    color: #616f77;
+    font-size: 20px;
+}
+.left,.right{
+    float: left;
+    width: 47%;
+    margin: 20px 0 0 20px;
+}
+.left>div,.right>div{
+    border:1px #bfbfbf solid;
+    width: 100%;
+    float: left;
+    margin-bottom: 20px;
+}
+.asset_statistics h4{
+    padding-left:15px;
+    line-height: 40px;
+    margin: 0;
+    font-size: 24px;
+    color: #fff;
+}
+.statistics_1 h4{
+    background: #3bafda;
+}
+.statistics_2 h4{
+    background: #37bc9b;
+}
+.statistics_3 h4{
+    background:#8cc152;
+}
+.statistics_4 h4{
+    background:#f6bb42;
+}
+.statistics_5 h4{
+    background:#da4453;
+}
+.statistics_6 h4{
+    background:#e9573f;
+}
+.statistics_7 h4{
+    background:#4a89dc;
+}
+.statistics_8 h4{
+    background:#967adc;
+}
+.statistics_9 h4{
+    background:#d770ad;
+}
+.statistics_10 h4{
+    background:#8e949d;
+}
+.asset_statistics h4 span{
+    float: right;
+    font-weight: normal;
+    color: #f2f2f2;
+    font-size: 18px;
+}
+.asset_statistics h4 b{
+    float: right;
+    padding-right: 10px;
+    font-size: 24px;
+}
+.asset_statistics ul li{
+    line-height: 50px;
+    padding-left: 15px;
+    float: left;
+    width: 100%;
+}
+.details_statistics p{
+    margin: 0;
+    float: left;
+    color: #3a3e42;
+    font-size: 24px;
+}
+.details_statistics b{
+    float: left;
+    font-weight: bold;
+    font-size: 30px;
+}
+.statistics_1 ul li b{
+    color: #3bafda;
+}
+.statistics_2 ul li b{
+    color: #37bc9b;
+}
+.statistics_3 ul li b{
+    color: #8cc152;
+}
+.statistics_4 ul li b{
+    color: #f6bb42;
+}
+.statistics_5 ul li b{
+    color:#da4453;
+}
+.statistics_6 ul li b{
+    color:#e9573f;
+}
+.statistics_7 ul li b{
+    color:#4a89dc;
+}
+.statistics_8 ul li b{
+    color:#967adc;
+}
+.statistics_9 ul li b{
+    color:#d770ad;
+}
+.statistics_10 ul li b{
+    color:#8e949d;
+}
+.statistics_option{
+    /*width: 98%;*/
+}
+.statistics_option a{
+    float: left;
+}
+.statistics_option a img{
+    margin: 20px 0;
+}
+
+/*教学资源统计*/
+h3 span{
+    float: right;
+    color:#616f77;
+    font-size: 20px;
+    color: #ff524e;
+    padding-right: 15px;
+}
+h3 p{
+    float: right;
+    margin:0;
+}
+.fenye_statistics{
+    height: 50px;
+    line-height: 50px;
+    padding-left: 15px;
+    margin-bottom: 10px;
+}
+.fenye_statistics  a{
+    color:#999;
+    font-size: 14px;
+    font-family: '宋体';
+    margin-right: 50px;
+}
+.fenye_statistics  a:hover{
+    color:#188ef3;
+    font-weight: bold;
+}
+a.statistics_xuanx{
+    color: #188ef3;
+    font-weight: bold;
+}
+.statistics_page{
+    margin: 0 15px;
+}
+.statistics_page h4{
+    background:#3bafda;
+    font-size: 24px;
+    color: #fff;
+    text-align: center;
+    line-height: 40px;
+    margin: 20px 0 0 0;
+}
+.statistics_page table{
+    font-size: 11px;
+    width: 100%;
+    border-top: 1px #bfbfbf solid;
+    color:#444;
+}
+.statistics_page table tr td{
+    padding-left: 10px;
+    border-bottom: 1px #bfbfbf solid;
+    border-right: 1px #bfbfbf solid;
+    color: #444;
+    font-size: 12px;
+    line-height: 40px;
+}
+.statistics_page table tr td span{
+    float: left;
+    color: #3bafda;
+    font-size: 30px;
+}
+.statistics_page table tr td p{
+    margin: 0;
+    float: left;
+    font-size: 18px;
+    color: #3a3e42;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+.context_color{
+    background:#f2f2f2;
+}
+.statistics_menu{
+    height:45px;
+    background: #f8f8f8;
+}
+.subject_statistics tr td{
+    color:#3bafda;
+    font-size: 30px;
+}
+
+/*学生统计*/
+.ratio_statistics,.age_statistics{
+    width: 49%;
+    border:1px #bfbfbf solid;
+    height: 455px;
+}
+
+.consumption__div_frame{
+    height: auto;
+    width: auto;
+    display: flex;
+    flex: 1;
+
+}
+.age_statistics{
+    margin-left: 20px;
+}
+.ratio_statistics h4,.age_statistics h4,.nation_statistics h4,.left_statistics h4,.right_statistics h4,.way_statistics h4{
+    height: auto;
+    background:url(images/backdrop.png);
+    color: #6a6a6a;
+    font-size:24px;
+    font-weight: normal;
+    margin:0;
+}
+.ratio_statistics,.age_statistics,.nation_statistics,.left_statistics,.right_statistics,.way_statistics{
+    float: left;
+}
+.nation_statistics{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.nation_statistics table tr td span{
+    color:#37bc9b;
+}
+.left_statistics,.right_statistics{
+    width: 49%;
+    border:1px #bfbfbf solid;
+/*     height: 375px; */
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color:#fff;
+}
+.left_statistics{
+    /* margin-left: 10px; */
+}
+.right_statistics{
+    /* margin-right: 10px; */
+    float: right;
+}
+.left_statistics span,.right_statistics span{
+    color: #8cc152;
+    font-weight: bold;
+    text-align: center;
+/*     width: 100%; */
+/*     float: left; */
+	display: block;
+    font-size:36px;
+    line-height: 60px;
+    border-bottom: 1px #bfbfbf solid;
+}
+.way_statistics{
+    width: 100%;
+    border:1px #bfbfbf solid;
+    margin: 2% 0px 2% 0px;
+    height: 455px;
+}
+.man{
+    background: url(images/man_1.png) no-repeat;
+    height: 63px;
+    width:352px;
+    margin: 50px auto 20px;
+}
+.female{
+    background: url(images/female_1.png) no-repeat;
+    height: 63px;
+    width: 352px;
+    margin: 70px auto 20px;
+}
+.man_i{
+    background: url(images/man.png) no-repeat;
+    height: 63px;
+}
+.female_i{
+    background: url(images/female.png) no-repeat;
+    height: 63px;
+}
+.man_specific,.female_specific{
+    width: 80px;
+/*     float: right; */
+/*     position: relative; */
+/*     right: 25px; */
+/*     top: -50px; */
+    text-align: center;
+/*     margin-right: 30px; */
+    margin: 0 auto;
+}
+.man_specific span{
+    border:none;
+    font-size: 16px;
+    color: #07a7fb;
+    line-height: 30px;
+}
+.female_specific span{
+    border:none;
+    font-size: 16px;
+    color: #e50d8a;
+    line-height: 30px;
+}
+.man_specific b,.female_specific b{
+    font-size: 30px;
+}
+.man_specific b{
+    color: #07a7fb;
+}
+.female_specific b{
+    color: #e50d8a;
+}
+.scale_statistics{
+    float: left;
+    width: 50%;
+}
+.scale_statistics p{
+    text-align: center;
+    font-size: 14px;
+    color: #323232;
+    margin-bottom: 50px;
+}
+.man_1{
+    background: url(images/man_2.png) no-repeat;
+    width: 200px;
+    height:60px;
+    margin: 0 0 0 10px;
+}
+.man_x{
+    background: url(images/man_3.png) no-repeat;
+    height: 35px;
+}
+.man_percent,.female_percent{
+    width: 80px;
+    float: right;
+    position: relative;
+    right: 0px;
+    top: -60px;
+    text-align: center;
+    margin-right: 30px;
+}
+.female_percent{
+    margin-top: 20px;
+}
+.man_percent b{
+    font-size: 18px;
+    color: #07a7fb;
+}
+.man_percent span{
+    font-size:12px;
+    color: #07a7fb;
+    border:none;
+    line-height: 15px;
+}
+.female_1{
+    background: url(images/female_2.png) no-repeat;
+    height: 35px;
+    width: 200px;
+    margin:0 0 0 10px;
+}
+.female_x{
+    background: url(images/female_3.png) no-repeat;
+    height: 35px;
+}
+.female_percent span{
+    font-size: 12px;
+    border:none;
+    line-height: 15px;
+    color: #e50d8a;
+}
+.female_percent b{
+    font-size: 18px;
+    color:#e50d8a;
+}
+.year_statistics{
+    float: right;
+    width: 50%;
+    height: 340px;
+}
+.year_statistics p{
+    text-align: center;
+    font-size: 14px;
+    color: #323232;
+    margin-bottom: 0;
+}
+
+/*教师统计*/
+.line h4{
+    background: url(images/backdrop.png);
+    margin-top: 0;
+    color: #6a6a6a;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+@media (max-width: 1500px){ 
+	.left_statistics, .right_statistics{
+		width:49%;
+	}	
+}
+/*消费统计*/
+.consumption__body{
+    width:95%;
+    margin: 0 auto;
+
+}
+/*    消费曲线*/
+.consumption__body >.top> div{
+    padding: 0;
+    display: inline-block;    /* 如需支持IE8以下版本，用浮动来做 */
+    width: calc(98% / 3);    /* 此处运用了一个css3的表达式，将div三等分，IE8及以上可以支持，当然也可以根据需要设置固定值 */
+    width: -webkit-calc(98% /3); /*3.09 排除margin的宽度*/
+    width: -moz-calc(98% / 3);
+    margin: 0 auto;
+    height: 100%;
+}
+.consumption__body > .top>div:nth-child(n){
+    border: 0.1px rgb(192,192,192) solid;
+    background: #fff;
+}
+.consumption__top_div1{
+    width: 100%;height:200px;
+}
+.consumption__top_div2{
+    margin: 0;
+    padding: 0 3%;
+    width: 95%;
+    height: 200px;
+}
+.consumption__top_div2_title{
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px grey solid;
+
+}
+.consumption__top_div2_bottom{
+
+    width: 100%;
+    height:140px;
+}
+.consumption__top_div2_title>h2{
+    text-align:left;
+}
+.consumption__top_div2_bottom>ul>li:nth-child(1){
+    margin-top: 3%;
+    color: grey;
+    font-size: 1.5rem;
+}
+.consumption__top_div2_bottom>ul>li:nth-child(2){
+    color: #000;
+    margin-top: 5%;
+    font-size: 3rem;
+}
+.consumption__top_div2_bottom>ul>li:nth-child(3){
+    margin-top: 5%;
+    color: grey;
+    font-size: 1.5rem;
+}
+.consumption__top_div2_bottom>ul>li:nth-child(3)>span{
+    color: orange;
+}
+/*bottom*/
+.consumption__body >.bottom> div{
+    padding: 0;
+    display: inline-block;    /* 如需支持IE8以下版本，用浮动来做 */
+    width: calc(98% / 2);    /* 此处运用了一个css3的表达式，将div三等分，IE8及以上可以支持，当然也可以根据需要设置固定值 */
+    width: -webkit-calc(98% /2); /*3.09 排除margin的宽度*/
+    width: -moz-calc(98% / 2);
+    margin: 0 auto;
+    height: 100%;
+}
+.consumption__body > .bottom>div:nth-child(n){
+    border: 0.1px rgb(192,192,192) solid;
+    background: #fff;
+    overflow: hidden;
+}
+.bottom{
+    margin-top: 0.2rem;
+}
+.consumption__bottom_title{
+    padding: 0 3%;
+    width: 95%;
+    height: 40px;
+    border-bottom: 1px grey solid;
+
+}
+.consumption__bottom_div{
+    margin: 0;
+    padding: 0 3%;
+    width: 95%;
+    height: 300px;
+}
+/*保修统计*/
+.reportrepair__body{
+    width:95%;
+    margin: 0 auto;
+
+}
+
+/*    top*/
+.reportrepair__body > .top > div {
+    padding: 0;
+    display: inline-block; /* 如需支持IE8以下版本，用浮动来做 */
+    width: calc(98% / 2); /* 此处运用了一个css3的表达式，将div三等分，IE8及以上可以支持，当然也可以根据需要设置固定值 */
+    width: -webkit-calc(98% / 2); /*3.09 排除margin的宽度*/
+    width: -moz-calc(98% / 2);
+    margin: 0 auto;
+    height: 100%;
+}
+
+.reportrepair__body > .top > div:nth-child(n) {
+    border: 0.1px rgb(192, 192, 192) solid;
+    background: #fff;
+}
+
+.reportrepair__top_div1 {
+    width: 100%;
+    height: 150px;
+}
+
+.reportrepair__top_div2 {
+    margin: 0;
+    padding: 0 3%;
+    width: 95%;
+    height: 200px;
+}
+
+
+.reportrepair__top_div1 {
+    margin: 0;
+    padding: 0 3%;
+    width: 95%;
+    height: 150px;
+}
+
+.reportrepair__top_div2_title {
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px grey solid;
+
+}
+
+.reportrepair__top_div2_bottom {
+
+    width: 100%;
+    height: 140px;
+}
+
+.reportrepair__top_div2_title > h2 {
+    text-align: left;
+}
+
+.reportrepair__top_div2_bottom > ul > li:nth-child(1) {
+    margin-top: 3%;
+    color: grey;
+    font-size: 1.5rem;
+}
+
+.reportrepair__top_div2_bottom > ul > li:nth-child(2) {
+    color: #000;
+    margin-top: 4%;
+    font-size: 3rem;
+}
+
+.reportrepair__top_div2_bottom > ul > li:nth-child(2) > span:nth-child(2) {
+    margin-right: 20%;
+    font-size: 1.5rem;
+    float: right;
+}
+
+.reportrepair__top_div2_bottom > ul > li:nth-child(2) > span:nth-child(2) > span {
+    color: orange;
+}
+
+.reportrepair__top_div2_bottom {
+
+    width: 98%;
+    height: 140px;
+}
+.reportrepair__top_div2_bottom2 > ul > li:nth-child(1) {
+    margin-top: 3%;
+    color: grey;
+    font-size: 1.5rem;
+}
+.reportrepair__top_div2_bottom2 > ul > li:nth-child(1) >span:nth-child(2) {
+    float:  right;
+    padding-right: 13%;
+}
+
+.reportrepair__top_div2_bottom2 > ul > li:nth-child(2) {
+    color: #000;
+    margin-top: 4%;
+    font-size: 3rem;
+}
+
+.reportrepair__top_div2_bottom2 > ul > li:nth-child(2) > span:nth-child(2) {
+    float: right;
+    padding-right: 13%;
+}
+
+.reportrepair__top_div2_bottom2>ul>li:nth-child(3){
+    margin-top: 5%;
+    color: grey;
+    font-size: 1.5rem;
+}
+
+/*bottom*/
+
+
+.bottom > div:nth-child(n) {
+    padding: 0;
+    margin: 0 auto;
+    height: 28rem;
+    border: 0.1px rgb(192, 192, 192) solid;
+    background: #fff;
+    overflow: hidden;
+}
+
+.bottom {
+    margin-top: 0.2rem;
+
+}
+
+.reportrepair__bottom_title {
+    padding: 0 3% 0 1.5%;
+    width: 95%;
+    height: 40px;
+    border-bottom: 1px grey solid;
+
+}
+
+.reportrepair__bottom_div2>ul>li:nth-child(n)>span{
+    color: grey;
+    display: inline-block; /* 如需支持IE8以下版本，用浮动来做 */
+    width: calc(98% / 5); /* 此处运用了一个css3的表达式，将div三等分，IE8及以上可以支持，当然也可以根据需要设置固定值 */
+    width: -webkit-calc(98% / 5); /*3.09 排除margin的宽度*/
+    width: -moz-calc(98% / 5);
+    margin: 0 auto;
+    height: 100%;
+    font-size: 1rem;
+    text-align: center;
+    padding-top: 3%;
+}
+.reportrepair__bottom_div2>ul>li:nth-child(n)>span:first-child{
+    font-size: 2rem;
+}
+/*借阅统计*/
+/*    top*/
+.borrow__body > .top > div {
+    padding: 0;
+    display: inline-block; /* 如需支持IE8以下版本，用浮动来做 */
+    width: calc(98% / 2); /* 此处运用了一个css3的表达式，将div三等分，IE8及以上可以支持，当然也可以根据需要设置固定值 */
+    width: -webkit-calc(98% / 2); /*3.09 排除margin的宽度*/
+    width: -moz-calc(98% / 2);
+    margin: 0 auto;
+    height: 100%;
+}
+
+.borrow__body > .top > div:nth-child(n) {
+    border: 0.1px rgb(192, 192, 192) solid;
+    background: #fff;
+}
+
+.borrow__top_div1 {
+    width: 100%;
+    height: 150px;
+}
+
+.borrow__top_div2 {
+    margin: 0;
+    padding: 0 3%;
+    width: 95%;
+    height: 200px;
+}
+
+.borrow__top_div1 {
+    margin: 0;
+    padding: 0 3%;
+    width: 95%;
+    height: 150px;
+}
+
+.borrow__top_div2_title {
+    width: 98%;
+    height: 40px;
+    border-bottom: 1px grey solid;
+
+}
+
+.borrow__top_div2_1_title {
+    padding: 0 3%;
+    width: 90%;
+    height: 40px;
+    border-bottom: 1px grey solid;
+    margin: 0 auto;
+
+}
+
+.borrow__top_div2_bottom {
+
+    width: 100%;
+    height: 140px;
+}
+
+
+.borrow__top_div2_title > h2 {
+    text-align: left;
+}
+
+.borrow__top_div2_bottom > ul > li:nth-child(1) {
+    margin-top: 3%;
+    color: grey;
+    font-size: 1.5rem;
+}
+
+.borrow__top_div2_bottom > ul > li:nth-child(2) {
+    color: #000;
+    margin-top: 4%;
+    font-size: 3rem;
+}
+
+.borrow__top_div2_bottom > ul > li:nth-child(2) > span:nth-child(2) {
+    margin-right: 20%;
+    font-size: 1.5rem;
+    float: right;
+}
+
+.borrow__top_div2_bottom > ul > li:nth-child(2) > span:nth-child(2) > span {
+    color: orange;
+}
+
+.borrow__top_div2_bottom {
+
+    width: 98%;
+    height: 140px;
+}
+
+.borrow__top_div2_bottom2 > ul > li:nth-child(1) {
+    margin-top: 3%;
+    color: grey;
+    font-size: 1.5rem;
+}
+
+.borrow__top_div2_bottom2 > ul > li:nth-child(1) > span:nth-child(2) {
+    float: right;
+    padding-right: 13%;
+}
+
+.borrow__top_div2_bottom2 > ul > li:nth-child(2) {
+    color: #000;
+    margin-top: 4%;
+    font-size: 3rem;
+}
+
+.borrow__top_div2_bottom2 > ul > li:nth-child(2) > span:nth-child(2) {
+    float: right;
+    padding-right: 13%;
+}
+
+.borrow__top_div2_bottom2 > ul > li:nth-child(3) {
+    margin-top: 5%;
+    color: grey;
+    font-size: 1.5rem;
+}
+
+.borrow__top_div1_2_bottom {
+    width: 98%;
+    height: 19.3rem;
+}
+
+/*bottom*/
+.borrow__body > .bottom > div {
+    margin-top: 0.2rem;
+    display: inline-block; /* 如需支持IE8以下版本，用浮动来做 */
+    width: calc(90% / 4); /* 此处运用了一个css3的表达式，将div三等分，IE8及以上可以支持，当然也可以根据需要设置固定值 */
+    width: -webkit-calc(90% / 4); /*3.09 排除margin的宽度*/
+    width: -moz-calc(90% / 4);
+    height: 28rem;
+    margin-left: 1.5%;
+}
+
+.borrow__bottom_title {
+    padding-bottom: 3%;
+    width: 95%;
+    height: 40px;
+    text-align: center;
+    border-bottom: 1px grey solid;
+}
+
+.borrow__bottom_div2 > ul > li:nth-child(n) > span {
+
+    padding-top: 3%;
+    color: grey;
+    display: inline-block; /* 如需支持IE8以下版本，用浮动来做 */
+    width: calc(98% / 3); /* 此处运用了一个css3的表达式，将div三等分，IE8及以上可以支持，当然也可以根据需要设置固定值 */
+    width: -webkit-calc(98% / 3); /*3.09 排除margin的宽度*/
+    width: -moz-calc(98% / 3);
+    margin: 0 auto;
+    height: 100%;
+    text-align: center;
+    font-size: 2rem;
+
+}
+
+.borrow__bottom_div2 > ul > li:nth-child(n) > span:nth-child(3) {
+    color: orange;
+}

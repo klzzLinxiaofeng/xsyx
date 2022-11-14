@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="platform.education.generalTeachingAffair.dao.MoralEvaluationItemDao">
+
+	<resultMap id="MoralEvaluationItemResult"
+		type="platform.education.generalTeachingAffair.model.MoralEvaluationItem">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="name" column="name" />
+		<result property="classification" column="classification" />
+		<result property="remark" column="remark" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+	
+	<resultMap id="MoralEvaluationItemResultMore"
+		type="platform.education.generalTeachingAffair.vo.MoralEvaluationItemVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="name" column="name" />
+		<result property="classification" column="classification" />
+		<result property="remark" column="remark" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="result" column="re" />
+		<result property="resultRemark" column="rr" />
+	</resultMap>
+
+	<insert id="create"
+		parameterType="platform.education.generalTeachingAffair.model.MoralEvaluationItem">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_moral_evaluation_item (
+		id,
+		school_id,
+		name,
+		classification,
+		remark, is_delete,
+		create_date,
+		modify_date
+		)
+		VALUES (
+		#{id},
+		#{schoolId},
+		#{name},
+		#{classification},
+		#{remark},
+		<choose>
+			<when test="isDelete != null">
+				#{isDelete},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{createDate},
+		#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="MoralEvaluationItemResult"
+		useCache="false">
+		SELECT * FROM pj_moral_evaluation_item WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findMoralEvaluationItemByCondition" resultMap="MoralEvaluationItemResult"
+		useCache="false">
+		SELECT * FROM pj_moral_evaluation_item
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].classification != null and args[0].classification != ''">
+				AND classification =
+				#{args[0].classification,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findMoralEvaluationItemByConditionMore" resultMap="MoralEvaluationItemResultMore"
+		useCache="false">
+		SELECT i.*, r.result re, r.remark rr FROM pj_moral_evaluation_item i LEFT JOIN pj_moral_evaluation_result r ON i.id = r.item_id
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+				AND i.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND i.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND i.name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].classification != null and args[0].classification != ''">
+				AND i.classification =
+				#{args[0].classification,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND i.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND i.is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+				AND i.create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+				AND i.modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].itemId != null and args[0].itemId != ''">
+				AND r.item_id =
+				#{args[0].itemId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].evaluationId != null and args[0].evaluationId != ''">
+				AND r.evaluation_id =
+				#{args[0].evaluationId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_moral_evaluation_item
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].classification != null and args[0].classification != ''">
+				AND classification =
+				#{args[0].classification,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="MoralEvaluationItemResult"
+		useCache="false">
+		SELECT * FROM pj_moral_evaluation_item WHERE id =
+		#{args[0],javaType=java.lang.Integer} AND is_delete = 0
+	</select>
+
+	<update id="update"
+		parameterType="platform.education.generalTeachingAffair.model.MoralEvaluationItem">
+		UPDATE pj_moral_evaluation_item
+		SET
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="classification != null">
+			classification=#{classification},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="isDelete != null">
+			is_delete=#{isDelete},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_moral_evaluation_item
+		WHERE id = #{id}
+	</delete>
+
+	<delete id="deleteByCondition">
+		DELETE FROM pj_moral_evaluation_item
+		WHERE 1=1
+		<if test="id != null and id != ''">
+			AND id = #{id,javaType=java.lang.Integer}
+		</if>
+		<if test="schoolId != null and schoolId != ''">
+			AND school_id = #{schoolId,javaType=java.lang.Integer}
+		</if>
+		<if test="name != null and name != ''">
+			AND name = #{name,javaType=java.lang.String}
+		</if>
+		<if test="classification != null and classification != ''">
+			AND classification =
+			#{classification,javaType=java.lang.String}
+		</if>
+		<if test="remark != null and remark != ''">
+			AND remark = #{remark,javaType=java.lang.String}
+		</if>
+		<if test="isDelete != null">
+			AND is_delete = #{isDelete}
+		</if>
+		<if test="createDate != null and createDate != ''">
+			AND create_date = #{createDate,javaType=java.util.Date}
+		</if>
+		<if test="modifyDate != null and modifyDate != ''">
+			AND modify_date = #{modifyDate,javaType=java.util.Date}
+		</if>
+	</delete>
+</mapper>

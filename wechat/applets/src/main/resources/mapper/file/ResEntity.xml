@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.file.dao.ResEntityDao">
+<resultMap id="ResultMap" type="com.xunyunedu.file.pojo.ResEntity">
+  <id property="id" column="id" />
+  <result property="size" column="size" />
+  <result property="md5Code" column="md5_code" />
+  <result property="uuid" column="uuid" />
+  <result property="suffix" column="suffix" />
+  <result property="appId" column="app_id" />
+  <result property="ftpCode" column="ftp_code" />
+  <result property="userId" column="user_id" />
+  <result property="thumbnailUrl" column="thumbnail_url" />
+  <result property="url" column="url" />
+  <result property="fileName" column="file_name" />
+  <result property="realFileName" column="real_file_name" />
+  <result property="finishedFlag" column="finished_flag" />
+  <result property="createDate" column="create_date" />
+  <result property="modifyDate" column="modify_date" />
+</resultMap>
+
+  <select id="selectById" resultMap="ResultMap">
+    select * from res_entity where id = #{id}
+  </select>
+</mapper>

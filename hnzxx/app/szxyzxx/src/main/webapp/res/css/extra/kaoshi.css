@@ -1,0 +1,77 @@
+.light_grey{
+	height:34px;
+	line-height:34px;
+	text-align:center;
+	color:#535353;
+	background-color:#F2F2F2;
+	border-bottom:1px solid #D9DFE7;
+}
+.m_top{
+	padding:5px 0;
+	height:34px;
+	border-bottom:1px solid #D9DFE7;
+}
+.m_top .tongji_1{
+	
+}
+.m_top .tongji_1 a{
+	width:150px;
+	height:34px;
+	line-height:34px;
+	text-align:center;
+	border-radius:2px;
+	background-color:#A8A8A8;
+	color:#fff;
+	display:block;
+	float:left;
+	margin-left:10px;
+}
+.m_top .tongji_1 a.on{
+	background-color:#189CFB;
+}
+.m_top .dc_cj{
+	width:150px;
+	height:34px;
+	line-height:34px;
+	text-align:center;
+	border-radius:2px;
+	background-color:#16A085;
+	color:#fff;
+	float:right;
+	margin-right:10px;
+	cursor:pointer;
+}
+.m_bottom{
+	
+}
+.m_bottom .a1{
+	padding:6px 9px;
+}
+.m_bottom .a1 .cjtj{
+	height:130px;
+	background-color:#DDEFF9;
+	border-radius:5px;
+}
+.m_bottom .a1 .cjtj ul {
+	
+}
+.m_bottom .a1 .cjtj ul li{
+	float:left;
+	width:13%;
+	text-align:center;
+}
+.m_bottom .a1 .cjtj li p{
+	margin:0;
+}
+.m_bottom .a1 .cjtj li .p1{
+	font-size:14px;
+	color:#666666;
+	font-weight:700;
+	margin-top:28px;
+}
+.m_bottom .a1 .cjtj li .p2{
+	color:#189CFB;
+	font-size:36px;
+	font-family:"微软雅黑";
+	line-height:80px;
+}

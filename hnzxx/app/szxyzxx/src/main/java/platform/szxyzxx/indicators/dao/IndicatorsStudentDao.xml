@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.indicators.dao.IndicatorsStudentDao">
+
+    <resultMap id="IndicatorsStudentMap" type="platform.szxyzxx.indicators.pojo.IndicatorsStudent">
+        <id column="id" property="id"></id>
+        <result column="student_id" property="studentId"></result>
+        <result column="student_name" property="stuName"></result>
+        <result column="baogao_id" property="baogaoId"></result>
+        <result column="indicators_id" property="indicatorsId"></result>
+        <result column="indicators_name" property="indicatorsName"></result>
+        <result column="score" property="score"></result>
+        <result column="danwei" property="danwei"></result>
+        <result column="health_report" property="healthReport"></result>
+        <result column="cervix_report" property="cervixReport"></result>
+        <result column="yiwu" property="yiWu"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modie_time" property="modieTime"></result>
+        <result column="schoolYear" property="schoolYear"></result>
+        <result column="tianshu" property="tianshu"></result>
+        <result column="jiaDay" property="jiaDay"></result>
+    </resultMap>
+
+    <resultMap id="StudnetMap" type="platform.education.generalTeachingAffair.model.Student">
+        <id column="id" property="id"></id>
+        <result column="team_name" property="teamName"></result>
+        <result column="name" property="name"></result>
+        <result column="team_id" property="teamId"></result>
+    </resultMap>
+
+    <select id="findByStudent" resultMap="StudnetMap">
+        select ps.* from pj_student ps inner join pj_team_student pts
+        on pts.student_id=ps.id
+        inner join pj_grade pg on pg.id=pts.grade_id
+        <where>
+        pts.is_delete=0 and ps.is_delete=0 and ps.study_state='01'
+            <if test="args[0]!=null">
+               and ps.school_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and pts.grade_id=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and pts.team_id=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+                and ps.name like concat('%',#{args[3]}, '%')
+            </if>
+            <if test="args[4]!=null">
+                and pg.school_year=#{args[4]}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="findByStudentId" resultMap="StudnetMap">
+         select * from pj_student
+         where id=#{args[0]}  and is_delete=0
+    </select>
+    <select id="findByStudentIdss" resultType="java.lang.Integer">
+         select id from pj_student_baogao
+         where student_id=#{args[0]}  and is_delete=0
+    </select>
+
+    <select id="findBystudents" resultMap="IndicatorsStudentMap">
+     select pi.id as indicators_id, pi.indicators_name,pis.score,pi.danwei from pj_indicators_student pis
+     inner join  pj_indicators pi on pi.id=pis.indicators_id
+        where pis.schoolYear=#{args[1]} and pi.school_id=#{args[2]} and pi.is_delete=0
+        and pis.is_delete=0 and pi.grade_id=(select pts.grade_id from
+        pj_team_student pts inner join pj_grade pg on pg.id=pts.grade_id where pg.school_year=#{args[1]} and pts.student_id=#{args[0]} and pts.is_delete=0 group by pts.grade_id)
+        and pis.student_id=#{args[0]}
+    </select>
+
+    <select id="findByIndicaStudent" resultMap="IndicatorsStudentMap">
+        SELECT psb.id as baogao_id, ps.name as student_name,ps.id as student_id,psb.health_report,psb.cervix_report,psb.yiwu FROM pj_indicators_student pis
+        inner join  pj_student_baogao psb on psb.student_id=pis.student_id
+        inner join pj_student ps on ps.id=pis.student_id where ps.is_delete=0 and ps.school_id=#{args[0]}  and
+         pis.student_id=#{args[1]}
+        group by psb.id
+    </select>
+
+    <select id="findByQingJia" resultType="java.lang.Integer">
+        select time_consuming from pj_student_asking where student_id=#{args[0]}  and school_id=#{args[1]} and is_deleted=0 and india_status=2
+    </select>
+
+    <update id="updateBaogao" parameterType="platform.szxyzxx.indicators.pojo.IndicatorsStudent">
+        update pj_student_baogao set  health_report=#{args[0].healthReport} ,cervix_report=#{args[0].cervixReport},yiwu=#{args[0].yiWu},
+        modie_time=#{args[0].modieTime} where id=#{args[0].baogaoId}
+    </update>
+    <update id="updateIndiStudent" parameterType="platform.szxyzxx.indicators.pojo.IndicatorsStudent">
+       update pj_indicators_student set score=#{args[0].score},baogao_id=#{args[0].baogaoId}
+       where indicators_id=#{args[0].indicatorsId} and student_id=#{args[0].studentId} and is_delete=0
+    </update>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="platform.szxyzxx.indicators.pojo.IndicatorsStudent">
+        insert into pj_student_baogao(student_id,school_year,health_report,cervix_report,yiwu,is_delete,create_time,modie_time)
+        value(#{args[0].studentId},#{args[0].schoolYear},#{args[0].healthReport},#{args[0].cervixReport},#{args[0].yiWu},0,#{args[0].createTime},null)
+    </insert>
+
+    <insert id="createStudent" parameterType="platform.szxyzxx.indicators.pojo.IndicatorsPojo">
+        insert into pj_student_baogao()value()
+    </insert>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.dy.dao.DyExcellentTeamDkjMapper">
+    
+    <insert id="create" parameterType="platform.szxyzxx.dy.pojo.DyExcellentTeamDkj">
+        insert into dy_excellent_team_dkj
+        ( team_name,xn
+        ,xq,xqy,xqz
+        ,jtc,tsc,kfpc
+        ,gxtnc,stmjhd,fsc
+        ,sum_score,of_date,create_time
+        ,creator,creator_id,jf)
+        values (#{args[0].teamName,jdbcType=VARCHAR},#{args[0].xn,jdbcType=VARCHAR}
+        ,#{args[0].xq,jdbcType=VARCHAR},#{args[0].xqy},#{args[0].xqz}
+        ,#{args[0].jtc},#{args[0].tsc},#{args[0].kfpc}
+        ,#{args[0].gxtnc},#{args[0].stmjhd},#{args[0].fsc}
+        ,#{args[0].sumScore},#{args[0].ofDate,jdbcType=VARCHAR},#{args[0].createTime,jdbcType=TIMESTAMP}
+        ,#{args[0].creator,jdbcType=VARCHAR},#{args[0].creatorId},#{args[0].jf})
+    </insert>
+   
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.resource.dao.ResCatalogResourceDao">
+  <resultMap id="ResultMap" type="com.xunyunedu.resource.pojo.ResCatalogResource">
+    <id property="id" column="id" />
+    <result property="createDate" column="create_date"/>
+    <result property="modifyDate" column="modify_date"/>
+    <result property="appId" column="app_id"/>
+    <result property="stageCode" column="stage_code"/>
+    <result property="subjectCode" column="subject_code"/>
+    <result property="gradeCode" column="grade_code"/>
+    <result property="volumnCode" column="volumn_code"/>
+    <result property="versionCode" column="version_code"/>
+    <result property="catalogCode" column="catalog_code"/>
+    <result property="resourceId" column="resource_id"/>
+    <result property="resourceType" column="resource_type"/>
+    <result property="stageName" column="stage_name"/>
+    <result property="gradeName" column="grade_name"/>
+    <result property="volumName" column="volum_name"/>
+    <result property="versionName" column="version_name"/>
+    <result property="objectId" column="object_id"/>
+  </resultMap>
+
+
+  <insert id="insert">
+     insert into res_catalog_resource
+     <trim prefix="(" suffix=")" suffixOverrides=",">
+       <if test="appId != null">
+         app_id,
+       </if>
+       <if test="stageCode != null and stageCode != ''">
+         stage_code,
+       </if>
+       <if test="subjectCode != null and subjectCode != ''">
+         subject_code,
+       </if>
+       <if test="gradeCode != null and gradeCode != ''">
+         grade_code,
+       </if>
+       <if test="volumCode != null and volumCode != ''">
+         volum_code,
+       </if>
+       <if test="versionCode != null and versionCode != ''">
+         version_code,
+       </if>
+       <if test="catalogCode != null and catalogCode != ''">
+         catalog_code,
+       </if>
+       <if test="resourceId != null">
+         resource_id,
+       </if>
+       <if test="resourceType != null">
+         resource_type,
+       </if>
+       <if test="stageName != null and stageName != ''">
+         stage_name,
+       </if>
+       <if test="subjectName != null and subjectName != ''">
+         subject_name,
+       </if>
+       <if test="gradeName != null and gradeName != ''">
+         grade_name,
+       </if>
+       <if test="volumName != null and volumName != ''">
+         volum_name,
+       </if>
+       <if test="versionName != null and versionName != ''">
+         version_name,
+       </if>
+       <if test="objectId != null and objectId != ''">
+         object_id,
+       </if>
+       create_date
+     </trim>
+     values
+     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="appId != null">
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="stageCode != null and stageCode != ''">
+        #{stageCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectCode != null and subjectCode != ''">
+        #{subjectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeCode != null and gradeCode != ''">
+        #{gradeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="volumCode != null and volumCode != ''">
+        #{volumnCode,jdbcType=VARCHAR},
+      </if>
+      <if test="versionCode != null and versionCode != ''">
+        #{versionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="catalogCode != null and catalogCode != ''">
+        #{catalogCode,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceId != null">
+        #{resourceId,jdbcType=INTEGER},
+      </if>
+      <if test="resourceType != null">
+        resource_type,
+      </if>
+      <if test="stageName != null and stageName != ''">
+        stage_name,
+      </if>
+      <if test="subjectName != null and subjectName != ''">
+        subject_name,
+      </if>
+      <if test="gradeName != null and gradeName != ''">
+        grade_name,
+      </if>
+      <if test="volumName != null and volumName != ''">
+        volum_name,
+      </if>
+      <if test="versionName != null and versionName != ''">
+        version_name,
+      </if>
+      <if test="objectId != null and objectId != ''">
+        object_id,
+      </if>
+      NOW()
+     </trim>
+  </insert>
+</mapper>

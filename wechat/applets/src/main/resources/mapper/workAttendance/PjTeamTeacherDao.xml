@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.workAttendance.dao.PjTeamTeacherDao">
+  <resultMap id="BaseResultMap" type="com.xunyunedu.workAttendance.model.PjTeamTeacher">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="grade_id" jdbcType="INTEGER" property="gradeId" />
+    <result column="team_id" jdbcType="INTEGER" property="teamId" />
+    <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="subject_code" jdbcType="CHAR" property="subjectCode" />
+    <result column="subject_name" jdbcType="VARCHAR" property="subjectName" />
+    <result column="school_year" jdbcType="VARCHAR" property="schoolYear" />
+    <result column="join_date" jdbcType="TIMESTAMP" property="joinDate" />
+    <result column="finish_date" jdbcType="TIMESTAMP" property="finishDate" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, grade_id, team_id, teacher_id, user_id, `name`, `type`, subject_code, subject_name, 
+    school_year, join_date, finish_date, `position`, create_date, is_delete, modify_date
+  </sql>
+  <select id="findTeamTeacherByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pj_team_teacher
+    where user_id = #{userId,jdbcType=INTEGER} and is_delete=0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from pj_team_teacher
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.workAttendance.model.PjTeamTeacher" useGeneratedKeys="true">
+    insert into pj_team_teacher (grade_id, team_id, teacher_id, 
+      user_id, `name`, `type`, 
+      subject_code, subject_name, school_year, 
+      join_date, finish_date, `position`, 
+      create_date, is_delete, modify_date
+      )
+    values (#{gradeId,jdbcType=INTEGER}, #{teamId,jdbcType=INTEGER}, #{teacherId,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{subjectCode,jdbcType=CHAR}, #{subjectName,jdbcType=VARCHAR}, #{schoolYear,jdbcType=VARCHAR}, 
+      #{joinDate,jdbcType=TIMESTAMP}, #{finishDate,jdbcType=TIMESTAMP}, #{position,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=BIT}, #{modifyDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.workAttendance.model.PjTeamTeacher" useGeneratedKeys="true">
+    insert into pj_team_teacher
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gradeId != null">
+        grade_id,
+      </if>
+      <if test="teamId != null">
+        team_id,
+      </if>
+      <if test="teacherId != null">
+        teacher_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="subjectCode != null">
+        subject_code,
+      </if>
+      <if test="subjectName != null">
+        subject_name,
+      </if>
+      <if test="schoolYear != null">
+        school_year,
+      </if>
+      <if test="joinDate != null">
+        join_date,
+      </if>
+      <if test="finishDate != null">
+        finish_date,
+      </if>
+      <if test="position != null">
+        `position`,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="modifyDate != null">
+        modify_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gradeId != null">
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null">
+        #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherId != null">
+        #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="subjectCode != null">
+        #{subjectCode,jdbcType=CHAR},
+      </if>
+      <if test="subjectName != null">
+        #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolYear != null">
+        #{schoolYear,jdbcType=VARCHAR},
+      </if>
+      <if test="joinDate != null">
+        #{joinDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null">
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunyunedu.workAttendance.model.PjTeamTeacher">
+    update pj_team_teacher
+    <set>
+      <if test="gradeId != null">
+        grade_id = #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null">
+        team_id = #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="teacherId != null">
+        teacher_id = #{teacherId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="subjectCode != null">
+        subject_code = #{subjectCode,jdbcType=CHAR},
+      </if>
+      <if test="subjectName != null">
+        subject_name = #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="schoolYear != null">
+        school_year = #{schoolYear,jdbcType=VARCHAR},
+      </if>
+      <if test="joinDate != null">
+        join_date = #{joinDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null">
+        finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="position != null">
+        `position` = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xunyunedu.workAttendance.model.PjTeamTeacher">
+    update pj_team_teacher
+    set grade_id = #{gradeId,jdbcType=INTEGER},
+      team_id = #{teamId,jdbcType=INTEGER},
+      teacher_id = #{teacherId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      `name` = #{name,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER},
+      subject_code = #{subjectCode,jdbcType=CHAR},
+      subject_name = #{subjectName,jdbcType=VARCHAR},
+      school_year = #{schoolYear,jdbcType=VARCHAR},
+      join_date = #{joinDate,jdbcType=TIMESTAMP},
+      finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      `position` = #{position,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=BIT},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findTeacherByTeacherId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pj_team_teacher
+    where teacher_id = #{teacherId,jdbcType=INTEGER} and is_delete=0 and type=1 and school_year=(select school_year from pj_school_term_current where school_id=215)
+  </select>
+
+</mapper>

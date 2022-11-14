@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.DepartmentDao">
+
+	<resultMap id="DepartmentResult"
+		type="platform.education.generalTeachingAffair.model.Department">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="parentId" column="parent_id" />
+		<result property="name" column="name" />
+		<result property="listOrder" column="list_order" />
+		<result property="memberCount" column="member_count" />
+		<result property="level" column="level" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<association property="parent" column="parent_id"
+			javaType="platform.education.generalTeachingAffair.model.Department"
+			select="platform.education.generalTeachingAffair.dao.DepartmentDao.findById" />
+	</resultMap>
+
+
+	<resultMap id="DepartmentResult1"
+		type="platform.education.generalTeachingAffair.model.Department">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="parentId" column="parent_id" />
+		<result property="name" column="name" />
+		<result property="listOrder" column="list_order" />
+		<result property="memberCount" column="member_count" />
+		<result property="level" column="level" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<association property="parent" column="parent_id"
+			javaType="platform.education.generalTeachingAffair.model.Department"
+			select="platform.education.generalTeachingAffair.dao.DepartmentDao.findById" />
+		<collection property="childrens"
+			ofType="platform.education.generalTeachingAffair.model.Department"
+			column="id" select="findChildrens">
+		</collection>
+	</resultMap>
+
+	<resultMap id="DepartmentResult2"
+		type="platform.education.generalTeachingAffair.vo.DepartmentVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="parentId" column="parent_id" />
+		<result property="name" column="name" />
+		<result property="listOrder" column="list_order" />
+		<result property="memberCount" column="member_count" />
+		<result property="level" column="level" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<association property="parent" column="parent_id"
+			javaType="platform.education.generalTeachingAffair.vo.DepartmentVo"
+			select="platform.education.generalTeachingAffair.dao.DepartmentDao.findById1" />
+	</resultMap>
+	
+	<resultMap id="DepartmentTeacherOfSexResult" type="platform.education.generalTeachingAffair.vo.TeacherVo">
+		<result property="manNum" column="manNum" />
+		<result property="womanNum" column="womanNum" />
+		<result property="sumNum" column="sumNum" />
+		<result property="departmentId" column="departmentId" />
+		<result property="departmentName" column="departmentName" />
+	</resultMap>
+	
+	<insert id="create"
+		parameterType="platform.education.generalTeachingAffair.model.Department">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_department (
+		id,
+		school_id,
+		parent_id,
+		name,
+		list_order,
+		member_count,
+		level,
+		is_delete,
+		create_date,
+		modify_date
+		)
+		VALUES (
+		#{id},
+		#{schoolId},
+		<choose>
+			<when test="parentId != null">
+				#{parentId},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{name},
+		<choose>
+			<when test="listOrder != null">
+				#{listOrder},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="memberCount != null">
+				#{memberCount},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{level},
+		<choose>
+			<when test="isDelete != null and isDelete == true">
+				1,
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{createDate},
+		#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="DepartmentResult" useCache="false">
+		SELECT * FROM pj_department WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findDepartmentPeopleCountBySchoolId" resultMap="DepartmentResult" useCache="false">
+		SELECT dp.id,dp.`name` as name,count(dp_t.department_id) as memberCount 
+			FROM pj_department_teacher dp_t 
+			RIGHT JOIN pj_department dp  on dp.id = dp_t.department_id
+			WHERE dp.is_delete = 0
+			<if test="args[0] != null">
+				AND dp.school_id = #{args[0]}
+			</if>
+		GROUP BY dp.id
+	</select>
+	
+	<select id="findDepartmentPeopleCountBySchoolIdAndSex" resultMap="DepartmentTeacherOfSexResult" useCache="false">
+		SELECT dp.id as departmentId,dp.`name` as departmentName,count(dp_t.department_id) as sumNum,
+				count(case when t.sex = 1 then t.sex end ) as manNum,
+				count(case when t.sex = 2 then t.sex end ) as womanNum
+			FROM pj_department_teacher dp_t 
+			RIGHT JOIN pj_department dp  on dp.id = dp_t.department_id
+			LEFT JOIN pj_teacher t on t.id = dp_t.teacher_id
+			WHERE dp.is_delete = 0
+				<if test="args[0] != null">
+					AND dp.school_id = #{args[0]}
+				</if>
+		GROUP BY dp.id
+	</select>
+
+	<select id="findDepartmentByCondition" resultMap="DepartmentResult"
+		useCache="false">
+		SELECT * FROM pj_department
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].parentId != null">
+				AND parent_id =
+				#{args[0].parentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].listOrder != null">
+				AND list_order =
+				#{args[0].listOrder,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].memberCount != null">
+				AND member_count =
+				#{args[0].memberCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete = 1
+					</when>
+					<otherwise>
+						AND is_delete = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+
+			<!-- 新增根据多个部门id查询 -->
+			<if test="args[0].listId != null and args[0].listId.size > 0">
+				AND id in
+				<foreach collection="args[0].listId" item="userId" open="(" separator="," close=")">
+					#{userId}
+				</foreach>
+			</if>
+			   ORDER BY list_order
+		</if>
+	</select>
+
+	<select id="findById" resultMap="DepartmentResult" useCache="false">
+		SELECT * FROM pj_department WHERE id =
+		#{args[0],javaType=java.lang.Integer} AND is_delete = 0
+	</select>
+
+    <select id="findById1" resultMap="DepartmentResult2" useCache="false">
+		SELECT * FROM pj_department WHERE id =
+		#{args[0],javaType=java.lang.Integer} AND is_delete = 0
+	</select>
+
+	<update id="update"
+		parameterType="platform.education.generalTeachingAffair.model.Department">
+		UPDATE pj_department
+		SET
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="parentId != null">
+			parent_id=#{parentId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="listOrder != null">
+			list_order=#{listOrder},
+		</if>
+		<if test="memberCount != null">
+			member_count=#{memberCount},
+		</if>
+		<if test="level != null">
+			level=#{level},
+		</if>
+		<if test="isDelete != null">
+			is_delete =
+			<choose>
+				<when test="isDelete == true">
+					1,
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<select id="findDepartmentBySchoolId" resultMap="DepartmentResult"
+		useCache="false">
+		SELECT * FROM pj_department where is_delete = 0
+		<if test="args!=null and args[0]!=null">
+			and school_id= #{args[0],javaType=java.lang.Integer}
+		</if>
+	</select>
+
+	<delete id="deleteById">
+		DELETE FROM pj_department
+		WHERE id = #{args[0]}
+	</delete>
+
+	<delete id="deleteByParentId">
+		DELETE FROM pj_department
+		WHERE parent_id = #{args[0]}
+	</delete>
+
+	<delete id="delete">
+		DELETE FROM pj_department
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findDepartmentByParentId" resultMap="DepartmentResult"
+		useCache="false">
+		select * from pj_department where is_delete = 0
+		<if test="args!=null and args[0]!=null">
+			AND parent_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findChildrensByCascade" resultMap="DepartmentResult1">
+		SELECT * FROM pj_department WHERE is_delete = 0
+		<choose>
+			<when test="args[0] != null">
+				AND parent_id = #{args[0]}
+			</when>
+			<otherwise>
+				AND parent_id is null
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findChildrens" parameterType="java.lang.String"
+		resultMap="DepartmentResult1">
+		SELECT * FROM pj_department WHERE parent_id = #{args[0]} and
+		is_delete = 0
+	</select>
+
+	<update id="updateIncreaseDepatrmentNum" parameterType="java.lang.Integer">
+		update
+		pj_department
+		set member_count = member_count + 1
+		where id =
+		#{args[0],javaType=java.lang.Integer}
+	</update>
+
+	<update id="updateReduceDepatrmentNum" parameterType="java.lang.Integer">
+		update
+		pj_department
+		set member_count = member_count - 1
+		where id =
+		#{args[0],javaType=java.lang.Integer}
+	</update>
+	
+	<!-- 根据部门名称和学校ID查找部门   添加于2016-1-27 -->
+	<select id="findDepartmentByNameAndSchoolId" resultMap="DepartmentResult" useCache="false">
+		SELECT * FROM pj_department WHERE name = #{args[0]} AND school_id = #{args[1]} AND
+		is_delete = 0
+	</select>
+
+	<select id="findIncrementByModifyDate" resultMap="DepartmentResult" useCache="false">
+		SELECT * FROM pj_department
+		WHERE 1=1
+		<if test="args[0] != null">
+			AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			<choose>
+				<when test="args[1] == true">
+					AND is_delete = 1
+				</when>
+				<otherwise>
+					AND is_delete = 0
+				</otherwise>
+			</choose>
+		</if>
+		<if test="args[2] != null">
+			AND modify_date > #{args[2],javaType=java.util.Date}
+		</if>
+		<if test="args[3] != null">
+			<choose>
+				<when test="args[4] == true">
+					AND id > #{args[3],javaType=java.lang.Integer}
+				</when>
+				<otherwise>
+					AND id BETWEEN 0 AND #{args[3],javaType=java.lang.Integer}
+				</otherwise>
+			</choose>
+		</if>
+		ORDER BY modify_date, id
+	</select>
+
+	<select id="findBySchoolId" resultMap="DepartmentResult">
+		SELECT * FROM pj_department where school_id = #{args[0],javaType=java.lang.Integer} and is_delete = 0
+    </select>
+
+	<!-- 根据教师id和学校ID查找部门   添加于2021-11-16 -->
+	<select id="findDepartmentByteacherId" resultMap="DepartmentResult" useCache="false">
+		SELECT * FROM pj_department_teacher WHERE teacher_id = #{args[1]} AND school_id = #{args[0]} AND is_deleted = 0
+	</select>
+</mapper>

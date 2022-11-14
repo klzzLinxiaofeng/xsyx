@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.ishangkelilu.dao.StudyTypeDao">
+
+    <resultMap id="StudyHabitsMap" type="platform.szxyzxx.ishangkelilu.pojo.StudyType">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="type" property="type"/>
+    </resultMap>
+
+    <select id="findByAll" resultMap="StudyHabitsMap">
+        select * from zy_studyleixing
+        <where>
+            is_delete=0
+            <if test="args[0]!=null">
+                and name like concat ('%',#{args[0]},'%')
+            </if>
+        </where>
+    </select>
+    <insert id="create">
+        insert into zy_studyleixing(name,create_time,modiy_time,is_delete,type)
+        value(#{args[0].name},NOW(),NOW(),0,#{args[0].type})
+    </insert>
+    <update id="update">
+        update zy_studyleixing set name=#{args[0].name},modiy_time=NOW(),type=#{args[0].type} where id=#{args[0].id}
+    </update>
+
+    <update id="updateShanChu">
+        update zy_studyleixing set is_delete=1 where id=#{args[0]}
+    </update>
+
+    <select id="findById" resultMap="StudyHabitsMap">
+          select * from zy_studyleixing where is_delete=0 and id=#{args[0]}
+    </select>
+</mapper>

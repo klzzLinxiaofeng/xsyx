@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.dy.dao.DyExcellentTmMapper">
+
+    <resultMap id="BaseResultMap" type="platform.szxyzxx.dy.pojo.DyExcellentTm">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="userTeam" column="user_team" jdbcType="VARCHAR"/>
+            <result property="workDataName" column="work_data_name" jdbcType="VARCHAR"/>
+            <result property="workDataPath" column="work_data_path" jdbcType="VARCHAR"/>
+            <result property="workDataScore" column="work_data_score" jdbcType="INTEGER"/>
+            <result property="teamScore" column="team_score" jdbcType="INTEGER"/>
+            <result property="studentEvaluateScore" column="student_evaluate_score" jdbcType="INTEGER"/>
+            <result property="sumScore" column="sum_score" jdbcType="INTEGER"/>
+            <result property="firstState" column="first_state" />
+            <result property="finalState" column="final_state" />
+            <result property="xq" column="xq"/>
+            <result property="year" column="year" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="firstHandleTime" column="first_handle_time" jdbcType="TIMESTAMP"/>
+            <result property="firstHandleUserId" column="first_handle_user_id" jdbcType="INTEGER"/>
+            <result property="firstHandleUserName" column="first_handle_user_name" jdbcType="VARCHAR"/>
+            <result property="finalHandleTime" column="final_handle_time" jdbcType="TIMESTAMP"/>
+            <result property="finalHandleUserId" column="final_handle_user_id" jdbcType="INTEGER"/>
+            <result property="finalHandleUserName" column="final_handle_user_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,user_name,
+        user_team,work_data_name,work_data_path,
+        work_data_score,team_score,student_evaluate_score,
+        sum_score,first_state,final_state,
+        xq,year,create_time,
+        first_handle_time,first_handle_user_id,first_handle_user_name,
+        final_handle_time,final_handle_user_id,final_handle_user_name
+    </sql>
+
+    <select id="findByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from dy_excellent_tm
+        where  id = #{args[0]}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from dy_excellent_tm
+        where  id = #{args[0]}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="platform.szxyzxx.dy.pojo.DyExcellentTm" useGeneratedKeys="true">
+        insert into dy_excellent_tm
+        ( id,user_id,user_name
+        ,user_team,work_data_name,work_data_path
+        ,work_data_score,team_score,student_evaluate_score
+        ,sum_score,first_state,final_state
+        ,xq,year,create_time
+        ,first_handle_time,first_handle_user_id,first_handle_user_name
+        ,final_handle_time,final_handle_user_id,final_handle_user_name
+        )
+        values (#{id,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR}
+        ,#{userTeam,jdbcType=VARCHAR},#{workDataName,jdbcType=VARCHAR},#{workDataPath,jdbcType=VARCHAR}
+        ,#{workDataScore,jdbcType=INTEGER},#{teamScore,jdbcType=INTEGER},#{studentEvaluateScore,jdbcType=INTEGER}
+        ,#{sumScore,jdbcType=INTEGER},#{firstState,jdbcType=BOOLEAN},#{finalState}
+        ,#{xq},#{year,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        ,#{firstHandleTime,jdbcType=TIMESTAMP},#{firstHandleUserId,jdbcType=INTEGER},#{firstHandleUserName,jdbcType=VARCHAR}
+        ,#{finalHandleTime,jdbcType=TIMESTAMP},#{finalHandleUserId,jdbcType=INTEGER},#{finalHandleUserName,jdbcType=VARCHAR}
+        ))
+    </insert>
+    <insert id="createSelective" parameterType="platform.szxyzxx.dy.pojo.DyExcellentTm">
+        insert into dy_excellent_tm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="args[0].id != null">id,</if>
+                <if test="args[0].userId != null">user_id,</if>
+                <if test="args[0].userName != null">user_name,</if>
+                <if test="args[0].userTeam != null">user_team,</if>
+                <if test="args[0].workDataName != null">work_data_name,</if>
+                <if test="args[0].workDataPath != null">work_data_path,</if>
+                <if test="args[0].workDataScore != null">work_data_score,</if>
+                <if test="args[0].teamScore != null">team_score,</if>
+                <if test="args[0].studentEvaluateScore != null">student_evaluate_score,</if>
+                <if test="args[0].sumScore != null">sum_score,</if>
+                <if test="args[0].firstState != null">first_state,</if>
+                <if test="args[0].finalState != null">final_state,</if>
+                <if test="args[0].xq != null">xq,</if>
+                <if test="args[0].year != null">`year`,</if>
+                <if test="args[0].createTime != null">create_time,</if>
+                <if test="args[0].firstHandleTime != null">first_handle_time,</if>
+                <if test="args[0].firstHandleUserId != null">first_handle_user_id,</if>
+                <if test="args[0].firstHandleUserName != null">first_handle_user_name,</if>
+                <if test="args[0].finalHandleTime != null">final_handle_time,</if>
+                <if test="args[0].finalHandleUserId != null">final_handle_user_id,</if>
+                <if test="args[0].finalHandleUserName != null">final_handle_user_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="args[0].id != null"> #{args[0].id,jdbcType=INTEGER},</if>
+                <if test="args[0].userId != null"> #{args[0].userId,jdbcType=INTEGER},</if>
+                <if test="args[0].userName != null"> #{args[0].userName,jdbcType=VARCHAR},</if>
+                <if test="args[0].userTeam != null"> #{args[0].userTeam,jdbcType=VARCHAR},</if>
+                <if test="args[0].workDataName != null"> #{args[0].workDataName,jdbcType=VARCHAR},</if>
+                <if test="args[0].workDataPath != null">#{args[0].workDataPath,jdbcType=VARCHAR},</if>
+                <if test="args[0].workDataScore != null"> #{args[0].workDataScore,jdbcType=INTEGER},</if>
+                <if test="args[0].teamScore != null">#{args[0].teamScore,jdbcType=INTEGER},</if>
+                <if test="args[0].studentEvaluateScore != null"> #{args[0].studentEvaluateScore,jdbcType=INTEGER},</if>
+                <if test="args[0].sumScore != null">#{args[0].sumScore,jdbcType=INTEGER},</if>
+                <if test="args[0].firstState != null"> #{args[0].firstState},</if>
+                <if test="args[0].finalState != null"> #{args[0].finalState},</if>
+                <if test="args[0].xq != null">#{args[0].xq},</if>
+                <if test="args[0].year != null"> #{args[0].year,jdbcType=VARCHAR},</if>
+                <if test="args[0].createTime != null"> #{args[0].createTime,jdbcType=TIMESTAMP},</if>
+                <if test="args[0].firstHandleTime != null"> #{args[0].firstHandleTime,jdbcType=TIMESTAMP},</if>
+                <if test="args[0].firstHandleUserId != null"> #{args[0].firstHandleUserId,jdbcType=INTEGER},</if>
+                <if test="args[0].firstHandleUserName != null"> #{args[0].firstHandleUserName,jdbcType=VARCHAR},</if>
+                <if test="args[0].finalHandleTime != null">#{args[0].finalHandleTime,jdbcType=TIMESTAMP},</if>
+                <if test="args[0].finalHandleUserId != null">#{args[0].finalHandleUserId,jdbcType=INTEGER},</if>
+                <if test="args[0].finalHandleUserName != null"> #{args[0].finalHandleUserName,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="platform.szxyzxx.dy.pojo.DyExcellentTm">
+        update dy_excellent_tm
+        <set>
+                <if test="args[0].userId != null">
+                    user_id = #{args[0].userId,jdbcType=INTEGER},
+                </if>
+                <if test="args[0].userName != null">
+                    user_name = #{args[0].userName,jdbcType=VARCHAR},
+                </if>
+                <if test="args[0].userTeam != null">
+                    user_team = #{args[0].userTeam,jdbcType=VARCHAR},
+                </if>
+                <if test="args[0].workDataName != null">
+                    work_data_name = #{args[0].workDataName,jdbcType=VARCHAR},
+                </if>
+                <if test="args[0].workDataPath != null">
+                    work_data_path = #{args[0].workDataPath,jdbcType=VARCHAR},
+                </if>
+                <if test="args[0].workDataScore != null">
+                    work_data_score = #{args[0].workDataScore,jdbcType=INTEGER},
+                </if>
+                <if test="args[0].teamScore != null">
+                    team_score = #{args[0].teamScore,jdbcType=INTEGER},
+                </if>
+                <if test="args[0].studentEvaluateScore != null">
+                    student_evaluate_score = #{args[0].studentEvaluateScore,jdbcType=INTEGER},
+                </if>
+                <if test="args[0].sumScore != null">
+                    sum_score = #{args[0].sumScore,jdbcType=INTEGER},
+                </if>
+                <if test="args[0].firstState != null">
+                    first_state = #{args[0].firstState},
+                </if>
+                <if test="args[0].finalState != null">
+                    final_state = #{args[0].finalState},
+                </if>
+                <if test="args[0].xq != null">
+                    xq = #{args[0].xq},
+                </if>
+                <if test="args[0].year != null">
+                    year = #{args[0].year,jdbcType=VARCHAR},
+                </if>
+                <if test="args[0].createTime != null">
+                    create_time = #{args[0].createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="args[0].firstHandleTime != null">
+                    first_handle_time = #{args[0].firstHandleTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="args[0].firstHandleUserId != null">
+                    first_handle_user_id = #{args[0].firstHandleUserId,jdbcType=INTEGER},
+                </if>
+                <if test="args[0].firstHandleUserName != null">
+                    first_handle_user_name = #{args[0].firstHandleUserName,jdbcType=VARCHAR},
+                </if>
+                <if test="args[0].finalHandleTime != null">
+                    final_handle_time = #{args[0].finalHandleTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="args[0].finalHandleUserId != null">
+                    final_handle_user_id = #{args[0].finalHandleUserId,jdbcType=INTEGER},
+                </if>
+                <if test="args[0].finalHandleUserName != null">
+                    final_handle_user_name = #{args[0].finalHandleUserName,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   id = #{args[0].id,jdbcType=INTEGER}
+    </update>
+</mapper>

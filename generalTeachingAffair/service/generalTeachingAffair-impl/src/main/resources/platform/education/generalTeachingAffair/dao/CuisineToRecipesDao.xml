@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.CuisineToRecipesDao">
+
+    <resultMap id="XwHqCanteenCuisineResult" type="platform.education.generalTeachingAffair.model.XwHqCanteenRecipesToCuisin">
+        <result property="id" column="id" />
+        <result property="cuisinId" column="cuisin_id"/>
+        <result property="recipesId" column="recipes_id"/>
+    </resultMap>
+
+    <select id="read" resultMap="XwHqCanteenCuisineResult" useCache="false">
+        SELECT * FROM xw_hq_canteen_recipes_to_cuisin WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+
+
+    <insert id="create" parameterType="platform.education.generalTeachingAffair.model.XwHqCanteenRecipesToCuisin">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO xw_hq_canteen_recipes_to_cuisin (
+        id,  cuisin_id, recipes_id
+        )
+        VALUES (
+        null,
+        #{cuisinId},
+        #{recipesId}
+        )
+    </insert>
+
+<!--    <update id="deleteByRecipesId" parameterType="platform.education.generalTeachingAffair.model.XwHqCanteenRecipesToCuisin">-->
+<!--        UPDATE xw_hq_canteen_recipes_to_cuisin SET-->
+<!--        <if test="cuisinId != null">-->
+<!--            cuisin_id = #{cusinId}-->
+<!--        </if>-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
+
+    <delete id="deleteByRecipesId">
+
+		DELETE FROM xw_hq_canteen_recipes_to_cuisin
+		WHERE recipes_id = #{args[0],javaType=java.lang.Integer}
+
+    </delete>
+
+
+
+
+
+</mapper>

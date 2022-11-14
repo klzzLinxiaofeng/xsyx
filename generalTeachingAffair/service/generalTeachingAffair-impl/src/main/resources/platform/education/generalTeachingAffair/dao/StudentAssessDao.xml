@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentAssessDao">
+    <resultMap id="resultPerformancePojo" type="platform.education.generalTeachingAffair.vo.PerformancePojo">
+        <id column="id" property="id"/>
+        <result column="students" property="students"/>
+        <result column="teacher_id" property="teacherId"/>
+        <result column="performance_type" property="performanceType"/>
+        <result column="stars" property="stars"/>
+        <result column="show_title" property="showTitle"/>
+        <result column="show_content" property="showContent"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="uuid" property="uuid"/>
+    </resultMap>
+
+    <insert id="create">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into pj_performance_assess(id, teacher_id, performance_type, show_title, show_content, create_date, uuid)
+        values (null, #{teacherId},#{performanceType},#{showTitle},#{showContent},#{createDate},#{uuid})
+    </insert>
+    <insert id="createStuShow">
+        insert into pj_performance_assess_stu(student_id, team_id, performance_id) values (#{args[0]},#{args[1]},#{args[2]})
+    </insert>
+    <delete id="deletePerformance">
+        delete from pj_performance_assess where id = #{args[0]}
+    </delete>
+
+    <delete id="deletePerformanceStu">
+        delete from pj_performance_assess_stu where performance_id = #{args[0]}
+    </delete>
+
+    <select id="read" resultMap="resultPerformancePojo" useCache="false">
+		SELECT * FROM pj_performance_assess WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+    <select id="findSutBusByGroupCondition" resultMap="resultPerformancePojo">
+        SELECT pp.* ,group_concat(pps.student_id) students FROM pj_performance_assess pp, pj_performance_assess_stu pps
+        where pp.id = pps.performance_id
+            <if test="args[0].teacherId != null"> and teacher_id = #{args[0].teacherId}</if>
+            <if test="args[0].teamId != null"> and team_id = #{args[0].teamId}</if>
+            <if test="args[0].studentId != null"> and pps.student_id = #{args[0].studentId}</if>
+            <if test="args[0].stars != null"> and stars = #{args[0].stars}</if>
+            <if test="args[0].stuName != null and args[0].stuName != ''">
+            and pps.student_id in (
+                select id from pj_student where is_delete = 0 and name LIKE CONCAT(CONCAT('%', #{args[0].stuName,javaType=java.lang.String}),'%')
+                )
+            </if>
+            <if test="args[0].teacherName != null and args[0].teacherName != ''">
+            and pp.teacher_id in (
+                select id from pj_teacher where is_delete = 0 and name LIKE CONCAT(CONCAT('%', #{args[0].teacherName,javaType=java.lang.String}),'%')
+                )
+            </if>
+        group by pp.id
+        order by pp.create_date desc
+    </select>
+</mapper>

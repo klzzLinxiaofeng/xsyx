@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.innovation.dao.PracticeInnovationDao">
+
+    <resultMap id="GradeResult" type="platform.education.generalTeachingAffair.model.Grade">
+    <result property="id" column="id" />
+    <result property="schoolId" column="school_id" />
+    <result property="stageCode" column="stage_code" />
+    <result property="code" column="code" />
+    <result property="name" column="name" />
+    <result property="fullName" column="full_name" />
+    <result property="schoolYear" column="school_year" />
+    <result property="gradeNumber" column="grade_number" />
+    <result property="uniGradeCode" column="uni_grade_code" />
+    <result property="teamCount" column="team_count" />
+    <result property="beginDate" column="begin_date" />
+    <result property="finishDate" column="finish_date" />
+    <result property="createDate" column="create_date" />
+    <result property="modifyDate" column="modify_date" />
+    <result property="yearName" column="yearName" />
+    </resultMap>
+
+    <resultMap id="StudentResult"
+               type="platform.education.generalTeachingAffair.model.Student">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+        <!--<result property="isDelete" column="is_delete" />-->
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+        <result property="isSendHikdoor" column="is_send_hikdoor"/>
+        <result property="isSendLibrary" column="is_send_library"/>
+        <result property="isSendSeewo" column="is_send_seewo"/>
+        <result property="deptName" column="deptName"/>
+    </resultMap>
+    <resultMap id="PracticeInnovationMap" type="platform.szxyzxx.innovation.pojo.PracticeInnovation">
+        <result property="id" column="id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="studentName" column="name"/>
+        <result property="score" column="score"/>
+        <result property="teamJiaDay" column="teamJiaDay"/>
+        <result property="pctreId" column="pctre_id"/>
+        <result property="pctreUrl" column="pctre_url"/>
+        <result property="jiangzhuanId" column="jiangzhuan_id"/>
+        <result property="jiangzhuanUrl" column="jiangzhuan_url"/>
+        <result property="pingyu" column="pingyu"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <resultMap id="PublicClassResult" type="platform.education.generalTeachingAffair.model.PublicClass">
+        <result property="id" column="id" />
+        <result property="teacherName" column="teacherName"/>
+        <result property="name" column="name" />
+        <result property="maxMember" column="max_member"/>
+        <result property="enrollNumber" column="enroll_number"/>
+        <result property="expiryDate" column="expiry_date"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="classDesc" column="class_desc"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="classType" column="class_type"/>
+        <result property="coverUuid" column="cover_uuid"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="xuefei" column="xuefei"/>
+        <result property="cailiaofei" column="cailiaofei"/>
+        <result property="leixing" column="leibie"/>
+        <result property="isCailiao" column="is_cailiao"/>
+    </resultMap>
+   <select id="findByGrade" resultMap="GradeResult">
+       select pg.* from pj_team_teacher ptt
+       inner join pj_grade pg on pg.id=ptt.grade_id where pg.school_year=#{args[1]} and ptt.teacher_id=#{args[0]} and ptt.is_delete=0
+       group by pg.id
+   </select>
+
+    <select id="findByTeamId" resultType="java.lang.Integer">
+       select ptt.team_id from pj_team_teacher ptt
+       inner join pj_grade pg on pg.id=ptt.grade_id where pg.school_year=#{args[1]} and ptt.teacher_id=#{args[0]} and ptt.is_delete=0
+   </select>
+    <select id="findByStudent" resultMap="StudentResult">
+        select ps.id, ps.name,pts.team_id,pt.name as team_name from pj_student ps
+        inner join pj_team_student pts on pts.student_id=ps.id
+        inner join pj_team pt on pt.id=pts.team_id
+        inner join pj_grade pg on pg.id=pt.grade_id
+        <where>
+             ps.is_delete=0 and pts.is_delete=0 and ps.study_state='01'
+            <if test="args[0]!=null">
+              and   ps.school_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and pg.id=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and pt.id=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+                and ps.name like concat('%',#{args[3]}, '%')
+            </if>
+            <if test="args[4]!=null">
+                and pg.school_year=#{args[4]}
+            </if>
+
+        </where>
+        group by ps.id
+    </select>
+    <select id="findByPraInner" resultMap="PracticeInnovationMap">
+        select ppi.*,ps.name from pj_practice_innovation  ppi
+        inner join pj_student ps on ps.id=ppi.student_id
+        where  ppi.id=#{args[1]} and ps.school_id=#{args[0]} and ps.is_delete=0
+    </select>
+
+    <select id="findByPraInnerAll" resultMap="PracticeInnovationMap">
+        select ppi.*,ps.name from pj_practice_innovation  ppi
+        inner join pj_student ps on ps.id=ppi.student_id
+        <where>
+            ppi.student_id=#{args[1]} and ps.school_id=#{args[0]} and ps.is_delete=0
+            <if test="args[2]!=null">
+               and  ppi.school_year=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+               and ppi.school_trem=#{args[3]}
+            </if>
+        </where>
+    </select>
+    <select id="findByStudentId" resultMap="StudentResult">
+        select * from pj_student where id=#{args[1]} and school_id=#{args[0]} and is_delete=0
+    </select>
+    <select id="findByPublicClass" resultMap="PublicClassResult">
+         select ppc.*,group_concat(pt.name) as teacherName from pj_public_class ppc
+					inner join yh_public_user ypu on ypu.public_class_id = ppc.id
+					inner join pj_public_teacher_related ppt on ppt.public_class_id=ppc.id
+					inner join pj_public_teacher pt  on pt.id=ppt.teacher_id
+					where ppc.school_id = #{schoolId} and ppc.is_delete = 0
+					and ypu.school_id = #{schoolId} and ypu.is_delete = 0 and  ypu.student_id = #{args[0]}
+               group by ppc.name
+    </select>
+
+    <select id="findByPracticeInnovation" resultMap="PracticeInnovationMap">
+        select * from  pj_practice_innovation where student_id=#{args[0]}
+    </select>
+    <insert id="create" parameterType="platform.szxyzxx.innovation.pojo.PracticeInnovation">
+        insert  into pj_practice_innovation(student_id,teamJiaDay,score,pctre_id,jiangzhuan_id,create_time,pingyu,school_year,school_trem)
+        value (#{args[0].studentId},#{args[0].teamJiaDay},#{args[0].score},#{args[0].pctreId},#{args[0].jiangzhuanId},#{args[0].createTime},#{args[0].pingyu},#{args[0].schoolYear},#{args[0].schoolTrem})
+    </insert>
+    <update id="update" parameterType="platform.szxyzxx.innovation.pojo.PracticeInnovation">
+        update pj_practice_innovation
+        <set>
+            <if test="args[0].teamJiaDay!=null">
+                teamJiaDay=#{args[0].teamJiaDay},
+            </if>
+            <if test="args[0].score!=null">
+                score=#{args[0].score},
+            </if>
+            <if test="args[0].pctreId!=null">
+                pctre_id=#{args[0].pctreId},
+            </if>
+            <if test="args[0].jiangzhuanId!=null">
+                jiangzhuan_id=#{args[0].jiangzhuanId},
+            </if>
+            <if test="args[0].pingyu!=null">
+                pingyu=#{args[0].pingyu}
+            </if>
+        </set>
+        where id=#{args[0].id}
+    </update>
+
+    <select id="findByStudentErweiMa" resultMap="StudentResult">
+        select ps.* from pj_student ps inner join pj_team_student pts on pts.student_id=ps.id
+        <where>
+            <if test="args[0]!=null">
+                ps.school_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and pts.grade_id=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and ps.team_id=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+                and ps.name like concat('%',#{args[3]}, '%')
+            </if>
+            and ps.is_delete=0 and pts.is_delete=0
+        </where>
+        group by ps.id
+    </select>
+
+</mapper>

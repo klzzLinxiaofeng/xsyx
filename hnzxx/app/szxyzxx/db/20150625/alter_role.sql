@@ -1,0 +1,1 @@
+ALTER TABLE `edu_gzzhxy_pub`.`yh_role` CHANGE COLUMN `default_role` `default_role` tinyint(1) DEFAULT '0' COMMENT '系统默认的角色（=0）还是管理者自定义的角色（=1）如果是系统默认的角色，则需要在数据库初始化时建立相应的记录';

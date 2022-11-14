@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.knowledge.dao.KnowEvaluationDao">
+
+ <resultMap id="KnowLedgeMap" type="platform.szxyzxx.knowledge.vo.KnowEvaluation">
+     <id column="id" property="id"></id>
+     <result column="knowMenuId" property="knowMenuId"/>
+     <result column="knowMenuName" property="knowMenuName"/>
+     <result column="student_id" property="studentId"/>
+     <result column="studentName" property="studentName"/>
+     <result column="pingfen" property="pingfen"/>
+     <result column="pingyu" property="pingyu"/>
+     <result column="is_delete" property="isDelete"/>
+     <result column="create_time" property="createTime"/>
+     <result column="modiy_time" property="modiyTime"/>
+ </resultMap>
+
+    <resultMap id="StudentMap" type="platform.szxyzxx.knowledge.vo.StudentVo">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="gradeId" column="grade_id"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+    <resultMap id="PdfMap" type="platform.szxyzxx.knowledge.vo.PdfVo">
+        <result property="id" column="id" />
+        <result property="bookName" column="book_name" />
+    </resultMap>
+    <select id="findByAll"  resultMap="StudentMap">
+        select * from pj_student ps inner join pj_team_student pts on pts.student_id=ps.id
+        inner  join pj_grade pg  on pg.id=pts.grade_id
+        <where>
+            ps.is_delete=0
+           <if test="args[0]!=null">
+               and pg.school_year=#{args[0]}
+           </if>
+            <if test="args[1]!=null">
+                and pts.grade_id=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and ps.team_id=#{args[2]}
+            </if>
+        </where>
+        group by ps.id
+        order by ps.team_id asc
+    </select>
+    <select id="findByPinjai" resultMap="KnowLedgeMap">
+        select zkm.id as knowMenuId,zkm.name as knowMenuName
+        from  zy_knowledge_menu zkm
+        <where>
+            zkm.is_delete=0
+            <if test="args[0]!=null">
+                and zkm.know_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and zkm.leven=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and zkm.parent_menu=#{args[2]}
+            </if>
+        </where>
+        order by zkm.paixu asc
+    </select>
+    <select id="findById" resultMap="KnowLedgeMap">
+         select * from  zy_know_evaluation where
+         is_delete=0 and id=#{args[0]}
+    </select>
+    <select id="findByKnowId" resultMap="KnowLedgeMap">
+         select * from  zy_know_evaluation where
+         is_delete=0 and knowMenu_id=#{args[0]}  and student_id=#{args[1]}
+    </select>
+    <insert id="create">
+        insert  into zy_know_evaluation(knowMenu_id,student_id,pingfen,pingyu,create_time,modiy_time,is_delete)
+        value(#{args[0].knowMenuId},#{args[0].studentId},#{args[0].pingfen},#{args[0].pingyu},NOW(),NOW(),0)
+    </insert>
+    <update id="update">
+        update zy_know_evaluation set pingfen=#{args[0].pingfen},pingyu=#{args[0].pingyu} where id=#{args[0].id} and is_delete=0
+    </update>
+
+    <select id="findByPdf" resultMap="PdfMap">
+        select id,name as book_name from zy_knowledge
+        <where>
+            is_delete=0
+            <if test="args[0]!=null">
+                and grade_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and subject_id=#{args[1]}
+            </if>
+        </where>
+
+    </select>
+
+</mapper>

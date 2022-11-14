@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentAlterationDao">
+
+	<resultMap id="StudentAlterationResult" type="platform.education.generalTeachingAffair.model.StudentAlteration">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="userId" column="user_id" />
+		<result property="studentId" column="student_id" />
+		<result property="teamId" column="team_id" />
+		<result property="alterType" column="alter_type" />
+		<result property="alterDate" column="alter_date" />
+		<result property="schoolYear" column="school_year" />
+		<result property="alterFrom" column="alter_from" />
+		<result property="alterTo" column="alter_to" />
+		<result property="comment" column="comment" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.StudentAlteration">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_student_alteration (
+			id, 
+			school_id, 
+			user_id, 
+			student_id, 
+			team_id, 
+			alter_type, 
+			alter_date, 
+			school_year, 
+			alter_from, 
+			alter_to, 
+			comment, 
+			is_delete, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{userId}, 
+			#{studentId}, 
+			#{teamId}, 
+			#{alterType}, 
+			#{alterDate}, 
+			#{schoolYear}, 
+			#{alterFrom}, 
+			#{alterTo}, 
+			#{comment}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="StudentAlterationResult" useCache="false">
+		SELECT * FROM pj_student_alteration WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findStudentAlterationByCondition" resultMap="StudentAlterationResult" useCache="false">
+		SELECT * FROM pj_student_alteration 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].alterType != null and args[0].alterType != ''">
+				AND alter_type = #{args[0].alterType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].alterDate != null">
+				AND alter_date = #{args[0].alterDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].alterFrom != null and args[0].alterFrom != ''">
+				AND alter_from = #{args[0].alterFrom,javaType=java.lang.String}
+			</if>
+			<if test="args[0].alterTo != null and args[0].alterTo != ''">
+				AND alter_to = #{args[0].alterTo,javaType=java.lang.String}
+			</if>
+			<if test="args[0].comment != null and args[0].comment != ''">
+				AND comment = #{args[0].comment,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_student_alteration 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].alterType != null and args[0].alterType != ''">
+				AND alter_type = #{args[0].alterType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].alterDate != null">
+				AND alter_date = #{args[0].alterDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].alterFrom != null and args[0].alterFrom != ''">
+				AND alter_from = #{args[0].alterFrom,javaType=java.lang.String}
+			</if>
+			<if test="args[0].alterTo != null and args[0].alterTo != ''">
+				AND alter_to = #{args[0].alterTo,javaType=java.lang.String}
+			</if>
+			<if test="args[0].comment != null and args[0].comment != ''">
+				AND comment = #{args[0].comment,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="StudentAlterationResult" useCache="false">
+		SELECT * FROM pj_student_alteration WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.StudentAlteration">
+		UPDATE pj_student_alteration
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="alterType != null">
+			alter_type=#{alterType},
+		</if>
+		<if test="alterDate != null">
+			alter_date=#{alterDate},
+		</if>
+		<if test="schoolYear != null">
+			school_year=#{schoolYear},
+		</if>
+		<if test="alterFrom != null">
+			alter_from=#{alterFrom},
+		</if>
+		<if test="alterTo != null">
+			alter_to=#{alterTo},
+		</if>
+		<if test="comment != null">
+			comment=#{comment},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_student_alteration
+		WHERE id = #{id}
+	</delete>
+	
+	<select id="findStudentRecord" resultMap="StudentAlterationResult" useCache="false">
+		SELECT * FROM pj_student_alteration WHERE is_delete = 0 
+		<if test="args[0] !=null and args[0] != ''">
+			AND team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		AND user_id = #{args[1],javaType=java.lang.Integer} 
+		AND alter_type = #{args[2],javaType=java.lang.String}
+	</select>
+	
+</mapper>

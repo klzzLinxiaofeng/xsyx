@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.sqcomment.dao.SqCommentDao">
+  <resultMap id="ResultMap" type="com.xunyunedu.sqcomment.pojo.SqComment">
+    <result property="id" column="id" />
+    <result property="appId" column="app_id" />
+    <result property="objectId" column="object_id" />
+    <result property="objectType" column="object_type" />
+    <result property="parentId" column="parent_id" />
+    <result property="posterId" column="poster_id" />
+    <result property="postName" column="post_name" />
+    <result property="postTime" column="post_time" />
+    <result property="agrees" column="agrees"/>
+    <result property="disagrees" column="disagrees"/>
+    <result property="content" column="content"/>
+    <result property="createDate" column="create_date"/>
+    <result property="modifyDate" column="modify_date"/>
+    <result property="resourceId" column="resource_id"/>
+  </resultMap>
+
+
+  <select id="all" resultMap="ResultMap">
+    select * from sq_comment
+  </select>
+
+  <select id="selectByCondition" resultMap="ResultMap">
+    select * from sq_comment
+    <where>
+      <if test="objectId != null and objectId != ''">
+        and object_id = #{objectId}
+      </if>
+      <if test="objectType != null and objectType != ''">
+        and object_type = #{objectType}
+      </if>
+      <if test="resourceId != null">
+        and resource_id = #{resourceId}
+      </if>
+    </where>
+  </select>
+
+  <insert id="insert">
+    insert into sq_comment
+    <trim prefix="(" suffix=")" prefixOverrides=",">
+      <if test="appId != null">
+        app_id,
+      </if>
+      <if test="resourceId != null">
+        resource_id,
+      </if>
+      <if test="objectType != null and objectType != ''">
+        object_type,
+      </if>
+      <if test="objectId != null and objectId != ''">
+        object_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="posterId != null">
+        poster_id,
+      </if>
+      <if test="postName != null and postName != ''">
+        post_name,
+      </if>
+      <if test="postTime != null">
+        post_time,
+      </if>
+      <if test="agrees != null">
+        agrees,
+      </if>
+      <if test="disagrees != null">
+        disagrees,
+      </if>
+      <if test="content != null and content != ''">
+        content,
+      </if>
+      create_date
+    </trim>
+    values
+    <trim prefix="(" suffix=")" prefixOverrides=",">
+      <if test="appId != null">
+        #{appId},
+      </if>
+      <if test="resourceId != null">
+        #{resourceId},
+      </if>
+      <if test="objectType != null and objectType != ''">
+        #{objectType},
+      </if>
+      <if test="objectId != null and objectId != ''">
+        #{objectId},
+      </if>
+      <if test="parentId != null">
+        #{parentId},
+      </if>
+      <if test="posterId != null">
+        #{posterId},
+      </if>
+      <if test="postName != null and postName != ''">
+        #{postName},
+      </if>
+      <if test="postTime != null">
+        #{postTime},
+      </if>
+      <if test="agrees != null">
+        #{agrees},
+      </if>
+      <if test="disagrees != null">
+        #{disagrees},
+      </if>
+      <if test="content != null and content != ''">
+        #{content},
+      </if>
+      NOW()
+    </trim>
+  </insert>
+</mapper>

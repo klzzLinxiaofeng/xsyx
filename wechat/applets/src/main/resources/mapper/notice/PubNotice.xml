@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.notice.dao.PubNoticeDao">
+    <resultMap id="BaseResultMap" type="com.xunyunedu.notice.pojo.PubNotice">
+        <id column="id" property="id"/>
+        <result column="uuid" property="uuid"/>
+        <result column="app_key" property="appKey"/>
+        <result column="title" property="title"/>
+        <result column="poster_id" property="posterId"/>
+        <result column="poster_name" property="posterName"/>
+        <result column="post_time" property="postTime"/>
+        <result column="receiver_type" property="receiverType"/>
+        <result column="receiver_name" property="receiverName"/>
+        <result column="content" property="content"/>
+        <result column="text_content" property="textContent"/>
+        <result column="user_count" property="userCount"/>
+        <result column="start_time" property="startTime"/>
+        <result column="finish_time" property="finishTime"/>
+        <result column="read_count" property="readCount"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="is_reply" property="isReply"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="read" property="read"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into pub_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null and uuid != ''">
+                uuid,
+            </if>
+            <if test="appKey != null and appKey != ''">
+                app_key,
+            </if>
+            <if test="title != null and title != ''">
+                title,
+            </if>
+            <if test="posterId != null">
+                poster_id,
+            </if>
+            <if test="posterName != null and posterName != ''">
+                poster_name,
+            </if>
+            <if test="postTime != null">
+                post_time,
+            </if>
+            <if test="receiverType != null and receiverType != ''">
+                receiver_type,
+            </if>
+            <if test="receiverName != null and receiverName != ''">
+                receiver_name,
+            </if>
+            <if test="content != null and content != ''">
+                content,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="finishTime != null">
+                finish_time,
+            </if>
+            <if test="isReply != null">
+                is_reply,
+            </if>
+
+            <if test="userCount != null">
+                user_count,
+            </if>
+            <if test="readCount != null">
+                read_count,
+            </if>
+
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="textContent != null and textContent != ''">
+                text_content,
+            </if>
+            create_date
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null and uuid != ''">
+                #{uuid},
+            </if>
+            <if test="appKey != null and appKey != ''">
+                #{appKey},
+            </if>
+            <if test="title != null and title != ''">
+                #{title},
+            </if>
+            <if test="posterId != null">
+                #{posterId},
+            </if>
+            <if test="posterName != null and posterName != ''">
+                #{posterName},
+            </if>
+            <if test="postTime != null">
+                #{postTime},
+            </if>
+
+            <if test="receiverType != null and receiverType != ''">
+                #{receiverType},
+            </if>
+            <if test="receiverName != null and receiverName != ''">
+                #{receiverName},
+            </if>
+            <if test="content != null and content != ''">
+                #{content},
+            </if>
+            <if test="startTime != null">
+                #{startTime},
+            </if>
+            <if test="finishTime != null">
+                #{finishTime},
+            </if>
+            <if test="isReply != null">
+                #{isReply},
+            </if>
+
+            <if test="userCount != null">
+                #{userCount},
+            </if>
+            <if test="readCount != null">
+                #{readCount},
+            </if>
+
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+            <if test="textContent != null and textContent != ''">
+                #{textContent},
+            </if>
+            NOW()
+        </trim>
+
+
+    </insert>
+
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select n.*,r.`read`
+        from pub_notice n
+        left join pub_notice_receiver r on r.notice_id=n.id and r.receiver_id=#{userId}
+        <where>
+            <if test="id!=null">
+                and n.id=#{id}
+            </if>
+            <if test="title != null and title != ''">
+                and n.title like concat('%',#{title},'%')
+            </if>
+            <if test="receiverType != null and receiverType != ''">
+                and n.receiver_type =#{receiverType}
+            </if>
+            <if test="contentType==0">
+                <choose>
+                    <when test="read!=null">
+                        and r.`read`=#{read}
+                    </when>
+                    <otherwise>
+                        and r.id is not null
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="contentType==1">
+                and n.poster_id = #{userId}
+            </if>
+        </where>
+        <choose>
+            <when test="contentType==0">
+                order by r.`read` asc,n.create_date desc
+            </when>
+            <otherwise>
+                order by n.create_date desc
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select * from pub_notice where id=#{id}
+    </select>
+
+</mapper>

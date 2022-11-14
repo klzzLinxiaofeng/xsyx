@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.PaPaperDao">
+
+	<resultMap id="PaPaperResult" type="platform.education.paper.model.PaPaper">
+		<result property="id" column="id" />
+		<result property="paperUuid" column="paper_uuid" />
+		<result property="title" column="title" />
+		<result property="paperType" column="paper_type" />
+		<result property="score" column="score" />
+		<result property="questionCount" column="question_count" />
+		<result property="resourceLibId" column="resource_lib_id" />
+		<result property="ownerUid" column="owner_uid" />
+		<result property="userId" column="user_id" />
+		<result property="ownerMode" column="owner_mode" />
+		<result property="extraData" column="extra_data" />
+		<result property="xepFileId" column="xep_file_id" />
+		<result property="usedCount" column="used_count" />
+		<result property="favCount" column="fav_count" />
+		<result property="finishedCount" column="finished_count" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="paperData" column="paper_data" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+	<resultMap id="PaPaperResultVo" type="platform.education.paper.vo.PaPaperVo" extends="PaPaperResult">
+		<result property="catalogCode" column="catalog_code" />
+		<result property="stageCode" column="stage_code" />
+	</resultMap>
+	
+	<resultMap id="KnowledgeCountResult" type="platform.education.paper.vo.KnowledgeCountVo">
+		<result property="knowledgeId" column="knowledgeId" />
+		<result property="scoreCount" column="scoreCount" />
+	</resultMap>
+	
+	<resultMap id="QuestionKnoledgeScoreResult" type="platform.education.paper.vo.QuestionKnoledgeScoreVo">
+		<result property="subjectCode" column="subject_code" />
+		<result property="score" column="score" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.paper.model.PaPaper">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_paper (
+		id,
+		paper_uuid,
+		title,
+		paper_type,
+		score,
+		question_count,
+		resource_lib_id,
+		owner_uid,
+		user_id,
+		owner_mode,
+		extra_data,
+		xep_file_id,
+		used_count,
+		fav_count,
+		finished_count,
+		is_deleted,
+		paper_data,
+		create_date,
+		modify_date
+		)
+		VALUES (
+		#{id},
+		#{paperUuid},
+		#{title},
+		#{paperType},
+		#{score},
+		#{questionCount},
+		#{resourceLibId},
+		#{ownerUid},
+		#{userId},
+		#{ownerMode},
+		#{extraData},
+		#{xepFileId},
+		#{usedCount},
+		#{favCount},
+		#{finishedCount},
+		<choose>
+			<when test="isDeleted != null">
+				<choose>
+					<when test="isDeleted == true">
+						1,
+					</when>
+					<otherwise>
+						0,
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{paperData},
+		#{createDate},
+		#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="PaPaperResult" useCache="false">
+		SELECT * FROM pa_paper WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findPaPaperByCondition" resultMap="PaPaperResult"
+		useCache="false">
+		SELECT * FROM pa_paper
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid =
+				#{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperType != null">
+				AND paper_type =
+				#{args[0].paperType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].questionCount != null">
+				AND question_count =
+				#{args[0].questionCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].resourceLibId != null">
+				AND resource_lib_id =
+				#{args[0].resourceLibId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerUid != null and args[0].ownerUid != ''">
+				AND owner_uid =
+				#{args[0].ownerUid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id =
+				#{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerMode != null">
+				AND owner_mode =
+				#{args[0].ownerMode,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].extraData != null and args[0].extraData != ''">
+				AND extra_data =
+				#{args[0].extraData,javaType=java.lang.String}
+			</if>
+			<if test="args[0].xepFileId != null and args[0].xepFileId != ''">
+				AND xep_file_id =
+				#{args[0].xepFileId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].usedCount != null">
+				AND used_count =
+				#{args[0].usedCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].favCount != null">
+				AND fav_count =
+				#{args[0].favCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].finishedCount != null">
+				AND finished_count =
+				#{args[0].finishedCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].paperData != null and args[0].paperData != ''">
+				AND paper_data =
+				#{args[0].paperData,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_paper
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid =
+				#{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperType != null">
+				AND paper_type =
+				#{args[0].paperType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].questionCount != null">
+				AND question_count =
+				#{args[0].questionCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].resourceLibId != null">
+				AND resource_lib_id =
+				#{args[0].resourceLibId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerUid != null and args[0].ownerUid != ''">
+				AND owner_uid =
+				#{args[0].ownerUid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id =
+				#{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerMode != null">
+				AND owner_mode =
+				#{args[0].ownerMode,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].extraData != null and args[0].extraData != ''">
+				AND extra_data =
+				#{args[0].extraData,javaType=java.lang.String}
+			</if>
+			<if test="args[0].xepFileId != null and args[0].xepFileId != ''">
+				AND xep_file_id =
+				#{args[0].xepFileId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].usedCount != null">
+				AND used_count =
+				#{args[0].usedCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].favCount != null">
+				AND fav_count =
+				#{args[0].favCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].finishedCount != null">
+				AND finished_count =
+				#{args[0].finishedCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].paperData != null and args[0].paperData != ''">
+				AND paper_data =
+				#{args[0].paperData,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="PaPaperResult" useCache="false">
+		SELECT
+		* FROM pa_paper WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<update id="update" parameterType="platform.education.paper.model.PaPaper">
+		UPDATE pa_paper
+		SET
+		<if test="paperUuid != null">
+			paper_uuid=#{paperUuid},
+		</if>
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="paperType != null">
+			paper_type=#{paperType},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="questionCount != null">
+			question_count=#{questionCount},
+		</if>
+		<if test="resourceLibId != null">
+			resource_lib_id=#{resourceLibId},
+		</if>
+		<if test="ownerUid != null">
+			owner_uid=#{ownerUid},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="ownerMode != null">
+			owner_mode=#{ownerMode},
+		</if>
+		<if test="extraData != null">
+			extra_data=#{extraData},
+		</if>
+		<if test="xepFileId != null">
+			xep_file_id=#{xepFileId},
+		</if>
+		<if test="usedCount != null">
+			used_count=#{usedCount},
+		</if>
+		<if test="favCount != null">
+			fav_count=#{favCount},
+		</if>
+		<if test="finishedCount != null">
+			finished_count=#{finishedCount},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted = 1,
+				</when>
+				<otherwise>
+					is_deleted = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="paperData != null">
+			paper_data=#{paperData},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pa_paper
+		WHERE id = #{id}
+	</delete>
+
+	<!-- 根据学段和科目 -->
+	<select id="findPaPaperByStageSubject" resultMap="PaPaperResultVo"
+		useCache="false">
+		SELECT pp.*,ppc.stage_code FROM pa_paper pp
+		INNER JOIN pa_paper_catalog ppc
+		ON pp.id=ppc.paper_id
+		WHERE pp.is_deleted=0
+		<if test="args[1].stageCode != null">
+			AND ppc.stage_code=#{args[1].stageCode}
+		</if>
+		<if test="args[1].subjectCode != null">
+			AND ppc.subject_code=#{args[1].subjectCode}
+		</if>
+		<choose>
+			<when test="args[0].ownerMode==0">
+				AND pp.owner_mode=0
+			</when>
+			<when test="args[0].ownerMode==1">
+				AND pp.owner_mode=1
+				AND pp.owner_uid=#{args[0].ownerUid}
+			</when>
+			<otherwise>
+				AND pp.owner_mode=2
+				AND pp.user_id=#{args[0].userId}
+			</otherwise>
+		</choose>
+		GROUP BY pp.id
+	</select>
+
+	<!-- 根据code -->
+	<select id="findPaPaperByCode" resultMap="PaPaperResultVo"
+	useCache="false">
+	SELECT pp.*,ppc.stage_code FROM pa_paper pp
+	INNER JOIN pa_paper_catalog ppc
+	ON
+	pp.id=ppc.paper_id
+	WHERE pp.is_deleted=0
+	<choose>
+		<when test= 'args[1].type=="catalog"'>
+			AND ppc.catalog_code
+			<choose>
+				<when test="args[1].textbookId == null">
+					=#{args[1].code}
+				</when>
+				<otherwise>
+					<choose>
+					<when test="args[0].ownerMode==0">
+						IN(SELECT code FROM jc_textbook_catalog WHERE
+						test_book_id=#{args[1].textbookId})
+					</when>
+					<otherwise>
+						IN(SELECT code FROM res_textbook_catalog WHERE
+						test_book_id=#{args[1].textbookId})
+					</otherwise>
+					</choose>
+				</otherwise>
+			</choose>
+		</when>
+		<otherwise>
+		</otherwise>
+	</choose>
+		<choose>
+			<when test="args[0].ownerMode==0">
+				AND pp.owner_mode=0
+			</when>
+			<when test="args[0].ownerMode==1">
+				AND pp.owner_mode=1
+				AND pp.owner_uid=#{args[0].ownerUid}
+			</when>
+			<otherwise>
+				AND pp.owner_mode=2
+				AND pp.user_id=#{args[0].userId}
+			</otherwise>
+		</choose>
+		GROUP BY pp.id
+</select>
+
+	<!-- 根据学段和科目 收藏夹 -->
+	<select id="findPaPaperByConditionsONfavorite" resultMap="PaPaperResultVo" 
+		useCache="false">
+		SELECT pp.*,ppc.stage_code FROM pa_paper pp
+		INNER JOIN pa_favorites pf
+		ON pp.id=pf.object_id
+		INNER JOIN pa_paper_catalog ppc
+		ON pp.id=ppc.paper_id
+		WHERE pp.is_deleted=0
+		<if test="args[0].stageCode != null">
+			AND ppc.stage_code=#{args[0].stageCode}
+		</if>
+		<if test="args[0].subjectCode != null">
+			AND ppc.subject_code=#{args[0].subjectCode}
+		</if>
+		AND pf.poster_id=#{args[1]}
+		AND pf.object_type=#{args[2].objectType}
+		GROUP BY pp.id
+	</select>
+
+		<!-- 根据试卷标题模糊查找 ,公共库、所属校园库、个人库 -->
+<!-- 		<select id="findPaPaperByTitle" resultMap="PaPaperResult" -->
+<!-- 			useCache="false"> -->
+<!-- 			SELECT * FROM pa_paper WHERE owner_mode=0 OR (owner_mode=1 -->
+<!-- 			AND owner_uid=#{args[1]}) OR user_id=#{args[2]} AND -->
+<!-- 			is_deleted=0 -->
+<!-- 			AND -->
+<!-- 			title -->
+<!-- 			LIKE -->
+<!-- 			concat(concat('%',#{args[0].title}),'%') -->
+<!-- 		</select> -->
+
+	<select id="findQuestionKnoledgeScoreByPaperId" resultMap="QuestionKnoledgeScoreResult" useCache="false">
+		SELECT pqc.subject_code,SUM(ppt.score) AS score FROM pa_paper pp
+
+
+		INNER JOIN pa_paper_tree ppt ON pp.id=ppt.paper_id AND ppt.node_type=2
+
+		INNER JOIN pa_question pq ON ppt.question_id=pq.id
+
+		INNER JOIN pa_question_catalog pqc ON pq.id=pqc.question_id
+
+		WHERE
+
+		pp.id=#{args[0]}
+
+		GROUP BY
+
+		pqc.subject_code
+	</select>
+	
+	<select id="findPaPaperByCatalogCodes" resultMap="PaPaperResultVo">
+		SELECT 
+		  pp.*,
+		  ppc.`catalog_code`
+		FROM
+		  pa_paper pp 
+		  JOIN pa_paper_catalog ppc 
+		    ON pp.`id` = ppc.`paper_id` 
+		WHERE ppc.`catalog_code` IN 
+		<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+		order by pp.id desc
+	</select>
+	
+	<select id="findMyFavPaper" resultMap="PaPaperResult">
+		SELECT 
+		  pp.* 
+		FROM
+		  pa_paper pp 
+		  JOIN pa_favorites pf 
+		    ON pp.`id` = pf.`object_id` 
+		WHERE pf.`object_type` = 0 
+		<if test="createDate != null">
+			AND pf.`user_id`=#{args[0]},
+		</if>
+	</select>
+	
+<!-- 	我上传的试卷 -->
+	<select id="findMyUploadPaPaper" resultMap="PaPaperResultVo" useCache="false">
+		SELECT pp.* FROM pa_paper pp
+		<if test="args[0].stageCode != null or args[0].subjectCode!= null">
+		INNER JOIN pa_paper_catalog ppc
+		ON pp.id=ppc.paper_id
+		</if>
+		WHERE pp.is_deleted=0
+		AND pp.user_id=#{args[1]}
+		<if test="args[0].stageCode != null">
+			AND ppc.stage_code=#{args[0].stageCode}
+		</if>
+		<if test="args[0].subjectCode != null">
+			AND ppc.subject_code=#{args[0].subjectCode}
+		</if>
+		GROUP BY pp.id
+	</select>
+	
+	<select id="findStageCodeByPaperId" resultType="java.lang.String">
+		SELECT DISTINCT stage_code FROM pa_paper_catalog WHERE paper_id=#{args[0]}
+	</select>
+	
+	
+	<select id="findKnowledgeCountByPaperUuid" resultMap="KnowledgeCountResult" useCache="false">
+		SELECT
+			qk.knowledge_code knowledgeId,
+			SUM(pt.score) scoreCount
+		FROM
+			pa_question_knoledge qk
+		LEFT JOIN pa_paper_tree pt ON qk.question_id = pt.question_id
+		where pt.paper_id =  #{args[0],javaType=java.lang.Integer}
+		GROUP BY qk.knowledge_code
+	</select>
+	<select id="findPaperByUuids" resultMap="PaPaperResult">
+	select * from pa_paper
+	where
+	paper_uuid
+	IN
+		<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">
+			#{item,jdbcType=VARCHAR}
+		</foreach>
+	</select>
+</mapper>

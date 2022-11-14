@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.leave.dao.OaApplayLeaveApproveUserDao">
+<resultMap id="ResultMap" type="com.xunyunedu.leave.pojo.OaApplayLeaveApproveUser">
+  <id property="id" column="id" />
+  <result property="leaveId" column="leave_id"/>
+  <result property="approveId" column="approve_id"/>
+  <result property="approveState" column="approev_state"/>
+  <result property="createDate" column="create_date"/>
+  <result property="modifyDate" column="modify_date"/>
+</resultMap>
+
+<insert id="insert">
+  insert into oa_applay_leave_approve_user
+  <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="leaveId != null">
+      leave_id,
+    </if>
+    <if test="approveId != null">
+      approve_id,
+    </if>
+    <if test="approveState != null">
+      approve_state,
+    </if>
+    create_date
+  </trim>
+  values
+  <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="leaveId != null">
+      #{leaveId},
+    </if>
+    <if test="approveId != null">
+      #{approveId},
+    </if>
+    <if test="approveState != null">
+      #{approveState},
+    </if>
+    NOW()
+  </trim>
+</insert>
+</mapper>

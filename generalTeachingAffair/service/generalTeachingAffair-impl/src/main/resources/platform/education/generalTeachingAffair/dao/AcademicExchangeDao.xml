@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.AcademicExchangeDao">
+
+	<resultMap id="AcademicExchangeResult" type="platform.education.generalTeachingAffair.model.AcademicExchange">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="type" column="type" />
+		<result property="name" column="name" />
+		<result property="startDate" column="start_date" />
+		<result property="endDate" column="end_date" />
+		<result property="outsiders" column="outsiders" />
+		<result property="attendeesName" column="attendees_name" />
+		<result property="attendeesId" column="attendees_id" />
+		<result property="fileUuid" column="file_uuid" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.AcademicExchange">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_ky_academic_exchange (
+			id, 
+			school_id, 
+			type, 
+			name, 
+			start_date, 
+			end_date, 
+			outsiders,
+			attendees_name, 
+			attendees_id, 
+			file_uuid, 
+			is_delete, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{type}, 
+			#{name}, 
+			#{startDate}, 
+			#{endDate}, 
+			#{outsiders},
+			#{attendeesName}, 
+			#{attendeesId}, 
+			#{fileUuid}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="AcademicExchangeResult" useCache="false">
+		SELECT * FROM pj_ky_academic_exchange WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findAcademicExchangeByNameAndSchool" resultMap="AcademicExchangeResult" useCache="false">
+		SELECT * FROM pj_ky_academic_exchange WHERE is_delete = 0
+		<if test="args[0]!=null and args[0] != ''">
+			and name = #{args[0]}
+		</if>
+		<if test="args[1]!=null and args[1] != ''">
+			and school_id = #{args[1]}
+		</if>
+	</select>
+	
+	<select id="findAcademicExchangeByCondition" resultMap="AcademicExchangeResult" useCache="false">
+		SELECT * FROM pj_ky_academic_exchange 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].startDate != null">
+				AND start_date = #{args[0].startDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null">
+				AND end_date = #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].outsiders != null">
+				AND outsiders = #{args[0].outsiders,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attendeesName != null and args[0].attendeesName != ''">
+				AND attendees_name LIKE CONCAT(CONCAT('%', #{args[0].attendeesName}),'%')
+			</if>
+			<if test="args[0].attendeesId != null and args[0].attendeesId != ''">
+				AND attendees_id = #{args[0].attendeesId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_ky_academic_exchange 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].startDate != null">
+				AND start_date = #{args[0].startDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null">
+				AND end_date = #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].outsiders != null">
+				AND outsiders = #{args[0].outsiders,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attendeesName != null and args[0].attendeesName != ''">
+				AND attendees_name = #{args[0].attendeesName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attendeesId != null and args[0].attendeesId != ''">
+				AND attendees_id = #{args[0].attendeesId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="AcademicExchangeResult" useCache="false">
+		SELECT * FROM pj_ky_academic_exchange WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.AcademicExchange">
+		UPDATE pj_ky_academic_exchange
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="type != null">
+			type=#{type},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="startDate != null">
+			start_date=#{startDate},
+		</if>
+		<if test="endDate != null">
+			end_date=#{endDate},
+		</if>
+		<if test="outsiders != null">
+			outsiders=#{outsiders},
+		</if>
+		<if test="attendeesName != null">
+			attendees_name=#{attendeesName},
+		</if>
+		<if test="attendeesId != null">
+			attendees_id=#{attendeesId},
+		</if>
+		<if test="fileUuid != null">
+			file_uuid=#{fileUuid},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_ky_academic_exchange
+		WHERE id = #{id}
+	</delete>
+</mapper>

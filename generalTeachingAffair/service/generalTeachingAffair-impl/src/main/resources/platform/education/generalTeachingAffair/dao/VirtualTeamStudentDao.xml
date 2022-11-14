@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.VirtualTeamStudentDao">
+
+	<resultMap id="VirtualTeamStudentResult" type="platform.education.generalTeachingAffair.model.VirtualTeamStudent">
+		<result property="id" column="id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="virtualTeamId" column="virtual_team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="userId" column="user_id" />
+		<result property="name" column="name" />
+		<result property="inState" column="in_state" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<resultMap id="StudentResult" type="platform.education.generalTeachingAffair.model.Student">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="personId" column="person_id" />
+		<result property="userId" column="user_id" />
+		<result property="teamId" column="team_id" />
+		<result property="userName" column="user_name" />
+		<result property="teamName" column="team_name" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="studentNumber" column="student_number" />
+		<result property="studentNumber2" column="student_number2" />
+		<result property="isBoarded" column="is_boarded" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="mobile" column="mobile" />
+		<result property="studyState" column="study_state" />
+		<result property="studentType" column="student_type" />
+		<result property="position" column="position" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="alias" column="alias" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.VirtualTeamStudent">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_virtual_team_student (
+			id, 
+			grade_id, 
+			virtual_team_id,
+			student_id, 
+			user_id, 
+			name, 
+			in_state, 
+			is_deleted, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{gradeId}, 
+			#{virtualTeamId},
+			#{studentId}, 
+			#{userId}, 
+			#{name}, 
+			<choose>
+				<when test="inState != null">
+					<choose>
+						<when test="inState == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="VirtualTeamStudentResult" useCache="false">
+		SELECT * FROM pj_virtual_team_student WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findVirtualTeamStudentByCondition" resultMap="VirtualTeamStudentResult" useCache="false">
+		SELECT * FROM pj_virtual_team_student 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].virtualTeamId != null">
+				AND virtual_team_id = #{args[0].virtualTeamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].inState != null">
+				<choose>
+					<when test="args[0].inState == true">
+						AND in_state  = 1
+					</when>
+					<otherwise>
+						AND in_state  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_virtual_team_student 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].virtualTeamId != null">
+				AND virtual_team_id = #{args[0].virtualTeamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].inState != null">
+				<choose>
+					<when test="args[0].inState == true">
+						AND in_state  = 1
+					</when>
+					<otherwise>
+						AND in_state  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="VirtualTeamStudentResult" useCache="false">
+		SELECT * FROM pj_virtual_team_student WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.VirtualTeamStudent">
+		UPDATE pj_virtual_team_student
+		SET 
+		<if test="gradeId != null">
+			grade_id=#{gradeId},
+		</if>
+		<if test="virtualTeamId != null">
+			virtual_team_id=#{virtualTeamId},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="inState != null">
+			<choose>
+				<when test="inState == true">
+					in_state  = 1,
+				</when>
+				<otherwise>
+					in_state  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_virtual_team_student
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findStudentByVirtualTeamId" resultMap="StudentResult" useCache="false">
+		SELECT s.* FROM pj_student s
+		LEFT JOIN pj_virtual_team_student vts ON s.id = vts.student_id
+		LEFT JOIN pj_virtual_team vt ON vts.virtual_team_id = vt.id
+		WHERE s.is_delete = 0
+		AND vts.is_deleted = 0
+		AND vts.in_state = 1
+		AND vt.is_deleted = 0
+		AND vt.id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<select id="findByStudentIds" resultMap="VirtualTeamStudentResult" useCache="false">
+		SELECT * FROM pj_virtual_team_student WHERE is_deleted = 0
+		<if test="args[0] != null">
+			AND grade_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND virtual_team_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null">
+			AND student_id IN
+			<foreach collection="args[2]" item="item" open="(" close=")"  separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="findUnique" resultMap="VirtualTeamStudentResult" useCache="false">
+		SELECT * FROM pj_virtual_team_student WHERE is_deleted = 0
+		<if test="args[0] != null">
+			AND virtual_team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND student_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+	</select>
+
+	<insert id="batchCreate" >
+		INSERT INTO pj_virtual_team_student (
+		id,
+		grade_id,
+		virtual_team_id,
+		student_id,
+		user_id,
+		name,
+		in_state,
+		is_deleted,
+		create_date,
+		modify_date
+		)
+		VALUES
+		<foreach collection="args[0]" item="item" index="index" separator="," >
+		(
+			#{item.id},
+			#{item.gradeId},
+			#{item.virtualTeamId},
+			#{item.studentId},
+			#{item.userId},
+			#{item.name},
+			1,
+			0,
+			#{item.createDate},
+			#{item.modifyDate}
+		)
+		</foreach>
+	</insert>
+
+	<update id="batchRemove">
+		UPDATE pj_virtual_team_student
+		SET is_deleted = 1
+		WHERE id in
+		<foreach collection="args[0]" index="index" item="item" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<update id="batchRemoveByStudentIds">
+		UPDATE pj_virtual_team_student
+		SET is_deleted = 1
+		WHERE grade_id = #{args[0],javaType=java.lang.Integer}
+		<if test="args[1] != null">
+			AND virtual_team_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null">
+			AND student_id in
+			<foreach collection="args[2]" index="index" item="item" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+	</update>
+</mapper>

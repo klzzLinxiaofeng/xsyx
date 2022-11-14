@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.common.dao.StartPageDao">
+
+
+    <resultMap id="startPageResult" type="com.xunyunedu.common.pojo.StartPagePojo">
+		<result column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status"/>
+        <result column="resource_type" property="resourceType"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="uuid" property="uuid"/>
+	</resultMap>
+	<select id="find" resultMap="startPageResult" useCache="false">
+		select * from pj_start_page
+		where is_delete = 0
+		order by modify_date desc
+	</select>
+
+</mapper>

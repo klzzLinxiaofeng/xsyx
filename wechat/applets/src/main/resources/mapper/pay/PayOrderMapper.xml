@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.pay.dao.PayOrderDao">
+    <resultMap id="BaseResultMap" type="com.xunyunedu.pay.pojo.PayOrderPojo">
+        <id column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="user_id" property="userId"/>
+        <result column="openid" property="openid"/>
+        <result column="emp_code" property="empCode"/>
+        <result column="emp_name" property="empName"/>
+        <result column="emp_card" property="empCard"/>
+        <result column="order_number" property="orderNumber"/>
+        <result column="pay_no" property="payNo"/>
+        <result column="pay_amount_id" property="payAmountId"/>
+        <result column="pay_type" property="payType"/>
+        <result column="create_time" property="createTime"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="is_payed" property="isPayed"/>
+        <result column="is_send_order" property="isSendOrder"/>
+        <result column="place_order_state" property="placeOrderState"/>
+        <result column="pay_status" property="payStatus"/>
+        <result column="pay_amount" property="payAmount"/>
+
+    </resultMap>
+
+    <resultMap id="payAmount" type="com.xunyunedu.pay.pojo.PayAmountPojo">
+        <id column="id" property="id"/>
+        <result column="pay_amount" property="payAmount"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+    </resultMap>
+
+    <resultMap id="studentResult" type="com.xunyunedu.pay.pojo.StudentPojo">
+        <id column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="person_id" property="personId"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="name" property="name"/>
+        <result column="sex" property="sex"/>
+        <result column="student_number" property="studentNumber"/>
+        <result column="student_number2" property="studentNumber2"/>
+        <result column="enroll_date" property="enrollDate"/>
+        <result column="leave_date" property="leaveDate"/>
+        <result column="mobile" property="mobile"/>
+        <result column="study_state" property="studyState"/>
+        <result column="student_type" property="studentType"/>
+        <result column="position" property="position"/>
+        <result column="team_id" property="teamId"/>
+        <result column="team_name" property="teamName"/>
+        <result column="is_boarded" property="isBoarded"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="alias" property="alias"/>
+        <result column="emp_code" property="empCode"/>
+        <result column="emp_card" property="empCard"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,school_id,user_id,openid,emp_code,emp_name,emp_card,order_number,pay_no,pay_amount_id,pay_type,
+        create_time,pay_time,is_payed,is_send_order,place_order_state
+    </sql>
+
+    <select id="getAmount" resultMap="payAmount">
+        select * from pj_pay_amount where id = #{id}
+    </select>
+
+    <select id="getXuankeAmount" resultMap="payAmount">
+        select * from pj_xuanke_amount where id = #{id}
+    </select>
+
+    <select id="getAmountBySchool" resultMap="payAmount">
+        select * from pj_pay_amount where school_id = #{schoolId}
+    </select>
+
+    <insert id="createOrder"  useGeneratedKeys="true" keyProperty="id" >
+        insert into pj_pay_order (school_id, user_id, openid, order_number, pay_amount_id, pay_type,
+        create_time, is_payed, is_send_order,emp_code,emp_name,emp_card,place_order_state)
+        values(#{schoolId},#{userId},#{openid}, #{orderNumber},#{payAmountId},#{payType},
+        #{createTime},#{isPayed},#{isSendOrder},#{empCode},#{empName},#{empCard},#{placeOrderState})
+    </insert>
+
+    <insert id="createxuanke"  useGeneratedKeys="true" keyProperty="id">
+        insert into pj_xuanke_order (school_id, user_id, openid, order_number, pay_amount_id, pay_type,
+        create_time, is_payed, is_send_order,emp_name,place_order_state)
+        values(#{schoolId},#{userId},#{openid}, #{orderNumber},#{payAmountId},#{payType},
+        #{createTime},#{isPayed},#{isSendOrder},#{empName},#{placeOrderState})
+    </insert>
+
+    <select id="getOrderInfoByNumber" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from pj_pay_order
+        <where>
+            <if test="orderNumber != null and orderNumber != ''">
+                order_number = #{orderNumber}
+            </if>
+        </where>
+    </select>
+
+    <update id="update">
+        update pj_pay_order
+        <set>
+            <if test="payNo != null and payNo != ''">
+                pay_no = #{payNo},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime},
+            </if>
+            <if test="isPayed != null">
+                is_payed = #{isPayed},
+            </if>
+            <if test="isSendOrder != null">
+                is_send_order = #{isSendOrder},
+            </if>
+            <if test="placeOrderState != null">
+                place_order_state = #{placeOrderState},
+            </if>
+            <if test="payAmount != null">
+                pay_amount = #{payAmount},
+            </if>
+        </set>
+        where order_number = #{orderNumber}
+    </update>
+
+
+
+    <update id="updateXuanke">
+        update pj_xuanke_order
+        <set>
+            <if test="payNo != null and payNo != ''">
+                pay_no = #{payNo},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime},
+            </if>
+            <if test="isPayed != null">
+                is_payed = #{isPayed},
+            </if>
+            <if test="isSendOrder != null">
+                is_send_order = #{isSendOrder},
+            </if>
+            <if test="placeOrderState != null">
+                place_order_state = #{placeOrderState},
+            </if>
+            <if test="payAmount != null">
+                pay_amount = #{payAmount},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus},
+            </if>
+        </set>
+        where order_number = #{orderNumber}
+    </update>
+
+    <select id="getStuInfo" resultMap="studentResult">
+        SELECT user_name ,name,emp_card,emp_code FROM `pj_student` where school_id = #{schoolId} and id = #{id} and is_delete = 0
+    </select>
+
+    <select id="getPayOrderPojo" resultMap="BaseResultMap">
+        select * from pj_xuanke_order where pay_no=#{payNo}
+    </select>
+
+    <select id="findByAll" resultMap="BaseResultMap">
+        SELECT * FROM `pj_pay_order` where is_payed=1 and is_send_order=0
+    </select>
+    <update id="updateasdasd">
+         update pj_pay_order set is_send_order=1 where id=#{id}
+    </update>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.huojiang.dao.HuoJiangDao">
+
+ <resultMap id="JiXiaoMap" type="platform.szxyzxx.huojiang.vo.HuoJiang">
+     <id column="id" property="id"></id>
+     <result column="theme" property="theme"></result>
+     <result column="winning_time" property="winningTime"></result>
+     <result column="name_woke" property="nameWoke"></result>
+     <result column="allocated" property="allocated"></result>
+     <result column="student_ids" property="studentIds"></result>
+     <result column="teacher_ids" property="teacherIds"></result>
+     <result column="winning_level" property="winningLevel"></result>
+     <result column="dengci" property="dengci"></result>
+     <result column="pictureId" property="pictureId"></result>
+     <result column="create_time" property="createTime"></result>
+     <result column="modiy_time" property="modiyTime"></result>
+     <result column="is_delete" property="isDelete"></result>
+     <result column="is_Auit" property="isAuit"></result>
+     <result column="shenqingren" property="shenqingren"></result>
+     <result column="shenqing_name" property="shenqingName"></result>
+     <result column="student_names" property="studentNames"></result>
+     <result column="teacher_names" property="teacherNames"></result>
+     <result column="dengciName" property="dengciName"></result>
+     <result column="winningLevelName" property="winningLevelName"></result>
+     <result column="school_year" property="schoolYear"></result>
+     <result column="school_trem" property="schoolTrem"></result>
+     <result column="shuxing" property="shuXing"></result>
+     <result column="type" property="type"></result>
+ </resultMap>
+
+    <insert id="create">
+      INSERT INTO zy_huojiang(theme,winning_time,name_woke,allocated,student_ids,teacher_ids,winning_level,
+                              dengci,pictureId,create_time,modiy_time,is_delete,is_Auit,shenqingren,shenqing_name,
+                              student_names,teacher_names,school_year,school_trem,shuxing,type)
+      VALUES (#{args[0].theme}, #{args[0].winningTime},#{args[0].nameWoke}, #{args[0].allocated}, #{args[0].studentIds}, #{args[0].teacherIds}, #{args[0].winningLevel},
+       #{args[0].dengci}, #{args[0].pictureId},NOW(),Now(), 0, 0, #{args[0].shenqingren}, #{args[0].shenqingName},
+        #{args[0].studentNames}, #{args[0].teacherNames},#{args[0].schoolYear},#{args[0].schoolTrem},#{args[0].shuXing},#{args[0].type})
+    </insert>
+
+    <select id="findByAll" resultMap="JiXiaoMap">
+        select zh.*,zj.name as dengciName,zx.name as winningLevelName from zy_huojiang  zh
+        inner join zy_jixiaoscore zj on  zj.id=zh.dengci
+        inner join zy_jixiaoscore  zx on zx.id=zh.winning_level
+        <where>
+            zh.is_delete= 0
+            <if test="args[0]!=null">
+                <if test="args[0]==0">
+                    and zh.is_Auit =#{args[0]}
+                </if>
+                <if test="args[0]==2">
+                    and zh.is_Auit =1
+                </if>
+                <if test="args[0]==1">
+                    and zh.is_Auit !=0
+                </if>
+            </if>
+            <if test="args[1]!=null">
+                and zh.theme like concat ('%',#{args[1]},'%')  or zh.shenqing_name like concat ('%',#{args[1]},'%')
+            </if>
+            <if test="args[2]!=null">
+                and zh.teacher_names like concat ('%',#{args[2]},'%')
+            </if>
+            order by zh.create_time desc
+        </where>
+    </select>
+
+    <select id="findById" resultMap="JiXiaoMap">
+      select zh.*,zj.name as dengciName,zx.name as winningLevelName from zy_huojiang  zh
+      inner join zy_jixiaoscore zj on  zj.id=zh.dengci
+      inner join zy_jixiaoscore  zx on zx.id=zh.winning_level
+      where zh.is_delete=0 and zh.id=#{args[0]}
+    </select>
+    <update id="updateHuoJiang">
+        update zy_huojiang set is_delete=1 where id=#{args[0]}
+    </update>
+    <update id="updateShenHe">
+        update zy_huojiang set is_Auit=#{args[1]} where id=#{args[0]} and is_delete=0
+    </update>
+
+
+</mapper>

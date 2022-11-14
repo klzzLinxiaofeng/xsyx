@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PublicClassGradeDao">
+    <resultMap id="publicGradeResult" type="platform.education.generalTeachingAffair.model.PublicGradeRelatedVo">
+        <result column="id" property="id"/>
+        <result column="grade" property="grade"/>
+        <result column="public_class_id" property="publicClassId"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="modify_date" property="modifyDate"/>
+    </resultMap>
+
+    <select id="read" resultMap="publicGradeResult" useCache="false">
+		SELECT * FROM pj_public_grade_related WHERE 1=1
+        <if test="args != null and args[0] != null">
+		    AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+		ORDER BY id DESC
+    </select>
+
+    <insert id="create" parameterType="platform.education.generalTeachingAffair.model.PublicGradeRelatedVo">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into pj_public_grade_related(id,grade,public_class_id,is_deleted,school_id,created_at,modify_date)
+        values(null,#{grade},#{publicClassId},#{isDeleted},#{schoolId},#{createdAt},#{modifyDate})
+    </insert>
+
+
+    <update id="deleteGradeRelated" parameterType="platform.education.generalTeachingAffair.model.PublicGradeRelatedVo">
+        update pj_public_grade_related set is_deleted = 1 ,modify_date= #{args[1],javaType=java.util.Date} where public_class_id = #{args[0],javaType=java.lang.Integer}
+    </update>
+
+
+
+    <select id="findGradeInfoByClassId" resultMap="publicGradeResult">
+        select * from pj_public_grade_related
+        where is_deleted = 0 and public_class_id = #{args[0],javaType=java.lang.Integer}
+        and school_id =  #{args[1],javaType=java.lang.Integer}
+    </select>
+</mapper>

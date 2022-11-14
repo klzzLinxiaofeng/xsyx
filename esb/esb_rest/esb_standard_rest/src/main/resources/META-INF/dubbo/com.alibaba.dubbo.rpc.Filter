@@ -1,0 +1,3 @@
+paramFilter=platform.education.rest.common.filter.ParamFilter
+mqtApiFilter=platform.education.rest.common.filter.MqtApiFilter
+openApiFilter=platform.education.rest.common.filter.OpenApiFilter

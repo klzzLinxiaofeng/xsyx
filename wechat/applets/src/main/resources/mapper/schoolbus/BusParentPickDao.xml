@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.schoolbus.dao.BusParentPickDao">
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from bus_parent_pick
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.schoolbus.pojo.BusParentPick" useGeneratedKeys="true">
+    insert into bus_parent_pick (student_id, pick_date, direction,place,create_type,is_bobao,is_ruxiao
+      )
+    values (#{studentId,jdbcType=INTEGER}, #{pickDate,jdbcType=CHAR}, #{direction,jdbcType=INTEGER}, #{place,jdbcType=VARCHAR}, #{createType,jdbcType=INTEGER},0,0
+      )
+  </insert>
+
+
+</mapper>

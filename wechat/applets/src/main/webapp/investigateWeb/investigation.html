@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>问卷调查</title>
+    <script src="./js/jquery.js"></script>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .container {
+        width: 100%;
+        height: 100%;
+        padding: 30px;
+        box-sizing: border-box;
+        background: #F6F6F6;
+        position: fixed;
+    }
+    
+    .container .item {
+        display: block;
+        width: 100%;
+        height: 300px;
+        text-decoration: none;
+        margin-bottom: 30px;
+        border-radius: 8px;
+    }
+    
+    .item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+</style>
+
+<body>
+    <div class="container">
+    </div>
+</body>
+<script>
+    (function() {
+        let href = decodeURI(window.location.href)
+        let is_teacher = href.split('?')[1].split('=')[1]
+        let data1 = {
+            object: is_teacher,
+            pageSize: 10,
+            pageNum: 1
+        }
+        let data2 = ''
+            // let url = 'http://192.168.1.14:8084/applets/home/getQuestions?'
+        let url = 'https://api.dg.zykjedu.cn/applets/home/getQuestions?'
+        Object.keys(data1).forEach(p => data2 += `${p}=${data1[p]}&`)
+        $.ajax({
+            type: "GET",
+            url: url + data2,
+            // dataType: "jsonp",
+            // jsonp: 'callback',
+            success(res) {
+                console.log(res)
+                if (res.code === 200) {
+                    let data = res.data.list
+                    if (data === '' || data === null || data === undefined || data.length === 0) {
+                        let p = '<p style="text-align:center;font-size:26px;">空空如也</p>'
+                        $('.container').append(p)
+                    } else {
+                        for (let i = 0; i < data.length; i++) {
+                            let a = '<a class="item" href=' + data[i].url + '><img src=' + data[i].httpUrl + ' alt=' + data[i].name + ' /></a>'
+                            $('.container').append(a);
+                        }
+                    }
+                }
+            },
+            fail(e) {
+                console.log(e)
+                let p = '<p style="text-align:center;font-size:26px;">服务器内部错误，请请联系管理员。</p>'
+                $('.container').append(p)
+            }
+        })
+    })()
+</script>
+
+</html>

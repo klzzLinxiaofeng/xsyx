@@ -1,0 +1,600 @@
+@charset "utf-8";
+html {
+    color: #000;
+    background: #f6f6f6
+}
+*{
+    marring:0;
+    padding:0;
+}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+    font-size:14px;
+    font-family: "微软雅黑";
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+fieldset, img {
+    border: 0
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-style: normal;
+    font-weight: normal
+}
+
+ol, ul {
+    list-style: none
+}
+
+caption, th {
+    text-align: left
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal
+}
+
+q:before, q:after {
+    content: ''
+}
+
+abbr, acronym {
+    border: 0;
+    font-variant: normal
+}
+
+sup {
+    vertical-align: text-top
+}
+
+sub {
+    vertical-align: text-bottom
+}
+
+input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit
+}
+
+input, textarea, select {
+    *font-size: 100%
+}
+
+legend {
+    color: #000
+}
+
+article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary {
+    display: block;
+    margin: 0;
+    padding: 0
+}
+
+a {
+    text-decoration: none
+}
+
+button {
+    cursor: pointer
+}
+
+.clear {
+    clear: both;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.mgb12{
+	margin-bottom: 12px;
+}
+.mgt12{
+	margin-top: 12px;
+}
+.mokuai{
+	padding: 29px 18px;
+	background: #FFFFFF;
+}
+.cjfx .term {
+	display: inline-block;
+	border-bottom: 1px solid #dfdfdf;
+	width: 640px;
+}
+.cjfx .term p:first-child{
+	border-right: 1px solid #dfdfdf;
+	border-left: 1px solid #dfdfdf;
+}
+.cjfx .term p{
+	width: 213.333px;
+    height: 54px;
+    margin-bottom: 20px;
+    margin-top: 18px;
+    box-sizing: border-box;
+    float: left;
+    text-align: center;
+}
+.cjfx .term p.choose span:first-child{
+	color: #ed6d1e;
+}
+.cjfx .term p.choose span:last-child{
+	color: #ee9d6a;
+}
+.cjfx .term p span{
+	width: 100%;
+	text-align: center;
+	display: inline-block;
+}
+.cjfx .term p span:first-child{
+	font-size: 28.45px;
+	font-weight: normal;
+	color: #666666;
+}
+.cjfx .term p span:last-child{
+	font-size: 17.78px;
+	color: #999999;
+}
+.xzfw {
+	padding-top: 20px;
+	padding-bottom: 18px;
+	background: #FFFFFF;
+	margin-bottom: 12px;
+}
+.xzfw span{
+	display: inline-block;
+	width: 188px;
+	height: 57px;
+	border: 1px solid #eaeaea;
+	text-align: center;
+	line-height: 57px;
+	color: #666666;
+	font-size: 26.34px;
+	background: #ffffff;
+	margin-left: 15px;	
+}
+.xzfw span.on{
+	background: #ffe0b2;
+	border: 1px solid #f6ac74;
+	color: #ed6d1e;
+	font-weight: bold;
+}
+/*顶部信息*/
+.top_info{
+	background: #fefbf1;
+	color: #ed6d1e;
+	font-size: 18.96px;
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+}
+.top_info b{
+	font-weight: normal;
+	margin-right: 10px;
+}
+.top_info b.b1{
+	margin-right: 0px;
+}
+/*试卷信息sjxx*/
+ .sjxx{
+	background: #FFFFFF;
+	padding: 27px 0 29px 18px;
+}
+.sjxx .title{
+	font-size: 28.45px;
+	color:#333333;
+	width: 426px;
+	white-space:nowrap;
+    overflow:hidden;
+	text-overflow:ellipsis;
+	display: inline-block;
+}
+.sjxx .type{
+	color: #fff;
+	padding: 12px 9px;
+	border-radius: 4px;
+	font-size: 17.78px;
+	margin-right: 12px;
+	position: relative;
+    top: -9px;
+}
+.bgcolor_ffcd40{
+	background:#ffcd40 ;
+}
+.bgcolor_ff8a65{
+	background: #ff8a65;
+}
+.sjxx .time{
+	margin-top: 29px;
+	font-size: 21.34px;
+	color: #999999;
+}
+.sjxx .new{
+	background: url('images/no_read.png')no-repeat;
+	width: 71px;
+	height: 71px;
+	display: inline-block;
+	float: right;
+    margin-top: -28px;
+}
+/*学生信息xsxx*/
+.xsxx{
+	padding: 26px 19px 26px 19px;
+	background:#f6f6f6 ;
+	text-align:center;
+}
+.xsxx span{
+	font-size: 28.44px;
+	color:#999;
+}
+
+.xsxx .ks_time{
+	font-size: 21.34px;
+	color:#999;
+}
+.xsxx span b{
+	color: #ed6d1e;
+}
+.xsxx p span:first-child{
+	margin-right: 15px;
+}
+.xsxx p:first-child{
+	margin-bottom: 15px;
+	font-size:28.44px;
+	color:#d1d1d1;
+}
+.xsxx .xzfw {
+	text-align: center;
+	padding-bottom:0;
+	margin-bottom:0;
+}
+.xsxx .xzfw span{
+	margin-left: 3px;
+}
+/*成绩图chengji_tu 个人班级*/
+.chengji_tu{
+	background: #fff;
+	padding-top: 60px;
+    padding-bottom: 60px;
+}
+.chengji_tu .kemu {
+    font-size: 42.68px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 175px;
+    padding-top: 50px;
+}
+.chengji_tu .score{
+	font-size: 177.81px;
+    font-weight: bold;
+    width: 330px;
+    padding-top: 33px;
+}
+.chengji_tu .total_score{
+	font-size: 35.56px;
+    position: relative;
+    width: 200px;
+}
+.chengji_tu .total_score b{
+	font-weight: normal;
+}
+.chengji_tu .bg_score{
+	background: url(images/bg_score.png)no-repeat 0px;
+    width: 489px;
+    height: 493px;
+    margin: 0px auto;
+}
+.chengji_tu .bg_score span{
+	display: block;
+	color: #FFFFFF;
+	margin: 0 auto;
+	text-align: center;
+}
+/*成绩图 —— 个人年级统考*/
+.chengji_tu .all_score{
+	background: url(images/p_nj_z.png)no-repeat;
+	width: 253px;
+	height:253px;
+	position: relative;
+	margin: 0 auto;
+}
+.chengji_tu .all_score span{
+	color: #FFFFFF;
+	position: absolute;
+    left: 50%;
+}
+.chengji_tu .all_score .km{
+	font-size: 21.34px;
+    width: 100px;
+    margin-left: -50px;
+    top: 24px;
+    text-align: center;
+}
+.chengji_tu .all_score .fen{
+	font-size: 88.92px;
+    margin-left: -114px;
+    top: 27%;
+    text-align: center;
+    /*width: 228px;*/
+}
+.chengji_tu .all_score .full_score{
+	font-size: 17.78px;
+	bottom: 43px;
+    width: 110px;
+    margin-left: -49px;
+    text-align: center;
+}
+.chengji_tu .all_score .full_score b{
+	font-weight: normal;
+}
+.chengji_tu ul{
+	text-align: center;
+}
+.chengji_tu ul li{
+	background: url(images/p_nj_kemu.png)no-repeat;
+	display: inline-block;
+	width: 190px;
+	height:190px;
+	position: relative;
+}
+.chengji_tu ul li span{
+	color: #FFFFFF;
+	position: absolute;
+    left: 50%;
+    text-align: center;
+}
+.chengji_tu ul li .km{
+	font-size: 16.01px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 90px;
+    margin-left: -45px;
+    top: 9%;
+}
+.chengji_tu ul li .fen{
+	font-size: 52.69px;
+    width: 172px;
+    margin-left: -86px;
+    top: 33%;
+}
+.chengji_tu ul li .full_score{
+	font-size: 13.34px;
+    width: 78px;
+    margin-left: -36.5px;
+    bottom: 18%;
+}
+.chengji_tu ul li .full_score b{
+	font-weight: normal;
+}
+.chengji_tu ul li.wfb{
+	background: url(images/p_nj_no.png);
+}
+/*让大数据帮你分析子女。。。*/
+.big-data{
+    height: 165px;
+    box-sizing: border-box;
+    background: #fff;
+    padding: 18px;
+}
+.analyze {
+	width: 197px;
+	height: 64px;
+	line-height: 64px;
+	text-align: center;
+	display: block;
+    margin: 25px auto 0;
+	font-size: 21.32px;
+	color: #FFFFFF;
+    border-radius: 3px;
+    background-image: -moz-linear-gradient( 42deg, rgb(255,126,0) 0%, rgb(255,151,0) 100%);
+    background-image: -webkit-linear-gradient( 42deg, rgb(255,126,0) 0%, rgb(255,151,0) 100%);
+    background-image: -ms-linear-gradient( 42deg, rgb(255,126,0) 0%, rgb(255,151,0) 100%);
+    box-shadow: 0px 2px 5px 0px rgba(228, 160, 62, 0.45);
+}
+	/*三角形*/
+.use:before {
+    width: 10px;
+    height: 10px;
+    background: #fef8e5;
+    box-shadow: 2px 2px 0 -1px #c4c4c4;
+    content: "";
+    transform: rotate(45deg);
+    border-bottom: 1px solid #fbd35c;
+    border-right: 1px solid #fbd35c;
+    display: inline-block;
+    position: relative;
+    top: 17px;
+    left: 32%;
+}
+.use {
+    padding: 5px;
+    height: auto;
+    min-height: 12px;
+    border-radius: 4px;
+    background: #fef8e5;
+    color: #ed6d1e;
+    font-size: 21.33px;
+    border: 1px solid #fbd35c;
+    text-align: center;
+    display: block;
+    width: 550px;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+/*总体情况*/
+.mokuai p.title{
+	font-weight: bold;
+	color:#ed6d1e;
+	margin-bottom: 30px;
+	font-size: 21.33px;
+}
+.ztqk p.wz,.pkfx p.wz {
+	color: #666666;
+	margin-bottom: 30px;
+	line-height: 45px;
+    font-size: 21.33px;
+}
+.ztqk p.wz b,.pkfx p.wz b{
+	font-weight: normal;
+}
+.ztqk p.wz b.b1,.pkfx p.wz b.b1{
+	color: #ed6d1e;
+	text-decoration: underline;
+}
+table{
+	width: 100%;
+}
+table tr td{
+	font-size: 17.78px;
+	height: 53px;
+	text-align: center;
+}
+table.ztqk tr{
+	border: 1px solid #eceff1;
+}
+table.ztqk tr td{
+	width: 50%;
+}
+table thead tr td{
+	color:#999999;
+	background: #f8f9fb;
+}
+table tbody tr td{
+	color:#666666;
+}
+table tbody tr:nth-child(even){
+	background: #fffcf8;
+}
+table.dfqk1 tr td{
+	width: 16.6%;
+	font-size: 17.78px;
+}
+table.dfqk1 tr,table.dfqk3 tr{
+	border: 1px solid #eceff1;
+}
+table.dfqk1 tbody tr td{
+	color: #666666;
+}
+table.dfqk1 tr td b{
+	font-weight: normal;
+}
+table.dfqk1 tr td b.b1{
+	color: #ED6D1E;
+}
+table.dfqk1 tr td i.up{
+	color:#ff5252;
+	font-style: normal;
+}
+table.dfqk1 tr td i.down{
+	color:#4caf50;
+	font-style: normal;
+}
+table.dfqk1{
+	margin-bottom: 28px;
+}
+table.dfqk2 tr td{
+	width:25%;
+}
+table.dfqk3 tr td{
+	width:33.3%;
+}
+/*立即订阅*/
+.now_dy{
+	background: url(images/now_dy.png) no-repeat;
+	height: 2371px;
+	position: relative;
+}
+.now_dy .a1,.a2{
+	width: 262px;
+	height:118px;
+	display: block;
+	position: absolute;
+}
+.now_dy .a1{
+	left: 50%;
+    margin-left: -131px;
+    top: 71px;
+}
+.now_dy .a2{
+	bottom: 101px;
+    left: 50%;
+    margin-left: -131px;
+}
+/*progress_bar*/
+.progress_bar{
+	background: #cccccc;
+    height: 22px;
+    width: 560px;
+    margin: 17px auto;
+    border-radius: 10px;
+}
+.progress_bar p{
+	background: #cccccc;
+    width: 80%;
+    border-radius: 10px;
+    height: 22px;
+    background-image: -moz-linear-gradient( 42deg, rgb(255,126,0) 0%, rgb(255,151,0) 100%);
+    background-image: -webkit-linear-gradient( 42deg, rgb(255,126,0) 0%, rgb(255,151,0) 100%);
+    background-image: -ms-linear-gradient( 42deg, rgb(255,126,0) 0%, rgb(255,151,0) 100%);
+    box-shadow: 0px 2px 5px 0px rgba(228, 160, 62, 0.45);
+}
+/*单科分析*/
+.detail .all_km ul li{
+	width: 100px;
+    height: 57px;
+    display: inline-block;
+    border: 1px solid #eaeaea;
+    background: #FFF;
+    color: #666666;
+    font-size: 21.33px;
+    margin-right: 15px;
+    margin-bottom: 18px;
+    text-align: center;
+    line-height: 53px;
+    border-radius: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 2px;
+    box-sizing: border-box;
+}
+.detail .all_km ul li.on{
+	background: #ffe0b2;
+    border: 1px solid #f6ac74;
+    color: #ed6d1e;
+    font-weight: bold;
+}
+.detail .all_km{
+	border-top: 1px solid #dcdcdc;
+}
+/*提分建议*/
+.tfjy a{
+	background: url(images/tfjy.png) no-repeat;
+	width: 588px;
+	height:297px;
+	display: block;
+	margin: 0 auto;
+}
+
+
+.chengji_tu .qk {
+    background: url(images/bg_qk.png)no-repeat 0px;
+    width: 354px;
+    height: 349px;
+    margin: 0px auto;
+}
+.chengji_tu .qk .score{
+	font-size: 83.07px;
+	line-height: 269px;
+}
+

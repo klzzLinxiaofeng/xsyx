@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.paper.dao.OaPaperDepartmentCountDao">
+  <resultMap id="ResultMap" type="com.xunyunedu.paper.pojo.OaPaperDepartmentCount">
+    <id property="id" column="id" />
+    <result property="ownerId" column="owner_id" />
+    <result property="ownerType" column="owner_type" />
+    <result property="departmentId" column="department_id" />
+    <result property="count" column="count" />
+    <result property="createDate" column="create_date" />
+    <result property="modifyDate" column="modify_date" />
+    <result property="isDeleted" column="is_deleted" />
+  </resultMap>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO oa_paper_department_count (
+    owner_id,
+    owner_type,
+    department_id,
+    count,
+    create_date,
+    modify_date,
+    is_deleted
+    )
+    VALUES (
+    #{ownerId},
+    #{ownerType},
+    #{departmentId},
+    #{count},
+    #{createDate},
+    #{modifyDate},
+    <choose>
+      <when test="isDeleted != null">
+        <choose>
+          <when test="isDeleted == true">
+            1
+          </when>
+          <otherwise>
+            0
+          </otherwise>
+        </choose>
+      </when>
+      <otherwise>
+        0
+      </otherwise>
+    </choose>
+    )
+  </insert>
+
+  <update id="update">
+    UPDATE oa_paper_department_count
+    SET
+    <if test="ownerId != null">
+      owner_id=#{ownerId},
+    </if>
+    <if test="ownerType != null">
+      owner_type=#{ownerType},
+    </if>
+    <if test="departmentId != null">
+      department_id =#{departmentId},
+    </if>
+    <if test="count != null">
+      count = #{count},
+    </if>
+    <if test="createDate != null">
+      create_date=#{createDate},
+    </if>
+    <if test="modifyDate != null">
+      modify_date=#{modifyDate},
+    </if>
+    <if test="isDeleted != null">
+      <choose>
+        <when test="isDeleted == true">
+          is_deleted = 1
+        </when>
+        <otherwise>
+          is_deleted = 0
+        </otherwise>
+      </choose>
+    </if>
+    WHERE id = #{id}
+  </update>
+
+  <select id="selectByCondition" resultMap="ResultMap">
+    select * from oa_paper_department_count
+    <where>
+      <if test="ownerId != null">
+        and owner_id=#{ownerId}
+      </if>
+      <if test="ownerType != null">
+        and owner_type=#{ownerType}
+      </if>
+      <if test="departmentId != null">
+        and department_id = #{departmentId}
+      </if>
+      <if test="isDeleted != null">
+        <choose>
+          <when test="isDeleted == true">
+            and is_deleted = 1
+          </when>
+          <otherwise>
+            and is_deleted = 0
+          </otherwise>
+        </choose>
+      </if>
+    </where>
+  </select>
+</mapper>

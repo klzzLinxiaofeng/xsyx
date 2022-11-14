@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.WarrantyEquipmentDao">
+
+	<resultMap id="WarrantyEquipmentResult" type="platform.education.oa.model.WarrantyEquipment">
+		<result property="id" column="id" />
+		<result property="repairId" column="repair_id" />
+		<result property="name" column="name" />
+		<result property="unit" column="unit" />
+		<result property="number" column="number" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.WarrantyEquipment">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_warranty_equipment (
+			id, 
+			repair_id, 
+			name, 
+			unit, 
+			number, 
+			create_date, 
+			modify_date, 
+			is_delete
+		)
+		VALUES (
+			#{id}, 
+			#{repairId}, 
+			#{name}, 
+			#{unit}, 
+			#{number}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="WarrantyEquipmentResult" useCache="false">
+		SELECT * FROM oa_warranty_equipment WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findWarrantyEquipmentByCondition" resultMap="WarrantyEquipmentResult" useCache="false">
+		SELECT * FROM oa_warranty_equipment 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].repairId != null">
+				AND repair_id = #{args[0].repairId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].unit != null and args[0].unit != ''">
+				AND unit = #{args[0].unit,javaType=java.lang.String}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_warranty_equipment 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].repairId != null">
+				AND repair_id = #{args[0].repairId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].unit != null and args[0].unit != ''">
+				AND unit = #{args[0].unit,javaType=java.lang.String}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="WarrantyEquipmentResult" useCache="false">
+		SELECT * FROM oa_warranty_equipment WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.WarrantyEquipment">
+		UPDATE oa_warranty_equipment
+		SET 
+		<if test="repairId != null">
+			repair_id=#{repairId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="unit != null">
+			unit=#{unit},
+		</if>
+		<if test="number != null">
+			number=#{number},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_warranty_equipment
+		WHERE id = #{id}
+	</delete>
+</mapper>

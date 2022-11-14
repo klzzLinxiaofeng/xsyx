@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.innovation.dao.PracticeInnovationDao">
+
+    <resultMap id="PracticeInnovationMap" type="com.xunyunedu.innovation.pojo.PracticeInnovation">
+        <result property="id" column="id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="studentName" column="name"/>
+        <result property="score" column="score"/>
+        <result property="teamJiaDay" column="teamJiaDay"/>
+        <result property="pctreId" column="pctre_id"/>
+        <result property="pctreUrl" column="pctre_url"/>
+        <result property="jiangzhuanId" column="jiangzhuan_id"/>
+        <result property="jiangzhuanUrl" column="jiangzhuan_url"/>
+        <result property="pingyu" column="pingyu"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <resultMap id="StudentResult"
+               type="com.xunyunedu.mergin.vo.Student">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+        <result property="isSendHikdoor" column="is_send_hikdoor"/>
+        <result property="isSendLibrary" column="is_send_library"/>
+        <result property="isSendSeewo" column="is_send_seewo"/>
+        <result property="deptName" column="deptName"/>
+    </resultMap>
+
+    <resultMap id="PublicClassResult" type="com.xunyunedu.personinfor.pojo.PublicClassPojo">
+        <result property="cid" column="id"/>
+        <result property="cname" column="name"/>
+        <result property="maxMember" column="max_member"/>
+        <result property="enrollNumber" column="enroll_number"/>
+        <result property="expiryDate" column="expiry_date"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="classDesc" column="class_desc"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="classNmber" column="class_number"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="classType" column="class_type"/>
+        <result property="coverUuid" column="cover_uuid"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="isSaveHistory" column="is_save_history"/>
+        <result property="xuefei" column="xuefei"/>
+        <result property="cailiaofei" column="cailiaofei"/>
+        <result property="leixing" column="leibie"/>
+        <result property="isCailiao" column="is_cailiao"/>
+        <result property="weekDate" column="week_date"/>
+        <result property="classEndTime" column="class_endtime"/>
+        <result property="classStartTime" column="class_starttime"/>
+        <result property="tname" column="teacherName"/>
+
+    </resultMap>
+    <select id="findByPraInner" resultMap="PracticeInnovationMap">
+        select ppi.*,ps.name from pj_practice_innovation  ppi
+        inner join pj_student ps on ps.id=ppi.student_id where ps.id=#{studentId} and ps.school_id=#{schoolId} and ps.is_delete=0
+    </select>
+
+    <select id="findByStudentId" resultMap="StudentResult">
+          select * from pj_student where id=#{studentId} and school_id=#{schoolId} and is_delete=0
+    </select>
+
+
+    <select id="fidByAllPublicClass" resultMap="PublicClassResult">
+        select ppc.*,group_concat(pt.name) as teacherName from pj_public_class ppc
+					inner join yh_public_user ypu on ypu.public_class_id = ppc.id
+					inner join pj_public_teacher_related ppt on ppt.public_class_id=ppc.id
+					inner join pj_public_teacher pt  on pt.id=ppt.teacher_id
+					where ppc.school_id = #{schoolId} and ppc.is_delete = 0
+					and ypu.school_id = #{schoolId} and ypu.is_delete = 0 and  ypu.student_id = #{studentId}
+               group by ppc.name
+    </select>
+
+</mapper>

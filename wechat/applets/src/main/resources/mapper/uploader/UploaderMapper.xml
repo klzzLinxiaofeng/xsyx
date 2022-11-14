@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.common.dao.UploaderDao">
+
+
+    <resultMap id="EntityFileResult" type="com.xunyunedu.common.pojo.EntityFile">
+        <result property="id" column="id" />
+        <result property="size" column="size" />
+        <result property="md5" column="md5" />
+        <result property="uuid" column="uuid" />
+        <result property="extension" column="extension" />
+        <result property="contentType" column="content_type" />
+        <result property="fileName" column="file_name" />
+        <result property="diskFileName" column="disk_file_name" />
+        <result property="thumbnailUrl" column="thumbnail_url" />
+        <result property="relativePath" column="relative_path" />
+        <result property="createDate" column="create_date" />
+    </resultMap>
+    <select id="findFileByUUID" resultMap="EntityFileResult">
+        SELECT * FROM res_entity_file where uuid = #{uuid}
+    </select>
+
+    <!-- 新增文件信息 -->
+    <insert id="create" parameterType="com.xunyunedu.common.pojo.EntityFile">
+        INSERT INTO res_entity_file (
+            size,
+            md5,
+            uuid,
+            extension,
+            content_type,
+            file_name,
+            disk_file_name,
+            thumbnail_url,
+            relative_path,
+            create_date
+        )
+        VALUES (
+            #{size},
+            #{md5},
+            #{uuid},
+            #{extension},
+            #{contentType},
+            #{fileName},
+            #{diskFileName},
+            #{thumbnailUrl},
+            #{relativePath},
+            #{createDate}
+        )
+    </insert>
+
+</mapper>

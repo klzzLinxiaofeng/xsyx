@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.student.dao.StudentDao">
+    <resultMap id="studentResult" type="com.xunyunedu.student.pojo.StudentPojo">
+        <id property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="personId" column="person_id" />
+		<result property="userId" column="user_id" />
+		<result property="teamId" column="team_id" />
+		<result property="userName" column="user_name" />
+		<result property="teamName" column="team_name" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="studentNumber" column="student_number" />
+		<result property="studentNumber2" column="student_number2" />
+		<result property="isBoarded" column="is_boarded" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="mobile" column="mobile" />
+		<result property="studyState" column="study_state" />
+		<result property="studentType" column="student_type" />
+		<result property="position" column="position" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="alias" column="alias" />
+		<result property="empCard" column="emp_card"/>
+		<result property="empCode" column="emp_code"/>
+		<result property="isSendHikdoor" column="is_send_hikdoor"/>
+		<result property="isSendLibrary" column="is_send_library"/>
+        <result property="teacherId" column="teacher_id"/>
+    </resultMap>
+
+    <resultMap id="StudentResultVo"
+               type="com.xunyunedu.student.pojo.StudentPojo">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+        <result property="isDelete" column="is_delete" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="number" column="number" />
+    </resultMap>
+
+    <select id="read" resultMap="studentResult">
+	    SELECT * FROM pj_student
+        where is_delete = 0
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                 and mobile = #{mobile}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName}
+            </if>
+            <if test="schoolId != null">
+                and school_id = #{schoolId}
+            </if>
+    </select>
+
+
+    <select id="getStudentByTeacher" resultMap="studentResult">
+        SELECT
+                pts.*
+        FROM
+                pj_team_student pts
+                        LEFT JOIN pj_team_teacher ptt ON pts.team_id = ptt.team_id
+                        LEFT JOIN pj_student ps ON ps.team_id = pts.team_id
+        WHERE
+                ptt.teacher_id = #{teacherId}
+          AND pts.is_delete = 0
+    </select>
+
+    <update id="update">
+        update pj_student
+        <set>
+            <if test="mobile != null and mobile != ''">
+                mobile = #{mobile},
+            </if>
+            <if test="modifyDate != null"> modify_date = #{modifyDate}, </if>
+        </set>
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+
+
+    <select id="getStudentById" resultMap="studentResult">
+        SELECT * FROM pj_student where  id = #{id}
+    </select>
+
+    <select id="getStudentByTeacherId" parameterType="com.xunyunedu.student.pojo.StudentPojo" resultMap="studentResult">
+        SELECT ps.*
+        FROM pj_student ps
+        INNER JOIN pj_team_teacher ptt on ps.team_id = ptt.team_id
+        WHERE ptt.teacher_id = #{studentPojo.teacherId} and ptt.is_delete = 0 and ptt.type = 1
+        AND ps.school_id = #{studentPojo.schoolId} AND ps.is_delete = 0
+    </select>
+
+    <select id="findStuTeamById" resultMap="studentResult">
+        select pt.id team_id,pt.name team_name from pj_student ps
+        inner join pj_team pt on pt.id = ps.team_id
+        where ps.is_delete = 0 and pt.is_delete = 0
+        and ps.id = #{id}
+    </select>
+
+    <select id="getIdByUserId" resultMap="studentResult">
+        select * from pj_student
+        <where>
+            <if test="teamId !=null">
+                team_id=#{teamId}
+            </if>
+            <if test="name!=null">
+                and  name like concat('%',#{name}, '%')
+            </if>
+            and is_delete=0
+        </where>
+
+    </select>
+
+    <select id="getAppletsInterrupteur" resultType="java.util.Map">
+        SELECT Interrupteur FROM pj_job_control WHERE is_deleted = 0 AND name = #{interrupter}
+    </select>
+    <select id="findStudentVoByTeam" resultMap="studentResult">
+        SELECT
+        s.id, s.school_id, s.person_id, s.user_id, s.user_name, s.`name`, s.sex,
+        s.emp_code,
+        s.student_number, s.student_number2, ts.number, ts.id team_student_id,
+        t.id team_id, t.`name` team_name, t.team_number,
+        g.id grade_id, g.`name` grade_name, g.uni_grade_code
+        FROM pj_student s
+        LEFT JOIN pj_team_student ts ON s.user_id = ts.user_id
+        LEFT JOIN pj_team t ON ts.team_id = t.id
+        LEFT JOIN pj_grade g ON t.grade_id = g.id
+        WHERE s.is_delete = 0
+        AND ts.is_delete = 0
+        AND ts.in_state = 1
+        <if test="schoolId != null">
+            AND s.school_id = #{schoolId}
+        </if>
+        <if test="schoolYear != null and schoolYear != ''">
+            AND t.school_year = #{schoolYear}
+        </if>
+        <if test="gradeId != null">
+            AND ts.grade_id = #{gradeId}
+        </if>
+        <if test="teamId != null">
+            AND ts.team_id = #{teamId}
+        </if>
+        ORDER BY g.uni_grade_code, t.team_number, ts.number
+    </select>
+
+</mapper>

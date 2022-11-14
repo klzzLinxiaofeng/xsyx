@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: platform.education.generalTeachingAffair.service.test.base.B
+ aseTest
+

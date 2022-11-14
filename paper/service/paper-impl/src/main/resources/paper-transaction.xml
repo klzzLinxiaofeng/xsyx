@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="byName">
+	
+	<tx:advice id="paperTxAdvice" transaction-manager="paperTransactionManager">
+		<!--定义规则*统配 -->
+		<tx:attributes>
+		    
+		    <tx:method name="update*" propagation="REQUIRED"/>
+		    <tx:method name="modify*" propagation="REQUIRED"/>
+			
+			<tx:method name="del*" propagation="REQUIRED"/>
+			<tx:method name="remove*" propagation="REQUIRED"/>
+			
+			<tx:method name="save*" propagation="REQUIRED"/>
+			<tx:method name="add*" propagation="REQUIRED"/>
+			<tx:method name="create*" propagation="REQUIRED" />
+			
+			<!-- <tx:method name="get*"  read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="retrieve*" read-only="true" />
+			<tx:method name="read*" read-only="true" />
+			
+			
+			<tx:method name="*" propagation="REQUIRED" /> -->
+			
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+	    <!--定义一个切入点-->
+		<aop:pointcut id="paperTranPointCut" expression="execution(* platform.education..*.service.impl.*.*(..))"/>
+		<!--定义方面:  通知织入到切面-->
+		<aop:advisor advice-ref="paperTxAdvice" pointcut-ref="paperTranPointCut"/>
+	</aop:config>
+	
+</beans>

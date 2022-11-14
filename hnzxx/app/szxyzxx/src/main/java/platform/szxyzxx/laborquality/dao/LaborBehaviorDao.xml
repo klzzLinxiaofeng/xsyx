@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.laborquality.dao.LaborBehaviorDao">
+
+    <resultMap id="LifeBeHaviorResult" type="platform.szxyzxx.laborquality.vo.LaborBehavior">
+        <result property="id" column="id" />
+        <result property="studentId" column="student_id" />
+        <result property="studentName" column="studentName" />
+        <result property="teamName" column="teamName" />
+        <result property="laborIndicatorsId" column="labor_indicators_id" />
+        <result property="laborIndicatorsName" column="laborName" />
+        <result property="createTime" column="create_time" />
+        <result property="modiyTime" column="modiy_time" />
+        <result property="isDelete" column="is_delete" />
+        <result property="schoolYear" column="school_year" />
+        <result property="schoolTrem" column="school_trem" />
+        <result property="fenshu" column="fenshu" />
+        <result property="pingyu" column="pingyu" />
+        <result property="teacherName" column="teacher_name" />
+    </resultMap>
+
+
+    <select id="findByAll" resultMap="LifeBeHaviorResult">
+        select zlb.*, zli.name as laborName ,ps.name as studentName,pt.name as teamName from zy_labor_behavior zlb
+        inner join zy_labor_indicators zli on zli.id=zlb.labor_indicators_id
+        inner join pj_student ps on ps.id=zlb.student_id
+        inner join pj_team_student pts on pts.student_id=ps.id
+        inner join  pj_team pt on pt.id=pts.team_id
+        inner join pj_grade pg on pg.id=pt.grade_id
+        <where>
+            zlb.is_delete=0 and ps.is_delete=0 and pg.is_deleted=0
+            <if test="args[0].schoolYear!=null">
+               and  zlb.school_year=#{args[0].schoolYear} and pg.school_year=#{args[0].schoolYear}
+            </if>
+            <if test="args[0].schoolTrem!=null">
+               and zlb.school_trem=#{args[0].schoolTrem}
+            </if>
+            <if test="args[0].gradeId!=null">
+               and pg.id=#{args[0].gradeId}
+            </if>
+            <if test="args[0].teamId!=null">
+                and pt.id=#{args[0].teamId}
+            </if>
+            <if test="args[0].studentName!=null">
+                and ps.name like concat ('%',#{args[0].studentName},'%')
+            </if>
+            <if test="args[0].startTime!=null and args[0].endTime">
+                and zlb.create_time between #{args[0].startTime} and #{args[0].endTime}
+            </if>
+        </where>
+          order by pg.id ,pt.id,ps.emp_code asc
+    </select>
+
+    <select id="findByNumber" resultType="java.lang.Integer">
+        select sum(fenshu) from zy_labor_behavior
+        <where>
+            is_delete=0
+            <if test="args[3]!=null">
+               and  labor_indicators_id=#{args[3]}
+            </if>
+            <if test="args[2]!=null">
+                and  student_id=#{args[2]}
+            </if>
+            <if test="args[0]!=null">
+                and  school_year=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and  school_trem=#{args[1]}
+            </if>
+        </where>
+    </select>
+
+</mapper>

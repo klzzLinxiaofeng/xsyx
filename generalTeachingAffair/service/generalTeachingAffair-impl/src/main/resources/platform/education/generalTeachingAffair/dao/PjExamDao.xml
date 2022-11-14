@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PjExamDao">
+    <resultMap id="PjExamResult" type="platform.education.generalTeachingAffair.model.PjExam">
+        <result property="id" column="id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="gradeId" column="grade_id"/>
+        <result property="teamId" column="team_id"/>
+        <result property="subjectCode" column="subject_code"/>
+        <result property="name" column="name"/>
+        <result property="examType" column="exam_type"/>
+        <result property="examRound" column="exam_round"/>
+        <result property="examDate" column="exam_date"/>
+        <result property="schoolYear" column="school_year"/>
+        <result property="termCode" column="term_code"/>
+        <result property="termValue" column="term_value"/>
+        <result property="teacherId" column="teacher_id"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="jointExamCode" column="joint_exam_code"/>
+        <result property="paperUuid" column="paper_uuid"/>
+    </resultMap>
+
+    <resultMap id="PjExamResultVo"
+               type="platform.education.generalTeachingAffair.vo.PjExamVo">
+        <result property="id" column="id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="gradeId" column="grade_id"/>
+        <result property="teamId" column="team_id"/>
+        <result property="subjectCode" column="subject_code"/>
+        <result property="name" column="name"/>
+        <result property="examType" column="exam_type"/>
+        <result property="examRound" column="exam_round"/>
+        <result property="examDate" column="exam_date"/>
+        <result property="schoolYear" column="school_year"/>
+        <result property="termCode" column="term_code"/>
+        <result property="termValue" column="term_value"/>
+        <result property="teacherId" column="teacher_id"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="jointExamCode" column="joint_exam_code"/>
+        <result property="paperUuid" column="paper_uuid"/>
+        <result property="studentCount" column="student_count"/>
+    </resultMap>
+    <resultMap id="ExamTeamNumber"
+               type="platform.education.generalTeachingAffair.vo.ExamTeamNumber">
+        <result property="examId" column="examId"/>
+        <result property="teamNumber" column="teamNumber"/>
+    </resultMap>
+    <resultMap id="TeamAvgScroeVo"
+               type="platform.education.generalTeachingAffair.vo.TeamAvgScroeVo">
+        <result property="examId" column="id"/>
+        <result property="teamNum" column="team_number"/>
+        <result property="teamName" column="name"/>
+        <result property="averageScore" column="average_score"/>
+        <result property="studentCount" column="student_count"/>
+        <result property="totalScore" column="total_score"/>
+        <result property="percent" column="percent"/>
+    </resultMap>
+    <resultMap id="ExamTeamScoreVoResult" type="platform.education.generalTeachingAffair.vo.ExamTeamScoreVo">
+        <result property="id" column="id"/>
+        <result property="teamName" column="team_name"/>
+        <result property="teamNumber" column="team_number"/>
+        <result property="totalScore" column="total_score"/>
+        <result property="studentCount" column="student_count"/>
+        <result property="percent" column="percent"/>
+        <result property="averageScore" column="average_score"/>
+    </resultMap>
+    <insert id="create"
+            parameterType="platform.education.generalTeachingAffair.model.PjExam">
+        <selectKey resultType="java.lang.Integer" order="AFTER"
+                   keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO pj_exam (
+        id,
+        school_id,
+        grade_id,
+        team_id,
+        subject_code,
+        name,
+        exam_type,
+        exam_round,
+        exam_date,
+        school_year,
+        term_code,
+        term_value,
+        teacher_id,
+        is_delete,
+        create_date,
+        modify_date,
+        joint_exam_code,
+        paper_uuid
+        )
+        VALUES (
+        #{id},
+        #{schoolId},
+        #{gradeId},
+        #{teamId},
+        #{subjectCode},
+        #{name},
+        #{examType},
+        #{examRound},
+        #{examDate},
+        #{schoolYear},
+        #{termCode},
+        #{termValue},
+        #{teacherId},
+        <choose>
+            <when test="isDelete != null">
+                <choose>
+                    <when test="isDelete == true">
+                        1,
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                0,
+            </otherwise>
+        </choose>
+        #{createDate},
+        #{modifyDate},
+        #{jointExamCode},
+        #{paperUuid}
+        )
+    </insert>
+
+    <select id="read" resultMap="PjExamResult" useCache="false">
+        SELECT * FROM pj_exam WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findPjExamByCondition" resultMap="PjExamResult"
+            useCache="false">
+        SELECT * FROM pj_exam
+        <if test="args[0] != null">
+            WHERE is_delete = 0
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].schoolId != null">
+                AND school_id =
+                #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].gradeId != null">
+                AND grade_id =
+                #{args[0].gradeId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].teamId != null">
+                AND team_id =
+                #{args[0].teamId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+                AND subject_code =
+                #{args[0].subjectCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND name = #{args[0].name,javaType=java.lang.String}
+            </if>
+            <if test="args[0].examType != null and args[0].examType != ''">
+                AND exam_type =
+                #{args[0].examType,javaType=java.lang.String}
+            </if>
+            <if test="args[0].examRound != null">
+                AND exam_round =
+                #{args[0].examRound,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].examDate != null">
+                AND exam_date =
+                #{args[0].examDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+                AND school_year =
+                #{args[0].schoolYear,javaType=java.lang.String}
+            </if>
+            <if test="args[0].termCode != null and args[0].termCode != ''">
+                AND term_code =
+                #{args[0].termCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].termValue != null and args[0].termValue != ''">
+                AND term_value =
+                #{args[0].termValue,javaType=java.lang.String}
+            </if>
+            <if test="args[0].teacherId != null">
+                AND teacher_id =
+                #{args[0].teacherId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date =
+                #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date =
+                #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].jointExamCode != null and args[0].jointExamCode != ''">
+                AND joint_exam_code =
+                #{args[0].jointExamCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+                AND paper_uuid =
+                #{args[0].paperUuid,javaType=java.lang.String}
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM pj_exam
+        <if test="args[0] != null">
+            WHERE is_delete = 0
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].schoolId != null">
+                AND school_id =
+                #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].gradeId != null">
+                AND grade_id =
+                #{args[0].gradeId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].teamId != null">
+                AND team_id =
+                #{args[0].teamId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+                AND subject_code =
+                #{args[0].subjectCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND name = #{args[0].name,javaType=java.lang.String}
+            </if>
+            <if test="args[0].examType != null and args[0].examType != ''">
+                AND exam_type =
+                #{args[0].examType,javaType=java.lang.String}
+            </if>
+            <if test="args[0].examRound != null">
+                AND exam_round =
+                #{args[0].examRound,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].examDate != null">
+                AND exam_date =
+                #{args[0].examDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+                AND school_year =
+                #{args[0].schoolYear,javaType=java.lang.String}
+            </if>
+            <if test="args[0].termCode != null and args[0].termCode != ''">
+                AND term_code =
+                #{args[0].termCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].termValue != null and args[0].termValue != ''">
+                AND term_value =
+                #{args[0].termValue,javaType=java.lang.String}
+            </if>
+            <if test="args[0].teacherId != null">
+                AND teacher_id =
+                #{args[0].teacherId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date =
+                #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date =
+                #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].jointExamCode != null and args[0].jointExamCode != ''">
+                AND joint_exam_code =
+                #{args[0].jointExamCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+                AND paper_uuid =
+                #{args[0].paperUuid,javaType=java.lang.String}
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="PjExamResult" useCache="false">
+		SELECT *
+		FROM pj_exam WHERE id = #{args[0],javaType=java.lang.Integer}
+		AND is_delete = 0
+	</select>
+
+    <update id="update"
+            parameterType="platform.education.generalTeachingAffair.model.PjExam">
+        UPDATE pj_exam
+        SET
+        <if test="schoolId != null">
+            school_id=#{schoolId},
+        </if>
+        <if test="gradeId != null">
+            grade_id=#{gradeId},
+        </if>
+        <if test="teamId != null">
+            team_id=#{teamId},
+        </if>
+        <if test="subjectCode != null">
+            subject_code=#{subjectCode},
+        </if>
+        <if test="name != null">
+            name=#{name},
+        </if>
+        <if test="examType != null">
+            exam_type=#{examType},
+        </if>
+        <if test="examRound != null">
+            exam_round=#{examRound},
+        </if>
+        <if test="examDate != null">
+            exam_date=#{examDate},
+        </if>
+        <if test="schoolYear != null">
+            school_year=#{schoolYear},
+        </if>
+        <if test="termCode != null">
+            term_code=#{termCode},
+        </if>
+        <if test="termValue != null">
+            term_value=#{termValue},
+        </if>
+        <if test="teacherId != null">
+            teacher_id=#{teacherId},
+        </if>
+        <if test="isDelete != null">
+            <choose>
+                <when test="isDelete == true">
+                    is_delete = 1,
+                </when>
+                <otherwise>
+                    is_delete = 0,
+                </otherwise>
+            </choose>
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        <if test="jointExamCode != null">
+            joint_exam_code=#{jointExamCode},
+        </if>
+        <if test="paperUuid != null">
+            paper_uuid=#{paperUuid},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM pj_exam
+		WHERE id = #{id}
+	</delete>
+
+    <!-- 功能描述：查找某学期内，某个班级的某个科目的所有考试记录，学期根据学年代码、学期国标代码确定 (2016-01-06) -->
+    <select id="findExamsBySubject" resultMap="PjExamResult"
+            useCache="false">
+        SELECT * FROM pj_exam WHERE is_delete = 0
+        <if test="args[0]!=null and args[0]!=''">
+            AND school_year = #{args[0],javaType=java.lang.String}
+        </if>
+        <if test="args[1]!=null and args[1]!=''">
+            AND term_value = #{args[1],javaType=java.lang.String}
+        </if>
+        <if test="args[2]!=null and args[2]!=''">
+            AND team_id = #{args[2],javaType=java.lang.Integer}
+        </if>
+        <if test="args[3]!=null and args[3]!=''">
+            AND subject_code = #{args[3],javaType=java.lang.String}
+        </if>
+    </select>
+
+    <!-- 功能描述：查找某学期内，某个班级的某个考试类型的所有考试成绩记录，传入参数（examRound）可定位到具体某个轮次 (2016-01-06) -->
+    <select id="findExamsByType" resultMap="PjExamResult" useCache="false">
+        SELECT * FROM pj_exam WHERE is_delete = 0
+        <if test="args[0]!=null and args[0]!=''">
+            AND school_year = #{args[0],javaType=java.lang.String}
+        </if>
+        <if test="args[1]!=null and args[1]!=''">
+            AND term_value = #{args[1],javaType=java.lang.String}
+        </if>
+        <if test="args[2]!=null and args[2]!=''">
+            AND team_id = #{args[2],javaType=java.lang.Integer}
+        </if>
+        <if test="args[3]!=null and args[3]!=''">
+            AND exam_type = #{args[3],javaType=java.lang.String}
+        </if>
+        <if test="args[4]!=null and args[4]!=''">
+            AND exam_round = #{args[4],javaType=java.lang.Integer}
+        </if>
+    </select>
+
+    <!-- 功能描述：查询出唯一pj_exam记录 (2016-01-07) -->
+    <select id="findUnique" resultMap="PjExamResult" useCache="false">
+        SELECT * FROM pj_exam WHERE is_delete = 0
+        <if test="args[0]!=null and args[0]!=''">
+            AND school_year = #{args[0],javaType=java.lang.String}
+        </if>
+        <if test="args[1]!=null and args[1]!=''">
+            AND term_value = #{args[1],javaType=java.lang.String}
+        </if>
+        <if test="args[2]!=null and args[2]!=''">
+            AND team_id = #{args[2],javaType=java.lang.Integer}
+        </if>
+        <if test="args[3]!=null and args[3]!=''">
+            AND exam_type = #{args[3],javaType=java.lang.String}
+        </if>
+        <if test="args[4]!=null and args[4]!=''">
+            AND exam_round = #{args[4],javaType=java.lang.Integer}
+        </if>
+        <if test="args[5]!=null and args[5]!=''">
+            AND subject_code = #{args[5],javaType=java.lang.String}
+        </if>
+    </select>
+
+    <select id="findPjExamMoreByCondition" resultMap="PjExamResultVo"
+            useCache="false">
+        SELECT exam.*,examStat.student_count FROM pj_exam exam LEFT JOIN
+        pj_exam_stat examStat ON exam.id = examStat.exam_id
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND exam.id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].schoolId != null">
+                AND exam.school_id =
+                #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].gradeId != null">
+                AND exam.grade_id =
+                #{args[0].gradeId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].teamId != null">
+                AND exam.team_id =
+                #{args[0].teamId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+                AND exam.subject_code =
+                #{args[0].subjectCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND exam.name = #{args[0].name,javaType=java.lang.String}
+            </if>
+            <if test="args[0].examType != null and args[0].examType != ''">
+                AND exam.exam_type =
+                #{args[0].examType,javaType=java.lang.String}
+            </if>
+            <if test="args[0].examRound != null">
+                AND exam.exam_round =
+                #{args[0].examRound,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].examDate != null">
+                AND exam.exam_date =
+                #{args[0].examDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+                AND exam.school_year =
+                #{args[0].schoolYear,javaType=java.lang.String}
+            </if>
+            <if test="args[0].termCode != null and args[0].termCode != ''">
+                AND exam.term_code =
+                #{args[0].termCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].termValue != null and args[0].termValue != ''">
+                AND exam.term_value =
+                #{args[0].termValue,javaType=java.lang.String}
+            </if>
+            <if test="args[0].teacherId != null">
+                AND exam.teacher_id =
+                #{args[0].teacherId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND exam.create_date =
+                #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND exam.modify_date =
+                #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].jointExamCode != null and args[0].jointExamCode != ''">
+                AND exam.joint_exam_code =
+                #{args[0].jointExamCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+                AND exam.paper_uuid =
+                #{args[0].paperUuid,javaType=java.lang.String}
+            </if>
+        </if>
+    </select>
+    <select id="findTeamNumberOfCode" resultMap="ExamTeamNumber">
+		SELECT
+
+		ep.id AS examId ,
+
+
+		pt.team_number AS teamNumber
+
+
+
+		FROM pj_exam ep INNER JOIN pj_team pt
+
+		ON
+
+		ep.team_id= pt.id
+
+		WHERE
+		
+		ep.joint_exam_code = #{args[0],javaType=java.lang.String}
+		
+		AND  ep.is_delete = 0
+
+	</select>
+    <insert id="createBatch">
+
+        INSERT INTO pj_exam (
+        id,
+        school_id,
+        grade_id,
+        team_id,
+        subject_code,
+        name,
+        exam_type,
+        exam_round,
+        exam_date,
+        school_year,
+        term_code,
+        term_value,
+        teacher_id,
+        is_delete,
+        create_date,
+        modify_date,
+        joint_exam_code,
+        paper_uuid
+        )
+        VALUES
+        <foreach collection="args[0]" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.schoolId},
+            #{item.gradeId},
+            #{item.teamId},
+            #{item.subjectCode},
+            #{item.name},
+            #{item.examType},
+            #{item.examRound},
+            #{item.examDate},
+            #{item.schoolYear},
+            #{item.termCode},
+            #{item.termValue},
+            #{item.teacherId},
+            0,
+            #{item.createDate},
+            #{item.modifyDate},
+            #{item.jointExamCode},
+            #{item.paperUuid}
+            )
+        </foreach>
+    </insert>
+    <update id="updateDelectByJointExamCode">
+	UPDATE pj_exam SET is_delete=1 WHERE
+
+     joint_exam_code=#{args[0]}
+
+     AND
+
+     exam_type=#{args[1]}
+	
+	</update>
+
+    <select id="findTeamAvgByCode" resultMap="TeamAvgScroeVo">
+        SELECT
+        IF (
+        es.average_score IS NULL,
+        0,
+        ROUND(es.average_score,2)
+        ) AS average_score,
+        pe.id,
+        ptt.`name`,
+
+        IF (
+        es.total_score IS NULL,
+        0,
+        ROUND(es.total_score,2)
+        ) AS total_score,
+
+        IF (
+        es.student_count IS NULL,
+        0,
+        es.student_count
+        ) AS student_count,
+        ptt.team_number,
+        IF(
+        es.full_score IS NULL OR es.average_score IS NULL,
+        0,
+        ROUND((es.average_score/es.full_score)*100,2)
+        )percent
+        FROM
+        pj_exam pe
+        INNER JOIN pj_exam_stat es ON es.exam_id = pe.id
+        INNER JOIN pj_team ptt ON ptt.id = pe.team_id
+        WHERE
+        pe.joint_exam_code = #{args[0]}
+        AND pe.exam_type = #{args[1]}
+        AND pe.is_delete = 0
+        <if test="args[2]==0">
+            ORDER BY
+            average_score DESC
+        </if>
+        <if test="args[2]==1">
+            ORDER BY
+            ptt.team_number
+        </if>
+
+    </select>
+
+    <select id="findAverageScoreByExamIdAndTeamId" resultType="java.lang.String">
+        SELECT IF (pes.average_score IS NULL, 0, ROUND(pes.average_score, 2)) AS average_score
+        FROM `pj_exam` pe LEFT JOIN `pj_exam_stat` pes ON pes.exam_id = pe.id LEFT JOIN (SELECT joint_exam_code, exam_type FROM `pj_exam` WHERE id = #{examId}) tmp ON pe.joint_exam_code = tmp.joint_exam_code
+        WHERE pe.joint_exam_code = tmp.joint_exam_code AND pe.exam_type = tmp.exam_type
+        AND pe.team_id = #{teamId} AND pe.is_delete = 0
+    </select>
+
+    <select id="findTeamAverageScoreByExamId" resultMap="ExamTeamScoreVoResult">
+        SELECT
+        pe.id,
+        ptt.`name`,
+        ptt.team_number,
+        IF(es.total_score IS NULL, 0, ROUND(es.total_score, 2)) AS total_score,
+        IF (es.student_count IS NULL, 0, es.student_count) AS student_count,
+        IF(es.full_score IS NULL OR es.average_score IS NULL, 0, ROUND((es.average_score / es.full_score) * 100, 2)) AS percent,
+		IF(es.average_score IS NULL, 0, ROUND(es.average_score, 2)) AS average_score
+        FROM `pj_exam` pe
+        INNER JOIN `pj_exam_stat` es ON es.exam_id = pe.id
+        INNER JOIN `pj_team` ptt ON ptt.id = pe.team_id
+		INNER JOIN (SELECT joint_exam_code, exam_type FROM `pj_exam` WHERE id = #{examId}) tmp ON pe.joint_exam_code = tmp.joint_exam_code
+        WHERE pe.joint_exam_code = tmp.joint_exam_code
+        AND pe.exam_type = tmp.exam_type
+        AND pe.is_delete = 0
+		ORDER BY es.average_score DESC
+    </select>
+</mapper>

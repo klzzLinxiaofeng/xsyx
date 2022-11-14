@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ApsTaskScoreDao">
+
+	<resultMap id="ApsTaskScoreResult" type="platform.education.generalTeachingAffair.model.ApsTaskScore">
+		<result property="id" column="id" />
+		<result property="taskId" column="task_id" />
+		<result property="taskItemId" column="task_item_id" />
+		<result property="judgeId" column="judge_id" />
+		<result property="objectType" column="object_type" />
+		<result property="objectId" column="object_id" />
+		<result property="parentObjectId" column="parent_object_id" />
+		<result property="checkType" column="check_type" />
+		<result property="score" column="score" />
+		<result property="checkRange" column="check_range" />
+		<result property="checkDate" column="check_date" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ApsTaskScore">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_aps_task_score (
+			id, 
+			task_id, 
+			task_item_id, 
+			judge_id, 
+			object_type, 
+			object_id, 
+			parent_object_id, 
+			check_type, 
+			score, 
+			check_range, 
+			check_date, 
+			remark, 
+			is_deleted, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{taskId}, 
+			#{taskItemId}, 
+			#{judgeId}, 
+			#{objectType}, 
+			#{objectId}, 
+			#{parentObjectId}, 
+			#{checkType}, 
+			#{score}, 
+			#{checkRange}, 
+			#{checkDate}, 
+			#{remark}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApsTaskScoreByCondition" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskId != null">
+				AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskItemId != null">
+				AND task_item_id = #{args[0].taskItemId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].judgeId != null">
+				AND judge_id = #{args[0].judgeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectType != null and args[0].objectType != ''">
+				AND object_type = #{args[0].objectType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].objectId != null">
+				AND object_id = #{args[0].objectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].parentObjectId != null">
+				AND parent_object_id = #{args[0].parentObjectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].checkType != null and args[0].checkType != ''">
+				AND check_type = #{args[0].checkType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].checkRange != null and args[0].checkRange != ''">
+				AND check_range = #{args[0].checkRange,javaType=java.lang.String}
+			</if>
+			<if test="args[0].checkDate != null">
+				AND check_date = #{args[0].checkDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_aps_task_score 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskId != null">
+				AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskItemId != null">
+				AND task_item_id = #{args[0].taskItemId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].judgeId != null">
+				AND judge_id = #{args[0].judgeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectType != null and args[0].objectType != ''">
+				AND object_type = #{args[0].objectType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].objectId != null">
+				AND object_id = #{args[0].objectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].parentObjectId != null">
+				AND parent_object_id = #{args[0].parentObjectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].checkType != null and args[0].checkType != ''">
+				AND check_type = #{args[0].checkType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].checkRange != null and args[0].checkRange != ''">
+				AND check_range = #{args[0].checkRange,javaType=java.lang.String}
+			</if>
+			<if test="args[0].checkDate != null">
+				AND check_date = #{args[0].checkDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ApsTaskScore">
+		UPDATE pj_aps_task_score
+		SET 
+		<if test="taskId != null">
+			task_id=#{taskId},
+		</if>
+		<if test="taskItemId != null">
+			task_item_id=#{taskItemId},
+		</if>
+		<if test="judgeId != null">
+			judge_id=#{judgeId},
+		</if>
+		<if test="objectType != null">
+			object_type=#{objectType},
+		</if>
+		<if test="objectId != null">
+			object_id=#{objectId},
+		</if>
+		<if test="parentObjectId != null">
+			parent_object_id=#{parentObjectId},
+		</if>
+		<if test="checkType != null">
+			check_type=#{checkType},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="checkRange != null">
+			check_range=#{checkRange},
+		</if>
+		<if test="checkDate != null">
+			check_date=#{checkDate},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_aps_task_score
+		WHERE id = #{id}
+	</delete>
+	
+	<select id="findUnique" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1 AND is_deleted = 0 
+		AND task_item_id = #{args[0],javaType=java.lang.Integer} 
+		AND object_id = #{args[1],javaType=java.lang.Integer} 
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') = DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m-%d')
+	</select>
+	
+	<select id="findUniqueByCheckRange" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1 AND is_deleted = 0 
+		AND task_item_id = #{args[0],javaType=java.lang.Integer} 
+		AND object_id = #{args[1],javaType=java.lang.Integer} 
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') = DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m-%d')
+		AND check_range = #{args[3],javaType=java.lang.String} 
+	</select>
+	
+	<select id="findScoresOfCheckType" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1 AND is_deleted = 0 
+		AND task_id = #{args[0],javaType=java.lang.Integer} 
+		AND object_id = #{args[1],javaType=java.lang.Integer} 
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') = DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m-%d')
+		AND check_type = #{args[3],javaType=java.lang.String} 
+	</select>
+	
+	<select id="findScoresOfTime" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1 AND is_deleted = 0 
+		AND task_id = #{args[0],javaType=java.lang.Integer} 
+		AND object_id = #{args[1],javaType=java.lang.Integer} 
+		AND check_type = #{args[2],javaType=java.lang.String} 
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') 
+		BETWEEN DATE_FORMAT(#{args[3],javaType=java.util.Date} ,'%Y-%m-%d') 
+		AND DATE_FORMAT(#{args[4],javaType=java.util.Date} ,'%Y-%m-%d')
+		ORDER BY score DESC
+	</select>
+	
+	<select id="findByParentObjectId" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1 AND is_deleted = 0 
+		AND task_id = #{args[0],javaType=java.lang.Integer} 
+		AND parent_object_id = #{args[1],javaType=java.lang.Integer} 
+		GROUP BY object_id
+	</select>
+	
+	<select id="findStudentsOfItemId" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1 AND is_deleted = 0 
+		AND task_item_id = #{args[0],javaType=java.lang.Integer} 
+		AND parent_object_id = #{args[1],javaType=java.lang.Integer} 
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') = DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m-%d')
+		AND check_range = #{args[3],javaType=java.lang.String} 
+	</select>
+	
+	<select id="findCountForTeam" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1 AND is_deleted = 0 
+		AND task_item_id = #{args[0],javaType=java.lang.Integer} 
+		AND parent_object_id = #{args[1],javaType=java.lang.Integer} 
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') 
+		BETWEEN DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m-%d') 
+		AND DATE_FORMAT(#{args[3],javaType=java.util.Date} ,'%Y-%m-%d')
+	</select>
+	
+	<select id="findStudentOfIncrease" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1 AND is_deleted = 0 
+		AND task_item_id = #{args[0],javaType=java.lang.Integer} 
+		AND parent_object_id = #{args[1],javaType=java.lang.Integer} 
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') = DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m-%d')
+	</select>
+	
+	
+<!-- 	<select id="findIncreaseCountForTeam"  resultType="platform.education.generalTeachingAffair.vo.IncreaseCountData" useCache="false"> -->
+<!-- 		SELECT ati.category ,count(*) count FROM pj_aps_task_score ts, pj_aps_task_item ati -->
+	<select id="findIncreaseCountForTeam" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score ts, pj_aps_task_item ati
+		WHERE 1=1 AND ts.is_deleted = 0 
+		AND ts.task_item_id = ati.id
+		AND ts.task_id = #{args[0],javaType=java.lang.Integer} 
+		<if test="args[1] != null">
+			AND ts.parent_object_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null">
+			AND ts.object_id = #{args[2],javaType=java.lang.Integer}
+		</if>
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') 
+		BETWEEN DATE_FORMAT(#{args[3],javaType=java.util.Date} ,'%Y-%m-%d') 
+		AND DATE_FORMAT(#{args[4],javaType=java.util.Date} ,'%Y-%m-%d')
+		AND ts.check_type = #{args[5],javaType=java.lang.String} 
+		AND ati.category= #{args[6],javaType=java.lang.String} 
+<!-- 		group by ati.category  -->
+	</select>
+	
+	
+	<select id="findNormalScore" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1 AND is_deleted = 0 
+		AND task_item_id = #{args[0],javaType=java.lang.Integer} 
+		AND object_id = #{args[1],javaType=java.lang.Integer} 
+		AND DATE_FORMAT(`check_date`,'%Y-%m') = DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m')
+	</select>
+	
+	<select id="findItemsOfTime" resultMap="ApsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_aps_task_score WHERE 1=1 AND is_deleted = 0 
+		AND task_item_id = #{args[0],javaType=java.lang.Integer} 
+		AND object_id = #{args[1],javaType=java.lang.Integer} 
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') 
+		BETWEEN DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m-%d') 
+		AND DATE_FORMAT(#{args[3],javaType=java.util.Date} ,'%Y-%m-%d')
+	</select>
+	
+	<select id="findClassScoresForTeam" resultType="platform.education.generalTeachingAffair.vo.ClassEvaScoreData" useCache="false">
+		SELECT ats.check_date checkDate, ats.object_id studentId, ats.check_range checkRange, 
+				GROUP_CONCAT(ati.name) badBehaviours, ats.judge_id teacherId 
+		FROM 
+		(
+		SELECT * FROM pj_aps_task_score 
+		WHERE 1=1 AND is_deleted = 0 
+		AND task_id = #{args[0],javaType=java.lang.Integer} 
+		AND parent_object_id = #{args[1],javaType=java.lang.Integer} 
+		AND DATE_FORMAT(`check_date`,'%Y-%m-%d') 
+			BETWEEN DATE_FORMAT(#{args[2],javaType=java.util.Date} ,'%Y-%m-%d') 
+			AND DATE_FORMAT(#{args[3],javaType=java.util.Date} ,'%Y-%m-%d') 
+		AND check_type = '03'
+		)ats, pj_aps_task_item ati 
+		
+		where ats.task_item_id = ati.id 
+		GROUP BY ats.check_range, ats.object_id, ats.check_date
+		ORDER BY ats.check_date
+	</select>
+	
+	
+	<select id="findAllItemScoreForTeam" resultType="platform.education.generalTeachingAffair.vo.TeamEvaScoreData" useCache="false">
+		
+		SELECT t.id itemId, t.`name` itemName, IF(ISNULL(ts.score), 0, ts.score) score FROM 
+		(
+			SELECT ti.id, ti.`name` FROM pj_aps_task_item ti 
+			LEFT JOIN pj_aps_task_score ts ON ti.id = ts.task_item_id
+			WHERE ts.is_deleted = 0
+			AND ts.task_id = #{args[0],javaType=java.lang.Integer} 
+			<if test="args[1] != null and args[1] != ''">
+			AND ts.check_type = #{args[1],javaType=java.lang.String}  
+			</if>
+			AND DATE_FORMAT(`check_date`,'%Y-%m-%d') 
+				BETWEEN DATE_FORMAT(#{args[3],javaType=java.util.Date} ,'%Y-%m-%d') 
+				AND DATE_FORMAT(#{args[4],javaType=java.util.Date} ,'%Y-%m-%d')
+		
+			union 
+		
+			SELECT id, `name` FROM pj_aps_task_item WHERE is_deleted = 0 AND `enable` = 1
+			AND task_id = #{args[0],javaType=java.lang.Integer} 
+			AND check_type = #{args[1],javaType=java.lang.String}  
+		) t
+		LEFT JOIN 
+		(
+			SELECT task_item_id, score, object_id, parent_object_id FROM pj_aps_task_score 
+			WHERE task_id = #{args[0],javaType=java.lang.Integer} 
+			<if test="args[1] != null and args[1] != ''">
+			AND check_type = #{args[1],javaType=java.lang.String}  
+			</if>
+			AND object_id = #{args[2],javaType=java.lang.Integer} 
+			AND DATE_FORMAT(`check_date`,'%Y-%m-%d') 
+				BETWEEN DATE_FORMAT(#{args[3],javaType=java.util.Date} ,'%Y-%m-%d') 
+				AND DATE_FORMAT(#{args[4],javaType=java.util.Date} ,'%Y-%m-%d')
+		) ts
+		ON t.id = ts.task_item_id
+		ORDER BY id
+		
+	</select>
+	
+	
+</mapper>

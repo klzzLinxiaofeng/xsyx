@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.UserTwoDao">
+    <resultMap id="UserResult" type="com.xunyunedu.mergin.vo.User">
+        <result property="id" column="id" />
+        <result property="personId" column="person_id" />
+        <result property="userName" column="user_name" />
+        <result property="password" column="password" />
+        <result property="validDate" column="valid_date" />
+        <result property="state" column="state" />
+        <result property="isDeleted" column="is_deleted" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+    <select id="findByUsername" resultMap="UserResult" useCache="false">
+		SELECT * FROM yh_user WHERE user_name = #{var1,javaType=java.lang.String} AND is_deleted = 0
+	</select>
+
+</mapper>

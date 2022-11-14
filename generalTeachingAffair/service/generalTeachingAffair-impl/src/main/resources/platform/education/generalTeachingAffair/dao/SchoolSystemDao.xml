@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SchoolSystemDao">
+
+	<resultMap id="SchoolSystemResult" type="platform.education.generalTeachingAffair.model.SchoolSystem">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="stageCode" column="stage_code" />
+		<result property="gradeCode" column="grade_code" />
+		<result property="gradeName" column="grade_name" />
+		<result property="gradeNumber" column="grade_number" />
+		<result property="days" column="days" />
+		<result property="daysPlan" column="days_plan" />
+		<result property="lessonOfMorning" column="lesson_of_morning" />
+		<result property="lessonOfAfternoon" column="lesson_of_afternoon" />
+		<result property="lessonOfEvening" column="lesson_of_evening" />
+		<result property="lessonTimes" column="lesson_times" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.SchoolSystem">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_school_system (id, school_id, stage_code, grade_code, grade_name, grade_number, days, days_plan, lesson_of_morning, lesson_of_afternoon, lesson_of_evening, lesson_times, create_date, modify_date)
+		VALUES (#{id}, #{schoolId}, #{stageCode}, #{gradeCode}, #{gradeName}, #{gradeNumber}, #{days}, #{daysPlan}, #{lessonOfMorning}, #{lessonOfAfternoon}, #{lessonOfEvening}, #{lessonTimes}, #{createDate}, #{modifyDate})
+	</insert>
+
+	<select id="read" resultMap="SchoolSystemResult" useCache="false">
+		SELECT * FROM pj_school_system WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findSchoolSystemByCondition" resultMap="SchoolSystemResult" useCache="false">
+		SELECT * FROM pj_school_system 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].stageCode != null and args[0].stageCode != ''">
+			AND stage_code = #{args[0].stageCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+			AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeName != null and args[0].gradeName != ''">
+			AND grade_name = #{args[0].gradeName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeNumber != null and args[0].gradeNumber != ''">
+			AND grade_number = #{args[0].gradeNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].days != null and args[0].days != ''">
+			AND days = #{args[0].days,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].daysPlan != null and args[0].daysPlan != ''">
+			AND days_plan = #{args[0].daysPlan,javaType=java.lang.String}
+			</if>
+			<if test="args[0].lessonOfMorning != null and args[0].lessonOfMorning != ''">
+			AND lesson_of_morning = #{args[0].lessonOfMorning,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lessonOfAfternoon != null and args[0].lessonOfAfternoon != ''">
+			AND lesson_of_afternoon = #{args[0].lessonOfAfternoon,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lessonOfEvening != null and args[0].lessonOfEvening != ''">
+			AND lesson_of_evening = #{args[0].lessonOfEvening,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lessonTimes != null and args[0].lessonTimes != ''">
+			AND lesson_times = #{args[0].lessonTimes,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_school_system 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].stageCode != null and args[0].stageCode != ''">
+			AND stage_code = #{args[0].stageCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+			AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeName != null and args[0].gradeName != ''">
+			AND grade_name = #{args[0].gradeName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeNumber != null and args[0].gradeNumber != ''">
+			AND grade_number = #{args[0].gradeNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].days != null and args[0].days != ''">
+			AND days = #{args[0].days,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].daysPlan != null and args[0].daysPlan != ''">
+			AND days_plan = #{args[0].daysPlan,javaType=java.lang.String}
+			</if>
+			<if test="args[0].lessonOfMorning != null and args[0].lessonOfMorning != ''">
+			AND lesson_of_morning = #{args[0].lessonOfMorning,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lessonOfAfternoon != null and args[0].lessonOfAfternoon != ''">
+			AND lesson_of_afternoon = #{args[0].lessonOfAfternoon,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lessonOfEvening != null and args[0].lessonOfEvening != ''">
+			AND lesson_of_evening = #{args[0].lessonOfEvening,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lessonTimes != null and args[0].lessonTimes != ''">
+			AND lesson_times = #{args[0].lessonTimes,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="SchoolSystemResult" useCache="false">
+		SELECT * FROM pj_school_system WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<!-- 功能描述：获得学制表本学校的年级 -->
+	<select id="findDefaultGradesOfSchool" resultMap="SchoolSystemResult" useCache="false">
+		SELECT * FROM pj_school_system WHERE school_id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<select id="findUnique" resultMap="SchoolSystemResult" useCache="false">
+		SELECT 
+			* 
+		FROM 
+			pj_school_system 
+		WHERE 
+			school_id = #{args[0],javaType=java.lang.Integer}
+		AND
+			stage_code = #{args[1]}
+		AND 
+			grade_code = #{args[2]}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.SchoolSystem">
+		UPDATE pj_school_system
+		SET 
+				<if test="schoolId != null">
+					school_id=#{schoolId},
+				</if>
+				<if test="stageCode != null">
+					stage_code=#{stageCode},
+				</if>
+				<if test="gradeCode != null">
+					grade_code=#{gradeCode},
+				</if>
+				<if test="gradeName != null">
+					grade_name=#{gradeName},
+				</if>
+				<if test="gradeNumber != null">
+					grade_number=#{gradeNumber},
+				</if>
+				<if test="days != null">
+					days=#{days},
+				</if>
+				<if test="daysPlan != null">
+					days_plan=#{daysPlan},
+				</if>
+				<if test="lessonOfMorning != null">
+					lesson_of_morning=#{lessonOfMorning},
+				</if>
+				<if test="lessonOfAfternoon != null">
+					lesson_of_afternoon=#{lessonOfAfternoon},
+				</if>
+				<if test="lessonOfEvening != null">
+					lesson_of_evening=#{lessonOfEvening},
+				</if>
+				<if test="lessonTimes != null">
+					lesson_times=#{lessonTimes},
+				</if>
+				<if test="createDate != null">
+					create_date=#{createDate},
+				</if>
+				<if test="modifyDate != null">
+					modify_date=#{modifyDate},
+				</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_school_system
+		WHERE id = #{id}
+	</delete>
+	
+</mapper>

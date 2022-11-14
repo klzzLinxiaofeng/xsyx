@@ -1,0 +1,1 @@
+UPDATE pj_subject ps INNER JOIN jc_subject js ON ps.code = js.code SET ps.stage_code = js.stage_code;

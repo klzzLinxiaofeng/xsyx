@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SchoolCalendarDayDao">
+
+	<resultMap id="SchoolCalendarDayResult" type="platform.education.generalTeachingAffair.model.SchoolCalendarDay">
+		<result property="id" column="id" />
+		<result property="schoolCalendarId" column="school_calendar_id" />
+		<result property="weekOrder" column="week_order" />
+		<result property="calendarDay" column="calendar_day" />
+		<result property="calendarWeek" column="calendar_week" />
+		<result property="type" column="type" />
+		<result property="content" column="content" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.SchoolCalendarDay">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_school_calendar_day (id, school_calendar_id, week_order, calendar_day, calendar_week, type, content, create_date, modify_date)
+		VALUES (#{id}, #{schoolCalendarId}, #{weekOrder}, #{calendarDay}, #{calendarWeek}, #{type}, #{content}, #{createDate}, #{modifyDate})
+	</insert>
+
+	<select id="read" resultMap="SchoolCalendarDayResult" useCache="false">
+		SELECT * FROM pj_school_calendar_day WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findSchoolCalendarDayByCondition" resultMap="SchoolCalendarDayResult" useCache="false">
+		SELECT * FROM pj_school_calendar_day 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolCalendarId != null and args[0].schoolCalendarId != ''">
+			AND school_calendar_id = #{args[0].schoolCalendarId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].weekOrder != null and args[0].weekOrder != ''">
+			AND week_order = #{args[0].weekOrder,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].calendarDay != null and args[0].calendarDay != ''">
+			AND calendar_day = #{args[0].calendarDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].calendarWeek != null and args[0].calendarWeek != ''">
+			AND calendar_week = #{args[0].calendarWeek,javaType=java.lang.String}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+			AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+			AND content = #{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_school_calendar_day 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolCalendarId != null and args[0].schoolCalendarId != ''">
+			AND school_calendar_id = #{args[0].schoolCalendarId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].weekOrder != null and args[0].weekOrder != ''">
+			AND week_order = #{args[0].weekOrder,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].calendarDay != null and args[0].calendarDay != ''">
+			AND calendar_day = #{args[0].calendarDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].calendarWeek != null and args[0].calendarWeek != ''">
+			AND calendar_week = #{args[0].calendarWeek,javaType=java.lang.String}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+			AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+			AND content = #{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="SchoolCalendarDayResult" useCache="false">
+		SELECT * FROM pj_school_calendar_day WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.SchoolCalendarDay">
+		UPDATE pj_school_calendar_day
+		SET 
+				<if test="schoolCalendarId != null">
+					school_calendar_id=#{schoolCalendarId},
+				</if>
+				<if test="weekOrder != null">
+					week_order=#{weekOrder},
+				</if>
+				<if test="calendarDay != null">
+					calendar_day=#{calendarDay},
+				</if>
+				<if test="calendarWeek != null">
+					calendar_week=#{calendarWeek},
+				</if>
+				<if test="type != null">
+					type=#{type},
+				</if>
+				<if test="content != null">
+					content=#{content},
+				</if>
+				<if test="createDate != null">
+					create_date=#{createDate},
+				</if>
+				<if test="modifyDate != null">
+					modify_date=#{modifyDate},
+				</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_school_calendar_day
+		WHERE id = #{id}
+	</delete>
+	
+	<delete id="deleteByCondition">
+		DELETE FROM pj_school_calendar_day
+		WHERE 1=1
+		<if test="id != null and id != ''">
+		AND id = #{id,javaType=java.lang.Integer}
+		</if>
+		<if test="schoolCalendarId != null and schoolCalendarId != ''">
+		AND school_calendar_id = #{schoolCalendarId,javaType=java.lang.Integer}
+		</if>
+		<if test="weekOrder != null and weekOrder != ''">
+		AND week_order = #{weekOrder,javaType=java.lang.Integer}
+		</if>
+		<if test="calendarDay != null and calendarDay != ''">
+		AND calendar_day = #{calendarDay,javaType=java.util.Date}
+		</if>
+		<if test="calendarWeek != null and calendarWeek != ''">
+		AND calendar_week = #{calendarWeek,javaType=java.lang.String}
+		</if>
+		<if test="type != null and type != ''">
+		AND type = #{type,javaType=java.lang.String}
+		</if>
+		<if test="content != null and content != ''">
+		AND content = #{content,javaType=java.lang.String}
+		</if>
+		<if test="createDate != null and createDate != ''">
+		AND create_date = #{createDate,javaType=java.util.Date}
+		</if>
+		<if test="modifyDate != null and modifyDate != ''">
+		AND modify_date = #{modifyDate,javaType=java.util.Date}
+		</if>
+	</delete>
+</mapper>

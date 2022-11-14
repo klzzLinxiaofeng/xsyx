@@ -1,0 +1,249 @@
+.widget-head .jc_top{
+	height:40px;
+	line-height:40px;
+	padding-left:12px;
+	background-color:#0d7bd5;
+	font-family:"微软雅黑";
+	font-size:18px;
+	font-weight:bold;
+	color:#fff;
+}
+.btn_link .a6 {
+    background-color: #FFE6B1;
+    color:#4D390F;
+}
+.btn_link .a6 i{
+	color:#4D390F;
+}
+.book{
+	background:url("images/ml_bg.png") repeat;
+	min-height:672px;
+}
+.book ul{
+ 	
+}
+.book ul li{
+	float: left;
+    margin-left: 20px;
+    margin-top: 20px;
+    height:142px;
+    width: 380px;
+}
+.book ul li .fengmian{
+	 float: left;
+    height: 140px;
+    margin-right: 12px;
+    width: 102px;
+}
+.book ul li .fengmian img {
+    height: 140px;
+    width: 102px;
+}
+.book ul li .intro {
+    float: left;
+    line-height: 15px;
+    width: 266px;
+}
+.book ul li .intro p {
+    color: #2c8ee1;
+    font-size: 14px;
+    line-height: 26px;
+    margin:0;
+    height:52px;
+    overflow:hidden;
+    position:relative;
+}
+.book ul li .intro p .title{
+	color:#0d7bd5;
+	font-weight:bold;
+	width:166px;
+	display:block;
+	line-height:25px;
+	overflow:hidden;
+	display:-webkit-box;
+	-webkit-box-orient:vertical;
+	-webkit-line-clamp:2;
+}
+.book ul li .intro p .ysxb{
+	background:url("images/ysxb.png") no-repeat;
+	text-indent:-9999px;
+	width:70px;
+	height:19px;
+	display:block;
+	position:absolute;
+	top:2px;right:0;
+}
+.book ul li .intro p .swxb{
+	background:url("images/swxb.png") no-repeat;
+	text-indent:-9999px;
+	width:70px;
+	height:19px;
+	display:block;
+	position:absolute;
+	top:2px;right:0;
+}
+.book ul li .intro p .szxb{
+	display:block;
+	position:absolute;
+	top:2px;left:175px;
+}
+.book ul li .intro span {
+    display: block;
+    line-height: 20px;
+}
+.ts_top{
+	padding-left:12px;
+	color:#FFFFFF;
+	background-color:#0C7BD5;height:41px;line-height:41px;font-size:16px;
+}
+.ts_top p{
+	margin:0;
+	float:right;
+}
+.ts_top a{
+	width:110px;
+	text-align:center;
+	color:#FFFFFF;
+	display:inline-block;
+	font-weight:normal;
+}
+.ts_top .on{
+	color:#006699;
+	background-color:#E8E8E8;
+}
+.class_detail {
+    padding: 28px;
+    background-color:#fff;
+}
+.class_detail .title {
+    color: #353535;
+    font-size: 24px;
+    line-height: 35px;
+}
+.class_detail .d1 {
+    height: 180px;
+    margin: 10px 0;
+}
+.class_detail .d1 .cover {
+    float: left;
+    margin-right: 10px;
+}
+.class_detail .d1 .cover img {
+    height: 170px;
+    margin-top: 4px;
+    width: 120px;
+}
+.class_detail .d1 .intro p {
+    color: #666666;
+    font-size: 12px;
+    margin:0;
+}
+.class_detail .d1 .intro span {
+    color: #222222;
+}
+.class_detail .d2 p {
+    color: #5d4614;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 35px;
+}
+.class_detail .d2 span {
+    color: #605847;
+    display: block;
+    font-size: 12px;
+    text-indent: 2em;
+}
+.form-horizontal .controls .up_img{
+	position:relative;
+}
+.form-horizontal .controls .up_img img{
+	width:123px;
+	height:169px;
+	padding:17px;
+	border:1px solid #A9A9A9;
+	border-radius:2px;
+	background-color:#FFFFFF;
+}
+.form-horizontal .controls .up_img p{
+	margin:0;
+	position:relative;
+	 bottom: 57px;
+    left: 172px;
+    color:#505050;
+}
+.form-horizontal .controls .up_img a{
+	background:url("images/tpsc.png") no-repeat;
+	width:120px;
+	height:30px;
+	display:block;
+/* 	position:absolute; */
+	left:172px;
+	bottom:21px;
+}
+.catalog{
+	background-color:#fff;
+	padding:26px 30px;
+}
+.catalog .dl {
+	height:30px;
+}
+.catalog .dl a{
+	background:url("images/dl_bg.png") no-repeat;
+	width:79px;
+	height:30px;
+	display:block;
+	float:left;
+	color:#3A1800;
+	text-align:center;
+	margin-right:4px;
+	line-height:30px;
+}
+.catalog_list{
+	
+}
+.catalog_list .title{
+	font-size:20px;
+	color:#444444;
+	margin-left:10px;
+}
+.catalog_list ul {
+    margin-left: 15px;
+}
+.catalog_list li{
+	 color: #3d3d3d;
+    min-height: 30px;
+    padding-left: 9px;
+}
+.catalog_list ul li p {
+    float: left;
+    width: 96%;
+}
+.catalog_list ul li .have {
+    background: url("images/mulu.png") repeat-x scroll;
+}
+
+.catalog_list ul li p b {
+    background-color: #fff;
+    padding-left:10px;
+}
+.catalog_list ul li .quanxuan{
+	margin-right:10px;
+}
+.catalog_list ul li input[type="checkbox"]{
+	position:relative;
+	top:-3px;
+}
+.catalog_list ul li span {
+    float: left;
+    width: 2%;
+}
+.catalog_list ul li .close_1 b{
+	background:url("images/close_1.png") no-repeat 3px center;
+	padding-left:20px;
+	  cursor: pointer;
+}
+.catalog_list ul li .open_1 b{
+	background:url("images/open_1.png") no-repeat 6px center;
+	padding-left:20px;
+	  cursor: pointer;
+}

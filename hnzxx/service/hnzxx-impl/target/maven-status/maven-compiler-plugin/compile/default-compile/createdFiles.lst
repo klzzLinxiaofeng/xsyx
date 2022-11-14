@@ -1,0 +1,4 @@
+platform\education\hnzxx\ui\dao\PjPermissionDao.class
+platform\education\hnzxx\ui\service\impl\PjPermissionServiceImpl.class
+platform\education\hnzxx\ui\service\impl\SettingServiceImpl.class
+platform\education\hnzxx\ui\dao\SettingDao.class

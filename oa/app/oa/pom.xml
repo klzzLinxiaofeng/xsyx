@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>platform.education.oa.app</groupId>
+		<artifactId>app</artifactId>
+		<version>0.0.1</version>
+	</parent>
+
+	<artifactId>oa</artifactId>
+	<name>oa</name>
+	<description>协同办公</description>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>platform.education.hnzxx.app</groupId>
+			<artifactId>szxyzxx</artifactId>
+			<version>0.0.1</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>platform.education.hnzxx.app</groupId>
+			<artifactId>szxyzxx</artifactId>
+			<version>0.0.1</version>
+			<type>jar</type>
+			<classifier>classes</classifier>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<warSourceDirectory>src/main/webapp</warSourceDirectory>
+					<attachClasses>true</attachClasses>
+					<!-- 把class打包jar作为附件 -->
+					<!-- <archiveClasses>true</archiveClasses>把class打包jar -->
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

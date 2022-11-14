@@ -1,0 +1,273 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>platform.education.lads.app</groupId>
+        <artifactId>app</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <artifactId>lads</artifactId>
+    <name>lads</name>
+    <packaging>war</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.24</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- json before -->
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-lgpl</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-lgpl</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+        <!-- json end -->
+
+        <dependency>
+            <groupId>framework</groupId>
+            <artifactId>generic-web</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!--spring web end-->
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.druid</groupId>
+            <artifactId>druid-wrapper</artifactId>
+            <version>0.2.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.6.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.6.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.6.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!--         javaee API        -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
+
+        <!--存储-->
+        <dependency>
+            <groupId>platform.service</groupId>
+            <artifactId>storage-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>platform.service</groupId>
+            <artifactId>storage-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <!-- lads模块API -->
+        <dependency>
+            <groupId>platform.education.lads.service</groupId>
+            <artifactId>lads-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- lads模块API实现 -->
+        <dependency>
+            <groupId>platform.education.lads.service</groupId>
+            <artifactId>lads-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <!-- ladsuser 同步课堂模块API实现 -->
+        <!--        <dependency>
+            <groupId>platform.education.lads.service</groupId>
+            <artifactId>tbktuser-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>-->
+
+        <!-- ladsuser 公共资源库模块API实现 -->
+        <dependency>
+            <groupId>platform.education.lads.service</groupId>
+            <artifactId>commonResourceuser-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <!--editor工具API-->
+        <dependency>
+            <groupId>platform.education.lads.service</groupId>
+            <artifactId>editortool-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!--editor工具API实现-->
+        <dependency>
+            <groupId>platform.education.lads.service</groupId>
+            <artifactId>editortool-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!--media工具API-->
+        <dependency>
+            <groupId>platform.education.lads.service</groupId>
+            <artifactId>mediatool-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!--media工具API实现-->
+        <dependency>
+            <groupId>platform.education.lads.service</groupId>
+            <artifactId>mediatool-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!--discuss工具API-->
+        <dependency>
+            <groupId>platform.education.lads.service</groupId>
+            <artifactId>discusstool-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!--discuss工具API实现-->
+        <dependency>
+            <groupId>platform.education.lads.service</groupId>
+            <artifactId>discusstool-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <!-- 资源库模块API -->
+        <dependency>
+            <groupId>platform.education.resource.service</groupId>
+            <artifactId>resource-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 资源库模块API实现 -->
+        <dependency>
+            <groupId>platform.education.resource.service</groupId>
+            <artifactId>resource-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <port>8888</port>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <path>/lads</path>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+</project>

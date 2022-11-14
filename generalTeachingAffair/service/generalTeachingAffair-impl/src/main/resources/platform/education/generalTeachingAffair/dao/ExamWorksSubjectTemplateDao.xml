@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ExamWorksSubjectTemplateDao">
+
+	<resultMap id="ExamWorksSubjectTemplateResult" type="platform.education.generalTeachingAffair.model.ExamWorksSubjectTemplate">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="gradeCode" column="grade_code" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="statNeeded" column="stat_needed" />
+		<result property="fullScore" column="full_score" />
+		<result property="highScore" column="high_score" />
+		<result property="lowScore" column="low_score" />
+		<result property="passScore" column="pass_score" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelteted" column="is_delteted" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ExamWorksSubjectTemplate">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_exam_works_subject_template (
+		id,
+		school_id,
+		grade_id,
+		grade_code,
+		subject_code,
+		stat_needed,
+		full_score,
+		high_score,
+		low_score,
+		pass_score,
+		create_date,
+		modify_date,
+		is_delteted
+		)
+		VALUES (
+		#{id},
+		#{schoolId},
+		#{gradeId},
+		#{gradeCode},
+		#{subjectCode},
+		<choose>
+			<when test="statNeeded != null">
+				<choose>
+					<when test="statNeeded == true">
+						1,
+					</when>
+					<otherwise>
+						0,
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{fullScore},
+		#{highScore},
+		#{lowScore},
+		#{passScore},
+		#{createDate},
+		#{modifyDate},
+		<choose>
+			<when test="isDelteted != null">
+				<choose>
+					<when test="isDelteted == true">
+						1
+					</when>
+					<otherwise>
+						0
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				0
+			</otherwise>
+		</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="ExamWorksSubjectTemplateResult" useCache="false">
+		SELECT * FROM pj_exam_works_subject_template WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findExamWorksSubjectTemplateByCondition" resultMap="ExamWorksSubjectTemplateResult" useCache="false">
+		SELECT * FROM pj_exam_works_subject_template
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].statNeeded != null">
+				<choose>
+					<when test="args[0].statNeeded == true">
+						AND stat_needed  = 1
+					</when>
+					<otherwise>
+						AND stat_needed  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].fullScore != null">
+				AND full_score = #{args[0].fullScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].highScore != null">
+				AND high_score = #{args[0].highScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].lowScore != null">
+				AND low_score = #{args[0].lowScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].passScore != null">
+				AND pass_score = #{args[0].passScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelteted != null">
+				<choose>
+					<when test="args[0].isDelteted == true">
+						AND is_delteted  = 1
+					</when>
+					<otherwise>
+						AND is_delteted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_exam_works_subject_template
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].statNeeded != null">
+				<choose>
+					<when test="args[0].statNeeded == true">
+						AND stat_needed  = 1
+					</when>
+					<otherwise>
+						AND stat_needed  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].fullScore != null">
+				AND full_score = #{args[0].fullScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].highScore != null">
+				AND high_score = #{args[0].highScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].lowScore != null">
+				AND low_score = #{args[0].lowScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].passScore != null">
+				AND pass_score = #{args[0].passScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelteted != null">
+				<choose>
+					<when test="args[0].isDelteted == true">
+						AND is_delteted  = 1
+					</when>
+					<otherwise>
+						AND is_delteted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="ExamWorksSubjectTemplateResult" useCache="false">
+		SELECT * FROM pj_exam_works_subject_template WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ExamWorksSubjectTemplate">
+		UPDATE pj_exam_works_subject_template
+		SET
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="gradeId != null">
+			grade_id=#{gradeId},
+		</if>
+		<if test="gradeCode != null">
+			grade_code=#{gradeCode},
+		</if>
+		<if test="subjectCode != null">
+			subject_code=#{subjectCode},
+		</if>
+		<if test="statNeeded != null">
+			<choose>
+				<when test="statNeeded == true">
+					stat_needed  = 1,
+				</when>
+				<otherwise>
+					stat_needed  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="fullScore != null">
+			full_score=#{fullScore},
+		</if>
+		<if test="highScore != null">
+			high_score=#{highScore},
+		</if>
+		<if test="lowScore != null">
+			low_score=#{lowScore},
+		</if>
+		<if test="passScore != null">
+			pass_score=#{passScore},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDelteted != null">
+			<choose>
+				<when test="isDelteted == true">
+					is_delteted  = 1,
+				</when>
+				<otherwise>
+					is_delteted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_exam_works_subject_template
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findUnique" resultMap="ExamWorksSubjectTemplateResult" useCache="false">
+		SELECT * FROM pj_exam_works_subject_template
+		WHERE is_delteted = 0
+		AND school_id = #{args[0],javaType=java.lang.Integer}
+		<if test="args[1] != null">
+			AND grade_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null and args[2] != ''">
+			AND grade_code = #{args[2],javaType=java.lang.String}
+		</if>
+		AND subject_code = #{args[3],javaType=java.lang.String}
+	</select>
+
+	<select id="findTemplateOfGrade" resultMap="ExamWorksSubjectTemplateResult" useCache="false">
+		SELECT * FROM pj_exam_works_subject_template
+		WHERE is_delteted = 0
+		<if test="args[0] != null">
+			AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND grade_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null and args[2] != ''">
+			AND grade_code = #{args[2],javaType=java.lang.String}
+		</if>
+	</select>
+
+	<select id="findTemplateByGradeCodes" resultMap="ExamWorksSubjectTemplateResult" useCache="false">
+		SELECT * FROM pj_exam_works_subject_template
+		WHERE is_delteted = 0
+		<if test="args[0] != null">
+			AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null and args[1] != ''">
+			AND grade_code IN
+			<foreach collection="args[1]" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+</mapper>

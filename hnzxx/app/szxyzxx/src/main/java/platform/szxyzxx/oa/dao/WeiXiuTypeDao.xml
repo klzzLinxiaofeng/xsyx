@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.oa.dao.WeiXiuTypeDao">
+
+
+    <resultMap id="WeiXiuDaoChu" type="platform.szxyzxx.oa.vo.WeiXiuDaoChu">
+        <id column="proposer_name" property="shenqingren"></id>
+        <result column="accepter_name" property="weixiuren"></result>
+        <result column="ocrremark" property="weixiumiaoshu"></result>
+        <result column="details" property="shenqingmiaoshu"></result>
+        <result column="title" property="title"></result>
+        <result column="place" property="place"></result>
+        <result column="name" property="type"></result>
+        <result column="appraise" property="xingji"></result>
+        <result column="remark" property="pingyu"></result>
+        <result column="create_date" property="createTime"></result>
+        <result column="accept_date" property="acceptDate"></result>
+        <result column="is_haocai" property="isHaoCai"></result>
+    </resultMap>
+    <resultMap id="TypeMap" type="platform.szxyzxx.oa.vo.WeiXiuType">
+        <id column="id" property="id"></id>
+        <result column="table_id" property="tableId"></result>
+        <result column="table_code" property="tableCode"></result>
+        <result column="name" property="name"></result>
+        <result column="value" property="value"></result>
+        <result column="sort_order" property="sortOrder"></result>
+        <result column="level" property="level"></result>
+        <result column="disable" property="disable"></result>
+        <result column="description" property="description"></result>
+        <result column="create_date" property="create_date"></result>
+        <result column="modify_date" property="modify_date"></result>
+    </resultMap>
+    <resultMap id="WeiXiuGongMap" type="platform.szxyzxx.oa.vo.WeiXiuGong">
+        <id column="id" property="id"></id>
+        <result column="teacher_name" property="teacherName"></result>
+        <result column="teacher_id" property="teacherId"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="at_id" property="atId"></result>
+        <result column="is_delete" property="isDelete"></result>
+    </resultMap>
+    <resultMap id="Teacher" type="platform.education.generalTeachingAffair.model.Teacher">
+        <result column="name" property="name"/>
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="sex" property="sex"/>
+        <result column="job_state" property="jobState"/>
+        <result column="mobile" property="mobile"/>
+    </resultMap>
+    <insert id="create">
+        insert into jc_gc_item (table_id,table_code,name,value,sort_order,level,disable,description,create_date,modify_date)
+            values (308,'GB-BXLX',#{args[0].name},#{args[0].value},#{args[0].sortOrder},0,0,#{args[0].name},NOW(),NOW())
+    </insert>
+    <select id="findByAll" resultMap="TypeMap">
+        select * from jc_gc_item where table_code='GB-BXLX' and disable=0;
+    </select>
+    <select id="findById" resultMap="TypeMap">
+         select * from jc_gc_item where table_code='GB-BXLX' and disable=0 and id=#{args[0]}
+    </select>
+
+    <update id="updateDelete">
+        update jc_gc_item set disable=1 where id=#{args[0]}
+    </update>
+    <update id="updateDeleteWeiXiuGong">
+        update zy_weixiugong set is_delete=1
+        <where>
+            1=1
+            <if test="args[0]!=null">
+                and at_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and id=#{args[1]}
+            </if>
+        </where>
+    </update>
+    <update id="update">
+        update jc_gc_item set  name=#{args[0].name},description=#{args[0].name},modify_date=NOW()  where id=#{args[0].id} and disable=0
+    </update>
+    <select id="findByWeiXiuGongAll" resultMap="WeiXiuGongMap">
+        select zw.*,pt.name as teacher_name  from zy_weixiugong zw inner join   pj_teacher pt on zw.teacher_id=pt.user_id
+        where zw.at_id=#{args[0]} and zw.is_delete=0
+    </select>
+    <insert id="createWeiXiuGongDelete">
+    insert into zy_weixiugong (teacher_id,at_id,create_time,is_delete)
+                     values (#{args[0].teacherId},#{args[0].atId},NOW(),0)
+
+    </insert>
+
+    <select id="findByDaoChu" resultMap="WeiXiuDaoChu">
+     select oar.create_date,oar.proposer_name,oar.title,oar.details,oar.place,oar.remark,jgi.name,ocr.accepter_name,ocr.remark as ocrremark,ocr.appraise,ocr.accept_date,ocr.is_haocai from oa_apply_repair oar
+     inner join oa_accept_repair ocr on ocr.repari_id=oar.id
+     inner join jc_gc_item jgi on jgi.id=oar.type_id
+    <where>
+        1=1
+        <if test="args[0]!=null">
+           and oar.proposer_name like concat('%',#{args[0]}, '%')
+        </if>
+        <if test="args[1]!=null">
+           and jgi.id=#{args[1]}
+        </if>
+        <if test="args[2]!=null and args[3]!=null">
+            and oar.create_date between #{args[2]} and #{args[3]}
+        </if>
+    </where>
+    </select>
+    <select id="findByjiaoshiliebiao" resultMap="Teacher">
+        select pt.* from yh_user_role yur
+        inner join yh_role yr on yr.id=yur.role_id
+        inner join pj_teacher pt on pt.user_id=yur.user_id
+        where 1=1 and yr.code='SCHOOL_REPAIR_STAFF'
+        and yr.group_id=264
+        <if test="args[0]!=null">
+            and pt.name like concat('%',#{args[0]}, '%')
+        </if>
+    </select>
+    <select id="findByIds" resultMap="WeiXiuGongMap">
+        select * from zy_weixiugong where is_delete=0 and teacher_id=#{args[0].teacherId} and at_id=#{args[0].atId}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.homeWorkZy.dao.HomeWorkMapping">
+
+
+
+
+    <resultMap id="HomeWokeMap"
+               type="com.xunyunedu.homeWorkZy.pojo.HomeWokePojo">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="teamId" column="team_id" />
+        <result property="teamName" column="team_Name" />
+        <result property="teacherId" column="teacher_id" />
+        <result property="teachName" column="teacher_name" />
+        <result property="gradeId" column="grade_id" />
+        <result property="subjectId" column="subject_id"/>
+        <result property="subjectName" column="subject_name"/>
+        <result property="createTime" column="create_date"/>
+        <result property="modieTime" column="modify_date"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="text" column="content"/>
+        <result property="pictureUuid" column="picture_uuid"/>
+        <result property="isStats" column="is_stats"/>
+        <result property="zhuangtai" column="zhuangtai"/>
+    </resultMap>
+    <resultMap id="StudentHomeWokeMap"
+               type="com.xunyunedu.PublishAndAcceptJob.pojo.StudentHomeWoke">
+        <result property="id" column="id" />
+        <result property="studentName" column="student_name"/>
+        <result property="studentId" column="student_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modieTime" column="modiy_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="jobId" column="pj_job_id"/>
+        <result property="zhuantai" column="zhuangtai"/>
+        <result property="fenzhi" column="fenshu"/>
+        <result property="dengji" column="dengji"/>
+        <result property="pingyu" column="pingyu"/>
+        <result property="teacherName" column="teacherName"/>
+        <result property="subjectName" column="subjectName"/>
+        <result property="contont" column="content"/>
+        <result property="picter_uuid" column="picture_uuid"/>
+        <result property="picterUrl" column="picterUrl"/>
+        <result property="teamName" column="team_name"/>
+    </resultMap>
+
+    <select id="findByAll" resultMap="HomeWokeMap">
+        select ppjc.*,pt.name as team_Name,ptc.name as teacher_name,ps.name as subject_name  from pj_publish_job_content ppjc
+        inner join pj_team pt on pt.id=ppjc.team_id
+        inner join pj_teacher ptc on ptc.id=ppjc.teacher_id
+        inner join pj_subject ps on ps.id=ppjc.subject_id
+        where ppjc.teacher_id=#{teacherId} and ppjc.school_id=#{schoolId}  and ppjc.is_delete=0
+    order by ppjc.create_date desc
+    </select>
+
+    <select id="findByStudentHomeWokeAll" resultMap="StudentHomeWokeMap">
+        select zy.*,ps.name as student_name,ps.team_name as team_name from zy_publish_job_content_student zy inner join pj_student ps
+        on ps.id=zy.student_id
+        <where>
+        zy.pj_job_id=#{id}
+        <if test="studentName!=null">
+           and ps.name like concat('%',#{studentName}, '%')
+        </if>
+        and zy.is_delete=0 and ps.is_delete=0
+        </where>
+    </select>
+    <update id="updateStudentHomeWokePing">
+        update zy_publish_job_content_student set fenshu=#{fenzhi},dengji=#{dengji},pingyu=#{pingyu}
+         where id=#{id}
+    </update>
+
+    <select id="findByAllStudentId" resultMap="HomeWokeMap">
+        select ppjc.*,zpjcs.zhuangtai,pt.name as teacher_name,ps.name as subjectName from pj_publish_job_content ppjc
+        inner join zy_publish_job_content_student zpjcs
+        on zpjcs.pj_job_id=ppjc.id
+        inner join pj_teacher pt on pt.id=ppjc.teacher_id
+        inner join pj_subject ps on ps.id=ppjc.subject_id
+        where ppjc.id in(select asd.pj_job_id from zy_publish_job_content_student  asd where asd.student_id=#{studentId}  and asd.is_delete=0 )
+        <if test="subjectId!=null">
+            and ppjc.subject_id=#{subjectId}
+        </if>
+        and ppjc.is_home=1
+        and zpjcs.student_id=#{studentId}
+          and ppjc.is_delete=0
+          order by ppjc.create_date desc
+    </select>
+    <select id="findById" resultMap="StudentHomeWokeMap">
+        select zpjcs.*,pt.name as teacherName,ps.name as subjectName,ppjc.content,ppjc.picture_uuid from zy_publish_job_content_student  zpjcs
+        inner join pj_publish_job_content ppjc  on ppjc.id=zpjcs.pj_job_id
+        inner join pj_teacher  pt on pt.id=ppjc.teacher_id
+        inner join pj_subject  ps on ps.id=ppjc.subject_id
+        where zpjcs.is_delete=0 and zpjcs.student_id=#{studentId}   and zpjcs.pj_job_id=#{id}
+    </select>
+</mapper>

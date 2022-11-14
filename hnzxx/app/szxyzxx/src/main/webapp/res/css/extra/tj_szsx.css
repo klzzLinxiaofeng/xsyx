@@ -1,0 +1,48 @@
+.tk_Bomb{
+    width: 500px;height:400px;overflow-x: hidden;
+}
+.tk_tjdj{
+    /*background: #ccc;*/height: 200px;width: 500px;
+}
+.tk_kssx{
+    /*background: red;*/height: 200px;width: 500px;
+}
+h4{
+    margin: 0;padding: 20px 0 0 30px;
+}
+.tk_xian{
+    height: 1px;width: 440px;float: left;background: #ccc;margin: 0 30px 0 30px;
+}
+.tk_leix{
+    font-size: 14px;margin: 20px 0 0 30px;
+}
+.tj_fens{
+    margin: 20px 0 0 30px;font-size: 14px;
+}
+.tj_fens input{
+    width: 50px;height:15px;
+}
+.bu{
+    margin-left: 40px;
+}
+.tj_shux{
+    margin: 20px 0 0 30px;font-size: 14px;
+}
+.tj_shux input{
+    width: 130px;
+}
+.tj_kslx{
+    margin: 20px 0 0 30px;font-size: 14px;
+}
+.tj_kslx select{
+    width: 135px;
+}
+.tk_ann{
+    width: 200px;margin: -50px auto 0;
+}
+.tk_qd{
+    float: left;width: 80px;
+}
+.tk_qux{
+    float: right;width: 80px;
+}

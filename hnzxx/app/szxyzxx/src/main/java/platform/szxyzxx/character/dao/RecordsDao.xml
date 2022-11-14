@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.character.dao.RecordsDao">
+
+    <resultMap id="RecordsMap" type="platform.szxyzxx.character.pojo.Records">
+        <id column="id" property="id"></id>
+        <result column="evaluation_id" property="evaluationId"></result>
+        <result column="evalName" property="evName"></result>
+        <result column="picture_id" property="pictureId"></result>
+        <result column="pictureUrl" property="pictureUrl"></result>
+        <result column="teacher_id" property="teacherId"></result>
+        <result column="teanName" property="teaName"></result>
+        <result column="score" property="score"></result>
+        <result column="voice" property="voice"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="message" property="message"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="student_id" property="studentId"></result>
+    </resultMap>
+
+    <select id="findByAll" resultMap="RecordsMap">
+        select evaluation_id,picture_id,teacher_id ,sum(score),voice,create_time,message,is_delete from pj_records
+        where teacher_id=#{args[0]} and evaluation_id=#{args[1]} and is_delete=0 group by evaluation_id
+    </select>
+
+    <select id="findByAllScore" resultMap="RecordsMap">
+        select pr.score  from pj_records pr
+        inner join pj_records_student prs on prs.record_id=pr.id
+        where prs.student_id=#{args[0]} and pr.evaluation_id=#{args[1]} and pr.is_delete=0
+    </select>
+    <select id="findByAlls" resultMap="RecordsMap">
+       select prs.*,pt.name as teanName,pe.name as evalName from pj_records_student pr
+        inner join pj_student ps on pr.student_id=ps.id
+        inner join pj_records prs on prs.id=pr.record_id
+        inner join pj_evaluation pe on prs.evaluation_id=pe.id
+		inner join pj_teacher pt on pt.id=prs.teacher_id
+        where ps.id=#{args[1]} and ps.is_delete=0 and ps.school_id=#{args[0]} and pe.is_delete=0
+    </select>
+
+    <select id="findByZongScore" resultMap="RecordsMap">
+        select prs.student_id, sum(pr.score) as score  from pj_records pr
+        inner join pj_records_student prs on prs.record_id=pr.id
+        where prs.student_id=#{args[0]} and pr.evaluation_id=#{args[1]} and pr.is_delete=0
+    </select>
+</mapper>

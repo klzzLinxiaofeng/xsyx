@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.aesthetic.dao.AestheticDao">
+
+    <resultMap id="AestheticPojoMap" type="com.xunyunedu.aesthetic.pojo.AestheticPojo">
+        <result property="id" column="id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="studentName" column="name"/>
+        <result property="fineArtId" column="fine_art_id"/>
+        <result property="fineArtUrl" column="fine_art_url"/>
+        <result property="review" column="review"/>
+        <result property="reviewSore" column="review_score"/>
+        <result property="gameWorksId" column="game_works_id"/>
+        <result property="gameWorksUrl" column="ganework_url"/>
+        <result property="jiangzhuanId" column="jiangzhuan_id"/>
+        <result property="jiangzhuanUrl" column="jiangzhuan_url"/>
+        <result property="comments" column="comments"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+
+    <resultMap id="StudentResult"
+               type="com.xunyunedu.mergin.vo.Student">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+        <result property="isSendHikdoor" column="is_send_hikdoor"/>
+        <result property="isSendLibrary" column="is_send_library"/>
+        <result property="isSendSeewo" column="is_send_seewo"/>
+        <result property="deptName" column="deptName"/>
+    </resultMap>
+
+    <resultMap id="TeacherResult" type="com.xunyunedu.teacher.pojo.TeacherPojo">
+        <result property="id" column="id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="persionId" column="persion_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="name" column="name"/>
+        <result property="alias" column="alias"/>
+        <result property="sex" column="sex"/>
+        <result property="jobNumber" column="job_number"/>
+        <result property="enrollDate" column="enroll_date"/>
+        <result property="leaveDate" column="leave_date"/>
+        <result property="workBeginDate" column="work_begin_date"/>
+        <result property="qualification" column="qualification"/>
+        <result property="occupationCode" column="occupation_code"/>
+        <result property="position" column="position"/>
+        <result property="mobile" column="mobile"/>
+        <result property="telephone" column="telephone"/>
+        <result property="postStaffing" column="post_staffing"/>
+        <result property="jobState" column="job_state"/>
+        <result property="isExternal" column="is_external"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result column="emp_code" property="empCode"/>
+        <result column="emp_card" property="empCard"/>
+        <result column="isClassTeacher" property="isClassTeacher"/>
+        <result column="education" property="education"/>
+        <result column="job_title" property="jobTitle"/>
+    </resultMap>
+
+
+
+    <select id="findByAesthetic" resultMap="AestheticPojoMap">
+        select pa.*,ps.name from pj_aesthetic pa
+        inner join pj_student ps on ps.id=pa.student_id
+        where ps.school_id=#{schoolId}  and ps.id=#{studentId} and pa.school_year=#{schoolYear} and pa.schoolTrem=#{schoolTrem} and ps.is_delete=0
+    </select>
+
+    <select id="findByStudentId" resultMap="StudentResult">
+        select * from pj_student where id=#{studentId} and school_id=#{schoolId} and is_delete=0
+    </select>
+
+    <select id="findByAllStudent" resultMap="StudentResult">
+        select * from pj_student
+        <where>
+            is_delete=0 and is_send_canteen=2 and school_id=#{schoolId}
+            <if test="studentId!=null">
+              and  id=#{studentId}
+            </if>
+        </where>
+    </select>
+    <update id="updateStudent">
+        update pj_student set is_send_canteen=1 where id=#{studentId} and school_id=#{schoolId}
+    </update>
+    <select id="findByAllTeacher" resultMap="TeacherResult">
+        select * from pj_teacher
+        <where>
+        school_id=#{schoolId} and is_delete=0 and is_send_canteen=2
+            <if test="teacherId=null">
+                and id=#{teacherId}
+            </if>
+        </where>
+    </select>
+    <update id="updateTeacher">
+        update pj_teacher set is_send_canteen=1 where id=#{teacherId} and school_id=#{schoolId}
+    </update>
+</mapper>

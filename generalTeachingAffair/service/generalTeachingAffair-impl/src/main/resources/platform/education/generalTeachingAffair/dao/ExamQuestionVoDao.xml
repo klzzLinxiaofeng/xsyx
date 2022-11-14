@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ExamQuestionVoDao">
+
+	<resultMap id="ExamQuestionVoMap" type="platform.education.generalTeachingAffair.model.ExamQuestionVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="examTeamSubjectId" column="exam_team_subject_id" />
+		<result property="title" column="title" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createTime" column="create_time" />
+		<result property="modiyTime" column="modiyt_ime" />
+		<result property="schoolYear" column="school_year" />
+		<result property="schoolTrem" column="school_trem" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="examType" column="exam_type" />
+		<result property="examName" column="exam_name" />
+		<result property="order" column="ordere" />
+		<result property="fenzhi" column="fenzhi" />
+	</resultMap>
+	<resultMap id="ExamQuestionScoreVoMap" type="platform.education.generalTeachingAffair.model.ExamQuestionScoreVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="examQueactionId" column="exam_queaction_id" />
+		<result property="studentId" column="student_id" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createTime" column="create_time" />
+		<result property="modiyTime" column="modiyt_ime" />
+		<result property="schoolYear" column="school_year" />
+		<result property="schoolTrem" column="school_trem" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="examType" column="exam_type" />
+		<result property="examName" column="exam_name" />
+		<result property="score" column="score" />
+		<result property="fenzhi" column="fenzhi" />
+	</resultMap>
+	<resultMap id="StudentScoreResult" type="platform.education.generalTeachingAffair.model.StudentScore">
+		<result property="id" column="id" />
+		<result property="examTeamSubjectId" column="exam_team_subject_id" />
+		<result property="studentId" column="student_id" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="score" column="score" />
+		<result property="teamRank" column="team_rank" />
+		<result property="gradeRank" column="grade_rank" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+
+		<result property="schoolYear" column="school_year" />
+		<result property="termCode" column="term_code" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="examType" column="exam_type" />
+		<result property="examName" column="exam_name" />
+		<result property="schoolId" column="school_id" />
+		<result property="comment" column="comment" />
+	</resultMap>
+	<resultMap id="examTeamSubjectResult" type="platform.education.generalTeachingAffair.model.ExamTeamSubject">
+		<result property="id" column="id" />
+		<result property="teamId" column="team_id" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="schoolYear" column="school_year" />
+		<result property="examType" column="exam_type" />
+		<result property="examName" column="exam_name" />
+		<result property="preciseStartDate" column="precise_start_date" />
+		<result property="preciseEndDate" column="precise_end_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="term" column="term_code" />
+		<result property="taskType" column="task_type" />
+		<result property="taskOnline" column="task_online" />
+		<result property="taskRate" column="task_rate" />
+		<result property="rateType" column="rate_type" />
+		<result property="schoolId" column="school_id" />
+		<result property="code" column="code" />
+		<result property="examNumber" column="exam_number" />
+		<result property="gradeId" column="gradeId" />
+		<result property="teamName" column="team_name" />
+
+	</resultMap>
+
+
+
+	<select id="findByAll" resultMap="ExamQuestionVoMap">
+		select * from pj_exam_team_subject_question
+		where  exam_team_subject_id=#{args[0]} and is_delete=0
+	</select>
+	<update id="updateFenZhi">
+		update pj_exam_team_subject_question set fenzhi=#{args[1]}
+		where id=#{args[0]}   and is_delete=0
+	</update>
+	<update id="updateTaskRate">
+		update pj_exam_team_subject set task_rate=true
+		where id=#{args[0]}   and is_delete=0
+	</update>
+	<update id="updateScoreFenZhi">
+		update pj_exam_team_subject_question_score set fenzhi=#{args[1]}
+		where exam_queaction_id=#{args[0]}   and is_delete=0
+	</update>
+	<update id="updateDelete">
+		update pj_exam_team_subject_question set is_delete=1
+		where id=#{args[0]}   and is_delete=0
+	</update>
+	<update id="updateScoreDelete">
+		update pj_exam_team_subject_question_score set is_delete=1
+		where exam_queaction_id=#{args[0]}
+	</update>
+
+	<select id="findByTop" resultMap="ExamQuestionVoMap">
+		select * from pj_exam_team_subject_question
+		<where>
+			is_delete=0
+			<if test="args[0].schoolYear!=null">
+				and school_year=#{args[0].schoolYear}
+			</if>
+			<if test="args[0].schoolTrem!=null">
+				and school_trem=#{args[0].schoolTrem}
+			</if>
+			<if test="args[0].gradeId!=null">
+				and grade_id=#{args[0].gradeId}
+			</if>
+		    <if test="args[0].teamId!=null">
+			     and  team_id=#{args[0].teamId}
+			</if>
+			<if test="args[0].examType!=null">
+				and exam_type=#{args[0].examType}
+			</if>
+			<if test="args[0].examTeamSubjectId!=null">
+				and exam_team_subject_id=#{args[0].examTeamSubjectId}
+			</if>
+			<if test="args[0].examName!=null">
+				and exam_name=#{args[0].examName}
+			</if>
+			<if test="args[0].subjectCode!=null">
+				and subject_code=#{args[0].subjectCode}
+			</if>
+		</where>
+		</select>
+
+	<select id="findByStudentScore" resultMap="StudentScoreResult">
+		select * from pj_student_score where is_delete=0 and student_id=#{args[0]} and exam_team_subject_id=#{args[1]}
+	</select>
+	<update id="updateScore">
+		update pj_exam_team_subject_question_score set score=#{args[2]}
+		where exam_queaction_id=#{args[1]} and is_delete=0 and student_id=#{args[0]}
+	</update>
+
+	<update id="updateScores">
+		update pj_student_score set score=#{args[2]},modify_date=NOW()
+		where exam_team_subject_id=#{args[1]} and is_delete=0 and student_id=#{args[0]}
+	</update>
+	<select id="findByExamTeamSubject" resultMap="examTeamSubjectResult">
+		select pets.*,pt.name as team_name from  pj_exam_team_subject pets left join pj_team  pt on pt.id=pets.team_id
+		<where>
+			pets.is_delete=0
+			<if test="args[0]!=null">
+				and pets.school_id=#{args[0]}
+			</if>
+			<if test="args[1]!=null">
+				and pets.school_year=#{args[1]}
+			</if>
+			<if test="args[2]!=null">
+				and pets.term_code=#{args[2]}
+			</if>
+			<if test="args[3]!=null">
+				and pets.exam_name=#{args[3]}
+			</if>
+			<if test="args[4]!=null">
+				and pets.subject_code=#{args[4]}
+			</if>
+		</where>
+	</select>
+	<update id="updateExamSubject">
+		update pj_exam_team_subject set is_suoding=#{args[1]} where id=#{args[0]} and is_delete=0
+	</update>
+
+	<select id="findByExamTeam" resultMap="examTeamSubjectResult">
+		select pets.*,pt.name as team_name from pj_exam_team_subject pets inner join pj_team pt on pt.id=pets.team_id
+		<where>
+			pets.is_delete=0 and pt.is_delete=0
+			<if test="args[0]!=null">
+				and  pt.grade_id=#{args[0]}
+			</if>
+			<if test="args[1]!=null">
+				and pets.subject_code=#{args[1]}
+			</if>
+			<if test="args[2]!=null">
+				and pets.school_year=#{args[2]} and pt.school_year=#{args[2]}
+			</if>
+			<if test="args[3]!=null">
+				and pets.term_code=#{args[3]}
+			</if>
+			<if test="args[4]!=null">
+				and  pets.exam_type=#{args[4]}
+			</if>
+			<if test="args[5]!=null">
+				and pt.school_id=#{args[5]}
+			</if>
+			<if test="args[6]!=null">
+				and pets.exam_name like concat('%',#{args[6]},'%')
+			</if>
+		</where>
+	</select>
+</mapper>

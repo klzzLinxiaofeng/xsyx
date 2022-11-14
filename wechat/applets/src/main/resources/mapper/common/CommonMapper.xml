@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.common.dao.CommonDao">
+
+	<select id="getValueByCode" resultType="java.util.Map">
+	    select name,value from jc_gc_item WHERE table_code = #{code}
+    </select>
+
+    <select id="getJobControlStatus" resultType="java.lang.Boolean">
+        SELECT Interrupteur FROM pj_job_control WHERE is_deleted = 0 AND name = #{name}
+    </select>
+
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.CanteenCardServiceDao">
+
+    <resultMap id="canteenCardResult" type="platform.education.generalTeachingAffair.model.CanteenCardPojo">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="mesg" property="mesg"/>
+        <result column="name" property="name"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="old_ic_number" property="oldIcNumber"/>
+        <result column="new_ic_number" property="newIcNumber"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="is_send" property="isSend"/>
+        <result column="user_type" property="userType"/>
+        <result column="team_name" property="teamName"/>
+        <result column="department_name" property="deptName"/>
+
+    </resultMap>
+
+	<select id="read" resultMap="canteenCardResult" useCache="false">
+		SELECT * FROM pj_canteen_card WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findCanteenByCondition" resultMap="canteenCardResult" useCache="false">
+		SELECT c.*,s.team_name,dt.department_name FROM pj_canteen_card c
+		left join pj_student s on c.user_type=0 and s.id=c.user_id
+        left join pj_department_teacher dt on dt.teacher_id=c.user_id
+        <where>
+            <if test="args[0].id != null">
+                c.id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].schoolId != null">
+                AND c.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].isDeleted != null">
+                and c.is_deleted = #{args[0].isDeleted}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                and c.name LIKE CONCAT(CONCAT('%', #{args[0].name,javaType=java.lang.String}),'%')
+            </if>
+
+            <if test="args[0].startDate != null">
+                and c.created_at >= #{args[0].startDate}
+            </if>
+
+            <if test="args[0].endDate != null">
+                and #{args[0].endDate} > c.created_at
+            </if>
+
+        </where>
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.CanteenCardPojo">
+		UPDATE pj_canteen_card
+		<set>
+            <if test="isSend != null">is_send= #{isSend}, </if>
+            <if test="newIcNumber != null and newIcNumber != ''">new_ic_number = #{newIcNumber}, </if>
+            <if test="modifyDate != null">modify_date = #{modifyDate}, </if>
+        </set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateStudentSign">
+	    update bus_student_sign set stu_card = #{args[0]} where stu_card = #{args[1]}
+    </update>
+
+</mapper>

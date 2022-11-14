@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.resource.dao.ResResourceDao">
+  <resultMap id="ResultMap" type="com.xunyunedu.resource.pojo.ResResource">
+    <id property="id" column="id" />
+    <result property="createDate" column="create_date" />
+    <result property="modifyDate" column="modify_date" />
+    <result property="title" column="title" />
+    <result property="description" column="description" />
+    <result property="uuid" column="uuid" />
+    <result property="resType" column="res_type" />
+    <result property="objectId" column="object_id" />
+    <result property="favCount" column="fav_count"/>
+    <result property="likeCount" column="like_count"/>
+    <result property="commentCount" column="comment_count"/>
+    <result property="thumbnailUrl" column="thumbnail_url"/>
+    <result property="iconType" column="icon_type"/>
+    <result property="libraryId" column="library_id"/>
+    <result property="verify" column="verify"/>
+    <result property="userId" column="user_id"/>
+    <result property="userName" column="user_name"/>
+    <result property="isPersonal" column="is_personal"/>
+    <result property="isDeleted" column="is_deleted"/>
+    <result property="downloadCount" column="download_count"/>
+    <result property="clickCount" column="click_count"/>
+    <result property="integral" column="integral"/>
+    <result property="score" column="score"/>
+    <result property="scoringCount" column="scoring_count"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id,create_date,modify_date,title,description,uuid,res_type,object_id,fav_count,like_count
+    ,comment_count,thumbnail_url,icon_type,library_id,verify,user_id,user_name,is_personal,
+    is_deleted,download_count,click_count,integral,score,scoring_count
+  </sql>
+
+  <select id="all" resultMap="ResultMap">
+    select <include refid="Base_Column_List"/> from res_resource and is_delete = 0
+  </select>
+
+  <select id="selectByCondition" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from res_resource r
+    <where>
+      <if test="title != null and title != ''">
+        and r.title like concat('%',#{title},'%')
+      </if>
+      <if test="resType != null">
+        and r.res_type = #{resType}
+      </if>
+      <if test="isPersonal!=null">
+         and r.is_personal=#{isPersonal}
+      </if>
+      <if test="userId!=null and isFav==null">
+        and r.user_id=#{userId}
+      </if>
+
+      <if test="isFav != null">
+        AND exists(select 1 from res_favorites res where res.poster_id=#{userId,javaType=java.lang.Integer} and res.resource_id=r.id)
+      </if>
+
+      and is_deleted = 0
+    </where>
+    order by create_date desc
+  </select>
+
+  <select id="selectById" resultMap="ResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from res_resource where is_deleted = 0 and id = #{id}
+  </select>
+
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into res_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="title != null and title != ''">
+        title,
+      </if>
+      <if test="description != null and description != ''">
+        description,
+      </if>
+      <if test="uuid != null and uuid != ''">
+        uuid,
+      </if>
+      <if test="resType != null">
+        res_type,
+      </if>
+      <if test="objectId != null and objectId != ''">
+        object_id,
+      </if>
+      <if test="favCount != null">
+        fav_count,
+      </if>
+      <if test="likeCount != null">
+        like_count,
+      </if>
+      <if test="commentCount != null">
+        comment_count,
+      </if>
+      <if test="thumbnailUrl != null and thumbnailUrl != ''">
+        thumbnail_url,
+      </if>
+      <if test="iconType != null and iconType != ''">
+        icon_type,
+      </if>
+      <if test="libraryId != null and libraryId != ''">
+        library_id,
+      </if>
+      <if test="verify != null">
+        verify,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null and userName != ''">
+        user_name,
+      </if>
+      <if test="isPersonal != null">
+        is_personal,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+      <if test="downloadCount != null">
+        download_count,
+      </if>
+      <if test="clickCount != null">
+        click_count,
+      </if>
+      <if test="integral != null">
+        integral,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="scoringCount != null">
+        scoring_count,
+      </if>
+      create_date
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="title != null and title != ''">
+        #{title},
+      </if>
+      <if test="description != null and description != ''">
+        #{description},
+      </if>
+      <if test="uuid != null and uuid != ''">
+        #{uuid},
+      </if>
+      <if test="resType != null">
+        #{resType},
+      </if>
+      <if test="objectId != null and objectId != ''">
+        #{objectId},
+      </if>
+      <if test="favCount != null">
+        #{favCount},
+      </if>
+      <if test="likeCount != null">
+        #{likeCount},
+      </if>
+      <if test="commentCount != null">
+        #{commentCount},
+      </if>
+      <if test="thumbnailUrl != null and thumbnailUrl != ''">
+        #{thumbnailUrl},
+      </if>
+      <if test="iconType != null and iconType != ''">
+        #{iconType},
+      </if>
+      <if test="libraryId != null and libraryId != ''">
+        #{libraryId},
+      </if>
+      <if test="verify != null">
+        #{verify},
+      </if>
+      <if test="userId != null">
+        #{userId},
+      </if>
+      <if test="userName != null and userName != ''">
+        #{userName},
+      </if>
+      <if test="isPersonal != null">
+        #{isPersonal},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted},
+      </if>
+      <if test="downloadCount != null">
+        #{downloadCount},
+      </if>
+      <if test="clickCount != null">
+        #{clickCount},
+      </if>
+      <if test="integral != null">
+        #{integral},
+      </if>
+      <if test="score != null">
+        #{score},
+      </if>
+      <if test="scoringCount != null">
+        #{scoringCount},
+      </if>
+      NOW()
+    </trim>
+  </insert>
+
+
+  <select id="selectUniqueResultSql" resultType="long">
+    ${sql}
+  </select>
+
+  <select id="selectComment" parameterType="integer" resultType="map">
+    SELECT
+      c.post_name AS userName,
+      f.relative_path AS userPicture,
+      c.create_date AS commentTime,
+      c.content AS commentContent
+    FROM
+      sq_comment c
+      LEFT JOIN yh_profile y ON c.poster_id = y.user_id
+      LEFT JOIN res_entity_file f ON f.uuid = y.icon
+    where c.resource_id=#{resId} and c.app_id=666
+    order by c.create_date asc
+  </select>
+
+  <update id="updateBySql">
+     ${sql}
+  </update>
+
+
+</mapper>

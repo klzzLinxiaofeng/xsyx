@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0">
+	<tlib-version>1.0</tlib-version>
+	<short-name>eurlFn</short-name>
+	<uri>http://www.jiaoxueyun.com/resource/entity/url/functions</uri>
+	<function>
+		<name>getConvertedUrl</name>
+		<function-class>platform.service.storage.functions.EntityFileHttpUrlFunctions</function-class>
+		<function-signature>java.lang.String getConvertedUrl(java.lang.String)</function-signature>
+	</function>
+	
+	<function>
+		<name>convertUrl</name>
+		<function-class>platform.service.storage.functions.EntityFileHttpUrlFunctions</function-class>
+		<function-signature>java.lang.String convertUrl(java.lang.String)</function-signature>
+	</function>
+	
+	<function>
+		<name>convert2InternalUrl</name>
+		<function-class>platform.service.storage.functions.EntityFileHttpUrlFunctions</function-class>
+		<function-signature>java.lang.String convert2InternalUrl(java.lang.String)</function-signature>
+	</function>
+	
+	<function>
+		<name>getThumUrl</name>
+		<function-class>platform.service.storage.functions.EntityFileHttpUrlFunctions</function-class>
+		<function-signature>java.lang.String getThumUrl(java.lang.String)</function-signature>
+	</function>
+	
+</taglib>

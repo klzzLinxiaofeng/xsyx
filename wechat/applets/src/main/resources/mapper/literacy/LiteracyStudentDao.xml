@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.literacy.dao.LiteracyStudentDao">
+
+    <resultMap id="LiteracyMap" type="com.xunyunedu.literacy.pojo.LiteracyStudent">
+        <id column="id" property="id"></id>
+        <result column="student_id" property="studentId"></result>
+        <result column="stuname" property="stuName"></result>
+        <result column="team_name" property="teamName"></result>
+        <result column="team_id" property="teamId"></result>
+        <result column="subject_id" property="subjectId"></result>
+        <result column="subjectName" property="subName"></result>
+        <result column="literacy_name" property="literacyName"></result>
+        <result column="max_score" property="score"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="literacy_id" property="literacyId"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="fenshu" property="fenshu"></result>
+        <result column="pingyu" property="pingyu"></result>
+    </resultMap>
+    <resultMap id="TeamMap" type="com.xunyunedu.mergin.vo.Team">
+        <id column="id" property="id"></id>
+        <id column="name" property="name"></id>
+    </resultMap>
+
+    <resultMap id="StudentResult"
+               type="com.xunyunedu.mergin.vo.Student">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+        <!--<result property="isDelete" column="is_delete" />-->
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+        <result property="isSendHikdoor" column="is_send_hikdoor"/>
+        <result property="isSendLibrary" column="is_send_library"/>
+        <result property="isSendSeewo" column="is_send_seewo"/>
+        <result property="deptName" column="deptName"/>
+    </resultMap>
+
+    <resultMap id="PublishJobContentResult" type="com.xunyunedu.PublishAndAcceptJob.pojo.PublishAndAcceptJobContentPojo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="tid" jdbcType="INTEGER" property="tId"/>
+        <result column="subject_id" jdbcType="INTEGER" property="subjectId"/>
+        <result column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <result column="student_id" jdbcType="INTEGER" property="studentId"/>
+        <result column="team_id" jdbcType="INTEGER" property="teamId"/>
+        <result column="school_id" jdbcType="INTEGER" property="schoolId"/>
+        <result column="picture_uuid" jdbcType="INTEGER" property="pictureUUID"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="is_deleted" property="isDeleted" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="team_name" property="teamName"/>
+        <result column="subject_name" property="subjectName"/>
+        <result column="teacher_name" property="teacherName"/>
+    </resultMap>
+
+    <select id="findByStuId" resultType="com.xunyunedu.PublishAndAcceptJob.pojo.SubjectPojo">
+        select pss.id,pss.name,pss.code from pj_subject_grade psg
+        inner join pj_subject pss on pss.code=psg.subject_code
+        where psg.grade_code=(select uni_grade_code from pj_grade
+        where id=(select pts.grade_id from pj_student ps
+        inner join pj_team_student pts on ps.id=pts.student_id
+        inner join pj_grade pg on pg.id=pts.grade_id
+        where ps.id=#{studentId} and pg.school_year=#{schoolYear} and ps.school_id=#{schoolId} and ps.is_delete=0 and pts.is_delete=0) and is_deleted=0)
+        and pss.is_delete=0 and pss.school_id=#{schoolId} and psg.is_deleted=0 and psg.school_id=#{schoolId};
+    </select>
+
+    <select id="findByStudentScore" resultMap="LiteracyMap">
+       select  pl.literacy_name,pls.fenshu,pls.pingyu from pj_literacy_student pls
+       inner join pj_literacy pl on pl.id=pls.literacy_id
+       where pl.subject_id=#{subjectId} and pls.student_id=#{studentId} and pl.is_delete=0
+       <if test="schoolYear!=null">
+          and   pl.xn=#{schoolYear}
+       </if>
+        <if test="schoolTrem!=null">
+           and   pl.xq=#{schoolTrem}
+        </if>
+    </select>
+
+    <select id="findByGradeScore" resultMap="LiteracyMap">
+    select pl.literacy_name,avg(pls.fenshu) as fenshu from pj_literacy_student pls
+    inner join pj_literacy  pl on pl.id=pls.literacy_id
+    where pls.is_delete=0  and pl.is_delete=0
+    and  pl.grade_id=(select pts.grade_id from pj_student ps
+    inner join pj_team_student pts on pts.student_id=ps.id
+    inner join pj_grade pg on pg.id=pts.grade_id
+    where pg.school_year=#{schoolYear} and ps.id=#{studentId})
+    and pl.subject_id=#{subjectId}
+        <if test="schoolYear!=null">
+            and   pl.xn=#{schoolYear}
+        </if>
+        <if test="schoolTrem!=null">
+            and   pl.xq=#{schoolTrem}
+        </if>
+      group by pl.literacy_name
+    </select>
+
+    <select id="findByTeamScore" resultMap="LiteracyMap">
+      select pl.literacy_name,TRUNCATE(avg(pls.fenshu),2)as fenshu from pj_literacy_student pls
+      inner join pj_team_student pts on  pts.student_id=pls.student_id
+	  inner join pj_literacy pl on pl.id=pls.literacy_id
+	  inner join pj_student ps on ps.id=pls.student_id
+	  where pl.is_delete=0 and pls.is_delete=0 and ps.study_state='01'
+        <if test="schoolYear!=null">
+            and   pl.xn=#{schoolYear}
+        </if>
+        <if test="schoolTrem!=null">
+            and   pl.xq=#{schoolTrem}
+        </if>
+	  and  pl.subject_id=#{subjectId} and pts.team_id=(select team_id from pj_student  where id=#{studentId}) group by pl.literacy_name
+    </select>
+    <select id="findByTeacher" resultMap="TeamMap">
+        select pt.* from pj_team_teacher ptt
+        inner join pj_team pt on pt.id=ptt.team_id
+        where    pt.is_delete=0
+        <if test="teacherId!=null">
+           and   ptt.teacher_id=#{teacherId}
+        </if>
+         and pt.school_id=#{schoolId}
+        and ptt.school_year=#{schoolYear}
+        group by pt.id
+    </select>
+
+    <select id="fidByTeacherId" resultType="com.xunyunedu.PublishAndAcceptJob.pojo.SubjectPojo">
+        select ps.id,ps.name,ps.code from pj_team_teacher ptt
+        inner join  pj_subject ps on ps.code=ptt.subject_code
+        where  ps.is_delete=0
+        <if test="teacherId!=null">
+           and  ptt.teacher_id=#{teacherId}
+        </if>
+        and ptt.team_id=#{teamId}  and school_id=#{schoolId}
+        group by ps.id
+    </select>
+
+    <select id="findByStudent" resultMap="StudentResult">
+        select * from pj_student
+         <where>
+             school_id=#{schoolId} and team_id=#{teamId}  and is_delete=0 and study_state='01'
+             <if test="studentName!=null">
+                 and name like concat('%',#{studentName}, '%')
+             </if>
+         </where>
+    </select>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.accommodation.dao.HouseAmountDao">
+
+    <resultMap id="HouseAmountMap" type="platform.szxyzxx.accommodation.pojo.HouseAmount">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="jine" column="jine"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+    <select id="findByAll"  resultMap="HouseAmountMap" >
+        select  * from zy_accontion_house
+        where is_delete=0
+    </select>
+
+    <insert id="create">
+        insert into zy_accontion_house(name,jine,is_delete)
+        value(#{args[0].name},0,0)
+    </insert>
+
+    <update id="update">
+        update zy_accontion_house set jine=#{args[0].jine} where id=#{args[0].id} and is_delete=0
+    </update>
+    
+    <insert id="createSettlement">
+        insert into zy_accontion_amount(zy_accontion_id,
+        zhufang_jine,
+        hotShuiJine,
+        lenShuiJine,
+        dianJine,
+        is_delete,
+        create_time,
+        modiy_time)
+        values (#{args[0].accommodationId},
+        #{args[0].zhufangJine},
+        #{args[0].hotShuiJine},
+        #{args[0].lenShuiJine},
+        #{args[0].dianJine},
+        0,
+        NOW(),
+        NOW())
+    </insert>
+    <update id="updateSettlement">
+        update zy_accontion_amount set zhufang_jine=#{args[0].zhufangJine},
+        hotShuiJine=#{args[0].hotShuiJine},
+        lenShuiJine=#{args[0].lenShuiJine},
+        dianJine=#{args[0].dianJine}
+        where zy_accontion_id=#{args[0].accommodationId} and is_delete=0
+    </update>
+    <update id="updatedelete">
+        update zy_accontion_amount set is_delete=1
+        where zy_accontion_id=#{args[0]} and is_delete=0
+    </update>
+
+</mapper>

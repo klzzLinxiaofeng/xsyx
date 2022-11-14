@@ -1,0 +1,72 @@
+@charset "utf-8";
+.leftbar{
+	background-color:#F8F8F8;
+}
+#navigation > li > a{
+	color:#666666
+}
+#navigation > li.active > a{
+	background-color: #3A3D3F;
+    color: #F8F8F8;
+}
+#navigation > li{
+	line-height:28px;
+}
+#navigation > li a i{
+	width:28px;
+	height:28px;
+	position:relative;
+	top:0;
+	float: left;
+}
+.bbx_1 {
+    background: url("images/bbx_icon.png") no-repeat;
+}
+.bbx_2 {
+    background: url("images/bbx_icon.png") no-repeat 0 -53px;
+}
+.bbx_3 {
+    background: url("images/bbx_icon.png") no-repeat 0 -106px;
+}
+.bbx_4 {
+    background: url("images/bbx_icon.png") no-repeat 0 -159px;
+}
+.bbx_5 {
+    background: url("images/bbx_icon.png") no-repeat 0 -212px;
+}
+.bbx_6 {
+    background: url("images/bbx_icon.png") no-repeat 0 -265px;
+}
+.bbx_7 {
+    background: url("images/bbx_icon.png") no-repeat 0 -318px;
+}
+.bbx_8 {
+    background: url("images/bbx_icon.png") no-repeat 0 -371px;
+}
+.bbx_9 {
+    background: url("images/bbx_icon.png") no-repeat 0 -424px;
+}
+.bbx_10 {
+    background: url("images/bbx_icon.png") no-repeat 0 -477px;
+}
+.bbx_11 {
+    background: url("images/bbx_icon.png") no-repeat 0 -530px;
+}
+.bbx_12 {
+    background: url("images/bbx_icon.png") no-repeat 0 -583px;
+}
+.bbx_13 {
+    background: url("images/bbx_icon.png") no-repeat 0 -636px;
+}
+.bbx_14 {
+    background: url("images/bbx_icon.png") no-repeat 0 -689px;
+}
+.bbx_15 {
+    background: url("images/bbx_icon1.png") no-repeat;
+}
+.bbx_16 {
+    background: url("images/bbx_icon1.png") no-repeat 0 -53px;
+}
+.bbx_17 {
+    background: url("images/bbx_icon1.png") no-repeat 0 -106px;
+}

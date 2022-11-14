@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.homework.dao.HwHomeworkDao">
+<resultMap id="ResultMap" type="com.xunyunedu.homework.pojo.HwHomework">
+  <id property="id" column="id" />
+  <result property="createDate" column="create_date" />
+  <result property="modifyDate" column="modify_date" />
+  <result property="title" column="title" />
+  <result property="description" column="description" />
+  <result property="uuid" column="uuid" />
+  <result property="type" column="type" />
+  <result property="userId" column="user_id" />
+  <result property="appId" column="app_id" />
+  <result property="entityId" column="entity_id" />
+</resultMap>
+
+  <select id="selectById" resultMap="ResultMap">
+    select * from res_entity where id = #{id}
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO hw_homework (
+        create_date,
+        modify_date,
+        title,
+        description,
+        uuid,
+        `type`,
+        user_id,
+        app_id,
+        entity_id
+        )
+        VALUES (
+        #{id},
+        #{createDate},
+        #{modifyDate},
+        #{title},
+        #{description},
+        #{uuid},
+        #{type},
+        #{userId},
+        #{appId},
+        #{entityId}
+        )
+  </insert>
+</mapper>

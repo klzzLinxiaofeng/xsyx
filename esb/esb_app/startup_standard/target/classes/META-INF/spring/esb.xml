@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName">
+
+	<!-- 加载整个应用的配置文件,请注意次序. -->
+	<import resource="classpath*:spring/base-dao.xml" />
+
+	<import resource="classpath*:spring/transaction.xml" />
+
+	<import resource="classpath*:spring/app-disconf.xml" />
+
+	<!-- 提供者 -->
+	<import resource="classpath*:dubbo-base.xml" />
+
+	<import resource="classpath*:/notice-services.xml" />
+
+	<import resource="classpath*:/homework-services.xml" />
+
+	<import resource="classpath*:/teachingPlan-services.xml" />
+
+	<import resource="classpath*:/material-services.xml" />
+
+	<import resource="classpath*:/user-services.xml" />
+
+	<import resource="classpath*:/generalTeachingAffair-services.xml" />
+
+	<import resource="classpath*:/storage-services.xml" />
+
+	<import resource="classpath*:/generalCode-services.xml" />
+
+	<import resource="classpath*:/oa-services.xml" />
+
+	<import resource="classpath*:/push_taskExecutor.xml" />
+
+	<import resource="classpath*:/learningDesign-services.xml" />
+
+    <!-- 全文检索 -->
+    <import resource="classpath*:/es-beans.xml" />
+
+	<!-- 资源库模块API -->
+	<import resource="classpath*:/resource-services.xml" />
+
+	<import resource="classpath*:/micro-services.xml" />
+
+	<import resource="classpath*:/paper-services.xml" />
+
+	<import resource="classpath*:/paper-new-services.xml" />
+
+	<import resource="classpath*:/exam-services.xml" />
+
+	<import resource="classpath*:/message-services.xml" />
+	<!-- 即时通讯 -->
+	<import resource="classpath*:/im-services.xml" />
+
+	<import resource="classpath*:standard-rest-provider.xml" />
+
+	<import resource="classpath:generic-cache.xml" />
+
+	<import resource="classpath*:/oauth2-services.xml" />
+
+	<!-- 班牌 -->
+	<import resource="classpath*:/classService-services.xml" />
+	<import resource="classpath*:/sns-services.xml" />
+
+</beans>
+

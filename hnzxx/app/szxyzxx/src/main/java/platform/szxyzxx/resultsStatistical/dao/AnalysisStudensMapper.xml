@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  配置为包名+接口名  实现 代理模式
+  接口中 每一个方法  都与  标签的id对应
+-->
+<mapper namespace="platform.szxyzxx.resultsStatistical.dao.AnalysisStudensMapper">
+    <select id="findByAs" parameterType="platform.szxyzxx.resultsStatistical.pojo.vo.AsQuery"
+            resultType="platform.szxyzxx.resultsStatistical.pojo.AnalysisStudens">
+        select pss.school_year as xn,pss.term_code as xq,pss.subject_code as subjectCode,pss.team_id as
+        teamId,pss.grade_id as gradeId,pss.create_Date as createDate,
+        ps.`name` as studentName,pb.name as subjectName,pss.exam_name as examName,pss.score from pj_student_score
+        pss
+        inner join pj_student ps on pss.student_id=ps.id
+        inner join pj_subject pb on pss.subject_code=pb.code
+        <where>
+            <if test="args[0].xn!=null">
+                and pss.school_year=#{args[0].xn}
+            </if>
+            <if test="args[0].xq!=null">
+                and pss.term_code=#{args[0].xq}
+            </if>
+            <if test="args[0].examName!=null">
+                and pss.exam_name=#{args[0].examName}
+            </if>
+            <if test="args[0].subjectCode!=null">
+                and pss.subject_code=#{args[0].subjectCode}
+            </if>
+            <if test="args[0].teamId!=null">
+                and pss.team_id=#{args[0].teamId}
+            </if>
+            <if test="args[0].gradeId!=null">
+                and pss.grade_id=#{args[0].gradeId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByRank" parameterType="platform.szxyzxx.resultsStatistical.pojo.vo.AsQuery"
+            resultType="platform.szxyzxx.resultsStatistical.pojo.AnalysisStudens">
+        SELECT obj.*,@rownum := @rownum + 1 AS rownum FROM
+        ( SELECT pss.* FROM pj_student_score pss
+        <where>
+            <if test="args[0].xn!=null">
+                and pss.school_year=#{args[0].xn}
+            </if>
+            <if test="args[0].xq!=null">
+                and pss.term_code=#{args[0].xq}
+            </if>
+            <if test="args[0].examName!=null">
+                and pss.exam_name=#{args[0].examName}
+            </if>
+            <if test="args[0].subjectCode!=null">
+                and pss.subject_code=#{args[0].subjectCode}
+            </if>
+            <if test="args[0].teamId!=null">
+                and pss.team_id=#{args[0].teamId}
+            </if>
+            <if test="args[0].gradeId!=null">
+                and pss.grade_id=#{args[0].gradeId}
+            </if>
+        </where>
+        ORDER BY score DESC ) AS obj,
+        (SELECT @rownum := 0) r
+    </select>
+
+    <select id="findByDate" resultType="platform.szxyzxx.resultsStatistical.pojo.AnalysisStudens"
+            parameterType="platform.szxyzxx.resultsStatistical.pojo.vo.AsQuery">
+        select * from  pj_student_score
+          where team_id=#{args[0].teamId} and grade_id=#{args[0].gradeId}   and  subject_code=#{args[0].subjectCode}
+          and create_date &lt; date_format(#{args[0].createDate},'%Y-%m-%d' )
+        group by date_format(create_date,'%Y-%m-%d')
+        LIMIT 1
+    </select>
+    <!--查询上一次考试成绩排名-->
+    <select id="findByRanking" parameterType="platform.szxyzxx.resultsStatistical.pojo.vo.AsQuery"
+            resultType="platform.szxyzxx.resultsStatistical.pojo.AnalysisStudens">
+        SELECT obj.*,@rownum := @rownum + 1 AS rownum FROM(
+            SELECT pss.* FROM pj_student_score pss
+		        where  pss.team_id=#{args[0].teamId} and pss.grade_id=#{args[0].gradeId} and pss.subject_code=#{args[0].subjectCode}  and date_format(pss.create_date,'%Y-%m-%d' )=#{args[0].createDate}
+        ORDER BY score DESC ) AS obj,
+    (SELECT @rownum := 0) r
+
+    </select>
+</mapper>

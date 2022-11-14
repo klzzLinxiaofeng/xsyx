@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  配置为包名+接口名  实现 代理模式
+  接口中 每一个方法  都与  标签的id对应
+-->
+<mapper namespace="platform.szxyzxx.resultsStatistical.dao.AnalysisClassSubjectMapper">
+    <select id="findByAcs" resultType="platform.szxyzxx.resultsStatistical.pojo.AnalysisClassSubject"
+            parameterType="platform.szxyzxx.resultsStatistical.pojo.vo.AcsQuery">
+         select pss.exam_name,count(*),
+         /*参考人数*/
+         (select count(*) from pj_student_score where team_id=pt.id and score is not null and score !=0.00) as cankao,
+         SUM(score) as totalScore,avg(score) as average,
+         /*合格人数*/
+         (select count(*) from pj_student_score where score>=60 and  team_id=pt.id ) as qualifiedNumber,
+         /*合格率*/
+         (select ((select count(*) from pj_student_score where score>=60 and team_id=pt.id )/
+         (select count(*) from pj_student_score where team_id=pt.id and score is not null and score !=0.00)) from pj_student_score where team_id=pt.id group by team_id) as percent,
+         /*不合格人数*/
+         (select count(*) from pj_student_score where score &lt; 60 and  team_id=pt.id ) as unqualifiedNumber,
+         /*不合格率*/
+         (select ((select count(*) from pj_student_score where score &lt; 60 and team_id=pt.id)/(select count(*) from pj_student_score where team_id=pt.id and score is not null and score !=0.00)) from pj_student_score 				where team_id=pt.id group by team_id) as unpercent,
+         /*优秀人数*/
+         (select count(*) from pj_student_score where score>=90 and  team_id=pt.id ) as eugenics,
+         /*优秀率*/
+         (select ((select count(*) from pj_student_score where score>=90 and team_id=pt.id)/(select count(*) from pj_student_score where team_id=pt.id and score is not null and score !=0.00)) from pj_student_score where team_id=pt.id group by team_id) as healthy,
+         /*90分以上人数*/
+         (select count(*) from pj_student_score where score>90 and  team_id=pt.id ) as '90分以上人数',
+         /*90分到81人数*/
+         (select count(*) from pj_student_score where score>=81 and score &lt;= 90 and  team_id=pt.id ) as '90分到81人数',
+         /*80分到71分人数*/
+         (select count(*) from pj_student_score where score>=71 and score &lt;= 80 and  team_id=pt.id ) as '80分到71分人数',
+         /*70分到60分人数*/
+         (select count(*) from pj_student_score where score>=60 and score &lt;= 70 and  team_id=pt.id ) as '70分到60分人数',
+         /*59分到50分人数*/
+         (select count(*) from pj_student_score where score>=50 and score &lt;= 59 and  team_id=pt.id ) as '59分到50分人数',
+         ptt.name as teatherName
+         from  pj_student_score pss
+         inner join pj_team pt on pss.team_id=pt.id
+         inner join pj_team_teacher ptt on ptt.team_id=pss.team_id
+         where pss.is_delete=0   and  ptt.subject_code='10206' and pss.school_year='2020' and pss.term_code='215-2020-1' and pss.subject_code='10206' and pss.team_id=7 and pss.grade_id=541
+
+         group by pss.exam_name
+     </select>
+
+    <select id="findByGrade" resultType="java.util.Map">
+          select pss.grade_id as gradeId,pg.`name` AS gradeName from pj_student_score pss  inner join pj_grade pg on pss.grade_id=pg.id
+               where pg.is_deleted=0
+               group by grade_id
+     </select>
+</mapper>

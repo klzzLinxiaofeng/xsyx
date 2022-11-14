@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.student.dao.MicroManagerDao">
+    <resultMap id="microResultMap" type="com.xunyunedu.student.pojo.MicroManagerPojo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="school_id" jdbcType="INTEGER" property="schoolId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="cover_uuid" jdbcType="CHAR" property="coverUuid"/>
+        <result column="video_uuid" jdbcType="CHAR" property="videoUuid"/>
+        <result column="class_uuid" jdbcType="CHAR" property="classUuid"/>
+        <result column="directory" jdbcType="VARCHAR" property="directory"/>
+        <result column="upload_date" jdbcType="TIMESTAMP" property="uploadDate"/>
+        <result column="collect" jdbcType="INTEGER" property="collect"/>
+        <result column="thumbs" jdbcType="INTEGER" property="thumbs"/>
+        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="gradeName" jdbcType="VARCHAR" property="gradeName"/>
+        <result column="typeId" jdbcType="INTEGER" property="typeId"/>
+        <result column="typeName" jdbcType="VARCHAR" property="typeName"/>
+    </resultMap>
+
+    <resultMap id="stuCommentResult" type="com.xunyunedu.student.pojo.UserCommentsPojo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="micro_id" jdbcType="INTEGER" property="microId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="user_type" jdbcType="INTEGER" property="userType"/>
+        <result column="school_id" jdbcType="INTEGER" property="schoolId"/>
+        <result column="comments" jdbcType="VARCHAR" property="comments"/>
+        <result column="comments_date" jdbcType="CHAR" property="commentsDate"/>
+        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+    </resultMap>
+
+    <resultMap id="microTypeResult" type="com.xunyunedu.student.pojo.MicroTypePojo">
+        <id column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="name" property="name"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="modify_date" property="modifyDate"/>
+    </resultMap>
+
+    <resultMap id="gradeResult" type="com.xunyunedu.student.pojo.GradePojo">
+        <result column="id" property="id"/>
+        <result column="full_name" property="fullName"/>
+        <result column="name" property="name"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="code" property="code"/>
+        <result column="stage_code" property="stageCode"/>
+        <result column="uni_grade_code" property="uniGradeCode"/>
+        <result column="school_year" property="schoolYear"/>
+        <result column="grade_number" property="gradeNumber"/>
+        <result column="team_count" property="teamCount"/>
+        <result column="begin_date" property="beginDate"/>
+        <result column="finish_date" property="finishDate"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+    </resultMap>
+
+    <resultMap id="collectResult" type="com.xunyunedu.student.pojo.CollectionCommentsPojo">
+        <result column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="micro_id" property="microId"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_type" property="userType"/>
+        <result column="collection_status" property="collectionStatus"/>
+        <result column="like_status" property="likeStatus"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="collect" property="collect"/>
+        <result column="thumbs" property="thumbs"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, school_id, title, cover_uuid, video_uuid, class_uuid, directory, teacher_id,
+        upload_date, `collect`, thumbs, is_deleted, create_date, modify_date
+    </sql>
+
+    <select id="getMicroByCondition" resultMap="microResultMap">
+        select pmm.id, pmm.school_id, pmm.title, pmm.cover_uuid, pmm.video_uuid, pmm.class_uuid, pmm.directory,
+        pmm.upload_date, pmm.`collect`, pmm.thumbs, pmm.is_deleted, pmm.create_date, pmm.modify_date,group_concat(pg.name order by pg.id)gradeName,
+        pmt.id typeId, pmt.name typeName
+        from pj_micro_manager pmm, pj_micro_type_related pmtr,pj_micro_type pmt, pj_grade pg , pj_micro_grade_related pmgr
+        where pmtr.micro_id = pmm.id and pmm.is_deleted = 0 and pmtr.type_id = pmt.id
+        and pmtr.is_deleted = 0 and pg.id = pmgr.grade_id
+        and pmgr.is_deleted = 0 and pg.is_deleted = 0
+        and pmgr.micro_id = pmm.id
+        and pmt.school_id =  #{schoolId}
+        and pg.school_id = #{schoolId}
+        and pmm.school_id = #{schoolId}
+        and pmtr.school_id= #{schoolId}
+        and pmgr.school_id= #{schoolId}
+        <if test="gradeId != null">
+                and pg.id = #{gradeId}
+        </if>
+        <if test="typeId != null ">
+            and pmt.id = #{typeId}
+        </if>
+        <if test="microId != null ">
+            and pmm.id = #{microId}
+        </if>
+        group by pmm.id
+        order by pmm.create_date desc
+    </select>
+
+    <select id="getMicroCommentsMsg" resultMap="stuCommentResult">
+        select psc.id, psc.micro_id, psc.user_id,psc.user_type, psc.school_id, psc.comments, psc.comments_date, psc.is_deleted, psc.create_date, psc.modify_date
+        from pj_user_comments  psc
+        WHERE psc.is_deleted = 0
+        <if test="schoolId != null">
+            and psc.school_id = #{schoolId}
+        </if>
+        <if test="microId != null">
+            and psc.micro_id = #{microId}
+        </if>
+        order by psc.comments_date desc
+    </select>
+
+    <insert id="addComments" >
+        insert into pj_user_comments(micro_id, user_id,user_type, school_id, comments, comments_date, create_date)
+        values(#{microId}, #{userId},#{userType},#{schoolId},#{comments},#{commentsDate},#{createDate})
+    </insert>
+
+    <select id="getMicroTypeBySchoolId" resultMap="microTypeResult">
+        select * from pj_micro_type where school_id = #{schooldId}
+    </select>
+
+    <select id="getMicroGradeBySchoolId" resultMap="gradeResult">
+        select id, name, school_id from pj_grade
+        where is_deleted = 0 and school_id = #{schooldId}
+        <if test="schoolYear != null and schoolYear != ''"> and school_year = #{schoolYear} </if>
+    </select>
+
+    <select id="getCollectType" resultMap="collectResult">
+        select pcc.*,pmm.collect,pmm.thumbs from pj_collection_comments pcc
+        left join pj_micro_manager pmm on pmm.id = pcc.micro_id
+        where pmm.is_deleted = 0
+        <if test="userId != null"> and pcc.user_id = #{userId}</if>
+        <if test="schoolId != null">
+            and pcc.school_id = #{schoolId}
+            and pmm.school_id = #{schoolId}
+        </if>
+        <if test="microId != null"> and pcc.micro_id = #{microId}</if>
+        <if test="userType != null"> and pcc.user_type = #{userType}</if>
+    </select>
+
+    <update id="updateCollectionByCondition">
+        update pj_collection_comments
+        <set>
+            <if test="collectionStatus != null"> collection_status = #{collectionStatus},</if>
+            <if test="likeStatus != null"> like_status = #{likeStatus},</if>
+            <if test="modifyDate != null"> modify_date = #{modifyDate}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="addCollection">
+        insert into pj_collection_comments
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="microId != null"> micro_id,</if>
+            <if test="userId != null"> user_id,</if>
+            <if test="userType != null"> user_type,</if>
+            <if test="schoolId != null"> school_id,</if>
+            <if test="collectionStatus != null"> collection_status,</if>
+            <if test="likeStatus != null"> like_status,</if>
+            <if test="createDate != null"> create_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="microId != null"> #{microId},</if>
+            <if test="userId != null"> #{userId},</if>
+            <if test="userType != null"> #{userType},</if>
+            <if test="schoolId != null"> #{schoolId},</if>
+            <if test="collectionStatus != null"> #{collectionStatus},</if>
+            <if test="likeStatus != null"> #{likeStatus},</if>
+            <if test="createDate != null"> #{createDate},</if>
+        </trim>
+    </insert>
+    <update id="updateAddMicro">
+        update pj_micro_manager
+        <set>
+            <if test="modifyDate != null"> modify_date = #{modifyDate},</if>
+            <if test="collect != null"> collect = collect + #{collect},</if>
+            <if test="thumbs != null"> thumbs = thumbs + #{thumbs}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getMyCollectionMicroByCondition" resultMap="microResultMap">
+        select pmm.id, pmm.school_id, pmm.title, pmm.cover_uuid, pmm.video_uuid, pmm.class_uuid, pmm.directory,
+        pmm.upload_date, pmm.`collect`, pmm.thumbs, pmm.is_deleted, pmm.create_date, pmm.modify_date,group_concat(pg.name order by pg.id)gradeName,pmt.id typeId, pmt.name typeName
+        from pj_micro_manager pmm, pj_micro_type_related pmtr,pj_micro_type pmt, pj_grade pg , pj_micro_grade_related pmgr ,pj_collection_comments pcc
+        where pmtr.micro_id = pmm.id and pmm.is_deleted = 0 and pmtr.type_id = pmt.id
+        and pmtr.is_deleted = 0 and pg.id = pmgr.grade_id
+        and pmgr.is_deleted = 0 and pg.is_deleted = 0 and pmgr.micro_id = pmm.id
+        and pmt.school_id =  #{schoolId}
+        and pmt.school_id = #{schoolId}
+        and pg.school_id = #{schoolId}
+        and pmm.school_id = #{schoolId}
+        and pmtr.school_id= #{schoolId}
+        and pmgr.school_id= #{schoolId}
+        and pcc.school_id = #{schoolId}
+        and pmm.id = pcc.micro_id and pcc.collection_status=0
+	    and pcc.user_id = #{userId}  and pcc.user_type = #{userType}
+        <if test="gradeId != null">
+            and pg.id = #{gradeId}
+        </if>
+        <if test="typeId != null ">
+            and pmt.id = #{typeId}
+        </if>
+        <if test="microId != null ">
+            and pmm.id = #{microId}
+        </if>
+        group by pmm.id
+        order by pcc.create_date desc
+    </select>
+
+</mapper>

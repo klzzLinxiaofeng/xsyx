@@ -1,0 +1,1 @@
+ALTER TABLE `oa_notice` CHANGE COLUMN `owner_type` `owner_type` varchar(10) DEFAULT NULL COMMENT '所属的单位或学校类型' after `owner_id`

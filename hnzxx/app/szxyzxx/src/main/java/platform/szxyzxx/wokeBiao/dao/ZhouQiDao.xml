@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.wokeBiao.dao.ZhouQiDao">
+
+  <resultMap id="WokeXingQingMap" type="platform.szxyzxx.wokeBiao.pojo.WokeXingQing">
+    <id column="id"  property="id" />
+    <result column="zhouqi_id"  property="zhouqiId" />
+      <result column="weekday"  property="weekNum" />
+      <result column="jie_num"  property="jieNum" />
+      <result column="contoent"  property="contont" />
+      <result column="start_time"  property="createTime" />
+      <result column="modiy_time"  property="modiyTime" />
+      <result column="class_time" property="classTime"/>
+      <result column="class_date" property="classDate"/>
+  </resultMap>
+
+    <resultMap id="WokeMap" type="platform.szxyzxx.wokeBiao.pojo.ZhouQi">
+        <id column="id" property="id" />
+        <result column="school_year"  property="schoolYear" />
+        <result column="school_trem"  property="xueqi" />
+        <result column="zhoushu"  property="zhoushu" />
+        <result column="is_stats"  property="isStats" />
+        <result column="create_time"  property="createTime" />
+
+    </resultMap>
+
+
+    <select id="findByAll" resultMap="WokeXingQingMap">
+     select * from zy_zhouqi_xiangqing
+     <where>
+         <if test="args[0]!=null">
+            and zhouqi_id=#{args[0]}
+         </if>
+         <if test="args[2]!=null">
+             and weekday=#{args[2]}
+         </if>
+         <if test="args[1]!=null">
+             and jie_num=#{args[1]}
+         </if>
+     </where>
+       order by jie_num asc
+    </select>
+
+    <select id="findById" resultMap="WokeMap">
+        select * from zy_zhouqi where zhoushu=#{args[0]} and school_year=#{args[1]} and school_trem=#{args[2]}
+    </select>
+
+    <insert id="createZhouQiXiangQing" parameterType="platform.szxyzxx.wokeBiao.pojo.WokeXingQing">
+    insert  into zy_zhouqi_xiangqing(zhouqi_id,weekday,jie_num,contoent,start_time,modiy_time,class_time,class_date)
+    value (#{args[0].zhouqiId},#{args[0].weekNum},#{args[0].jieNum},null,NOW(),NOW(),#{args[0].classTime},#{args[0].classDate})
+    </insert>
+    <insert id="createZhouQi" keyProperty="args[0].id" useGeneratedKeys="true" parameterType="platform.szxyzxx.wokeBiao.pojo.ZhouQi" >
+    insert  into zy_zhouqi(school_year,school_trem,zhoushu,is_stats,create_time)
+      value (#{args[0].schoolYear},#{args[0].xueqi},#{args[0].zhoushu},0,NOW())
+    </insert>
+    
+    <update id="updateZhouQiXianQing">/teach/publicClass/download/classCount
+          update zy_zhouqi_xiangqing set contoent=#{args[0].contont}
+          where id= #{args[0].id}
+    </update>
+
+    <update id="updateZhouQi">
+         update zy_zhouqi set   is_stats=1 where  school_year=#{args[0].schoolYear} and school_trem=#{args[0].xueqi} and zhoushu=#{args[0].zhoushu};
+    </update>
+    <select id="findByAllZhouQi" resultMap="WokeMap">
+        select * from zy_zhouqi where id=#{args[0]}
+    </select>
+</mapper>

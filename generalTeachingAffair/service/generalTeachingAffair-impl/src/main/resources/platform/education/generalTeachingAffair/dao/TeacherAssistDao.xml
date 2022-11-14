@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.TeacherAssistDao">
+
+	<resultMap id="TeacherAssistResult" type="platform.education.generalTeachingAffair.model.TeacherAssist">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="userId" column="user_id" />
+		<result property="joinReason" column="join_reason" />
+		<result property="degree" column="degree" />
+		<result property="identity" column="identity" />
+		<result property="actualPosition" column="actual_position" />
+		<result property="managementType" column="management_type" />
+		<result property="currentPositionDate" column="current_position_date" />
+		<result property="personnelFundsType" column="personnel_funds_type" />
+		<result property="currentPositionPeriod" column="current_position_period" />
+		<result property="joinPartyDate" column="join_party_date" />
+		<result property="lowPost" column="low_post" />
+		<result property="checkInterrupt" column="check_interrupt" />
+		<result property="lowPostDate" column="low_post_date" />
+		<result property="interruptworkYears" column="interruptwork_years" />
+		<result property="cadrePosts" column="cadre_posts" />
+		<result property="workYears" column="work_years" />
+		<result property="rankType" column="rank_type" />
+		<result property="accruedAge" column="accrued_age" />
+		<result property="rankChangeDate" column="rank_change_date" />
+		<result property="firstDegree" column="first_degree" />
+		<result property="technicalPosition" column="technical_position" />
+		<result property="fristDegreeGraduateSchool" column="frist_degree_graduate_school" />
+		<result property="nonLeadershipFlag" column="non_leadership_flag" />
+		<result property="firstDegreeMajor" column="first_degree_major" />
+		<result property="post" column="post" />
+		<result property="postType" column="post_type" />
+		<result property="wages" column="wages" />
+		<result property="highestDegree" column="highest_degree" />
+		<result property="examinationResult" column="examination_result" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.TeacherAssist">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_teacher_assist (
+			id, 
+			school_id, 
+			user_id, 
+			join_reason, 
+			degree, 
+			identity, 
+			actual_position, 
+			management_type, 
+			current_position_date, 
+			personnel_funds_type, 
+			current_position_period, 
+			join_party_date, 
+			low_post, 
+			check_interrupt, 
+			low_post_date, 
+			interruptwork_years, 
+			cadre_posts, 
+			work_years, 
+			rank_type, 
+			accrued_age, 
+			rank_change_date, 
+			first_degree, 
+			technical_position, 
+			frist_degree_graduate_school, 
+			non_leadership_flag, 
+			first_degree_major, 
+			post, 
+			post_type, 
+			wages, 
+			highest_degree, 
+			examination_result, 
+			create_date, 
+			modify_date, 
+			is_delete
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{userId}, 
+			#{joinReason}, 
+			#{degree}, 
+			#{identity}, 
+			#{actualPosition}, 
+			#{managementType}, 
+			#{currentPositionDate}, 
+			#{personnelFundsType}, 
+			#{currentPositionPeriod}, 
+			#{joinPartyDate}, 
+			#{lowPost}, 
+			#{checkInterrupt}, 
+			#{lowPostDate}, 
+			#{interruptworkYears}, 
+			#{cadrePosts}, 
+			#{workYears}, 
+			#{rankType}, 
+			#{accruedAge}, 
+			#{rankChangeDate}, 
+			#{firstDegree}, 
+			#{technicalPosition}, 
+			#{fristDegreeGraduateSchool}, 
+			#{nonLeadershipFlag}, 
+			#{firstDegreeMajor}, 
+			#{post}, 
+			#{postType}, 
+			#{wages}, 
+			#{highestDegree}, 
+			#{examinationResult}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="TeacherAssistResult" useCache="false">
+		SELECT * FROM pj_teacher_assist WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findTeacherAssistByCondition" resultMap="TeacherAssistResult" useCache="false">
+		SELECT * FROM pj_teacher_assist 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].joinReason != null and args[0].joinReason != ''">
+				AND join_reason = #{args[0].joinReason,javaType=java.lang.String}
+			</if>
+			<if test="args[0].degree != null and args[0].degree != ''">
+				AND degree = #{args[0].degree,javaType=java.lang.String}
+			</if>
+			<if test="args[0].identity != null and args[0].identity != ''">
+				AND identity = #{args[0].identity,javaType=java.lang.String}
+			</if>
+			<if test="args[0].actualPosition != null and args[0].actualPosition != ''">
+				AND actual_position = #{args[0].actualPosition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].managementType != null and args[0].managementType != ''">
+				AND management_type = #{args[0].managementType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].currentPositionDate != null">
+				AND current_position_date = #{args[0].currentPositionDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].personnelFundsType != null and args[0].personnelFundsType != ''">
+				AND personnel_funds_type = #{args[0].personnelFundsType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].currentPositionPeriod != null">
+				AND current_position_period = #{args[0].currentPositionPeriod,javaType=java.util.Date}
+			</if>
+			<if test="args[0].joinPartyDate != null">
+				AND join_party_date = #{args[0].joinPartyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].lowPost != null and args[0].lowPost != ''">
+				AND low_post = #{args[0].lowPost,javaType=java.lang.String}
+			</if>
+			<if test="args[0].checkInterrupt != null and args[0].checkInterrupt != ''">
+				AND check_interrupt = #{args[0].checkInterrupt,javaType=java.lang.String}
+			</if>
+			<if test="args[0].lowPostDate != null">
+				AND low_post_date = #{args[0].lowPostDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].interruptworkYears != null and args[0].interruptworkYears != ''">
+				AND interruptwork_years = #{args[0].interruptworkYears,javaType=java.lang.String}
+			</if>
+			<if test="args[0].cadrePosts != null and args[0].cadrePosts != ''">
+				AND cadre_posts = #{args[0].cadrePosts,javaType=java.lang.String}
+			</if>
+			<if test="args[0].workYears != null and args[0].workYears != ''">
+				AND work_years = #{args[0].workYears,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rankType != null and args[0].rankType != ''">
+				AND rank_type = #{args[0].rankType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].accruedAge != null and args[0].accruedAge != ''">
+				AND accrued_age = #{args[0].accruedAge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rankChangeDate != null and args[0].rankChangeDate != ''">
+				AND rank_change_date = #{args[0].rankChangeDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].firstDegree != null and args[0].firstDegree != ''">
+				AND first_degree = #{args[0].firstDegree,javaType=java.lang.String}
+			</if>
+			<if test="args[0].technicalPosition != null and args[0].technicalPosition != ''">
+				AND technical_position = #{args[0].technicalPosition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fristDegreeGraduateSchool != null and args[0].fristDegreeGraduateSchool != ''">
+				AND frist_degree_graduate_school = #{args[0].fristDegreeGraduateSchool,javaType=java.lang.String}
+			</if>
+			<if test="args[0].nonLeadershipFlag != null and args[0].nonLeadershipFlag != ''">
+				AND non_leadership_flag = #{args[0].nonLeadershipFlag,javaType=java.lang.String}
+			</if>
+			<if test="args[0].firstDegreeMajor != null and args[0].firstDegreeMajor != ''">
+				AND first_degree_major = #{args[0].firstDegreeMajor,javaType=java.lang.String}
+			</if>
+			<if test="args[0].post != null and args[0].post != ''">
+				AND post = #{args[0].post,javaType=java.lang.String}
+			</if>
+			<if test="args[0].postType != null and args[0].postType != ''">
+				AND post_type = #{args[0].postType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].wages != null and args[0].wages != ''">
+				AND wages = #{args[0].wages,javaType=java.lang.String}
+			</if>
+			<if test="args[0].highestDegree != null and args[0].highestDegree != ''">
+				AND highest_degree = #{args[0].highestDegree,javaType=java.lang.String}
+			</if>
+			<if test="args[0].examinationResult != null and args[0].examinationResult != ''">
+				AND examination_result = #{args[0].examinationResult,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_teacher_assist 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].joinReason != null and args[0].joinReason != ''">
+				AND join_reason = #{args[0].joinReason,javaType=java.lang.String}
+			</if>
+			<if test="args[0].degree != null and args[0].degree != ''">
+				AND degree = #{args[0].degree,javaType=java.lang.String}
+			</if>
+			<if test="args[0].identity != null and args[0].identity != ''">
+				AND identity = #{args[0].identity,javaType=java.lang.String}
+			</if>
+			<if test="args[0].actualPosition != null and args[0].actualPosition != ''">
+				AND actual_position = #{args[0].actualPosition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].managementType != null and args[0].managementType != ''">
+				AND management_type = #{args[0].managementType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].currentPositionDate != null">
+				AND current_position_date = #{args[0].currentPositionDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].personnelFundsType != null and args[0].personnelFundsType != ''">
+				AND personnel_funds_type = #{args[0].personnelFundsType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].currentPositionPeriod != null">
+				AND current_position_period = #{args[0].currentPositionPeriod,javaType=java.util.Date}
+			</if>
+			<if test="args[0].joinPartyDate != null">
+				AND join_party_date = #{args[0].joinPartyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].lowPost != null and args[0].lowPost != ''">
+				AND low_post = #{args[0].lowPost,javaType=java.lang.String}
+			</if>
+			<if test="args[0].checkInterrupt != null and args[0].checkInterrupt != ''">
+				AND check_interrupt = #{args[0].checkInterrupt,javaType=java.lang.String}
+			</if>
+			<if test="args[0].lowPostDate != null">
+				AND low_post_date = #{args[0].lowPostDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].interruptworkYears != null and args[0].interruptworkYears != ''">
+				AND interruptwork_years = #{args[0].interruptworkYears,javaType=java.lang.String}
+			</if>
+			<if test="args[0].cadrePosts != null and args[0].cadrePosts != ''">
+				AND cadre_posts = #{args[0].cadrePosts,javaType=java.lang.String}
+			</if>
+			<if test="args[0].workYears != null and args[0].workYears != ''">
+				AND work_years = #{args[0].workYears,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rankType != null and args[0].rankType != ''">
+				AND rank_type = #{args[0].rankType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].accruedAge != null and args[0].accruedAge != ''">
+				AND accrued_age = #{args[0].accruedAge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rankChangeDate != null and args[0].rankChangeDate != ''">
+				AND rank_change_date = #{args[0].rankChangeDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].firstDegree != null and args[0].firstDegree != ''">
+				AND first_degree = #{args[0].firstDegree,javaType=java.lang.String}
+			</if>
+			<if test="args[0].technicalPosition != null and args[0].technicalPosition != ''">
+				AND technical_position = #{args[0].technicalPosition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fristDegreeGraduateSchool != null and args[0].fristDegreeGraduateSchool != ''">
+				AND frist_degree_graduate_school = #{args[0].fristDegreeGraduateSchool,javaType=java.lang.String}
+			</if>
+			<if test="args[0].nonLeadershipFlag != null and args[0].nonLeadershipFlag != ''">
+				AND non_leadership_flag = #{args[0].nonLeadershipFlag,javaType=java.lang.String}
+			</if>
+			<if test="args[0].firstDegreeMajor != null and args[0].firstDegreeMajor != ''">
+				AND first_degree_major = #{args[0].firstDegreeMajor,javaType=java.lang.String}
+			</if>
+			<if test="args[0].post != null and args[0].post != ''">
+				AND post = #{args[0].post,javaType=java.lang.String}
+			</if>
+			<if test="args[0].postType != null and args[0].postType != ''">
+				AND post_type = #{args[0].postType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].wages != null and args[0].wages != ''">
+				AND wages = #{args[0].wages,javaType=java.lang.String}
+			</if>
+			<if test="args[0].highestDegree != null and args[0].highestDegree != ''">
+				AND highest_degree = #{args[0].highestDegree,javaType=java.lang.String}
+			</if>
+			<if test="args[0].examinationResult != null and args[0].examinationResult != ''">
+				AND examination_result = #{args[0].examinationResult,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="TeacherAssistResult" useCache="false">
+		SELECT * FROM pj_teacher_assist WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.TeacherAssist">
+		UPDATE pj_teacher_assist
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="joinReason != null">
+			join_reason=#{joinReason},
+		</if>
+		<if test="degree != null">
+			degree=#{degree},
+		</if>
+		<if test="identity != null">
+			identity=#{identity},
+		</if>
+		<if test="actualPosition != null">
+			actual_position=#{actualPosition},
+		</if>
+		<if test="managementType != null">
+			management_type=#{managementType},
+		</if>
+		<if test="currentPositionDate != null">
+			current_position_date=#{currentPositionDate},
+		</if>
+		<if test="personnelFundsType != null">
+			personnel_funds_type=#{personnelFundsType},
+		</if>
+		<if test="currentPositionPeriod != null">
+			current_position_period=#{currentPositionPeriod},
+		</if>
+		<if test="joinPartyDate != null">
+			join_party_date=#{joinPartyDate},
+		</if>
+		<if test="lowPost != null">
+			low_post=#{lowPost},
+		</if>
+		<if test="checkInterrupt != null">
+			check_interrupt=#{checkInterrupt},
+		</if>
+		<if test="lowPostDate != null">
+			low_post_date=#{lowPostDate},
+		</if>
+		<if test="interruptworkYears != null">
+			interruptwork_years=#{interruptworkYears},
+		</if>
+		<if test="cadrePosts != null">
+			cadre_posts=#{cadrePosts},
+		</if>
+		<if test="workYears != null">
+			work_years=#{workYears},
+		</if>
+		<if test="rankType != null">
+			rank_type=#{rankType},
+		</if>
+		<if test="accruedAge != null">
+			accrued_age=#{accruedAge},
+		</if>
+		<if test="rankChangeDate != null">
+			rank_change_date=#{rankChangeDate},
+		</if>
+		<if test="firstDegree != null">
+			first_degree=#{firstDegree},
+		</if>
+		<if test="technicalPosition != null">
+			technical_position=#{technicalPosition},
+		</if>
+		<if test="fristDegreeGraduateSchool != null">
+			frist_degree_graduate_school=#{fristDegreeGraduateSchool},
+		</if>
+		<if test="nonLeadershipFlag != null">
+			non_leadership_flag=#{nonLeadershipFlag},
+		</if>
+		<if test="firstDegreeMajor != null">
+			first_degree_major=#{firstDegreeMajor},
+		</if>
+		<if test="post != null">
+			post=#{post},
+		</if>
+		<if test="postType != null">
+			post_type=#{postType},
+		</if>
+		<if test="wages != null">
+			wages=#{wages},
+		</if>
+		<if test="highestDegree != null">
+			highest_degree=#{highestDegree},
+		</if>
+		<if test="examinationResult != null">
+			examination_result=#{examinationResult},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_teacher_assist
+		WHERE id = #{id}
+	</delete>
+	
+	<select id="findOfUser" resultMap="TeacherAssistResult" useCache="false">
+		SELECT * FROM pj_teacher_assist WHERE is_delete = 0 
+		AND school_id = #{args[0],javaType=java.lang.Integer} 
+		AND user_id = #{args[1],javaType=java.lang.Integer}
+	</select>
+	
+	
+</mapper>

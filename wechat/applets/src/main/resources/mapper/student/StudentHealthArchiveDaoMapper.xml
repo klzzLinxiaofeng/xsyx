@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.student.dao.StudentHealthArchiveDao">
+    <resultMap id="studentResult" type="com.xunyunedu.student.pojo.StudentHealthArchivePojo">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="teamId" column="team_id" />
+        <result property="studentId" column="student_id"/>
+        <result property="type" column="type"/>
+        <result property="remark" column="remark"/>
+        <result property="accessory" column="accessory"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+<!--        <result property="types" column="types"/>-->
+        <result property="typeNames" column="typeNames"/>
+        <result property="teamName" column="teamName"/>
+        <result property="stuName" column="stuName"/>
+
+
+
+<!--        teamName,
+                CONCAT(ps.`name`) stuName-->
+
+
+    </resultMap>
+
+
+
+    <select id="findById" resultMap="studentResult">
+        SELECT * FROM pj_student_health_archive WHERE id = #{id}
+        and is_delete = 0
+    </select>
+
+
+
+    <select id="selectById" resultMap="studentResult">
+
+    <!--返回值缺少学生姓名-->
+<!--        SELECT * FROM pj_student_health_archive WHERE id = #{id}-->
+        SELECT
+        psha.*,
+        group_concat( pshat.health_type ) he,
+        group_concat( jgi.NAME ) typeNames,
+        CONCAT( pt.`name` ) teamName,
+        CONCAT(ps.`name`) stuName
+        FROM
+        pj_student_health_archive psha
+        LEFT JOIN pj_team pt ON pt.id = psha.team_id
+        LEFT JOIN pj_student_health_archive_type pshat ON psha.id = pshat.student_health_id
+        LEFT JOIN jc_gc_item jgi ON jgi.id = pshat.health_type
+        LEFT JOIN pj_student ps on ps.id = psha.student_id
+
+        WHERE
+        jgi.table_code = 'GB-JKZK3'
+        AND
+        psha.id = #{id}
+
+        GROUP BY
+        psha.id
+    </select>
+
+
+
+    <select id="findAllStudentHealthArchive" resultMap="studentResult" useCache="false">
+        SELECT * FROM pj_student_health_archive
+        where is_delete = 0
+        ORDER BY id DESC
+    </select>
+
+
+    <insert id="createHealth" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO pj_student_health_archive ( school_id, team_id, student_id, type, remark, accessory, is_delete, create_date, modify_date, uuid, pic_url )
+        VALUES
+                (#{schoolId},
+                  #{teamId},
+                  #{studentId},
+                  #{type},
+                  #{remark},
+                  #{accessory},
+                  #{isDelete},
+                  #{createDate},
+                  #{modifyDate},
+                  #{uuid},
+                  #{picUrl})
+    </insert>
+
+    <update id="updateStuMessage">
+            UPDATE pj_student_health_archive
+            SET remark = #{studentHealthArchivePojo.remark} AND uuid = #{studentHealthArchivePojo.uuid}
+            where id = #{id}
+    </update>
+
+
+
+    <select id="getStudentCondition" resultMap="studentResult" useCache="false">
+            SELECT
+                psha.*,
+                group_concat( pshat.health_type ) he,
+                group_concat( jgi.NAME ) typeNames,
+                CONCAT( pt.`name` ) teamName,
+                CONCAT(ps.`name`) stuName
+            FROM
+                pj_student_health_archive psha
+                LEFT JOIN pj_team pt ON pt.id = psha.team_id
+                LEFT JOIN pj_student_health_archive_type pshat ON psha.id = pshat.student_health_id
+                LEFT JOIN jc_gc_item jgi ON jgi.id = pshat.health_type
+                LEFT JOIN pj_student ps on ps.id = psha.student_id
+            WHERE
+                jgi.table_code = 'GB-JKZK3'
+                and
+                psha.is_delete = 0
+            GROUP BY
+                psha.id
+
+    </select>
+
+    <update id="updateById" parameterType="com.xunyunedu.student.pojo.StudentHealthArchivePojo">
+        update pj_student_health_archive
+        set
+        remark = #{pojo.remark},
+        uuid = #{pojo.uuid}
+        where id = #{pojo.id}
+    </update>
+
+    <delete id="deleteStudent">
+        delete from pj_student_health_archive in
+        <foreach collection="list" item="ids" index="no" open="("
+                 separator="," close=")">
+            #{ids}
+        </foreach>
+
+    </delete>
+
+    <delete id="deleteStu">
+        delete from pj_student_health_archive
+        where id = #{ids}
+    </delete>
+
+    <update id="updateStatusById">
+        update pj_student_health_archive
+        SET is_delete = 1
+        WHERE id = #{id}
+    </update>
+
+    <select id="getStuByStuId" resultMap="studentResult" useCache="false">
+        SELECT
+        psha.*,
+        group_concat( pshat.health_type ) he,
+        group_concat( jgi.NAME ) typeNames,
+        CONCAT( pt.`name` ) teamName,
+        CONCAT(ps.`name`) stuName
+        FROM
+        pj_student_health_archive psha
+        LEFT JOIN pj_team pt ON pt.id = psha.team_id
+        LEFT JOIN pj_student_health_archive_type pshat ON psha.id = pshat.student_health_id
+        LEFT JOIN jc_gc_item jgi ON jgi.id = pshat.health_type
+        LEFT JOIN pj_student ps on ps.id = psha.student_id
+
+        WHERE
+        jgi.table_code = 'GB-JKZK3'
+        AND psha.is_delete = 0
+        AND
+        psha.student_id = #{stuId}
+
+        GROUP BY
+        psha.id
+    </select>
+
+    <select id="queryByTeamId" resultMap="studentResult" useCache="false">
+        SELECT
+        psha.*,
+        group_concat( pshat.health_type ) he,
+        group_concat( jgi.NAME ) typeNames,
+        CONCAT( pt.`name` ) teamName,
+        CONCAT(ps.`name`) stuName
+        FROM
+        pj_student_health_archive psha
+        LEFT JOIN pj_team pt ON pt.id = psha.team_id
+        LEFT JOIN pj_student_health_archive_type pshat ON psha.id = pshat.student_health_id
+        LEFT JOIN jc_gc_item jgi ON jgi.id = pshat.health_type
+        LEFT JOIN pj_student ps on ps.id = psha.student_id
+
+        WHERE
+        jgi.table_code = 'GB-JKZK3'
+        AND psha.is_delete = 0
+        AND
+        psha.team_id = #{teamId}
+
+        GROUP BY
+        psha.id
+    </select>
+</mapper>

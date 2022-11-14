@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ComplainFileDao">
+
+	<resultMap id="ComplainFileResult" type="platform.education.generalTeachingAffair.model.ComplainFile">
+		<result property="id" column="id" />
+		<result property="complainId" column="complain_id" />
+		<result property="fileId" column="file_id" />
+		<result property="createDate" column="create_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ComplainFile">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO dn_complain_file (
+			id, 
+			complain_id, 
+			file_id, 
+			create_date
+		)
+		VALUES (
+			#{id}, 
+			#{complainId}, 
+			#{fileId}, 
+			#{createDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ComplainFileResult" useCache="false">
+		SELECT * FROM dn_complain_file WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findComplainFileByCondition" resultMap="ComplainFileResult" useCache="false">
+		SELECT * FROM dn_complain_file
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].complainId != null">
+				AND complain_id = #{args[0].complainId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fileId != null and args[0].fileId != ''">
+				AND file_id = #{args[0].fileId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM dn_complain_file
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].complainId != null">
+				AND complain_id = #{args[0].complainId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fileId != null and args[0].fileId != ''">
+				AND file_id = #{args[0].fileId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ComplainFileResult" useCache="false">
+		SELECT * FROM dn_complain_file WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ComplainFile">
+		UPDATE dn_complain_file
+		SET 
+		<if test="complainId != null">
+			complain_id=#{complainId},
+		</if>
+		<if test="fileId != null">
+			file_id=#{fileId},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM dn_complain_file
+		WHERE id = #{id}
+	</delete>
+
+
+	<select id="findByComplainId" resultMap="ComplainFileResult" useCache="false">
+		SELECT * FROM dn_complain_file WHERE complain_id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+</mapper>

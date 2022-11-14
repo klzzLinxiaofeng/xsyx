@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.kexuanke.dao.KeXuanKeDao">
+
+    <resultMap id="KeXuanKeMap" type="platform.szxyzxx.kexuanke.vo.KeXuanKe">
+        <id column="id" property="id"></id>
+        <result column="grade_id" property="gradeId"></result>
+        <result column="zhuantai" property="zhuantai"></result>
+        <result column="xn" property="schoolYear"></result>
+        <result column="xq" property="schoolTrem"></result>
+    </resultMap>
+    <resultMap id="GradeKeXuanKeMap" type="platform.szxyzxx.kexuanke.vo.GradeKeXuanKe">
+        <result column="grade_id" property="gradeId"></result>
+        <result column="zhuantai" property="zhuanTai"></result>
+        <result column="name" property="gradeName"></result>
+    </resultMap>
+    <select id="findByGradeIdKeXuanKes" resultMap="KeXuanKeMap">
+        select * from zy_kaiqixuanke where 1=1
+        <if test="args[0]!=null">
+            and grade_id=#{args[0]}
+        </if>
+    </select>
+
+    <update id="updateKeXuanKe">
+        update zy_kaiqixuanke set zhuantai=#{args[1]} where grade_id=#{args[0]}
+    </update>
+    <insert id="createKeXuanKe">
+        insert into zy_kaiqixuanke(grade_id,xn,xq,zhuantai)value(#{args[0].gradeId},#{args[0].schoolYear},#{args[0].schoolTrem},#{args[0].zhuantai})
+    </insert>
+
+    <select id="findByAll" resultMap="GradeKeXuanKeMap">
+        select pg.id as gradeId,pg.name as gradeName,zk.zhuantai from pj_grade pg left join zy_kaiqixuanke zk on zk.grade_id=pg.id
+        <where>
+            1=1
+            <if test="args[0]!=null">
+               and  school_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+               and  school_year=#{args[1]}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.team.dao.ExamTeamDao">
+    <resultMap id="ExamTeamResult" type="com.xunyunedu.team.pojo.ExamTeamPojo">
+        <id column="id" property="id"/>
+        <result column="teamName" property="teamName"/>
+        <result column="exam_name" property="examName"/>
+        <result column="score" property="score"/>
+        <result column="precise_start_date" property="preciseStartDate"/>
+        <result column="passingRate" property="passingRate"/>
+        <result column="uuid" property="uuid"/>
+        <result column="name" property="name"/>
+        <result column="comment" property="comment"/>
+        <result column="team_id" property="teamId"/>
+        <result column="create_date" property="createDate"/>
+    </resultMap>
+
+
+    <resultMap id="studentScoreResult" type="com.xunyunedu.team.pojo.TeamStuScorePojo">
+        <result column="score" property="score"/>
+        <result column="name" property="name"/>
+    </resultMap>
+
+    <select id="read" resultMap="ExamTeamResult">
+        select pets.id,pets.exam_name,pets.precise_start_date precise_start_date,pets.uuid,ps.name,
+        CAST(AVG(pss.score) AS DECIMAL(10,2)) score,
+        concat(CAST(100 * SUM( CASE WHEN ifnull( pss.score, 0 ) >= 60 THEN 1 ELSE 0 END ) / COUNT( * ) AS DECIMAL(10,2)),'%') passingRate
+        from pj_exam_team_subject pets
+        join pj_subject ps on ps.code = pets.subject_code
+        join pj_school_term_current pstc on pstc.school_term_code =  pets.term_code
+        join pj_student_score pss on pss.exam_team_subject_id = pets.id and pss.team_id = pets.team_id
+        where pets.school_id = #{schoolId} and pets.is_delete = 0
+        and pstc.school_id = #{schoolId}
+        and pss.school_id = #{schoolId} and pss.is_delete = 0
+        and ps.school_id = #{schoolId} and ps.is_delete = 0
+        and pets.team_id = #{teamId}
+        <if test="code != null and code != ''">
+            and pets.subject_code = #{code}
+        </if>
+        <if test="type != null and type == 1"> and pets.exam_type != 3</if>
+        <if test="type != null and type == 0"> and pets.exam_type = 3</if>
+        group by pss.exam_team_subject_id
+        order by pets.precise_start_date desc
+    </select>
+
+    <select id="readStudentScore" resultMap="studentScoreResult">
+        select ps.name, pss.score
+        from pj_student_score pss
+        join pj_student ps on ps.id = pss.student_id
+        where pss.exam_team_subject_id = #{id}
+        and pss.is_delete = 0 and pss.school_id = #{schoolId}
+        and ps.school_id = #{schoolId} and ps.is_delete = 0
+        order by score+0 desc
+    </select>
+
+    <select id="readStuScoreInfo" resultMap="ExamTeamResult">
+        select pets.exam_name, pss.score ,pets.precise_start_date precise_start_date,
+        pets.create_date,psj.name,pss.exam_team_subject_id id,pets.uuid,pss.comment,pets.team_id
+        from pj_student_score pss
+        join pj_student ps on ps.id = pss.student_id
+        join pj_exam_team_subject pets on pets.id = pss.exam_team_subject_id
+		join pj_subject psj on psj.code = pets.subject_code
+        where pss.is_delete = 0 and pss.school_id = #{schoolId}
+        and psj.school_id = #{schoolId} and psj.is_delete = 0
+        and ps.school_id = #{schoolId} and ps.is_delete = 0
+		and pets.school_id = #{schoolId} and pets.is_delete = 0
+        and pets.term_code=#{termCode}
+        <if test="type != null and type != ''"> and pets.exam_type = #{type}</if>
+        <if test="types != null and types .size()>0">
+            and pets.exam_type in
+            <foreach item="item" collection="types" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+		<if test="code != null and code != ''">
+            and pets.subject_code = #{code}
+        </if>
+		and ps.id = #{stuId}
+        order by pets.precise_start_date desc,pets.create_date desc
+    </select>
+
+    <select id="getStuOrder" resultType="java.lang.Integer">
+        select a.rank from (
+            select t.student_id stuId, t.score,
+            (select count(b.score)+1 from pj_student_score AS b WHERE b.is_delete = 0 
+            AND b.school_id = #{schoolId} AND b.exam_team_subject_id = #{id} and  b.score + 0 &gt; t.score + 0) rank
+            from pj_student_score t 
+            WHERE t.is_delete = 0 
+            AND t.school_id = #{schoolId} AND t.exam_team_subject_id = #{id}
+            order by t.score + 0 desc
+        )a where a.stuId = #{stuId}
+    </select>
+
+    <select id="getStuTerm" resultType="java.util.Map">
+        select pst.id, concat(pst.school_year,pst.name) value from pj_team_student pts
+        join pj_team pt on pt.id = pts.team_id
+        join pj_student_score pss on pss.student_id = pts.student_id
+        join pj_school_term pst on pst.code = pss.term_code
+        where pts.is_delete = 0
+        and pt.school_id = #{schoolId} and pt.is_delete = 0 
+        and pss.is_delete = 0 and pss.school_id = #{schoolId}
+        and pst.school_id = #{schoolId} and pst.is_delete = 0
+        and pts.student_id = #{stuId}
+        group by pss.term_code
+    </select>
+    <select id="getTeamOrder" resultType="java.lang.Integer">
+         select a.rank from (
+            SELECT 	u.id,u.exam_name,u.precise_end_date ,u.team_id,u.score,
+             CASE  WHEN @last_score = u.score THEN @rank
+                   WHEN @last_score := u.score THEN @rank := @rank + 1 END AS rank
+            FROM
+                (select pets.id,pets.exam_name,pets.precise_end_date ,pets.team_id,
+                CAST(AVG(pss.score) AS DECIMAL(10,2)) score
+                from pj_student_score pss
+                join pj_exam_team_subject pets on pss.exam_team_subject_id = pets.id and pss.team_id = pets.team_id
+                where pets.school_id = #{schoolId} and pets.is_delete = 0
+                and pss.school_id = #{schoolId} and pss.is_delete = 0
+                and uuid = #{uuid}
+                group by pss.exam_team_subject_id  ORDER BY score DESC) u,
+            (SELECT @rank := 0, @last_score := NULL) r
+            )a
+            where a.id = #{id}
+    </select>
+
+    <select id="getStuSchoolOrder" resultType="java.lang.Integer">
+        select a.rank from (
+            select u.student_id, u.score,
+            (select count(pss.score)+1 from pj_student_score pss where pss.exam_team_subject_id in
+                            (select id from pj_exam_team_subject where uuid = #{uuid}) and pss.school_id = #{schoolId} and pss.is_delete = 0 and pss.score +0 &gt; u.score + 0) rank
+            from  (select pss.id,pss.student_id,pss.score from pj_student_score pss where pss.exam_team_subject_id in
+                            (select id from pj_exam_team_subject where uuid = #{uuid}) and pss.school_id = #{schoolId} and pss.is_delete = 0) u
+            order by u.score +0 desc
+        )a where a.student_id = #{stuId}
+    </select>
+</mapper>

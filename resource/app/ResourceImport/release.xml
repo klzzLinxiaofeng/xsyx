@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+	<id>bin</id>
+	<baseDirectory>ri</baseDirectory>
+	<formats>
+		<format>dir</format>
+	</formats>
+	<dependencySets>
+		<dependencySet>
+			<useProjectArtifact>true</useProjectArtifact>
+			<outputDirectory>resource-import/lib</outputDirectory>
+		</dependencySet>
+	</dependencySets>
+
+	<fileSets>
+		<fileSet>
+			<directory>${project.basedir}/src/main/resources/bin</directory>
+			<outputDirectory>resource-import/bin</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<!-- <directory>${project.basedir}/src/main/resources/conf</directory> -->
+			<directory>${project.basedir}/src/main/resources/conf</directory>
+			<outputDirectory>resource-import/conf</outputDirectory>
+		</fileSet>
+	</fileSets>
+
+</assembly>

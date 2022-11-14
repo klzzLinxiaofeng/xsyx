@@ -1,0 +1,1981 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.TeacherDao">
+
+	<resultMap id="TeacherResult" type="platform.education.generalTeachingAffair.model.Teacher">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="persionId" column="persion_id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="name" column="name" />
+		<result property="alias" column="alias" />
+		<result property="sex" column="sex" />
+		<result property="jobNumber" column="job_number" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="workBeginDate" column="work_begin_date" />
+		<result property="qualification" column="qualification" />
+		<result property="occupationCode" column="occupation_code" />
+		<result property="position" column="position" />
+		<result property="mobile" column="mobile" />
+		<result property="telephone" column="telephone" />
+		<result property="postStaffing" column="post_staffing" />
+		<result property="jobState" column="job_state" />
+		<result property="isExternal" column="is_external" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="empCard" column="emp_card"/>
+		<result property="empCode" column="emp_code"/>
+		<result property="isSendHikdoor" column="is_send_hikdoor"/>
+		<result property="isSendLibrary" column="is_send_library"/>
+		<result property="deptNames" column="deptNames"/>
+	</resultMap>
+
+	<resultMap id="TeacherApiVoResult" type="platform.education.generalTeachingAffair.vo.TeacherApiVo">
+		<result property="id" column="id"/>
+		<result property="schoolId" column="school_id"/>
+		<result property="persionId" column="persion_id"/>
+		<result property="userId" column="user_id"/>
+		<result property="userName" column="user_name"/>
+		<result property="name" column="name"/>
+		<result property="alias" column="alias"/>
+		<result property="sex" column="sex"/>
+		<result property="jobNumber" column="job_number"/>
+		<result property="enrollDate" column="enroll_date"/>
+		<result property="leaveDate" column="leave_date"/>
+		<result property="workBeginDate" column="work_begin_date"/>
+		<result property="qualification" column="qualification"/>
+		<result property="occupationCode" column="occupation_code"/>
+		<result property="position" column="position"/>
+		<result property="mobile" column="mobile"/>
+		<result property="telephone" column="telephone"/>
+		<result property="idCardNumber" column="id_card_number"/>
+		<result property="postStaffing" column="post_staffing"/>
+		<result property="jobState" column="job_state"/>
+		<result property="isExternal" column="is_external"/>
+		<result property="createDate" column="create_date"/>
+		<result property="modifyDate" column="modify_date"/>
+		<result property="departmentId" column="deptId"/>
+		<result property="departmentName" column="deptName"/>
+		<result property="email" column="email"/>
+	</resultMap>
+
+	<resultMap id="TeacherVoResult" type="platform.education.generalTeachingAffair.vo.TeacherVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="persionId" column="persion_id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="name" column="name" />
+		<result property="alias" column="alias" />
+		<result property="sex" column="sex" />
+		<result property="jobNumber" column="job_number" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="workBeginDate" column="work_begin_date" />
+		<result property="qualification" column="qualification" />
+		<result property="occupationCode" column="occupation_code" />
+		<result property="position" column="position" />
+		<result property="mobile" column="mobile" />
+		<result property="telephone" column="telephone" />
+		<result property="idCardNumber" column="id_card_number" />
+		<result property="postStaffing" column="post_staffing" />
+		<result property="jobState" column="job_state" />
+		<result property="isExternal" column="is_external" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="departmentId" column="deptId" />
+		<result property="departmentName" column="deptName" />
+		<result property="email" column="email" />
+		<result property="userState" column="state" />
+		<result property="schoolName" column="schoolName" />
+	</resultMap>
+
+	<resultMap id="TeacherResultTemp" type="platform.education.generalTeachingAffair.model.Teacher">
+		<result property="id" column="id" />
+		<result property="sex" column="sex" />
+		<result property="userId" column="user_id" />
+		<result property="schoolId" column="school_id" />
+		<result property="userName" column="user_name" />
+		<result property="name" column="name" />
+		<result property="mobile" column="mobile" />
+		<result property="entityId" column="entity_id" />
+		<result property="type" column="type" />
+		<result property="teamId" column="team_id" />
+		<result property="subjectName" column="subjectName" />
+		<result property="subjectCode" column="subject_code" />
+	</resultMap>
+
+	<resultMap id="TeacherResultTempVo" type="platform.education.generalTeachingAffair.vo.TeacherVo">
+		<result property="id" column="id" />
+		<result property="sex" column="sex" />
+		<result property="userId" column="user_id" />
+		<result property="schoolId" column="school_id" />
+		<result property="userName" column="user_name" />
+		<result property="name" column="name" />
+		<result property="mobile" column="mobile" />
+		<result property="entityId" column="entity_id" />
+		<result property="type" column="type" />
+		<result property="teamId" column="team_id" />
+		<result property="subjectName" column="subjectName" />
+		<result property="subjectCode" column="subject_code" />
+		<!-- 2018-1-17 -->
+		<result property="types" column="types" />
+		<result property="subjectInfo" column="subject_info" />
+		<result property="subjectId" column="subjectId" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<resultMap id="TeacherNumResultTemp" type="platform.education.generalTeachingAffair.model.Teacher">
+		<result property="schoolId" column="school_id" />
+		<result property="teacherNum" column="teacherNum" />
+	</resultMap>
+
+	<resultMap id="TeacherOfSexResult" type="platform.education.generalTeachingAffair.vo.TeacherVo">
+		<result property="manNum" column="manNum" />
+		<result property="womanNum" column="womanNum" />
+		<result property="sumNum" column="sumNum" />
+		<result property="ZXXBZLBName" column="ZXXBZLBName" />
+		<result property="ZXXBZLBNumber" column="ZXXBZLBNumber" />
+		<result property="GBXLName" column="GBXLName" />
+		<result property="GBXLNumber" column="GBXLNumber" />
+		<result property="ageGroup" column="ageGroup" />
+		<result property="ageNumber" column="ageNumber" />
+		<result property="member" column="member" />
+		<result property="patry" column="patry" />
+		<result property="other" column="other" />
+	</resultMap>
+
+	<resultMap id="TeacherDetailInfoResult" type="platform.education.generalTeachingAffair.model.TeacherDetailInfo">
+		<result property="schoolId" column="schoolId" />
+		<result property="name" column="name" />
+		<result property="alias" column="alias" />
+		<result property="persionId" column="persionId" />
+		<result property="teacherId" column="teacherId" />
+		<result property="entityId" column="entityId" />
+		<result property="userId" column="userId" />
+		<result property="userName" column="userName" />
+		<result property="englishName" column="englishName" />
+		<result property="sex" column="sex" />
+		<result property="jobNumber" column="jobNumber" />
+		<result property="enrollDate" column="enrollDate" />
+		<result property="leaveDate" column="leaveDate" />
+		<result property="workBeginDate" column="workBeginDate" />
+		<result property="qualification" column="qualification" />
+		<result property="occupationCode" column="occupationCode" />
+		<result property="position" column="position" />
+		<result property="mobile" column="mobile" />
+		<result property="telephone" column="telephone" />
+		<result property="postStaffing" column="postStaffing" />
+		<result property="jobState" column="jobState" />
+		<result property="certificateType" column="certificateType" />
+		<result property="certificateNum" column="certificateNum" />
+		<result property="nationality" column="nationality" />
+		<result property="nation" column="nation" />
+		<result property="nativePlace" column="nativePlace" />
+		<result property="birthPlace" column="birthPlace" />
+		<result property="marriage" column="marriage" />
+		<result property="political" column="political" />
+		<result property="specialty" column="specialty" />
+		<result property="religiousBelief" column="religiousBelief" />
+		<result property="register" column="register" />
+		<result property="registerPlace" column="registerPlace" />
+		<result property="nowAddress" column="nowAddress" />
+		<result property="email" column="email" />
+		<result property="liveAddress" column="liveAddress" />
+		<result property="remark" column="remark" />
+		<result property="birthDate" column="birthDate" />
+		<result property="isExternal" column="isExternal" />
+		<result property="photoUuid" column="photoUuid" />
+	</resultMap>
+
+	<resultMap id="TeacherMessVoResult" type="platform.education.generalTeachingAffair.vo.TeacherMessVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="persionId" column="persion_id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="name" column="name" />
+		<result property="alias" column="alias" />
+		<result property="sex" column="sex" />
+		<result property="jobNumber" column="job_number" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="workBeginDate" column="work_begin_date" />
+		<result property="qualification" column="qualification" />
+		<result property="occupationCode" column="occupation_code" />
+		<result property="position" column="position" />
+		<result property="mobile" column="mobile" />
+		<result property="telephone" column="telephone" />
+		<result property="postStaffing" column="post_staffing" />
+		<result property="jobState" column="job_state" />
+		<result property="isExternal" column="is_external" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="iconUUID" column="iconUUID" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.Teacher">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_teacher (id, school_id, persion_id, user_id, user_name,
+		name, alias, sex, job_number, enroll_date, leave_date, work_begin_date,
+		qualification,occupation_code, position, mobile, telephone,
+		post_staffing, is_external, is_delete, create_date, modify_date, emp_code,emp_card)
+		VALUES
+		(#{id}, #{schoolId}, #{persionId}, #{userId}, #{userName}, #{name}, #{alias},
+		#{sex}, #{jobNumber}, #{enrollDate}, #{leaveDate}, #{workBeginDate},
+		#{qualification},#{occupationCode}, #{position}, #{mobile},
+		#{telephone}, #{postStaffing}, #{isExternal}, #{isDelete},
+		#{createDate}, #{modifyDate}, #{empCode},#{empCard})
+	</insert>
+
+	<!-- 岗位 -->
+	<select id="findTeacherNumberOfStationData" resultMap="TeacherOfSexResult" useCache="false">
+		select jc.`name` as ZXXBZLBName,COUNT(t.post_staffing) as ZXXBZLBNumber
+		from jc_gc_item jc LEFT JOIN pj_teacher t
+		ON jc.`value` = t.post_staffing
+		AND t.is_delete = 0
+		<if test="args[0]!=null and args[0]!=''">
+			AND t.school_id = #{args[0]}
+		</if>
+		WHERE 1=1
+		<if test="args[1]!=null and args[1]!=''">
+			AND jc.table_code = #{args[1]}
+		</if>
+		GROUP BY jc.`value`
+	</select>
+
+	<!-- 学位 -->
+	<select id="findTeacherNumberOfQualificationData" resultMap="TeacherOfSexResult" useCache="false">
+		select jc.`name` as GBXLName,COUNT(t.post_staffing) as GBXLNumber
+		from jc_gc_item jc LEFT JOIN pj_teacher t
+		ON jc.`value` = t.qualification
+		AND t.is_delete = 0
+		<if test="args[0]!=null and args[0]!=''">
+			AND t.school_id = #{args[0]}
+		</if>
+		WHERE 1=1
+		<if test="args[1]!=null and args[1]!=''">
+			AND jc.table_code = #{args[1]}
+		</if>
+		GROUP BY jc.`value`
+	</select>
+
+	<!--性别 -->
+	<select id="findTeamTeacherNumberOfSexData" resultMap="TeacherOfSexResult" useCache="false">
+		select count(case when t.sex = 1 then t.sex end ) as manNum,
+		count(case when t.sex = 2 then t.sex end ) as womanNum,
+		count(case when t.sex != 2 AND t.sex !=1 then t.sex end ) as sumNum
+		from pj_teacher t WHERE t.is_delete = 0
+		<if test="args[0]!=null and args[0]!=null">
+			AND t.school_id = #{args[0]}
+		</if>
+	</select>
+
+	<!--政治面貌：性别 -->
+	<select id="findTeamTeacherNumberOfData" resultMap="TeacherOfSexResult" useCache="false">
+		select count(case when t.sex = 1 then t.sex end ) as manNum,
+		count(case when t.sex = 2 then t.sex end ) as womanNum,
+		count(case when t.sex != 2 AND t.sex !=1 then t.sex end ) as sumNum
+		from pj_teacher t LEFT JOIN pj_person ps ON ps.id = t.persion_id WHERE t.is_delete = 0
+		<if test="args[0]!=null and args[0]!=null">
+			AND t.school_id = #{args[0]}
+		</if>
+		<if test="args[1]!=null and args[1]!=null">
+			AND ps.political_status = #{args[1]}
+		</if>
+		<if test="args[2]!=null and args[2]!=null">
+			AND t.post_staffing = #{args[2]}
+		</if>
+		<if test="args[3]!=null and args[3]!=null">
+			AND t.qualification = #{args[3]}
+		</if>
+		<if test="args[4]!=null and args[4]!=null">
+			AND t.is_external = #{args[4]}
+		</if>
+	</select>
+
+	<!-- 年龄段 -->
+	<select id="findTeacherNumberOfAgeData" resultMap="TeacherOfSexResult" useCache="false">
+		select elt(interval((year(curdate())-year(p.birthday)+(DATE_FORMAT(p.birthday,'%m%d')
+		&lt;=(DATE_FORMAT(curdate(),'%m%d')))),20,31,51),'firstStage','secondStage','theThirdStage','other') as `ageGroup`,
+		count(*) as `ageNumber`from pj_person p RIGHT JOIN pj_teacher t ON t.persion_id = p.id
+		WHERE t.is_delete = 0
+		<if test="args[0]!=null and args[0]!=''">
+			AND t.school_id = #{args[0]}
+		</if>
+		group by elt(interval((year(curdate())-year(p.birthday)+(DATE_FORMAT(p.birthday,'%m%d')
+		&lt;=(DATE_FORMAT(curdate(),'%m%d')))),20,31,51),'firstStage','secondStage','theThirdStage','other');
+	</select>
+
+	<!-- 政治面貌 -->
+	<select id="findTeacherNumberOfPoliticsData" resultMap="TeacherOfSexResult" useCache="false">
+		SELECT
+		COUNT(CASE WHEN p.political_status = 01 THEN p.political_status END) as 'patry',
+		COUNT(CASE WHEN p.political_status = 03 THEN p.political_status END) as 'member',
+		COUNT(CASE WHEN p.political_status != 01 AND p.political_status != 03 THEN 1 else 0 END) as 'other'
+		FROM pj_teacher t INNER JOIN pj_person p ON p.id = t.persion_id
+		AND t.is_delete = 0
+		<if test="args[0]!=null and args[0]!=''">
+			AND t.school_id = #{args[0]}
+		</if>
+	</select>
+
+	<select id="read" resultMap="TeacherResult" useCache="false">
+		SELECT * FROM pj_teacher WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findTeacherOfSchool" resultMap="TeacherResult" useCache="false">
+		SELECT * FROM pj_teacher WHERE 1=1 and is_delete=0
+		<if test="args!=null and args[0]!=null">
+			AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findOfUser" resultMap="TeacherResult" useCache="false">
+		SELECT * FROM pj_teacher WHERE 1=1 and is_delete = 0 AND school_id = #{args[0],javaType=java.lang.Integer} AND user_id = #{args[1],javaType=java.lang.Integer}
+	</select>
+
+	<select id="findUnqiueTeacherId" resultType="java.lang.Integer" useCache="false">
+		SELECT id FROM pj_teacher WHERE 1=1 and is_delete = 0 AND user_id = #{args[0],javaType=java.lang.Integer} AND school_id = #{args[1],javaType=java.lang.Integer}
+	</select>
+
+	<select id="findActiveTeacherOfSchool" resultMap="TeacherResult" useCache="false">
+		SELECT * FROM pj_teacher WHERE 1=1 and job_State='11'
+		and is_delete=0
+		<if test="args!=null and args[0]!=null">
+			AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findMasterOfTeam" resultMap="TeacherResult" useCache="false">
+		SELECT t.* FROM pj_teacher t INNER JOIN pj_team_teacher tt ON t.id = tt.teacher_id WHERE 1=1 AND tt.is_delete = 0 AND t.is_delete = 0 AND tt.type = 1
+		<if test="args != null and args[0] != null">
+			AND tt.team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<!-- 		select pjt.* from pj_team_teacher pjtt, pj_teacher pjt -->
+		<!-- 		where -->
+		<!-- 		pjtt.teacher_id = pjt.id and pjtt.type=1 -->
+		<!-- 		<if test="args[0].teamId != null and args[0].teamId != ''"> -->
+		<!-- 			AND team_id = #{args[0].teamId,javaType=java.lang.Integer} -->
+		<!-- 		</if> -->
+	</select>
+
+	<!-- 功能描述：返回班主任(2015-12-09) -->
+	<select id="findMastersOfTeam" resultMap="TeacherResult" useCache="false">
+		SELECT t.* FROM pj_teacher t INNER JOIN pj_team_teacher tt ON t.id = tt.teacher_id WHERE 1=1 AND tt.is_delete = 0 AND t.is_delete = 0
+		<if test="args != null and args[0] != null">
+			AND tt.type = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args != null and args[1] != null">
+			AND tt.team_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+	</select>
+
+	<select id="findSubjectTeacherOfTeam" resultMap="TeacherResult" useCache="false">
+		select pjt.* from pj_team_teacher pjtt,pj_teacher pjt
+		where
+		pjtt.teacher_id=pjt.id and pjtt.type=2
+		<if test="args[0].teamId != null and args[0].teamId != ''">
+			AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+		</if>
+	</select>
+
+	<select id="findTeacherByCondition" resultMap="TeacherResult" useCache="false">
+		SELECT * FROM pj_teacher WHERE 1=1 and is_delete=0
+		<if test="args[0] != null">
+
+			<if test="args[0].id != null and args[0].id != ''">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].persionId != null and args[0].persionId != ''">
+				AND persion_id = #{args[0].persionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+
+			<choose>
+				<when test="args[0].userName != null and args[0].userName != ''">
+					<choose>
+						<when test="args[0].userNameLike == true">
+							and user_name LIKE CONCAT(CONCAT('%', #{args[0].userName}),'%')
+						</when>
+						<otherwise>
+							and user_name = #{args[0].userName,javaType=java.lang.String}
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+
+				</otherwise>
+			</choose>
+
+
+			<!-- <if test="args[0].userName != null and args[0].userName != ''">
+				AND user_name = #{args[0].userName,javaType=java.lang.String}
+			</if> -->
+
+
+
+			<choose>
+				<when test="args[0].name != null and args[0].name != ''">
+					<choose>
+						<when test="args[0].nameLike == true">
+							and name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+						</when>
+						<otherwise>
+							and name = #{args[0].name,javaType=java.lang.String}
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+
+				</otherwise>
+			</choose>
+
+			<!-- <if test="args[0].name != null and args[0].name != ''">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if> -->
+
+			<!-- 别名的精确查找与模糊查找  添加于2015-11-18  -->
+			<choose>
+				<when test="args[0].alias != null and args[0].alias != ''">
+					<choose>
+						<when test="args[0].aliasLike == true">
+							and alias LIKE CONCAT(CONCAT('%', #{args[0].alias}),'%')
+						</when>
+						<otherwise>
+							and alias = #{args[0].alias,javaType=java.lang.String}
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+
+				</otherwise>
+			</choose>
+
+			<if test="args[0].sex != null and args[0].sex != ''">
+				AND sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].jobNumber != null and args[0].jobNumber != ''">
+				AND job_number LIKE CONCAT(CONCAT('%', #{args[0].jobNumber}),'%')
+			</if>
+			<if test="args[0].enrollDate != null and args[0].enrollDate != ''">
+				AND enroll_date = #{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null and args[0].leaveDate != ''">
+				AND leave_date = #{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].workBeginDate != null and args[0].workBeginDate != ''">
+				AND work_begin_date = #{args[0].workBeginDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].occupationCode != null and args[0].occupationCode != ''">
+				AND occupation_code = #{args[0].occupationCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].qualification != null and args[0].qualification != ''">
+				AND qualification = #{args[0].qualification,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].mobile != null and args[0].mobile != ''">
+				and mobile LIKE CONCAT(CONCAT('%', #{args[0].mobile}),'%')
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].postStaffing != null and args[0].postStaffing != ''">
+				AND post_staffing = #{args[0].postStaffing,javaType=java.lang.String}
+			</if>
+			<if test="args[0].jobState != null and args[0].jobState != ''">
+				AND job_state = #{args[0].jobState,javaType=java.lang.String}
+			</if>
+
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete = 1
+					</when>
+					<otherwise>
+						AND is_delete = 0
+					</otherwise>
+				</choose>
+			</if>
+
+			<if test="args[0].isExternal != null">
+				<choose>
+					<when test="args[0].isExternal == true">
+						AND is_external = 1
+					</when>
+					<otherwise>
+						AND is_external = 0
+					</otherwise>
+				</choose>
+			</if>
+
+			<!-- 			<if test="args[0].isExternal != null and args[0].isExternal != ''"> -->
+			<!-- 				AND is_external = #{args[0].isExternal,javaType=java.lang.String} -->
+			<!-- 			</if> -->
+			<!-- 			<if test="args[0].isDelete != null and args[0].isDelete != ''"> -->
+			<!-- 				AND is_delete = #{args[0].isDelete,javaType=java.lang.String} -->
+			<!-- 			</if> -->
+		</if>
+	</select>
+
+	<select id="findTeacherVoByConditionMore" resultMap="TeacherVoResult" useCache="false">
+		SELECT t.*, p.id_card_number FROM pj_teacher t LEFT JOIN pj_person p ON p.id=t.persion_id
+		<if test="args[0] != null">
+			WHERE 1=1 AND t.is_delete=0 AND p.is_delete=0
+			<if test="args[0].id != null and args[0].id != ''">
+				AND t.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND t.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].persionId != null and args[0].persionId != ''">
+				AND t.persion_id = #{args[0].persionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND t.user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null and args[0].userName != ''">
+				AND t.user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND t.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].alias != null and args[0].alias != ''">
+				AND t.alias LIKE CONCAT(CONCAT('%', #{args[0].alias}),'%')
+			</if>
+			<if test="args[0].sex != null and args[0].sex != ''">
+				AND t.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].jobNumber != null and args[0].jobNumber != ''">
+				AND t.job_number LIKE CONCAT(CONCAT('%', #{args[0].jobNumber}),'%')
+			</if>
+			<if test="args[0].enrollDate != null and args[0].enrollDate != ''">
+				AND t.enroll_date = #{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null and args[0].leaveDate != ''">
+				AND t.leave_date = #{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].workBeginDate != null and args[0].workBeginDate != ''">
+				AND t.work_begin_date = #{args[0].workBeginDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].occupationCode != null and args[0].occupationCode != ''">
+				AND t.occupation_code = #{args[0].occupationCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].qualification != null and args[0].qualification != ''">
+				AND t.qualification = #{args[0].qualification,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND t.position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].mobile != null and args[0].mobile != ''">
+				AND t.mobile = #{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND t.telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].postStaffing != null and args[0].postStaffing != ''">
+				AND t.post_staffing = #{args[0].postStaffing,javaType=java.lang.String}
+			</if>
+			<if test="args[0].jobState != null and args[0].jobState != ''">
+				AND t.job_state = #{args[0].jobState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isExternal != null and args[0].isExternal != ''">
+				AND t.is_external = #{args[0].isExternal}
+			</if>
+			<if test="args[0].isDelete != null and args[0].isDelete != ''">
+				AND t.is_delete = #{args[0].isDelete,javaType=java.lang.String}
+			</if>
+			<if test="args[0].idCardNumber != null and args[0].idCardNumber != ''">
+				AND p.id_card_number LIKE CONCAT(CONCAT('%', #{args[0].idCardNumber}),'%')
+			</if>
+		</if>
+	</select>
+
+	<select id="findTeacherVoByCondtion" resultMap="TeacherVoResult" useCache="false">
+		SELECT teach.*,dept_teach.department_id as deptId
+		FROM
+		pj_teacher teach
+		LEFT JOIN
+		pj_department_teacher dept_teach
+		ON
+		teach.id = dept_teach.teacher_id AND (dept_teach.is_deleted = 0 OR dept_teach.is_deleted IS null)
+		LEFT JOIN
+		pj_subject_teacher subject_teach
+		ON
+		teach.id = subject_teach.teacher_id
+		<if test="args[0] != null">
+			WHERE teach.is_delete = 0
+			<!-- 			<if test="args[0].id != null and args[0].id != ''"> -->
+			<!-- 				AND teach.id = #{args[0].id,javaType=java.lang.Integer} -->
+			<!-- 			</if> -->
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND teach.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].persionId != null and args[0].persionId != ''">
+				AND teach.persion_id = #{args[0].persionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND teach.user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null and args[0].userName != ''">
+				AND teach.user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND teach.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].alias != null and args[0].alias != ''">
+				AND teach.alias LIKE CONCAT(CONCAT('%', #{args[0].alias}),'%')
+			</if>
+			<if test="args[0].sex != null and args[0].sex != ''">
+				AND teach.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].jobNumber != null and args[0].jobNumber != ''">
+				AND teach.job_number = #{args[0].jobNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].enrollDate != null and args[0].enrollDate != ''">
+				AND teach.enroll_date = #{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null and args[0].leaveDate != ''">
+				AND teach.leave_date = #{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].workBeginDate != null and args[0].workBeginDate != ''">
+				AND teach.work_begin_date = #{args[0].workBeginDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].occupationCode != null and args[0].occupationCode != ''">
+				AND teach.occupation_code =
+				#{args[0].occupationCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].qualification != null and args[0].qualification != ''">
+				AND teach.qualification = #{args[0].qualification,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND teach.position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].mobile != null and args[0].mobile != ''">
+				AND teach.mobile = #{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND teach.telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].postStaffing != null and args[0].postStaffing != ''">
+				AND teach.post_staffing = #{args[0].postStaffing,javaType=java.lang.String}
+			</if>
+			<if test="args[0].jobState != null and args[0].jobState != ''">
+				AND teach.job_state = #{args[0].jobState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isExternal != null and args[0].isExternal != ''">
+				AND teach.is_external = #{args[0].isExternal}
+			</if>
+			<if test="args[0].deptId != null">
+				AND exists(select 1 from pj_department_teacher dt where dt.is_deleted=0 and dt.teacher_id=teach.id and dt.department_id=#{args[0].deptId})
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND exists(select 1 from pj_subject_teacher st where st.is_deleted=0 and st.teacher_id=teach.id and st.subject_code=#{args[0].subjectCode})
+			</if>
+			<if test="args[0].id != null">
+				<choose>
+					<when test="args[0].excludeSelf == true">
+						AND teach.id &lt;&gt; #{args[0].id,javaType=java.lang.Integer}
+					</when>
+					<otherwise>
+						AND teach.id = #{args[0].id,javaType=java.lang.Integer}
+					</otherwise>
+				</choose>
+			</if>
+			<!-- for app -->
+			<if test="args[0].baselineDate != null and args[0].baselineDate != ''">
+				<choose>
+					<when test="args[0].new_or_old == 0">
+						AND teach.create_date &lt; #{args[0].new_or_old}
+					</when>
+					<otherwise>
+						AND teach.create_date &gt; #{args[0].new_or_old}
+					</otherwise>
+				</choose>
+			</if>
+			<!-- for app -->
+			group by teach.id
+		</if>
+		order by dept_teach.order_number
+	</select>
+
+
+	<select id="findTeacherVoByGroupCondtion" resultMap="TeacherVoResult" useCache="false">
+		SELECT teach.*, dept_teach.group_id as deptId, dept_teach.group_name as deptName
+		FROM
+		pj_teacher teach
+		LEFT JOIN
+		gz_group_teacher dept_teach
+		ON
+		teach.id = dept_teach.teacher_id AND (dept_teach.is_deleted = 0 OR dept_teach.is_deleted IS null)
+		LEFT JOIN
+		pj_subject_teacher subject_teach
+		ON
+		teach.id = subject_teach.teacher_id
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+				AND teach.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND teach.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].persionId != null and args[0].persionId != ''">
+				AND teach.persion_id = #{args[0].persionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND teach.user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null and args[0].userName != ''">
+				AND teach.user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND teach.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].sex != null and args[0].sex != ''">
+				AND teach.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].jobNumber != null and args[0].jobNumber != ''">
+				AND teach.job_number = #{args[0].jobNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].enrollDate != null and args[0].enrollDate != ''">
+				AND teach.enroll_date = #{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null and args[0].leaveDate != ''">
+				AND teach.leave_date = #{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].workBeginDate != null and args[0].workBeginDate != ''">
+				AND teach.work_begin_date = #{args[0].workBeginDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].occupationCode != null and args[0].occupationCode != ''">
+				AND teach.occupation_code =
+				#{args[0].occupationCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].qualification != null and args[0].qualification != ''">
+				AND teach.qualification = #{args[0].qualification,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND teach.position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].mobile != null and args[0].mobile != ''">
+				AND teach.mobile = #{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND teach.telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].postStaffing != null and args[0].postStaffing != ''">
+				AND teach.post_staffing = #{args[0].postStaffing,javaType=java.lang.String}
+			</if>
+			<if test="args[0].jobState != null and args[0].jobState != ''">
+				AND teach.job_state = #{args[0].jobState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null and args[0].isDelete != ''">
+				AND teach.is_delete = #{args[0].isDelete,javaType=java.lang.String}
+			</if>
+			<if test="args[0].deptId != null">
+				AND dept_teach.group_id = #{args[0].deptId}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_teach.subject_code = #{args[0].subjectCode}
+			</if>
+			group by teach.id
+		</if>
+	</select>
+
+	<select id="findById" resultMap="TeacherResult" useCache="false">
+		SELECT * FROM pj_teacher WHERE id = #{args[0],javaType=java.lang.Integer} AND is_delete = 0
+	</select>
+
+
+	<select id="findByName" resultMap="TeacherResult" useCache="false">
+		SELECT * FROM pj_teacher WHERE name = #{args[0],javaType=java.lang.String} AND is_delete = 0
+	</select>
+
+	<select id="findTeacherByNameAndSchool" resultMap="TeacherResult" useCache="false">
+		SELECT * FROM pj_teacher WHERE 1=1
+		<if test="args[0]!=null">
+			AND name = #{args[0],javaType=java.lang.String}
+		</if>
+		<if test="args[1]!=null">
+			AND school_id=#{args[1],javaType=java.lang.Integer}
+		</if>
+		AND is_delete = 0
+	</select>
+	
+	<select id="findTeacherByLikeNameAndSchool" resultMap="TeacherResult" useCache="false">
+		SELECT * FROM pj_teacher WHERE 1=1
+		<if test="args[0]!=null">
+			AND name like CONCAT('%', #{args[0],javaType=java.lang.String}, '%') 
+		</if>
+		<if test="args[1]!=null">
+			AND school_id=#{args[1],javaType=java.lang.Integer}
+		</if>
+		AND is_delete = 0
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.Teacher">
+		UPDATE pj_teacher
+		SET
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="persionId != null">
+			persion_id=#{persionId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="userName != null">
+			user_name=#{userName},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="alias != null">
+			alias=#{alias},
+		</if>
+		<if test="sex != null">
+			sex=#{sex},
+		</if>
+		<if test="jobNumber != null">
+			job_number=#{jobNumber},
+		</if>
+		<if test="enrollDate != null">
+			enroll_date=#{enrollDate},
+		</if>
+		<if test="leaveDate != null">
+			leave_date=#{leaveDate},
+		</if>
+		<if test="workBeginDate != null">
+			work_begin_date=#{workBeginDate},
+		</if>
+		<if test="qualification != null">
+			qualification=#{qualification},
+		</if>
+		<if test="occupationCode != null">
+			occupation_code=#{occupationCode},
+		</if>
+
+		<if test="position != null">
+			position=#{position},
+		</if>
+		<if test="mobile != null">
+			mobile=#{mobile},
+		</if>
+		<if test="telephone != null">
+			telephone=#{telephone},
+		</if>
+		<if test="postStaffing != null">
+			post_staffing=#{postStaffing},
+		</if>
+		<if test="jobState != null">
+			job_state=#{jobState},
+		</if>
+		<if test="isExternal != null">
+			is_external=#{isExternal},
+		</if>
+		<if test="isDelete != null">
+			is_delete=#{isDelete},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="empCard != null">
+			emp_card = #{empCard},
+		</if>
+		<if test="empCode != null">
+			emp_code = #{empCode},
+		</if>
+		<if test="isSendLibrary != null">
+			is_send_library = #{isSendLibrary},
+		</if>
+
+		<if test="isHikvisionBindCard != null">
+			is_hikvision_bind_card = #{isHikvisionBindCard},
+		</if>
+
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_teacher
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findTeacherListByTeamId" resultMap="TeacherResultTemp" useCache="false">
+		select tableTemp.*,pjs.`name` subjectName from
+		(select pjt.id,pjt.sex,pjt.user_id,pjt.`name`,pjp.entity_id,pjt.user_name,pjt.mobile,pjtt.type,pjtt.team_id,pjt.school_id,pjtt.subject_code
+		from pj_teacher pjt,pj_team_teacher pjtt,pj_person pjp
+		where pjt.is_delete=0 and pjtt.is_delete=0 and pjp.is_delete=0
+		and pjt.persion_id = pjp.id
+		<if test="args[0]!=null and args[0]!=''">
+			and pjtt.team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		and pjt.id = pjtt.teacher_id) tableTemp left join pj_subject pjs
+		on pjs.`code`=tableTemp.subject_code and pjs.school_id=tableTemp.school_id
+	</select>
+
+	<select id="findTeacherListByUserName" resultMap="TeacherResultTemp" useCache="false">
+		select pjtt.team_id,pjtt.type,pjtm.`name`,
+		pjt.user_name,pjtt.subject_code,
+		pjtt.subject_name subjectName
+		from pj_teacher pjt,pj_team_teacher pjtt,pj_team pjtm
+		where pjt.is_delete=0
+		and pjtt.is_delete=0
+		and pjtm.is_delete=0
+		and pjt.id = pjtt.teacher_id
+		and pjtt.team_id= pjtm.id
+		<if test="args[0]!=null and args[0]!=''">
+			and pjt.user_name = #{args[0],javaType=java.lang.String}
+		</if>
+	</select>
+
+	<select id="findTeacherBySchoolRegion" resultMap="TeacherResult" useCache="false">
+		SELECT t.* FROM pj_teacher t LEFT JOIN pj_school s ON t.school_id = s.id LEFT JOIN yh_group g ON s.id = g.owner_id WHERE t.is_delete = 0
+		<if test="args[0] != null">
+			<if test="args[0].id != null and args[0].id != ''">
+				AND s.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].englishName != null and args[0].englishName != ''">
+				AND s.english_name = #{args[0].englishName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND s.code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].stageScope != null and args[0].stageScope != ''">
+				AND s.stage_scope = #{args[0].stageScope,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolSystem != null and args[0].schoolSystem != ''">
+				AND s.school_system = #{args[0].schoolSystem,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolType != null and args[0].schoolType != ''">
+				AND s.school_type = #{args[0].schoolType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].runningType != null and args[0].runningType != ''">
+				AND s.running_type = #{args[0].runningType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].buildDate != null and args[0].buildDate != ''">
+				AND s.build_date = #{args[0].buildDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].decorationDay != null">
+				AND s.decoration_day = #{args[0].decorationDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].province != null and args[0].province != ''">
+				AND s.province = #{args[0].province,javaType=java.lang.String}
+			</if>
+			<if test="args[0].city != null and args[0].city != ''">
+				AND s.city = #{args[0].city,javaType=java.lang.String}
+			</if>
+			<if test="args[0].district != null and args[0].district != ''">
+				AND s.district = #{args[0].district,javaType=java.lang.String}
+			</if>
+			<if test="args[0].street != null and args[0].street != ''">
+				AND s.street = #{args[0].street,javaType=java.lang.String}
+			</if>
+			<if test="args[0].regionCode != null and args[0].regionCode != ''">
+				AND s.region_code = #{args[0].regionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].address != null and args[0].address != ''">
+				AND s.address = #{args[0].address,javaType=java.lang.String}
+			</if>
+			<if test="args[0].zipcode != null and args[0].zipcode != ''">
+				AND s.zipcode = #{args[0].zipcode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND s.telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].websit != null and args[0].websit != ''">
+				AND s.websit = #{args[0].websit,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND s.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId_badge != null and args[0].entityId_badge != ''">
+				AND s.badge = #{args[0].entityId_badge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId_image != null and args[0].entityId_image != ''">
+				AND s.image = #{args[0].entityId_image,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND s.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND s.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND s.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+		</if>
+		<if test="args[1] != null">
+			<if test="args[1].id != null">
+				AND g.id = #{args[1].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[1].ownerId != null">
+				AND g.owner_id = #{args[1].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[1].name != null and args[1].name != ''">
+				AND g.name LIKE CONCAT(CONCAT('%', #{args[1].name}),'%')
+			</if>
+			<if test="args[1].type != null">
+				AND g.type = #{args[1].type}
+			</if>
+			<if test="args[1].createDate != null">
+				AND g.create_date = #{args[1].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[1].modifyDate != null">
+				AND g.modify_date = #{args[1].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findTeacherNumBySchoolId" resultMap="TeacherNumResultTemp" useCache="false">
+		select COUNT(*) teacherNum,school_id from pj_teacher t where 1=1 and t.is_delete=0
+		<if test="args!=null and args[0]!=null">
+			AND t.school_id= #{args[0],javaType=java.lang.Integer}
+		</if>
+	</select>
+
+	<select id="findTeacherOfTeamIdList" resultMap="TeacherResult" useCache="false">
+		select pjt.* from pj_team_teacher ptt,pj_teacher pjt
+		where ptt.teacher_id = pjt.id
+		and ptt.is_delete=0
+		and pjt.is_delete=0
+		and ptt.team_id in
+		<foreach collection="args[0]" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="args[1]!=null and args[1]!=''">
+			and pjt.school_id=#{args[1],javaType=java.lang.Integer}
+		</if>
+	</select>
+
+	<!--查找没有部门的教师 -->
+	<select id="findNoDepartmentTeacherVoByCondition" resultMap="TeacherVoResult" useCache="false">
+		SELECT * FROM pj_teacher t WHERE
+		t.id NOT IN (
+		SELECT
+		teacher_id
+		FROM
+		pj_department_teacher
+		WHERE
+		<if test="args[0].schoolId!=null and args[0].schoolId!=''">
+			school_id = #{args[0].schoolId}
+		</if>
+		AND department_id IS NOT NULL
+		AND is_deleted = 0
+		) HAVING
+		<if test="args[0].schoolId!=null and args[0].schoolId!=''">
+			t.school_id = #{args[0].schoolId}
+		</if>
+		AND t.is_delete = 0
+	</select>
+
+	<select id="findTeacherOfGradeIdList" resultMap="TeacherResult" useCache="false">
+		select pjt.* from pj_team_teacher ptt,pj_teacher pjt
+		where ptt.teacher_id = pjt.id
+		and ptt.is_delete=0
+		and pjt.is_delete=0
+		and ptt.grade_id in
+		<foreach collection="args[0]" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="args[1]!=null and args[1]!=''">
+			and pjt.school_id=#{args[1],javaType=java.lang.Integer}
+		</if>
+	</select>
+
+	<select id="findTeacherListBySchoolId" resultMap="TeacherResult" useCache="false">
+		select * from pj_teacher pjt where pjt.is_delete=0
+		<if test="args[0]!=null and args[0]!=''">
+			and pjt.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+	</select>
+
+
+
+	<!-- 功能描述：返回班级任课老师  或者 返回班级指定科目的任课老师(2015-12-09) -->
+	<select id="findSubjectTeachersOfTeam" resultMap="TeacherResult" useCache="false">
+		SELECT t.* FROM pj_teacher t INNER JOIN pj_team_teacher tt ON t.id = tt.teacher_id WHERE 1=1 AND is_delete = 0
+		<if test="args != null and args[0] != null">
+			AND tt.type = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args != null and args[1] != null">
+			AND tt.team_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args != null and args[2] != null and args[2] != ''">
+			AND tt.subject_code = #{args[2],javaType=java.lang.String}
+		</if>
+	</select>
+
+	<!-- 功能描述：学年年级下的教师 -->
+	<select id="findGradeOfTeacher" resultMap="TeacherResult" useCache="false">
+		SELECT t.* FROM pj_teacher t
+		LEFT JOIN pj_team_teacher ptt ON t.id = ptt.teacher_id
+		LEFT JOIN pj_team pt ON pt.id = ptt.team_id
+		LEFT JOIN pj_grade g ON g.id = pt.grade_id
+		WHERE t.is_delete = 0
+		AND ptt.is_delete = 0
+		<if test="args[2] != null and args[2] != ''">
+			<choose>
+				<when test="args[2] == true">
+					<if test="args != null and args[3] != null and args[3] != ''">
+						AND g.school_id = #{args[3],javaType=java.lang.Integer}
+					</if>
+				</when>
+				<otherwise>
+					<if test="args != null and args[0] != null and args[0] != ''">
+						AND g.id = #{args[0],javaType=java.lang.Integer}
+					</if>
+				</otherwise>
+			</choose>
+		</if>
+		<if test="args != null and args[1] != null and args[1] != ''">
+			AND g.school_year = #{args[1],javaType=java.lang.String}
+		</if>
+		GROUP BY t.user_id
+	</select>
+
+	<!-- 2017-1-9 根据用户ID和学校ID获取教师的详细信息 -->
+	<select id="findTeacherDetailInfoByUserId" resultMap="TeacherDetailInfoResult" useCache="false">
+		SELECT
+		t.school_id AS schoolId,
+		t.`name` AS `name`,
+		t.alias AS alias,
+		p.id AS persionId,
+		t.id AS teacherId,
+		p.entity_id AS entityId,
+		t.user_id AS userId,
+		t.user_name AS userName,
+		p.english_name AS englishName,
+		t.sex AS sex,
+		t.job_number AS jobNumber,
+		t.enroll_date AS enrollDate,
+		t.leave_date AS leaveDate,
+		t.work_begin_date AS workBeginDate,
+		t.qualification AS qualification,
+		t.occupation_code AS occupationCode,
+		t.position AS position,
+		t.mobile AS mobile,
+		t.telephone AS telephone,
+		t.post_staffing AS postStaffing,
+		t.job_state AS jobState,
+		p.id_card_type AS certificateType,
+		p.id_card_number AS certificateNum,
+		p.nationality AS nationality,
+		p.race AS nation,
+		p.native_place AS nativePlace,
+		p.birth_place AS birthPlace,
+		p.marriage AS marriage,
+		p.political_status AS political,
+		p.special_skill AS specialty,
+		p.religion AS religiousBelief,
+		p.residence_type AS register,
+		p.residence_address AS registerPlace,
+		p.address AS nowAddress,
+		p.email AS email,
+		p.reside_address AS liveAddress,
+		p.remark AS remark,
+		p.birthday AS birthDate,
+		t.is_external AS isExternal,
+		p.photo_uuid AS photoUuid
+		FROM
+		pj_teacher t
+		LEFT JOIN
+		pj_person p
+		ON
+		p.id = t.persion_id
+		WHERE
+		t.user_id = #{args[0],javaType=java.lang.Integer}
+		AND
+		t.school_id = #{args[1],javaType=java.lang.Integer}
+		GROUP BY t.user_id
+	</select>
+
+	<select id="findTeacherVoByDeptId" resultMap="TeacherMessVoResult" useCache="false">
+		SELECT t.*,p.photo_uuid AS iconUUID FROM pj_teacher t
+		LEFT JOIN pj_department_teacher dt ON t.id = dt.teacher_id
+		LEFT JOIN pj_person p ON p.id = t.persion_id
+		WHERE dt.department_id = #{args[0],javaType=java.lang.Integer}
+		GROUP BY t.user_id
+	</select>
+
+	<!--       教师统计  学校/区域  -->
+
+	<!-- 年级人数 -->
+	<select id="findNumberOfGradeBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT t.`name`, COUNT(teacher_id) number FROM
+		(
+		SELECT g.`name`, g.uni_grade_code, tt.teacher_id  FROM
+		(SELECT * FROM pj_grade WHERE is_deleted = 0
+		AND school_id = #{args[0],javaType=java.lang.Integer}
+		AND school_year = #{args[1],javaType=java.lang.String})g
+		LEFT JOIN
+		(SELECT * FROM pj_team_teacher WHERE is_delete = 0) tt
+		ON g.id = tt.grade_id
+		GROUP BY g.id,tt.user_id)t
+		GROUP BY t.`name`
+		ORDER BY t.uni_grade_code
+	</select>
+
+	<!-- 工资 -->
+	<select id="findSalaryBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT groupSalary(t.salary) `name`, count(*) number FROM(
+		SELECT pt.`name`, pts.salary_total salary FROM pj_teacher pt
+		LEFT JOIN pj_teacher_salary pts ON pt.user_id = pts.user_id
+		WHERE pt.is_delete = 0
+		AND pts.is_deleted = 0
+		AND pt.school_id = #{args[0],javaType=java.lang.Integer}
+		AND pts.pay_year = #{args[1],javaType=java.lang.String}
+		AND pts.pay_month = #{args[2],javaType=java.lang.String}) t
+		GROUP BY groupSalary(t.salary)
+	</select>
+
+	<!-- 岗位编制 -->
+	<select id="findPostStaffingBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		<!-- 		SELECT jgi.`name`,count(pt.post_staffing) number FROM  -->
+		<!-- 		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "JY-BZLB" AND `disable` = 0) jgi -->
+		<!-- 		LEFT JOIN -->
+		<!-- 		(SELECT post_staffing FROM pj_teacher WHERE is_delete = 0 AND school_id = #{args[0],javaType=java.lang.Integer})pt -->
+		<!-- 		ON pt.post_staffing = jgi.`value` -->
+		<!-- 		GROUP BY jgi.`value` -->
+		<!-- 		ORDER BY jgi.`value`; -->
+		SELECT jgi.`name`, count(*) number FROM pj_teacher pt
+		LEFT JOIN jc_gc_item jgi ON pt.post_staffing = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND jgi.table_code = "JY-BZLB"
+		AND jgi.`disable` = 0
+		AND pt.school_id = #{args[0],javaType=java.lang.Integer}
+		GROUP BY jgi.`name`
+		ORDER BY jgi.`value`
+
+	</select>
+
+	<!-- 学位 -->
+	<select id="findQualificationBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`, count(*) number FROM pj_teacher pt
+		LEFT JOIN jc_gc_item jgi ON pt.qualification = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND jgi.table_code = "GB-XL"
+		AND jgi.`disable` = 0
+		AND pt.school_id = #{args[0],javaType=java.lang.Integer}
+		GROUP BY jgi.`name`
+		ORDER BY number DESC
+		<!-- 		ORDER BY jgi.`value` -->
+	</select>
+
+	<!-- 证件类型 -->
+	<select id="findIdCardTypeBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`, count(*) number FROM pj_teacher pt
+		LEFT JOIN pj_person pp ON pt.persion_id = pp.id
+		LEFT JOIN jc_gc_item jgi ON pp.id_card_type = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND	pp.is_delete = 0
+		AND jgi.table_code = "JY-SFZJLX"
+		AND jgi.`disable` = 0
+		AND pt.school_id = #{args[0],javaType=java.lang.Integer}
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+	</select>
+
+	<!-- 婚姻状况 -->
+	<select id="findMarriageBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		<!-- 		SELECT jgi.`name`,count(t.marriage) number FROM  -->
+		<!-- 		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "GB-HYZK" AND `disable` = 0) jgi -->
+		<!-- 		LEFT JOIN -->
+		<!-- 		(SELECT pp.marriage FROM pj_teacher pt LEFT JOIN pj_person pp on pt.persion_id = pp.id  -->
+		<!-- 		WHERE pt.is_delete = 0 AND pp.is_delete = 0 AND pt.school_id = #{args[0],javaType=java.lang.Integer})t -->
+		<!-- 		ON t.marriage = jgi.`value` -->
+		<!-- 		GROUP BY jgi.`value` -->
+		<!-- 		ORDER BY jgi.`value`; -->
+		SELECT jgi.`name`, count(*) number FROM pj_teacher pt
+		LEFT JOIN pj_person pp ON pt.persion_id = pp.id
+		LEFT JOIN jc_gc_item jgi ON pp.marriage = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND	pp.is_delete = 0
+		AND jgi.table_code = "GB-HYZK"
+		AND jgi.`disable` = 0
+		AND pt.school_id = #{args[0],javaType=java.lang.Integer}
+		GROUP BY jgi.`value`
+		ORDER BY number DESC
+	</select>
+
+	<!-- 在职状况 -->
+	<select id="findJobStateBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		<!-- 		SELECT jgi.`name`,count(pt.job_state) number FROM  -->
+		<!-- 		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "JY-JZGDQZT" AND `disable` = 0) jgi -->
+		<!-- 		LEFT JOIN -->
+		<!-- 		(SELECT job_state FROM pj_teacher WHERE is_delete = 0 AND school_id = #{args[0],javaType=java.lang.Integer})pt -->
+		<!-- 		ON pt.job_state = jgi.`value` -->
+		<!-- 		GROUP BY jgi.`value` -->
+		<!-- 		ORDER BY jgi.`value`; -->
+		SELECT jgi.`name`, count(*) number FROM pj_teacher pt
+		LEFT JOIN jc_gc_item jgi ON pt.job_state = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND jgi.table_code = "JY-JZGDQZT"
+		AND jgi.`disable` = 0
+		AND pt.school_id = #{args[0],javaType=java.lang.Integer}
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+
+	</select>
+
+	<!-- 性别 -->
+	<select id="findSexBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`,count(pt.sex) number FROM
+		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "GB-XB" AND `disable` = 0) jgi
+		LEFT JOIN
+		(SELECT sex FROM pj_teacher WHERE is_delete = 0 AND school_id = #{args[0],javaType=java.lang.Integer})pt
+		ON pt.sex = jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+	</select>
+
+	<!-- 年龄 -->
+	<select id="findAgeBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT groupAge(t.age) `name`, count(*) number FROM(
+		SELECT YEAR(FROM_DAYS(DATEDIFF(NOW(),pp.birthday))) age FROM pj_teacher pt
+		LEFT JOIN pj_person pp ON pt.persion_id = pp.id
+		WHERE pt.is_delete = 0
+		AND	pp.is_delete = 0
+		AND pt.school_id = #{args[0],javaType=java.lang.Integer})t
+		GROUP BY groupAge(t.age);
+	</select>
+
+	<!-- 政治面貌 -->
+	<select id="findPoliticalStatusBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`,count(t.political_status) number FROM
+		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "GB-ZZMM" AND `disable` = 0) jgi
+		LEFT JOIN
+		(SELECT pp.political_status FROM pj_teacher pt LEFT JOIN pj_person pp on pt.persion_id = pp.id
+		WHERE pt.is_delete = 0 AND pp.is_delete = 0 AND pt.school_id = #{args[0],javaType=java.lang.Integer})t
+		ON t.political_status = jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+	</select>
+
+	<!-- 民族 -->
+	<select id="findRaceBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`, count(*) number FROM pj_teacher pt
+		LEFT JOIN pj_person pp ON pt.persion_id = pp.id
+		LEFT JOIN jc_gc_item jgi ON pp.race = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND	pp.is_delete = 0
+		AND jgi.table_code = "GB-MZ"
+		AND jgi.`disable` = 0
+		AND pt.school_id = #{args[0],javaType=java.lang.Integer}
+		GROUP BY jgi.`value`
+		ORDER BY number DESC;
+	</select>
+
+	<!-- 户口性质 -->
+	<select id="findResidenceTypeBySchoolId" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`,count(t.residence_type) number FROM
+		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "GB-HKLB" AND `disable` = 0) jgi
+		LEFT JOIN
+		(SELECT pp.residence_type FROM pj_teacher pt LEFT JOIN pj_person pp on pt.persion_id = pp.id
+		WHERE pt.is_delete = 0 AND pp.is_delete = 0 AND pt.school_id = #{args[0],javaType=java.lang.Integer})t
+		ON t.residence_type = jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+	</select>
+
+	<!-- 区域 -->
+	<!-- 学校人数 -->
+	<select id="findNumberOfSchoolByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT ps.`name`, count(*) number FROM pj_teacher pt
+		LEFT JOIN pj_school ps ON pt.school_id = ps.id
+		WHERE pt.is_delete = 0
+		AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String}
+			)
+		</if>
+		GROUP BY ps.id;
+	</select>
+
+	<!-- 工资 -->
+	<select id="findSalaryByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT groupSalary(t.salary) `name`, count(*) number FROM(
+		SELECT pt.`name`, pts.salary_total salary  FROM pj_school ps
+		RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id
+		LEFT JOIN pj_teacher_salary pts ON pt.user_id = pts.user_id
+		WHERE pt.is_delete = 0
+		AND pts.is_deleted = 0
+		AND pts.pay_year = #{args[1],javaType=java.lang.String}
+		AND pts.pay_month = #{args[2],javaType=java.lang.String}
+		AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		)t
+		GROUP BY groupSalary(t.salary);
+	</select>
+
+	<!-- 岗位编制 -->
+	<select id="findPostStaffingByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		<!-- 		SELECT jgi.`name`,count(pt.post_staffing) number FROM  -->
+		<!-- 		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "JY-BZLB" AND `disable` = 0) jgi -->
+		<!-- 		LEFT JOIN -->
+		<!-- 		(SELECT post_staffing FROM pj_teacher t LEFT JOIN pj_school ps ON t.school_id = ps.id -->
+		<!-- 		 	WHERE t.is_delete = 0 AND ps.is_deleted = 0  -->
+		<!-- 		 	<if test="args[0] != null and args[0] != ''"> -->
+		<!-- 		 	AND(ps.province = #{args[0],javaType=java.lang.String}  -->
+		<!-- 				OR ps.city = #{args[0],javaType=java.lang.String}  -->
+		<!-- 				OR ps.district = #{args[0],javaType=java.lang.String}) -->
+		<!-- 			</if> -->
+		<!-- 		)pt -->
+		<!-- 		ON pt.post_staffing = jgi.`value` -->
+		<!-- 		GROUP BY jgi.`value` -->
+		<!-- 		ORDER BY jgi.`value`; -->
+		SELECT jgi.`name`, count(*) number FROM pj_school ps
+		RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id
+		LEFT JOIN jc_gc_item jgi ON pt.post_staffing = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND jgi.table_code = "JY-BZLB"
+		AND jgi.`disable` = 0
+		AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY jgi.`name`
+		ORDER BY jgi.`value`;
+
+
+	</select>
+
+	<!-- 学位 -->
+	<select id="findQualificationByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`, count(*) number FROM pj_school ps
+		RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id
+		LEFT JOIN jc_gc_item jgi ON pt.qualification = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND jgi.table_code = "GB-XL"
+		AND jgi.`disable` = 0
+		AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY jgi.`name`
+		ORDER BY jgi.`value`;
+
+	</select>
+
+	<!-- 证件类型 -->
+	<select id="findIdCardTypeByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`, count(*) number FROM pj_school ps
+		RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id
+		LEFT JOIN pj_person pp ON pt.persion_id = pp.id
+		LEFT JOIN jc_gc_item jgi ON pp.id_card_type = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND	pp.is_delete = 0
+		AND jgi.table_code = "JY-SFZJLX"
+		AND jgi.`disable` = 0
+		AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+
+
+	</select>
+
+	<!-- 婚姻状况 -->
+	<select id="findMarriageByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		<!-- 		SELECT jgi.`name`,count(t.marriage) number FROM  -->
+		<!-- 		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "GB-HYZK" AND `disable` = 0) jgi -->
+		<!-- 		LEFT JOIN -->
+		<!-- 		(SELECT pp.marriage FROM pj_school ps -->
+		<!-- 			RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id  -->
+		<!-- 			LEFT JOIN pj_person pp on pt.persion_id = pp.id  -->
+		<!-- 			WHERE pt.is_delete = 0 AND pp.is_delete = 0 AND ps.is_deleted = 0  -->
+		<!-- 			AND(ps.province = #{args[0],javaType=java.lang.String}  -->
+		<!-- 				OR ps.city = #{args[0],javaType=java.lang.String}  -->
+		<!-- 				OR ps.district = #{args[0],javaType=java.lang.String}) -->
+		<!-- 		)t -->
+		<!-- 		ON t.marriage = jgi.`value` -->
+		<!-- 		GROUP BY jgi.`value` -->
+		<!-- 		ORDER BY jgi.`value`; -->
+		SELECT jgi.`name`, count(*) number FROM pj_school ps
+		RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id
+		LEFT JOIN pj_person pp ON pt.persion_id = pp.id
+		LEFT JOIN jc_gc_item jgi ON pp.marriage = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND	pp.is_delete = 0
+		AND jgi.table_code = "GB-HYZK"
+		AND jgi.`disable` = 0
+		AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+
+	</select>
+
+	<!-- 在职状况 -->
+	<select id="findJobStateByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		<!-- 		SELECT jgi.`name`,count(pt.job_state) number FROM  -->
+		<!-- 		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "JY-JZGDQZT" AND `disable` = 0) jgi -->
+		<!-- 		LEFT JOIN -->
+		<!-- 		(SELECT job_state FROM pj_teacher t LEFT JOIN pj_school ps ON t.school_id = ps.id -->
+		<!-- 		 WHERE t.is_delete = 0 AND ps.is_deleted = 0 			 -->
+		<!-- 		 AND(ps.province = #{args[0],javaType=java.lang.String}  -->
+		<!-- 				OR ps.city = #{args[0],javaType=java.lang.String}  -->
+		<!-- 				OR ps.district = #{args[0],javaType=java.lang.String}) -->
+		<!-- 		)pt -->
+		<!-- 		ON pt.job_state = jgi.`value` -->
+		<!-- 		GROUP BY jgi.`value` -->
+		<!-- 		ORDER BY jgi.`value`; -->
+		SELECT jgi.`name`, count(*) number FROM pj_school ps
+		RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id
+		LEFT JOIN jc_gc_item jgi ON pt.job_state = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND jgi.table_code = "JY-JZGDQZT"
+		AND jgi.`disable` = 0
+		AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY jgi.`name`
+		ORDER BY jgi.`value`;
+
+	</select>
+
+	<!-- 性别 -->
+	<select id="findSexByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`,count(pt.sex) number FROM
+		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "GB-XB" AND `disable` = 0) jgi
+		LEFT JOIN
+		(SELECT sex FROM pj_teacher t LEFT JOIN pj_school ps ON t.school_id = ps.id
+		WHERE t.is_delete = 0 AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		)pt
+		ON pt.sex = jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+
+	</select>
+
+	<!-- 年龄 -->
+	<select id="findAgeByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT groupAge(t.age) `name`, count(*) number FROM(
+		SELECT YEAR(FROM_DAYS(DATEDIFF(NOW(),pp.birthday))) age FROM pj_school ps
+		RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id
+		LEFT JOIN pj_person pp ON pt.persion_id = pp.id
+		WHERE pt.is_delete = 0
+		AND	pp.is_delete = 0
+		AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		)t
+		GROUP BY groupAge(t.age);
+
+	</select>
+
+	<!-- 政治面貌 -->
+	<select id="findPoliticalStatusByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`,count(t.political_status) number FROM
+		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "GB-ZZMM" AND `disable` = 0) jgi
+		LEFT JOIN
+		(SELECT pp.political_status FROM pj_school ps
+		RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id
+		LEFT JOIN pj_person pp on pt.persion_id = pp.id
+		WHERE pt.is_delete = 0 AND pp.is_delete = 0 AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		)t
+		ON t.political_status = jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+	</select>
+
+	<!-- 民族 -->
+	<select id="findRaceByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`, count(*) number FROM pj_school ps
+		RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id
+		LEFT JOIN pj_person pp ON pt.persion_id = pp.id
+		LEFT JOIN jc_gc_item jgi ON pp.race = jgi.`value`
+		WHERE pt.is_delete = 0
+		AND	pp.is_delete = 0
+		AND jgi.table_code = "GB-MZ"
+		AND jgi.`disable` = 0
+		AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String} )
+		</if>
+		GROUP BY jgi.`value`
+		ORDER BY number DESC;
+	</select>
+
+	<!-- 户口性质 -->
+	<select id="findResidenceTypeByAreaCode" resultType="platform.education.generalTeachingAffair.vo.StatisticDate" useCache="false">
+		SELECT jgi.`name`,count(t.residence_type) number FROM
+		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "GB-HKLB" AND `disable` = 0) jgi
+		LEFT JOIN
+		(SELECT pp.residence_type FROM pj_school ps
+		RIGHT JOIN pj_teacher pt ON ps.id = pt.school_id
+		LEFT JOIN pj_person pp on pt.persion_id = pp.id
+		WHERE pt.is_delete = 0 AND pp.is_delete = 0 AND ps.is_deleted = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		)t
+		ON t.residence_type = jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+	</select>
+	<!--  教师统计  学校/区域  end  -->
+
+
+	<select id="findIncrementDataByModifyDate" resultMap="TeacherResultTempVo" useCache="false">
+		SELECT t.*, p.email FROM pj_teacher t
+		LEFT JOIN pj_person p ON t.persion_id = p.id
+		WHERE 1=1
+		<if test="args[0] != null">
+			AND t.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			<choose>
+				<when test="args[1] == true">
+					AND t.is_delete = 1
+				</when>
+				<otherwise>
+					AND t.is_delete = 0
+				</otherwise>
+			</choose>
+		</if>
+		<if test="args[2] != null">
+			AND t.modify_date > #{args[2],javaType=java.util.Date}
+		</if>
+		<if test="args[3] != null">
+			<choose>
+				<when test="args[4] == true">
+					AND t.id > #{args[3],javaType=java.lang.Integer}
+				</when>
+				<otherwise>
+					AND t.id BETWEEN 0 AND #{args[3],javaType=java.lang.Integer}
+				</otherwise>
+			</choose>
+		</if>
+		ORDER BY t.modify_date, t.id
+	</select>
+
+	<select id="findAllSubjectTeachersByTeamId" resultMap="TeacherResultTempVo" useCache="false">
+		SELECT 
+		GROUP_CONCAT(DISTINCT ptt.type) As types,
+		GROUP_CONCAT(subject_code,',',subject_name,',',ps.id SEPARATOR ';') As subject_info,
+		ptt.user_id , ptt.name , pt.sex , ptt.type , ptt.modify_date 
+		
+		FROM pj_team_teacher ptt
+		LEFT JOIN pj_teacher pt ON ptt.teacher_id = pt.id
+		LEFT JOIN pj_subject ps ON ps.school_id = pt.school_id AND ptt.subject_code = ps.code
+		WHERE 1=1
+		AND ptt.is_delete = 0
+		AND pt.is_delete = 0
+		<if test="args[0] != null">
+			AND ptt.team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		GROUP BY ptt.teacher_id
+	</select>
+
+	<select id="findTeacherByNoSend" resultMap="TeacherResult">
+		select * from pj_teacher where is_delete = 0
+		<if test="args[0].isSendLibrary != null">
+			and is_send_library = #{args[0].isSendLibrary}
+		</if>
+		<if test="args[0].empCard != null and args[0].empCard != ''">
+		    and emp_card = #{args[0].empCard}
+        </if>
+        <if test="isSendCanteen != null">
+            and is_send_canteen = #{args[0].isSendCanteen}
+        </if>
+	</select>
+
+	<select id="findNotSendSeewo" resultMap="TeacherResult">
+		select id,`name`,mobile,emp_card
+		from pj_teacher
+		where is_send_seewo=0 and school_id=215 and is_delete = 0 and emp_card!='0' and is_send_canteen=1 and mobile is not null and mobile!=''
+    </select>
+
+	<select id="findCanSendSeewo" resultMap="TeacherResult">
+		select id,`name`,mobile,emp_card
+		from pj_teacher
+		where school_id=215 and is_delete = 0 and emp_card!='0' and is_send_canteen=1 and mobile is not null and mobile!=''
+	</select>
+
+
+	<update id="updateByIds">
+		update pj_teacher
+		<if test="args[0] != null and args[0].isSendSeewo!=null">
+			set is_send_seewo=#{args[0].isSendSeewo}
+		</if>
+		where id in
+		<foreach collection="args[1]" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update>
+
+	<update id="updateTeacherSendCanteen">
+	    update pj_teacher set is_send_canteen = #{args[0].isSendCanteen}
+	    where emp_code = #{args[0].empCode}
+    </update>
+
+    <select id="findTeacherByNoSendCanteen" resultMap="TeacherResult">
+        select pt.emp_code,pt.name,pdt.department_name deptNames from pj_teacher pt
+        left join pj_department_teacher pdt on pt.id = pdt.teacher_id and pdt.is_deleted = 0
+        where pt.is_delete = 0 and pt.is_send_canteen = #{args[0].isSendCanteen,jdbcType=INTEGER} and pt.emp_code is not null and pt.emp_code!=''
+        group by pt.id
+    </select>
+
+	<select id="findTeacherApiVoByCondition" resultMap="TeacherApiVoResult" useCache="false">
+		SELECT teach.*, dept_teach.department_id as deptId, dept_teach.department_name as deptName
+		FROM
+		pj_teacher teach
+		LEFT JOIN
+		pj_department_teacher dept_teach
+		ON
+		teach.id = dept_teach.teacher_id AND (dept_teach.is_deleted = 0 OR dept_teach.is_deleted IS null)
+		LEFT JOIN
+		pj_subject_teacher subject_teach
+		ON
+		teach.id = subject_teach.teacher_id
+		<if test="args[0] != null">
+			WHERE teach.is_delete = 0
+			<!-- 			<if test="args[0].id != null and args[0].id != ''"> -->
+			<!-- 				AND teach.id = #{args[0].id,javaType=java.lang.Integer} -->
+			<!-- 			</if> -->
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+				AND teach.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].persionId != null and args[0].persionId != ''">
+				AND teach.persion_id = #{args[0].persionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND teach.user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null and args[0].userName != ''">
+				AND teach.user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND teach.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].alias != null and args[0].alias != ''">
+				AND teach.alias LIKE CONCAT(CONCAT('%', #{args[0].alias}),'%')
+			</if>
+			<if test="args[0].sex != null and args[0].sex != ''">
+				AND teach.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].jobNumber != null and args[0].jobNumber != ''">
+				AND teach.job_number = #{args[0].jobNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].enrollDate != null and args[0].enrollDate != ''">
+				AND teach.enroll_date = #{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null and args[0].leaveDate != ''">
+				AND teach.leave_date = #{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].workBeginDate != null and args[0].workBeginDate != ''">
+				AND teach.work_begin_date = #{args[0].workBeginDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].occupationCode != null and args[0].occupationCode != ''">
+				AND teach.occupation_code =
+				#{args[0].occupationCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].qualification != null and args[0].qualification != ''">
+				AND teach.qualification = #{args[0].qualification,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND teach.position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].mobile != null and args[0].mobile != ''">
+				AND teach.mobile = #{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND teach.telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].postStaffing != null and args[0].postStaffing != ''">
+				AND teach.post_staffing = #{args[0].postStaffing,javaType=java.lang.String}
+			</if>
+			<if test="args[0].jobState != null and args[0].jobState != ''">
+				AND teach.job_state = #{args[0].jobState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isExternal != null and args[0].isExternal != ''">
+				AND teach.is_external = #{args[0].isExternal}
+			</if>
+			<if test="args[0].deptId != null">
+				AND dept_teach.department_id = #{args[0].deptId}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_teach.subject_code = #{args[0].subjectCode}
+			</if>
+			<if test="args[0].id != null">
+				<choose>
+					<when test="args[0].excludeSelf == true">
+						AND teach.id &lt;&gt; #{args[0].id,javaType=java.lang.Integer}
+					</when>
+					<otherwise>
+						AND teach.id = #{args[0].id,javaType=java.lang.Integer}
+					</otherwise>
+				</choose>
+			</if>
+			<!-- for app -->
+			<if test="args[0].baselineDate != null and args[0].baselineDate != ''">
+				<choose>
+					<when test="args[0].new_or_old == 0">
+						AND teach.create_date &lt; #{args[0].new_or_old}
+					</when>
+					<otherwise>
+						AND teach.create_date &gt; #{args[0].new_or_old}
+					</otherwise>
+				</choose>
+			</if>
+			<!-- for app -->
+			group by teach.id
+		</if>
+		order by dept_teach.order_number
+	</select>
+
+    <select id="findTeacherSendHik" resultType="platform.education.generalTeachingAffair.model.HikvisionUserPo">
+        select name 'personName',
+        user_id as'clientId'
+        , user_name 'certificateNo','d216add0-c940-482e-b8fb-a7207a75d7e7' orgIndexCode
+        from pj_teacher where is_delete = 0 and emp_card != "0" and emp_card  != ""
+        and is_send_hikdoor =1
+    </select>
+
+    <update id="updateHikvisionUserInfo">
+        UPDATE pj_teacher
+        <set>
+            <if test="args[1] != null"> is_send_hikdoor = 1,</if>
+            <if test="args[2] != null">is_hikvision_bind_card = 1</if>
+        </set>
+        WHERE  id in
+        <foreach collection="args[0]" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+         </foreach>
+    </update>
+    <update id="updateHikvisionUserInfoPerson">
+        UPDATE pj_teacher
+        <set>
+            <if test="args[1] != null"> is_send_hikdoor = 2,</if>
+            <if test="args[2] != null">is_hikvision_bind_card = #{args[2]}</if>
+        </set>
+        WHERE  user_id in
+        <foreach collection="args[0]" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+         </foreach>
+    </update>
+
+	<update id="updateHikvisionUserInfoPersonAdd">
+		UPDATE pj_teacher
+		<set>
+			<if test="args[1] != null"> is_send_hikdoor = 2,</if>
+			<if test="args[2] != null">is_hikvision_bind_card = #{args[2]},</if>
+			persionId=#{args[3]}
+		</set>
+		WHERE  user_id =#{args[0]}
+	</update>
+
+    <select id="findHikvisionBindCarTeacher" resultType="platform.education.generalTeachingAffair.model.CardList">
+        select
+        persionId as'personId',
+        emp_card 'cardNo'
+        from pj_teacher where is_send_hikdoor =2 and is_hikvision_bind_card = 2 and is_delete = 0
+    </select>
+
+    <select id="findUntieHikvisionBindCarTeacher" resultType="platform.education.generalTeachingAffair.model.UntieCardList">
+        select concat(ps.user_id, 't') as'personId', pcc.old_ic_number 'cardNumber' from pj_teacher ps
+        join pj_canteen_card pcc on pcc.user_id = ps.id and is_send = 1
+        where ps.is_send_hikdoor = 1 and user_type = 1 and ps.is_hikvision_bind_card = 2 and ps.is_delete = 0
+    </select>
+
+    <select id="findStuByTeacherId" resultType="java.util.Map">
+        select ps.name,ps.id,ps.team_id teamId,tab.number,tab.gradeId from pj_student ps
+        join (select student_id,number,grade_id gradeId from pj_team_student pts where exists (
+        SELECT ptt.team_id FROM pj_team_teacher ptt where ptt.type = 1 and ptt.school_year = #{args[2]}  and ptt.is_delete = 0 and ptt.teacher_id = #{args[1]}
+         and ptt.team_id =pts.team_id
+        ))  tab on tab.student_id = ps.id
+        where ps.school_id = #{args[0]} and ps.is_delete = 0
+    </select>
+
+	<select id="findByTeacherShitang" resultMap="TeacherResult">
+		select * from pj_teacher where is_delete=0 and school_id=215 and is_send_canteen=0
+	</select>
+	<select id="findByUser" resultMap="TeacherVoResult">
+		select pt.*,yu.state,ps.name as schoolName from pj_teacher pt
+		inner join pj_school ps on ps.id=pt.school_id
+		inner join yh_user yu  on yu.id=pt.user_id
+		<where>
+			yu.is_deleted=0 and pt.is_delete=0
+			<if test="args[1]!=null">
+				and yu.state=#{args[1]}
+			</if>
+			<if test="args[2]!=null">
+				and pt.user_name=#{args[2]}
+			</if>
+			<if test="args[3]!=null">
+				and yu.mobile=#{args[3]}
+			</if>
+			<if test="args[0]!=null">
+				and pt.name=#{args[0]}
+			</if>
+
+		</where>
+	</select>
+
+</mapper>
+
+

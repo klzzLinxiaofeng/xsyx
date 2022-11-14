@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.file.dao.ResEntityFileDao">
+<resultMap id="ResultMap" type="com.xunyunedu.file.pojo.ResEntityFile">
+  <id property="id" column="id" />
+  <result property="size" column="size" />
+  <result property="md5" column="md5" />
+  <result property="uuid" column="uuid" />
+  <result property="extension" column="extension" />
+  <result property="contentType" column="content_type" />
+  <result property="fileName" column="file_name" />
+  <result property="diskFileName" column="disk_file_name" />
+  <result property="thumbnailUrl" column="thumbnail_url" />
+  <result property="relativePath" column="relative_path" />
+  <result property="createDate" column="create_date" />
+</resultMap>
+
+  <select id="selectById" resultMap="ResultMap">
+    select * from res_entity_file where id = #{id}
+  </select>
+
+<select id="selectByUuid" resultMap="ResultMap">
+    select * from res_entity_file where uuid = #{uuid}
+</select>
+</mapper>

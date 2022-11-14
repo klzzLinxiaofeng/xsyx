@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+       default-autowire="byName">
+
+    <bean id="papaperDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.PaperDao"/>
+    </bean>
+    <bean id="papaperService" class="platform.education.paper.service.impl.PaperServiceImpl"/>
+    <!-- generator-insert-location -->
+    <bean id="userQuestionDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.UserQuestionDao"/>
+    </bean>
+    <bean id="userQuestionService"
+          class="platform.education.paper.service.impl.UserQuestionServiceImpl"/>
+    <!-- generator-insert-location -->
+    <bean id="userPaperDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.UserPaperDao"/>
+    </bean>
+    <bean id="userPaperService"
+          class="platform.education.paper.service.impl.UserPaperServiceImpl"/>
+    <!-- generator-insert-location -->
+    <bean id="userAnswerDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.UserAnswerDao"/>
+    </bean>
+    <bean id="userAnswerService"
+          class="platform.education.paper.service.impl.UserAnswerServiceImpl"/>
+    <!-- generator-insert-location -->
+    <bean id="questionDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.QuestionDao"/>
+    </bean>
+    <bean id="questionService"
+          class="platform.education.paper.service.impl.QuestionServiceImpl"/>
+    <!-- generator-insert-location -->
+    <bean id="paperQuestionDao" parent="baseDao">
+        <property name="target"
+                  value="platform.education.paper.dao.PaperQuestionDao"/>
+    </bean>
+    <bean id="paperQuestionService"
+          class="platform.education.paper.service.impl.PaperQuestionServiceImpl"/>
+    <!-- generator-insert-location -->
+    <bean id="userWrongDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.UserWrongDao"/>
+    </bean>
+    <bean id="userWrongService" class="platform.education.paper.service.impl.UserWrongServiceImpl"/>
+    <!--业务service -->
+    <bean id="paperHandleService" class="platform.education.paper.service.impl.PaperHandleServiceImpl"/>
+
+
+    <bean id="userFileDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.UserFileDao"/>
+    </bean>
+    <bean id="userFileService" class="platform.education.paper.service.impl.UserFileServiceImpl"/>
+    <!--  generator-insert-location -->
+    <bean id="userFileQuestionDao" parent="baseDao">
+	<property name="target" value="platform.education.paper.dao.UserFileQuestionDao" />
+	</bean>
+	<bean id="userFileQuestionService" class="platform.education.paper.service.impl.UserFileQuestionServiceImpl" />
+   
+<!--  generator-insert-location -->
+    <import resource="taskExecutor.xml"/>
+</beans>

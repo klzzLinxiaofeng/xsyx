@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ApsRuleMedalDao">
+
+	<resultMap id="ApsRuleMedalResult" type="platform.education.generalTeachingAffair.model.ApsRuleMedal">
+		<result property="id" column="id" />
+		<result property="objectType" column="object_type" />
+		<result property="gradeCode" column="grade_code" />
+		<result property="name" column="name" />
+		<result property="reachScore" column="reach_score" />
+		<result property="reachCount" column="reach_count" />
+		<result property="judgeCriterion" column="judge_criterion" />
+		<result property="runPeriod" column="run_period" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ApsRuleMedal">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_aps_rule_medal (
+			id, 
+			object_type, 
+			grade_code, 
+			name, 
+			reach_score, 
+			reach_count,
+			judge_criterion,  
+			run_period, 
+			is_deleted, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{objectType}, 
+			#{gradeCode}, 
+			#{name}, 
+			#{reachScore}, 
+			#{reachCount}, 
+			#{judgeCriterion}, 
+			#{runPeriod}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ApsRuleMedalResult" useCache="false">
+		SELECT * FROM pj_aps_rule_medal WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApsRuleMedalByCondition" resultMap="ApsRuleMedalResult" useCache="false">
+		SELECT * FROM pj_aps_rule_medal 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectType != null and args[0].objectType != ''">
+				AND object_type = #{args[0].objectType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].reachScore != null">
+				AND reach_score = #{args[0].reachScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].reachCount != null">
+				AND reach_count = #{args[0].reachCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].judgeCriterion != null and args[0].judgeCriterion != ''">
+				AND judge_criterion = #{args[0].judgeCriterion,javaType=java.lang.String}
+			</if>
+			<if test="args[0].runPeriod != null and args[0].runPeriod != ''">
+				AND run_period = #{args[0].runPeriod,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_aps_rule_medal 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectType != null and args[0].objectType != ''">
+				AND object_type = #{args[0].objectType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].reachScore != null">
+				AND reach_score = #{args[0].reachScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].reachCount != null">
+				AND reach_count = #{args[0].reachCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].judgeCriterion != null and args[0].judgeCriterion != ''">
+				AND judge_criterion = #{args[0].judgeCriterion,javaType=java.lang.String}
+			</if>
+			<if test="args[0].runPeriod != null and args[0].runPeriod != ''">
+				AND run_period = #{args[0].runPeriod,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApsRuleMedalResult" useCache="false">
+		SELECT * FROM pj_aps_rule_medal WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ApsRuleMedal">
+		UPDATE pj_aps_rule_medal
+		SET 
+		<if test="objectType != null">
+			object_type=#{objectType},
+		</if>
+		<if test="gradeCode != null">
+			grade_code=#{gradeCode},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="reachScore != null">
+			reach_score=#{reachScore},
+		</if>
+		<if test="reachCount != null">
+			reach_count=#{reachCount},
+		</if>
+		<if test="judgeCriterion != null">
+			judge_criterion=#{judgeCriterion},
+		</if>
+		<if test="runPeriod != null">
+			run_period=#{runPeriod},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_aps_rule_medal
+		WHERE id = #{id}
+	</delete>
+	
+	
+	<select id="findByObjectType" resultMap="ApsRuleMedalResult" useCache="false">
+		SELECT * FROM pj_aps_rule_medal WHERE 1=1 AND is_deleted = 0 
+		AND object_type = #{args[0],javaType=java.lang.String}   
+		ORDER BY id DESC
+	</select>
+	
+</mapper>

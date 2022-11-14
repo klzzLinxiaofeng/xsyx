@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.ishangkelilu.dao.StudyHabitsDao">
+
+    <resultMap id="StudyHabitsMap" type="platform.szxyzxx.ishangkelilu.pojo.StudyHabits">
+        <id column="id" property="id"></id>
+        <result column="studentId" property="studentId"></result>
+        <result column="teamId" property="teamId"></result>
+        <result column="studentName" property="studentName"></result>
+        <result column="teacherId" property="teacherId"></result>
+        <result column="leixing" property="leixing"></result>
+        <result column="score" property="score"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="is_delete" property="stats"></result>
+        <result column="teamName" property="teamName"></result>
+        <result column="subjectName" property="subjectName"></result>
+        <result column="subject_id" property="subjectId"></result>
+        <result column="leixingName" property="leixingName"/>
+    </resultMap>
+    <resultMap id="StudentsHaha" type="platform.szxyzxx.ishangkelilu.pojo.StudentXin">
+        <id column="id" property="id"></id>
+        <result column="school_id" property="schoolId"></result>
+        <result column="team_id" property="teamId"></result>
+        <result column="team_name" property="teamName"></result>
+        <result column="name" property="name"></result>
+        <result column="sex" property="sex"></result>
+        <result column="mobile" property="mobile"></result>
+        <result column="mobile" property="mobileparent"></result>
+        <result column="study_state" property="studyState"></result>
+    </resultMap>
+
+    <resultMap id="ZuoWeiHangfLieMap" type="platform.szxyzxx.ishangkelilu.pojo.ZuoWeiHangLie">
+        <id column="id" property="id"></id>
+        <result column="team_id" property="teamId"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="moide_time" property="modelTime"></result>
+        <result column="zu_number" property="zuNumber"></result>
+        <result column="hang_number" property="hangNumber"></result>
+        <result column="lie_number" property="lieNumber"></result>
+    </resultMap>
+
+    <resultMap id="StudentResult"
+               type="platform.education.generalTeachingAffair.model.Student">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+        <!--<result property="isDelete" column="is_delete" />-->
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+        <result property="isSendHikdoor" column="is_send_hikdoor"/>
+        <result property="isSendLibrary" column="is_send_library"/>
+        <result property="isSendSeewo" column="is_send_seewo"/>
+        <result property="deptName" column="deptName"/>
+    </resultMap>
+
+    <resultMap id="ZuoWeiMap" type="platform.szxyzxx.ishangkelilu.pojo.ZuoWei">
+        <id column="id" property="id"/>
+        <result column="stuName" property="studentName"></result>
+        <result column="student_id" property="studentId"></result>
+        <result column="team_id" property="teamId"></result>
+        <result column="zuoweihao" property="haoMa"></result>
+    </resultMap>
+    <resultMap id="GradeMap" type="platform.education.generalTeachingAffair.model.Grade">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="code" property="code"></result>
+    </resultMap>
+    <resultMap id="HaDaoChu" type="platform.szxyzxx.ishangkelilu.pojo.HabitsDaoChu">
+        <id column="id" property="id"></id>
+        <result column="xuehao" property="xueHao"></result>
+        <result column="teamName" property="teamName"></result>
+        <result column="subjectName" property="subjectName"></result>
+        <result column="studentName" property="studentName"></result>
+        <result column="teacherName" property="teacherName"></result>
+        <result column="leixing" property="type"></result>
+        <result column="school_year" property="schoolYear"></result>
+        <result column="school_trem" property="schoolTrem"></result>
+        <result column="grade_id" property="gradeId"></result>
+        <result column="score" property="score"></result>
+        <result column="pingyu" property="pingyu"></result>
+        <result column="create_time" property="createTime"></result>
+    </resultMap>
+
+    <resultMap id="KeTangGongShiMap" type="platform.szxyzxx.ishangkelilu.pojo.KeTangGongShi">
+    <id column="name" property="name"/>
+        <id column="cishu" property="cishu"/>
+    </resultMap>
+
+    <select id="findByTeamId" resultType="java.lang.Integer">
+        select team_id from pj_team_teacher where teacher_id=#{args[0]} and school_year=#{args[1]} and is_delete=0 limit 0,1
+    </select>
+
+    <select id="findByStudent" resultMap="StudentResult">
+        select z.*,ps.name as stuName from zuowei z inner join pj_student ps on ps.id=z.student_id
+        where ps.is_delete=0 and ps.school_id=#{args[0]}  and z.team_id=#{args[1]}
+    </select>
+
+    <select id="findByStudy" resultMap="StudyHabitsMap">
+        select * from pj_student_zanshijiu
+        where studentId=#{args[0].studentId} and teacherId=#{args[0].teacherId} and leixing=#{args[0].leixing} and is_delete=0
+    </select>
+
+    <insert id="createZanshi" parameterType="platform.szxyzxx.ishangkelilu.pojo.StudyHabits">
+        insert into pj_student_zanshijiu(studentId,teacherId,score,is_delete,create_time,leixing,teamId)
+        value(#{args[0].studentId},#{args[0].teacherId},#{args[0].score},0,NOW(),#{args[0].leixing},#{args[0].teamId})
+    </insert>
+
+    <update id="updateZanshi" parameterType="platform.szxyzxx.ishangkelilu.pojo.StudyHabits">
+        update pj_student_zanshijiu
+        <set>
+            <if test="args[0].score!=null">
+                score=score+#{args[0].score}
+            </if>
+            <if test="args[0].stats!=null">
+                is_delete=1
+            </if>
+        </set>
+        where  is_delete=0  and studentId=#{args[0].studentId} and teacherId=#{args[0].teacherId} and leixing=#{args[0].leixing}
+    </update>
+        <select id="findByXiake" resultMap="StudyHabitsMap">
+            select * from pj_student_zanshijiu where teacherId=#{args[0]} and teamId=#{args[1]} and is_delete=0
+        </select>
+    <insert id="create" parameterType="platform.szxyzxx.ishangkelilu.pojo.StudyHabits">
+        insert  into pj_student_jinu(studentId,score,teacherId,create_time,stats,leixing,pingyu,team_id)
+        value(#{args[0].studentId},#{args[0].score},#{args[0].teacherId},#{args[0].createTime},1,#{args[0].leixing},null,#{args[0].teamId})
+    </insert>
+
+    <select id="findBytianjiachazhao" resultMap="StudentsHaha">
+         select ps.id,ps.name,ps.team_id,ps.team_name,ps.sex,ps.study_state,ps.mobile,pp.mobile as mobiles from pj_student ps
+         inner join pj_team_student pts on pts.student_id=ps.id
+         inner join pj_grade pg on pg.id=pts.grade_id
+          left join pj_parent_student pps on pps.student_user_id=ps.user_id
+          left join pj_parent pp on pp.user_id=pps.parent_user_id
+          where ps.school_id=#{args[1]} and ps.name like concat('%',#{args[0]}, '%') and pg.school_year=#{args[2]}
+          and ps.is_delete=0
+    </select>
+
+    <select id="findByZuowei" resultMap="ZuoWeiMap">
+        select z.*,ps.name as stuName from zuowei z inner join pj_student ps on ps.id=z.student_id
+        <where>
+        ps.is_delete=0 and z.is_delete=0
+            <if test="args[0]!=null">
+                and z.team_id=#{args[0]}
+            </if>
+        </where>
+    </select>
+    <select id="findByZuoweiaa" resultMap="ZuoWeiMap">
+        select * from zuowei
+        where zuoweihao=#{args[0].haoMa} and team_id=#{args[0].teamId} and is_delete=0
+    </select>
+
+    <insert id="createZuowei" parameterType="platform.szxyzxx.ishangkelilu.pojo.ZuoWei">
+        insert  into zuowei(student_id,zuoweihao,is_delete,team_id)
+        value (#{args[0].studentId},#{args[0].haoMa},0,#{args[0].teamId})
+    </insert>
+    <select id="findByShangke" resultMap="StudyHabitsMap">
+        select psz.*,ps.name as studentName,zs.name as leixingName from pj_student_zanshijiu psz
+        inner join  zy_studyleixing zs on zs.id=psz.leixing
+        inner join pj_student ps on ps.id=psz.studentId
+        <where>
+            psz.teamId=#{args[0]} and psz.is_delete=0
+            and  psz.teacherId=#{args[1]}
+        </where>
+    </select>
+
+    <update id="findBychehui" >
+        update pj_student_zanshijiu set
+        is_delete=1 where id=#{args[0]}
+    </update>
+
+    <select id="findByzuoweiHangfLie" resultMap="ZuoWeiHangfLieMap">
+            select * from pj_zuoweihanglie where is_delete=0 and team_id=#{args[0]}
+    </select>
+    <insert id="createZuoweiHangLie" parameterType="platform.szxyzxx.ishangkelilu.pojo.ZuoWeiHangLie">
+        insert into pj_zuoweihanglie(team_id,is_delete,create_time,moide_time,zu_number,hang_number,lie_number)
+        value(#{args[0].teamId},0,NOW(),NOW(),#{args[0].zuNumber},#{args[0].hangNumber},#{args[0].lieNumber})
+    </insert>
+    <update id="updateZuoweiHangLie" parameterType="platform.szxyzxx.ishangkelilu.pojo.ZuoWeiHangLie">
+        update pj_zuoweihanglie set moide_time=NOW(),zu_number=#{args[0].zuNumber},hang_number=#{args[0].hangNumber},lie_number=#{args[0].lieNumber}
+         where is_delete=0 and team_id=#{args[0].teamId}
+    </update>
+    <update id="updateAjsd">
+        update zuowei set is_delete=1 where zuoweihao=#{args[0].haoMa} and team_id=#{args[0].teamId} and is_delete=0
+    </update>
+
+    <select id="findByIdAndLeixing" resultMap="StudyHabitsMap">
+        select studentId,sum(score) as score from pj_student_jinu
+        where studentId=#{args[0]} and stats=1 and leixing=#{args[1]}
+    </select>
+
+    <select id="findByAllStudy" resultMap="StudyHabitsMap">
+        select psj.*,ps.name as studentName,pst.name as subjectName,pts.name as teamName,zs.name as leixingName from pj_student_jinu psj
+        inner join pj_student ps on ps.id=psj.studentId
+        inner join pj_subject pst on pst.id=psj.subjectId
+        inner join pj_team  pts  on pts.id=psj.team_id
+        inner join pj_grade  pg  on pg.id=pts.grade_id
+        inner join  zy_studyleixing zs on zs.id=psj.leixing
+        <where>
+        psj.stats=1
+            <if test="args[0]!=null">
+                and pg.id=#{args[0]}
+            </if>
+           <if test="args[1]!=null">
+               and psj.team_id=#{args[1]}
+           </if>
+            <if test="args[2]!=null">
+                and psj.subjectId=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+                and ps.name like concat('%',#{args[3]}, '%')
+            </if>
+            <if test="args[4]!=null">
+                and psj.school_year=#{args[4]}
+            </if>
+            <if test="args[5]!=null">
+                and psj.school_trem=#{args[5]}
+            </if>
+            <if test="args[6]!=null and args[7]!=null">
+                and psj.create_time  between #{args[6]}   and #{args[7]}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateJiLu">
+        update pj_student_jinu set pingyu=#{args[1]} where id=#{args[0]} and stats=1
+    </update>
+    <select id="findById" resultMap="StudyHabitsMap">
+        select psj.*,ps.name as studentName from  pj_student_jinu psj inner join pj_student ps  on ps.id=psj.studentId
+         where psj.id=#{args[0]}
+    </select>
+    <update id="updatezuowei">
+        update zuowei set is_delete=1 where id=#{args[0]}
+    </update>
+    <select id="findByDaoChu" resultMap="HaDaoChu">
+        select psj.*,ps.emp_code as xuehao,ps.name as studentName,pst.name as subjectName,pts.name as teamName,ptts.name as teacherName from pj_student_jinu psj
+        left join pj_student ps on ps.id=psj.studentId
+        left join pj_subject pst on pst.id=psj.subjectId
+        left join pj_team  pts  on pts.id=psj.team_id
+        left  join pj_teacher ptts on  ptts.id=psj.teacherId
+        <where>
+            psj.stats=1
+            <if test="args[0]!=null">
+                and psj.grade_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and psj.team_id=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and psj.school_year=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+                and psj.school_trem=#{args[3]}
+            </if>
+            <if test="args[4]!=null">
+                and psj.subjectId=#{args[4]}
+            </if>
+            <if test="args[5]!=null and args[6]!=null">
+                and psj.create_time between  #{args[5]} and #{args[6]}
+            </if>
+        </where>
+        order by psj.team_id,pst.id,ps.emp_code asc
+    </select>
+    <select id="findBydaochuzongfen" resultMap="HaDaoChu">
+        select psj.score,psj.leixing,ps.emp_code as xuehao,ps.name as studentName,pst.name as subjectName,pts.name as teamName from pj_student_jinu psj
+        inner join pj_student ps on ps.id=psj.studentId
+        inner join pj_subject pst on pst.id=psj.subjectId
+        inner join pj_team  pts  on pts.id=psj.team_id
+        <where>
+            psj.stats=1
+            <if test="args[0]!=null">
+                and psj.grade_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and psj.team_id=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and psj.school_year=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+                and psj.school_trem=#{args[3]}
+            </if>
+            <if test="args[4]!=null">
+                and psj.subjectId=#{args[4]}
+            </if>
+            <if test="args[5]!=null and args[6]!=null">
+                and psj.create_time between  #{args[5]} and #{args[6]}
+            </if>
+            <if test="args[7]!=null">
+                and ps.id= #{args[7]}
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findByKeTangGongShi" resultMap="KeTangGongShiMap">
+     select   ptts.name,count(*) as cishu from   pj_student_jinu psj inner join pj_teacher ptts on  ptts.id=psj.teacherId
+        <where>
+            psj.stats=1
+            <if test="args[0]!=null">
+                and psj.grade_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and psj.team_id=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and psj.school_year=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+                and psj.school_trem=#{args[3]}
+            </if>
+            <if test="args[4]!=null">
+                and psj.subjectId=#{args[4]}
+            </if>
+            <if test="args[5]!=null and args[6]!=null">
+                and psj.create_time between  #{args[5]} and #{args[6]}
+            </if>
+        </where>
+        group by ptts.id
+    </select>
+</mapper>

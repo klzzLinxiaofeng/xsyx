@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PjTeacherSalaryFieldDao">
+
+	<resultMap id="PjTeacherSalaryFieldResult" type="platform.education.generalTeachingAffair.model.PjTeacherSalaryField">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="fieldName" column="field_name" />
+		<result property="attrName" column="attr_name" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.PjTeacherSalaryField">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_teacher_salary_field (
+			id, 
+			school_id, 
+			field_name, 
+			attr_name
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{fieldName}, 
+			#{attrName}
+		)
+	</insert>
+
+	<select id="read" resultMap="PjTeacherSalaryFieldResult" useCache="false">
+		SELECT * FROM pj_teacher_salary_field WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPjTeacherSalaryFieldByCondition" resultMap="PjTeacherSalaryFieldResult" useCache="false">
+		SELECT * FROM pj_teacher_salary_field 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fieldName != null and args[0].fieldName != ''">
+				AND field_name = #{args[0].fieldName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attrName != null and args[0].attrName != ''">
+				AND attr_name = #{args[0].attrName,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_teacher_salary_field 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fieldName != null and args[0].fieldName != ''">
+				AND field_name = #{args[0].fieldName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attrName != null and args[0].attrName != ''">
+				AND attr_name = #{args[0].attrName,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PjTeacherSalaryFieldResult" useCache="false">
+		SELECT * FROM pj_teacher_salary_field WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.PjTeacherSalaryField">
+		UPDATE pj_teacher_salary_field
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="fieldName != null">
+			field_name=#{fieldName},
+		</if>
+		<if test="attrName != null">
+			attr_name=#{attrName},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_teacher_salary_field
+		WHERE id = #{id}
+	</delete>
+</mapper>

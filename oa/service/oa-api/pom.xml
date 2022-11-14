@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>platform.education.oa.service</groupId>
+        <artifactId>service</artifactId>
+        <version>0.0.1</version>
+    </parent>
+    <artifactId>oa-api</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>jar</packaging>
+
+
+    <dependencies>
+        <!-- 通知公用-->
+        <dependency>
+            <groupId>platform.education.service</groupId>
+            <artifactId>notice-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>platform.education.service</groupId>
+            <artifactId>notice-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
+</project>

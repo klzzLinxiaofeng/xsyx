@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.jizuBiao.dao.JiZuBiaoDao">
+
+    <resultMap id="StudyHabitsMap" type="platform.szxyzxx.jizuBiao.pojo.JiZuBiao">
+        <id column="id" property="id"></id>
+        <result column="jizu_name" property="jizuName"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="teacher_id" property="teacherId"></result>
+        <result column="teacherName" property="teacherName"></result>
+        <result column="zijizu" property="zijizu"></result>
+        <result column="is_jizuceng" property="isJizuceng"></result>
+        <result column="fuze_id" property="fuzeId"></result>
+    </resultMap>
+
+    <resultMap id="jizuTeacher" type="platform.szxyzxx.jizuBiao.pojo.JiZuTeacherBiao">
+        <id column="id" property="id"></id>
+        <result column="jizu_id" property="jizuId"></result>
+        <result column="teacher_id" property="teacherId"></result>
+        <result column="teacher_name" property="teacherName"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+    </resultMap>
+
+    <resultMap id="TeacherWoke" type="platform.szxyzxx.jizuBiao.pojo.TeacherWoke">
+        <id column="id" property="id"></id>
+        <result column="teacher_id" property="teacherId"></result>
+        <result column="teacher_name" property="teacherName"></result>
+        <result column="numenjizu_name" property="numenjizuName"/>
+        <result column="woke_content" property="wokeContent"/>
+        <result column="create_time" property="craeteTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="is_delete" property="is_delete"></result>
+        <result column="school_year" property="schoolYear"></result>
+        <result column="school_trem" property="schoolTrem"></result>
+        <result column="zhoushu" property="zhoushu"></result>
+        <result column="jizu_id" property="jizuId"></result>
+    </resultMap>
+
+    <resultMap id="Teacher" type="platform.education.generalTeachingAffair.model.Teacher">
+        <result column="name" property="name"/>
+        <result column="id" property="id"/>
+        <result column="sex" property="sex"/>
+        <result column="job_state" property="jobState"/>
+        <result column="mobile" property="mobile"/>
+    </resultMap>
+    <select id="findByAllJZu" resultMap="StudyHabitsMap">
+          select *  from zy_jizu
+           <where>
+            is_delete=0
+               <if test="args[0]!=null">
+                   and  is_jizuceng=#{args[0]}
+               </if>
+               <if test="args[1]!=null">
+                   and  zijizu=#{args[1]}
+               </if>
+                </where>
+    </select>
+    <select id="findByAll" resultMap="StudyHabitsMap">
+        select *  from zy_jizu
+        <where>
+            is_delete=0
+            <if test="args[0]!=null">
+                and id=#{args[0]}
+            </if>
+        </where>
+    </select>
+    <select id="findByAllIs" resultMap="StudyHabitsMap">
+        select *  from zy_jizu
+        <where>
+            is_delete=0 and is_jizuceng=#{args[1]}
+            <if test="args[0]!=null">
+                and zijizu=#{args[0]}
+            </if>
+
+        </where>
+    </select>
+    <select id="findByjizuId" resultMap="jizuTeacher">
+        select zjt.*,pt.name as teacher_name  from zy_jizu_teacher  zjt  inner join pj_teacher pt on pt.id=zjt.teacher_id
+        where zjt.jizu_id=#{args[0]} and zjt.is_delete=0;
+    </select>
+
+    <select id="findByCount" resultType="java.lang.Integer">
+        select count(*) from zy_teacher_woke where teacher_id=#{args[0]} and is_delete=0
+        <if test="args[1]!=null">
+            and school_year=#{args[1]}
+        </if>
+        <if test="args[2]!=null">
+            and school_trem=#{args[2]}
+        </if>
+        <if test="args[3]!=null">
+            and zhoushu=#{args[3]}
+        </if>
+    </select>
+    <insert id="create">
+        insert into zy_jizu(jizu_name,create_time,modiy_time,is_delete,fuze_id,zijizu,is_jizuceng)
+        value(#{args[0].jizuName},NOW(),NOW(),0,NULL,#{args[0].zijizu},0)
+    </insert>
+    <insert id="createZijiZu">
+        insert into zy_jizu(jizu_name,create_time,modiy_time,is_delete,fuze_id,zijizu,is_jizuceng)
+        value(#{args[0].jizuName},NOW(),NOW(),0,NULL,#{args[0].zijizu},1)
+    </insert>
+    <update id="updateTeacherJiZuZhang">
+        update zy_jizu set
+        fuze_id=#{args[0]}
+        where id=#{args[1]} and is_delete=0
+    </update>
+    <update id="updateJiZu">
+        update zy_jizu set modiy_time=NOW()
+        <if test="args[0].jizuName!=null">
+            ,jizu_name=#{args[0].jizuName}
+        </if>
+        <if test="args[0].isDelete!=null and args[0].isDelete!=''">
+            ,is_delete=1
+        </if>
+        where id=#{args[0].id} and is_delete=0
+    </update>
+
+    <insert id="createTeacherJiZu">
+         insert into zy_jizu_teacher(jizu_id,teacher_id,create_time,modiy_time,is_delete)
+         value(#{args[0].jizuId},#{args[0].teacherId},NOW(),NOW(),0)
+    </insert>
+    <update id="updateTeacherJiZu">
+        update zy_jizu_teacher set modiy_time=NOW(),is_delete=1
+        where id=#{args[0].id} and is_delete=0
+    </update>
+    <update id="updateTeacherWoke">
+         update zy_teacher_woke set is_delete=1 where  teacher_id=#{args[0]} and is_delete=0 and jizu_id=#{args[1]}
+    </update>
+    <update id="updateTeacherJiZuId">
+         update zy_jizu_teacher set is_delete=1 where  jizu_id=#{args[0]} and is_delete=0
+    </update>
+
+    <insert id="createTeacherWoke">
+        insert  into zy_teacher_woke (teacher_id,numenjizu_name,create_time,modity_time,woke_content,is_delete,school_year,school_trem,zhoushu,jizu_id,jiaozhi_id)
+        value(#{args[0].teacherId},#{args[0].numenjizuName},NOW(),NOW(),#{args[0].wokeContent},0,#{args[0].schoolYear},#{args[0].schoolTrem},#{args[0].zhoushu},#{args[0].jizuId},null)
+    </insert>
+    <select id="findByAllTeacherId" resultMap="TeacherWoke">
+        select *  from zy_teacher_woke where teacher_id=#{args[0]}
+        and school_year=#{args[1]}  and school_trem=#{args[2]} and zhoushu=#{args[3]}    and is_delete=0
+    </select>
+    <update id="updateDelete">
+        update zy_teacher_woke set is_delete=1 where id=#{args[0]} and is_delete=0
+    </update>
+    <update id="updateTeacherWokes">
+        update zy_teacher_woke set woke_content=#{args[1]} where id=#{args[0]} and is_delete=0
+        </update>
+
+    <select id="findByIdIntegers" resultType="java.lang.Integer">
+        select teacher_id from  zy_jizu_teacher where is_delete=0 and jizu_id=#{args[0]}
+    </select>
+    
+    <select id="findByTeacher" resultMap="Teacher">
+            select pt.* from pj_teacher pt left join pj_team_teacher ptt on ptt.teacher_id=pt.id
+            left join   pj_department_teacher pdt on pdt.teacher_id=pt.id
+            <where>
+            pt.is_delete=0
+                <if test="args[0]!=null">
+                   and pt.name like concat('%',#{args[0]}, '%')
+                </if>
+                <if test="args[1]!=null">
+                  and   pdt.department_id=#{args[1]}
+                </if>
+                <if test="args[2]!=null">
+                   and ptt.subject_code=#{args[2]}
+                </if>
+                <if test="args[3]!=null">
+                    and pt.id not in(select teacher_id from  zy_jizu_teacher where is_delete=0 and jizu_id=#{args[3]})
+                </if>
+            </where>
+            group by pt.id
+    </select>
+
+    <select id="findByDaoChu" resultMap="TeacherWoke">
+        select ztk.*,pt.name as teacher_name from zy_teacher_woke ztk inner join pj_teacher pt
+        on pt.id=ztk.teacher_id
+        where school_year=#{args[0]} and school_trem=#{args[1]} and zhoushu=#{args[2]} and ztk.is_delete=0
+    </select>
+
+
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.logger.dao.LoggerDao">
+
+    <resultMap id="LoggerResult" type="platform.szxyzxx.logger.vo.Loggers">
+        <result property="id" column="id" />
+        <result property="caozuoId" column="caozuo_id" />
+        <result property="name" column="name" />
+        <result property="username" column="username" />
+        <result property="mobile" column="mobile" />
+        <result property="createTime" column="create_time" />
+        <result property="modiyTme" column="modiy_time" />
+        <result property="mokuaiName" column="mokuai_name" />
+        <result property="isDelete" column="is_delete" />
+        <result property="type" column="type" />
+        <result property="message" column="message" />
+        <result property="schoolYear" column="school_year" />
+        <result property="schoolTrem" column="school_Trem" />
+    </resultMap>
+
+
+    <insert id="create">
+       <!-- <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>-->
+        INSERT INTO zy_logger (
+        caozuo_id,
+        name,
+        username,
+        mobile,
+        create_time,
+        modiy_time,
+        mokuai_name,
+        is_delete,
+        type,
+        message,
+        school_year,
+        school_trem
+        )
+        VALUES (
+        #{args[0].caozuoId},
+        #{args[0].name},
+        #{args[0].username},
+        #{args[0].mobile},
+        NOW(),
+        NOW(),
+        #{args[0].mokuaiName},
+        0,
+        #{args[0].type},
+        #{args[0].message},
+        #{args[0].schoolYear},
+        #{args[0].schoolTrem}
+        )
+    </insert>
+    <select id="findByAll" resultMap="LoggerResult">
+        select * from zy_logger
+        <where>
+            is_delete=0
+            <if test="args[0].name!=null">
+               and  name like concat('%',#{args[0].name},'%')
+            </if>
+            <if test="args[0].username!=null">
+                and  username=#{args[0].username}
+            </if>
+            <if test="args[0].startTime!=null and args[0].endTime!=null">
+                and  create_time between #{args[0].startTime} and  #{args[0].endTime}
+            </if>
+            <if test="args[0].mokuaiName!=null ">
+                and  mokuai_name like concat('%',#{args[0].mokuaiName},'%')
+            </if>
+            <if test="args[0].id!=null and args[0].id!=null">
+                and  id = #{args[0].id}
+            </if>
+        </where>
+    </select>
+    <select id="findByAlldaochu" resultMap="LoggerResult">
+         select * from zy_logger
+         <where>
+             is_delete=0
+             <if test="args[0].name!=null">
+                 and  name like concat('%',#{args[0].name},'%')
+             </if>
+             <if test="args[0].username!=null">
+                 and  username=#{args[0].username}
+             </if>
+             <if test="args[0].startTime!=null and args[0].endTime!=null">
+                 and  create_time between #{args[0].startTime} and  #{args[0].endTime}
+             </if>
+             <if test="args[0].id!=null and args[0].id!=null">
+                 and  id = #{args[0].id}
+             </if>
+             <if test="args[0].schoolYear!=null and args[0].schoolYear!=null">
+                 and  school_year = #{args[0].schoolYear}
+             </if>
+             <if test="args[0].mokuaiName!=null ">
+                 and  mokuai_name like concat('%',#{args[0].mokuaiName},'%')
+             </if>
+             <if test="args[0].schoolTrem!=null and args[0].schoolTrem!=null">
+                 and  school_trem= #{args[0].schoolTrem}
+             </if>
+         </where>
+    </select>
+</mapper>

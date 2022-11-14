@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentAskingDao">
+    <resultMap id="studentAskingResult" type="platform.education.generalTeachingAffair.model.StudentAskingPojo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="student_id" jdbcType="INTEGER" property="studentId"/>
+        <result column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="upload_id" jdbcType="CHAR" property="uploadId"/>
+        <result column="india_status" jdbcType="INTEGER" property="indiaStatus"/>
+        <result column="review_date" jdbcType="TIMESTAMP" property="reviewDate"/>
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="rejected" property="rejected"/>
+        <result column="time_consuming" property="timeConsuming"/>
+        <result column="number" property="number"/>
+        <result column="stuName" property="stuName"/>
+        <result column="team_id" property="teamId"/>
+        <result column="teacherName" property="teacherName"/>
+        <result column="teamName" property="teamName"/>
+    </resultMap>
+
+    <select id="findCanteenByCondition" resultMap="studentAskingResult" useCache="false">
+        select psa.*,ps.name stuName,pt.name teacherName,p.name teamName
+        from pj_student_asking psa
+        join pj_student ps on ps.id = psa.student_id
+        left join pj_teacher pt on psa.teacher_id = pt.id
+        left join pj_team p on psa.team_id = p.id
+        where psa.is_deleted = 0 and ps.is_delete = 0 and pt.is_delete = 0 and p.is_delete = 0
+        <if test="args[0].schoolId != null">
+             and psa.school_id = #{args[0].schoolId}
+             and ps.school_id = #{args[0].schoolId}
+             and pt.school_id = #{args[0].schoolId}
+             and p.school_id = #{args[0].schoolId}
+        </if>
+        <if test="args[0].studentId != null">
+            and psa.student_id = #{args[0].studentId}
+        </if>
+        <if test="args[0].indiaStatus != null">
+            and psa.india_status = #{args[0].indiaStatus}
+        </if>
+        <if test="args[0].teacherId != null">
+             and psa.teacher_id = #{args[0].teacherId}
+        </if>
+        <if test="args[0].id != null">
+             and psa.id = #{args[0].id}
+        </if>
+        <if test="args[0].stuName != null and args[0].stuName != ''">
+             and ps.name LIKE CONCAT(CONCAT('%', #{args[0].stuName}),'%')
+        </if>
+        <if test="args[0].beginDate != null and args[0].endDate != null">
+            and psa.create_date between #{args[0].beginDate} and #{args[0].endDate}
+        </if>
+        <if test="args[0].teamId != null">
+            and p.id = #{args[0].teamId}
+        </if>
+        order by psa.create_date
+    </select>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PublicClassTimeDao">
+    <resultMap id="publicTimeResult" type="platform.education.generalTeachingAffair.model.PublicTimeVo">
+        <result column="id" property="id"/>
+        <result column="class_time" property="classTime"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="is_deleted" property="isDelete"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="week_date" property="weekDate"/>
+        <result column="class_endtime" property="classTimeEnd"/>
+        <result column="class_starttime" property="classTimeStart"/>
+    </resultMap>
+
+
+    <select id="findPublicClassTimeInfoByCondition" resultMap="publicTimeResult" parameterType="platform.education.generalTeachingAffair.model.PublicTimeVo">
+
+		select * from pj_public_time
+		where is_deleted = 0
+
+        <if test="schoolId != null">
+
+		    and school_id = #{schoolId}
+
+        </if>
+    </select>
+    <insert id="create" parameterType="platform.education.generalTeachingAffair.model.PublicTimeVo">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into pj_public_time(id,class_time,is_deleted,school_id,create_date,modify_date,week_date,class_endtime,class_starttime)
+        values(null,#{classTime},#{isDelete},#{schoolId},#{createDate},#{modifyDate},#{weekDate},#{classTimeEnd},#{classTimeStart})
+    </insert>
+
+    <update id="update" parameterType="platform.education.generalTeachingAffair.model.PublicTimeVo">
+        update pj_public_time
+        <set>
+            <if test="schoolId != null">
+                school_id=#{schoolId},
+            </if>
+            <if test="classTime != null and classTime != ''">
+                class_time=#{classTime},
+            </if>
+            <if test="isDelete != null">
+                is_deleted = #{isDelete},
+            </if>
+            <if test="createDate != null">
+                create_date=#{createDate},
+            </if>
+            <if test="modifyDate != null">
+                modify_date=#{modifyDate},
+            </if>
+            <if test="weekDate != null">
+                week_date=#{weekDate},
+            </if>
+            <if test="classTimeEnd != null">
+                class_endtime=#{classTimeEnd},
+            </if>
+            <if test="classTimeStart != null">
+                class_starttime=#{classTimeStart}
+            </if>
+        </set>
+		WHERE id = #{id}
+
+    </update>
+    <select id="findByTimeId" resultMap="publicTimeResult" useCache="false">
+		SELECT * FROM pj_public_time WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+
+    <select id="findByTimeAll" resultMap="publicTimeResult" useCache="false">
+		SELECT * FROM pj_public_time WHERE week_date=#{args[0]} and class_endtime=#{args[2]} and class_starttime=#{args[1]}
+    </select>
+
+    <select id="read" resultMap="publicTimeResult" useCache="false">
+		SELECT * FROM pj_public_time WHERE 1=1
+        <if test="args != null and args[0] != null">
+		    AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+		ORDER BY id DESC
+
+    </select>
+    <select id="findTimeInfoByClassId" resultMap="publicTimeResult">
+        select ppt.* from pj_public_time ppt inner join pj_public_time_related pptr
+        on ppt.id = pptr.time_id
+        where ppt.is_deleted = 0 and pptr.is_deleted = 0 and public_class_id = #{args[0],javaType=java.lang.Integer}
+        and ppt.school_id =  #{args[1],javaType=java.lang.Integer} and pptr.school_id =  #{args[1],javaType=java.lang.Integer}
+    </select>
+
+</mapper>

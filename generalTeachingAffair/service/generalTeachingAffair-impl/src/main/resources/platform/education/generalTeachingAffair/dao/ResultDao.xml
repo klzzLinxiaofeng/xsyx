@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ResultDao">
+
+	<resultMap id="ResultResult" type="platform.education.generalTeachingAffair.model.Result">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="teachName" column="teach_name" />
+		<result property="teachId" column="teach_id" />
+		<result property="name" column="name" />
+		<result property="type" column="type" />
+		<result property="level" column="level" />
+		<result property="rank" column="rank" />
+		<result property="publication" column="publication" />
+		<result property="applyDate" column="apply_date" />
+		<result property="applyScore" column="apply_score" />
+		<result property="checkScore" column="check_score" />
+		<result property="personNum" column="person_num" />
+		<result property="independent" column="Independent" />
+		<result property="fileUuid" column="file_uuid" />
+		<result property="audit" column="audit" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<resultMap id="ResultVoResult" type="platform.education.generalTeachingAffair.vo.ResultVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="teachName" column="teach_name" />
+		<result property="teachId" column="teach_id" />
+		<result property="name" column="name" />
+		<result property="type" column="type" />
+		<result property="level" column="level" />
+		<result property="rank" column="rank" />
+		<result property="publication" column="publication" />
+		<result property="applyDate" column="apply_date" />
+		<result property="applyScore" column="apply_score" />
+		<result property="checkScore" column="check_score" />
+		<result property="personNum" column="person_num" />
+		<result property="independent" column="Independent" />
+		<result property="fileUuid" column="file_uuid" />
+		<result property="audit" column="audit" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="jobNumber" column="job_number" />
+	</resultMap>
+	
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.Result">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_ky_result (
+			id, 
+			school_id, 
+			teach_name, 
+			teach_id, 
+			name, 
+			type, 
+			level, 
+			rank, 
+			publication, 
+			apply_date, 
+			apply_score, 
+			check_score, 
+			person_num, 
+			Independent, 
+			file_uuid, 
+			audit, 
+			is_delete, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{teachName}, 
+			#{teachId}, 
+			#{name}, 
+			#{type}, 
+			#{level}, 
+			#{rank}, 
+			#{publication}, 
+			#{applyDate}, 
+			#{applyScore}, 
+			#{checkScore}, 
+			#{personNum}, 
+			<choose>
+				<when test="independent != null">
+					<choose>
+						<when test="independent == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{fileUuid}, 
+			#{audit},
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ResultResult" useCache="false">
+		SELECT * FROM pj_ky_result WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findResultByCondition" resultMap="ResultResult" useCache="false">
+		SELECT * FROM pj_ky_result 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teachName != null and args[0].teachName != ''">
+				AND teach_name LIKE CONCAT(CONCAT('%', #{args[0].teachName}),'%')
+			</if>
+			<if test="args[0].teachId != null and args[0].teachId != ''">
+				AND teach_id = #{args[0].teachId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].level != null and args[0].level != ''">
+				AND level = #{args[0].level,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rank != null and args[0].rank != ''">
+				AND rank = #{args[0].rank,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publication != null and args[0].publication != ''">
+				AND publication = #{args[0].publication,javaType=java.lang.String}
+			</if>
+			<if test="args[0].applyDate != null">
+				AND apply_date = #{args[0].applyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].applyScore != null">
+				AND apply_score = #{args[0].applyScore,javaType=Long}
+			</if>
+			<if test="args[0].checkScore != null">
+				AND check_score = #{args[0].checkScore,javaType=Long}
+			</if>
+			<if test="args[0].personNum != null">
+				AND person_num = #{args[0].personNum,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].independent != null">
+				<choose>
+					<when test="args[0].independent == true">
+						AND Independent  = 1
+					</when>
+					<otherwise>
+						AND Independent  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].audit != null">
+				AND audit = #{args[0].audit,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findResultVoByCondition" resultMap="ResultVoResult" useCache="false">
+		select kr.*,t.job_number from pj_ky_result kr 
+		LEFT JOIN pj_teacher t
+		ON t.id=kr.teach_id
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND kr.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teachName != null and args[0].teachName != ''">
+				AND kr.teach_name LIKE CONCAT(CONCAT('%', #{args[0].teachName}),'%')
+			</if>
+			<if test="args[0].teachId != null and args[0].teachId != ''">
+				AND teach_id = #{args[0].teachId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].level != null and args[0].level != ''">
+				AND level = #{args[0].level,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rank != null and args[0].rank != ''">
+				AND rank = #{args[0].rank,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publication != null and args[0].publication != ''">
+				AND publication = #{args[0].publication,javaType=java.lang.String}
+			</if>
+			<if test="args[0].applyDate != null">
+				AND apply_date = #{args[0].applyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].applyScore != null">
+				AND apply_score = #{args[0].applyScore,javaType=Long}
+			</if>
+			<if test="args[0].checkScore != null">
+				AND check_score = #{args[0].checkScore,javaType=Long}
+			</if>
+			<if test="args[0].searchWord != null">
+				AND CONCAT_WS(",",teach_name,job_number) like CONCAT('%',#{args[0].searchWord},'%')
+			</if>
+			<if test="args[0].personNum != null">
+				AND person_num = #{args[0].personNum,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].independent != null">
+				<choose>
+					<when test="args[0].independent == true">
+						AND Independent  = 1
+					</when>
+					<otherwise>
+						AND Independent  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].audit != null">
+				AND audit = #{args[0].audit,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND kr.is_delete  = 1
+					</when>
+					<otherwise>
+						AND kr.is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_ky_result 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teachName != null and args[0].teachName != ''">
+				AND teach_name = #{args[0].teachName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teachId != null and args[0].teachId != ''">
+				AND teach_id = #{args[0].teachId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].level != null and args[0].level != ''">
+				AND level = #{args[0].level,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rank != null and args[0].rank != ''">
+				AND rank = #{args[0].rank,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publication != null and args[0].publication != ''">
+				AND publication = #{args[0].publication,javaType=java.lang.String}
+			</if>
+			<if test="args[0].applyDate != null">
+				AND apply_date = #{args[0].applyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].applyScore != null">
+				AND apply_score = #{args[0].applyScore,javaType=Long}
+			</if>
+			<if test="args[0].checkScore != null">
+				AND check_score = #{args[0].checkScore,javaType=Long}
+			</if>
+			<if test="args[0].personNum != null">
+				AND person_num = #{args[0].personNum,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].independent != null">
+				<choose>
+					<when test="args[0].independent == true">
+						AND Independent  = 1
+					</when>
+					<otherwise>
+						AND Independent  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].audit != null">
+				AND audit = #{args[0].audit,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ResultResult" useCache="false">
+		SELECT * FROM pj_ky_result WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.Result">
+		UPDATE pj_ky_result
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="teachName != null">
+			teach_name=#{teachName},
+		</if>
+		<if test="teachId != null">
+			teach_id=#{teachId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="type != null">
+			type=#{type},
+		</if>
+		<if test="level != null">
+			level=#{level},
+		</if>
+		<if test="rank != null">
+			rank=#{rank},
+		</if>
+		<if test="publication != null">
+			publication=#{publication},
+		</if>
+		<if test="applyDate != null">
+			apply_date=#{applyDate},
+		</if>
+		<if test="applyScore != null">
+			apply_score=#{applyScore},
+		</if>
+		<if test="checkScore != null">
+			check_score=#{checkScore},
+		</if>
+		<if test="personNum != null">
+			person_num=#{personNum},
+		</if>
+		<if test="independent != null">
+			<choose>
+				<when test="independent == true">
+					Independent  = 1,
+				</when>
+				<otherwise>
+					Independent  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="fileUuid != null">
+			file_uuid=#{fileUuid},
+		</if>
+		<if test="audit != null">
+			audit=#{audit},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_ky_result
+		WHERE id = #{id}
+	</delete>
+</mapper>

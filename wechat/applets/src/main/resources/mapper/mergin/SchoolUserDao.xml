@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.SchoolUserDao">
+
+    <resultMap id="SchoolUserResult" type="com.xunyunedu.mergin.vo.SchoolUser">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="userId" column="user_id" />
+        <result property="ownerId" column="owner_id" />
+        <result property="name" column="name" />
+        <result property="userType" column="user_type" />
+        <result property="personId" column="person_id" />
+        <result property="userName" column="user_name" />
+        <result property="alias" column="alias" />
+        <result property="nickname" column="nickname" />
+        <result property="inSchool" column="in_school" />
+        <result property="isDeleted" column="is_deleted" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+
+    <select id="findSchoolUserByCondition" resultMap="SchoolUserResult" useCache="false">
+        SELECT * FROM pj_school_user
+        <if test="schoolUserCondition != null">
+            WHERE 1=1
+            <if test="schoolUserCondition.id != null and schoolUserCondition.id != ''">
+                AND id = #{schoolUserCondition.id,javaType=java.lang.Integer}
+            </if>
+            <if test="schoolUserCondition.schoolId != null and schoolUserCondition.schoolId != ''">
+                AND school_id = #{schoolUserCondition.schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="schoolUserCondition.userId != null and schoolUserCondition.userId != ''">
+                AND user_id = #{schoolUserCondition.userId,javaType=java.lang.Integer}
+            </if>
+            <if test="schoolUserCondition.ownerId != null and schoolUserCondition.ownerId != ''">
+                AND owner_id = #{schoolUserCondition.ownerId,javaType=java.lang.Integer}
+            </if>
+            <if test="schoolUserCondition.name != null and schoolUserCondition.name != ''">
+                AND name = #{schoolUserCondition.name,javaType=java.lang.String}
+            </if>
+            <if test="schoolUserCondition.userType != null and schoolUserCondition.userType != ''">
+                AND user_type = #{schoolUserCondition.userType,javaType=java.lang.String}
+            </if>
+
+            <!-- 添加于2015-11-16 -->
+            <if test="schoolUserCondition.personId != null and schoolUserCondition.personId != ''">
+                AND person_id = #{schoolUserCondition.personId,javaType=java.lang.Integer}
+            </if>
+            <if test="schoolUserCondition.userName != null and schoolUserCondition.userName != ''">
+                AND user_name = #{schoolUserCondition.userName,javaType=java.lang.String}
+            </if>
+            <if test="schoolUserCondition.alias != null and schoolUserCondition.alias != ''">
+                AND alias = #{schoolUserCondition.alias,javaType=java.lang.String}
+            </if>
+            <if test="schoolUserCondition.nickname != null and schoolUserCondition.nickname != ''">
+                AND nickname = #{schoolUserCondition.nickname,javaType=java.lang.String}
+            </if>
+            <if test="schoolUserCondition.isDeleted != null">
+                <choose>
+                    <when test="schoolUserCondition.isDeleted == true">
+                        AND is_deleted  = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted  = 0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="schoolUserCondition.inSchool != null">
+                <choose>
+                    <when test="schoolUserCondition.inSchool == true">
+                        AND in_school  = 1
+                    </when>
+                    <otherwise>
+                        AND in_school  = 0
+                    </otherwise>
+                </choose>
+            </if>
+            <!-- 添加于2015-11-16 -->
+
+            <if test="schoolUserCondition.createDate != null and schoolUserCondition.createDate != ''">
+                AND create_date = #{schoolUserCondition.createDate,javaType=java.util.Date}
+            </if>
+            <if test="schoolUserCondition.modifyDate != null and schoolUserCondition.modifyDate != ''">
+                AND modify_date = #{schoolUserCondition.modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+</mapper>

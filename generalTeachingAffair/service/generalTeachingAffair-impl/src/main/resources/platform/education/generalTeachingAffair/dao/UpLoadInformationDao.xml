@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.UpLoadInformationDao">
+
+	<resultMap id="UpLoadInformationResult"
+		type="platform.education.generalTeachingAffair.model.UpLoadInformation">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="idCardNumber" column="id_card_number" />
+		<result property="studentNumber" column="student_number" />
+		<result property="telephone" column="telephone" />
+		<result property="userType" column="userType" />
+		<result property="state" column="state" />
+		<result property="message" column="message" />
+		<result property="creater" column="creater" />
+		<result property="createDate" column="create_date" />
+		<result property="role" column="role" />
+		<result property="isBoarded" column="isBoarded" />
+		<result property="mobile" column="mobile" />
+		<result property="deptName" column="deptName" />
+		
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.UpLoadInformation">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_upLoadInformation_temp (
+			id,
+			school_id,
+			name, 
+			sex,
+			id_card_number,
+			student_number,
+			telephone, 
+			userType, 
+			state,
+			message, 
+			creater, 
+			create_date,
+			role,
+			isBoarded,
+			mobile,
+			deptName
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId},
+			#{name}, 
+			#{sex},
+			#{idCardNumber},
+			#{studentNumber},
+			#{telephone},
+			#{userType}, 
+			#{state}, 
+			#{message},
+			#{creater}, 
+			#{createDate},
+			#{role},
+			#{isBoarded},
+			#{mobile},
+			#{deptName}
+		)
+	</insert>
+
+	<select id="read" resultMap="UpLoadInformationResult" useCache="false">
+		SELECT * FROM pj_upLoadInformation_temp WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findUpLoadInformationByCondition" resultMap="UpLoadInformationResult"
+		useCache="false">
+		SELECT * FROM pj_upLoadInformation_temp
+		<if test="args[0] != null">
+			WHERE 1=1 
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].sex != null and args[0].sex != ''">
+				AND sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].idCardNumber != null and args[0].idCardNumber != ''">
+				AND id_card_number = #{args[0].idCardNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber != null and args[0].studentNumber != ''">
+				AND student_number = #{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userType != null and args[0].userType != ''">
+				AND userType = #{args[0].userType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].state != null">
+				AND state = #{args[0].state,javaType=java.lang.String}
+			</if>
+			<if test="args[0].message != null">
+				AND message = #{args[0].message,javaType=java.lang.String}
+			</if>
+			<if test="args[0].creater != null">
+				AND creater = #{args[0].creater,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND createDate = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isBoarded != null">
+				AND isBoarded = #{args[0].isBoarded,javaType=java.util.String}
+			</if>
+			<if test="args[0].mobile != null">
+				AND mobile = #{args[0].mobile,javaType=java.util.String}
+			</if>
+			<if test="args[0].deptName != null">
+				AND deptName = #{args[0].deptName,javaType=java.util.String}
+			</if>
+		</if>
+	</select>
+
+	<select id="findUpLoadInformationById" resultMap="UpLoadInformationResult" useCache="false">
+		SELECT * FROM pj_upLoadInformation_temp WHERE 1=1 and id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.UpLoadInformation">
+		UPDATE pj_upLoadInformation_temp
+		SET
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="sex != null">
+			sex=#{sex},
+		</if>
+		<if test="idCardNumber != null">
+			id_card_number=#{idCardNumber},
+		</if>
+		<if test="studentNumber != null">
+			student_number=#{studentNumber},
+		</if>
+		<if test="telephone != null">
+			telephone=#{telephone},
+		</if>
+
+		<if test="userType != null">
+			userType=#{userType},
+		</if>
+		<if test="state != null">
+			state=#{state},
+		</if>
+		<if test="message != null">
+			message=#{message},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_upLoadInformation_temp
+		WHERE id = #{id}
+	</delete>
+
+</mapper>

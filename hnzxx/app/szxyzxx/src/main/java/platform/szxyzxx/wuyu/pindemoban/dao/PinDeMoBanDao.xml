@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.wuyu.pindemoban.dao.PinDeMoBanDao">
+
+  <resultMap id="DevelopmentIndicatorsMap" type="platform.szxyzxx.wuyu.pindemoban.vo.PinDeMoBan">
+        <id column="id"  property="id" />
+        <result column="zy_type_id"  property="pingYuId" />
+        <result column="ztName"  property="pingYuTypeName" />
+        <result column="zhibiao_id"  property="zhibiaoId" />
+      <result column="zbName"  property="zhibiaoName" />
+        <result column="create_time"  property="createTime" />
+        <result column="modiy_time"  property="modiyTime" />
+        <result column="is_delete" property="isDelete"/>
+        <result column="dengji" property="dengji"/>
+      <result column="school_year" property="schoolYear"/>
+      <result column="school_trem" property="schoolTrem"/>
+      <result column="text" property="text"/>
+
+
+
+  </resultMap>
+
+    <select id="findByAll" resultMap="DevelopmentIndicatorsMap">
+        select * from zy_pinde_moban  zpm
+        inner join zy_pingyutype zp on zp.id=zpm.zy_type_id
+        inner join zy_development_indicators zdi on zdi.id=zpm.zhibiao_id
+        where zpm.is_delete=0
+        <if test="args[0]!=null">
+           and  zpm.zhibiao_id=#{args[0]}
+        </if>
+        <if test="args[1]!=null">
+            and zpm.school_year=#{args[1]}
+        </if>
+        <if test="args[2]!=null">
+            and zpm.school_trem=#{args[2]}
+        </if>
+    </select>
+
+    <select id="findById" resultMap="DevelopmentIndicatorsMap">
+        select * from zy_pinde_moban where is_delete=0 and id=#{args[0]}
+    </select>
+    <update id="update">
+        update zy_pinde_moban
+        set
+        modiy_time=NOW()
+        <if test="args[0].code!=null">
+            ,zhibiao_id=#{args[0].code}
+        </if>
+        <if test="args[0].dengji!=null">
+            dengji=#{args[0].dengji}
+        </if>
+        <if test="args[0].name!=null">
+            ,text=#{args[0].text}
+        </if>
+        where id=#{args[0].id}
+    </update>
+
+    <insert id="create">
+        insert into zy_pinde_moban(
+        zy_type_id,
+        text,
+        create_time,
+        modiy_time,
+        is_delete,
+        dengji,
+        school_year,
+        school_trem,
+        zhibiao_id)
+        value(#{args[0].pingYuId},
+        #{args[0].text},
+        NOW(),
+        NOW(),
+        0,
+        #{args[0].dengji},
+        #{args[0].xn},
+        #{args[0].xq},
+        #{args[0].zhibiaoId});
+    </insert>
+    <update id="updateDelete">
+          update zy_pinde_moban set is_delete=1 where id=#{args[0]}
+    </update>
+
+</mapper>

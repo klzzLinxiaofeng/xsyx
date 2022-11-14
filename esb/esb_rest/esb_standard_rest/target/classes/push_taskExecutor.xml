@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+      http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+	default-autowire="byName">
+
+
+	<!--班班星 -->
+
+	<!-- 班班星屏幕权限线程池 -->
+	<bean id="bbx_AccessCode_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+	
+	<!-- 班班星班级宣言线程池 -->
+	<bean id="bbx_teamAccount_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+
+
+
+	<!-- 班班星班级通知线程池 -->
+	<bean id="bbx_teamMessage_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+
+	<!-- 班班星班级荣誉线程池 -->
+	<bean id="bbx_teamAward_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+
+	<!-- 班班星作业公示线程池 -->
+	<bean id="bbx_teamHomeWork_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+
+	<!-- 班班星表扬栏线程池 -->
+	<bean id="bbx_praise_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+
+
+	<!-- 班班星班级活动线程池 -->
+	<bean id="bbx_teamActivity_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+
+	<!-- 班班星值日生线程池 -->
+	<bean id="bbx_teamDuty_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+
+	<!-- 班班星班级动态信息线程池 -->
+	<bean id="bbx_circleMessage_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+	
+	
+	<!-- 班牌电子黑板报线程池 -->
+	<bean id="bp_blackboard_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+	
+	<!-- 班牌寻物启事线程池-->
+	<bean id="bp_notice_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+	
+	<!-- 班牌欢迎词线程池-->
+	<bean id="bp_welcome_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+	
+	<!-- 班牌学习风采线程池 -->
+	<bean id="bp_studyShare_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+	
+	<!-- 班牌班级相册线程池 -->
+	<bean id="bp_picture_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+	
+	<!-- 班牌考试模式线程池 -->
+	<bean id="bp_exam_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+	
+	<!-- 班牌课程表，调课线程池 -->
+	<bean id="bp_syllabus_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+	
+	<!-- 班牌考勤程池 -->
+	<bean id="bp_attendance_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+		
+	<bean id="push_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+	
+	<!-- 班牌普通线程池(定时开关机) -->
+	<bean id="bp_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+
+	<!-- 班牌个性化展示线程池 -->
+	<bean id="bp_individuationDisplay_taskExecutor"
+		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数 -->
+		<property name="corePoolSize" value="2" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="10" />
+		<!-- 队列最大长度 -->
+		<property name="queueCapacity" value="500" />
+		<!-- 线程池维护线程所允许的空闲时间，默认为60s -->
+		<property name="keepAliveSeconds" value="60" />
+	</bean>
+
+</beans>

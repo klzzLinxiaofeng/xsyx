@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.LeaveApprUserDao">
+
+	<resultMap id="LeaveApprUserResult" type="platform.education.oa.model.LeaveApprUser">
+		<result property="id" column="id" />
+		<result property="leaveId" column="leave_id" />
+		<result property="userId" column="user_id" />
+		<result property="apprState" column="appr_state" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.LeaveApprUser">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_leave_appr_user (
+			id, 
+			leave_id, 
+			user_id, 
+			appr_state, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{leaveId}, 
+			#{userId}, 
+			#{apprState}, 
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="LeaveApprUserResult" useCache="false">
+		SELECT * FROM oa_leave_appr_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findLeaveApprUserByCondition" resultMap="LeaveApprUserResult" useCache="false">
+		SELECT * FROM oa_leave_appr_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].leaveId != null">
+				AND leave_id = #{args[0].leaveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].apprState != null">
+				AND appr_state = #{args[0].apprState,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_leave_appr_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].leaveId != null">
+				AND leave_id = #{args[0].leaveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].apprState != null">
+				AND appr_state = #{args[0].apprState,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="LeaveApprUserResult" useCache="false">
+		SELECT * FROM oa_leave_appr_user WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.LeaveApprUser">
+		UPDATE oa_leave_appr_user
+		SET 
+		<if test="leaveId != null">
+			leave_id=#{leaveId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="apprState != null">
+			appr_state=#{apprState},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_leave_appr_user
+		WHERE id = #{id}
+	</delete>
+</mapper>

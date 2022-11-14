@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	   default-autowire="byName">
+
+	<bean id="oAuthService" class="platform.education.oauth2.service.impl.OAuthServiceImpl">
+
+		<property name="appKeyAndAppSercetMap">
+
+			<map>
+
+				<entry key="mqt" value='{"appSercet" : "educloud", "appName" : "十牛校园"}' />
+
+				<entry key="mqteducloud_xbull" value='{"appSercet" : "mqteducloud_xbull", "appName" : "十牛校园"}'/>
+
+				<entry key="mqteducloud_xunyun" value='{"appSercet" : "awO1wHYfRj", "appName" : "广州迅云教育科技有限公司"}'/>
+
+				<entry key="mqteducloud_youban" value='{"appSercet" : "awO1wHYfRj", "appName" : "深圳市优伴教育科技有限公司"}' />
+
+				<entry key="mqteducloud_ShiQiM3" value='{"appSercet" : "mqteducloud_ShiQiM3", "appName" : "创教云"}' />
+
+			</map>
+
+		</property>
+
+	</bean>
+
+</beans>

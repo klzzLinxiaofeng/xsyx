@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PjAptsTaskDao">
+
+	<resultMap id="PjAptsTaskResult" type="platform.education.generalTeachingAffair.model.PjAptsTask">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="schoolYear" column="school_year" />
+		<result property="termCode" column="term_code" />
+		<result property="startDate" column="start_date" />
+		<result property="finishDate" column="finish_date" />
+		<result property="period" column="period" />
+		<result property="scoringType" column="scoring_type" />
+		<result property="validPercent" column="valid_percent" />
+		<result property="evType" column="ev_type" />
+		<result property="createUserId" column="create_user_id" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+	</resultMap>
+	<resultMap type="platform.education.generalTeachingAffair.vo.TeamTeacherScoreVo"  id="TeamTeacherScoreVoPjAptsTaskResult">
+	    <result property="avgScore" column="avgScore" />
+		<result property="teacherName" column="teacherName" />
+		<result property="teamName" column="teamName" />
+		<result property="teacherId" column="teacherId" />
+	</resultMap>
+		<resultMap type="platform.education.generalTeachingAffair.vo.AptsTeamStuentCount"  id="AptsTeamStuentCountTaskResult">
+	    <result property="teamId" column="teamId" />
+		<result property="count" column="count" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.PjAptsTask">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_apts_task (
+			id, 
+			school_id, 
+			school_year, 
+			term_code, 
+			start_date, 
+			finish_date, 
+			period, 
+			scoring_type, 
+			valid_percent, 
+			ev_type, 
+			create_user_id, 
+			create_date, 
+			modify_date, 
+			is_delete
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{schoolYear}, 
+			#{termCode}, 
+			#{startDate}, 
+			#{finishDate}, 
+			#{period}, 
+			#{scoringType}, 
+			#{validPercent}, 
+			#{evType}, 
+			#{createUserId}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="PjAptsTaskResult" useCache="false">
+		SELECT * FROM pj_apts_task WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPjAptsTaskByCondition" resultMap="PjAptsTaskResult" useCache="false">
+		SELECT * FROM pj_apts_task 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].termCode != null and args[0].termCode != ''">
+				AND term_code = #{args[0].termCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].startDate != null">
+				AND start_date = #{args[0].startDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishDate != null">
+				AND finish_date = #{args[0].finishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].period != null">
+				AND period = #{args[0].period,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].scoringType != null">
+				AND scoring_type = #{args[0].scoringType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].validPercent != null">
+				AND valid_percent = #{args[0].validPercent,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].evType != null">
+				AND ev_type = #{args[0].evType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createUserId != null">
+				AND create_user_id = #{args[0].createUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_apts_task 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].termCode != null and args[0].termCode != ''">
+				AND term_code = #{args[0].termCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].startDate != null">
+				AND start_date = #{args[0].startDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishDate != null">
+				AND finish_date = #{args[0].finishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].period != null">
+				AND period = #{args[0].period,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].scoringType != null">
+				AND scoring_type = #{args[0].scoringType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].validPercent != null">
+				AND valid_percent = #{args[0].validPercent,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].evType != null">
+				AND ev_type = #{args[0].evType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createUserId != null">
+				AND create_user_id = #{args[0].createUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PjAptsTaskResult" useCache="false">
+		SELECT * FROM pj_apts_task WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.PjAptsTask">
+		UPDATE pj_apts_task
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="schoolYear != null">
+			school_year=#{schoolYear},
+		</if>
+		<if test="termCode != null">
+			term_code=#{termCode},
+		</if>
+		<if test="startDate != null">
+			start_date=#{startDate},
+		</if>
+		<if test="finishDate != null">
+			finish_date=#{finishDate},
+		</if>
+		<if test="period != null">
+			period=#{period},
+		</if>
+		<if test="scoringType != null">
+			scoring_type=#{scoringType},
+		</if>
+		<if test="validPercent != null">
+			valid_percent=#{validPercent},
+		</if>
+		<if test="evType != null">
+			ev_type=#{evType},
+		</if>
+		<if test="createUserId != null">
+			create_user_id=#{createUserId},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_apts_task
+		WHERE id = #{id}
+	</delete>
+	<select id="findStatisticsByCondition"  resultMap="TeamTeacherScoreVoPjAptsTaskResult">
+	SELECT
+	AVG(patu.score) AS avgScore, 
+	ptt.`name` AS teacherName,
+	pt.`name` AS teamName,
+	ptt.id AS teacherId
+FROM
+	pj_apts_task_user patu
+INNER JOIN pj_team_teacher ptt ON ptt.id = patu.teacher_id
+INNER JOIN pj_team pt ON pt.id = patu.team_id
+WHERE
+patu.is_valid=1
+AND patu.scored_user_count>0
+AND patu.start_date BETWEEN #{args[0].startDate} AND #{args[0].finishDate}
+
+<if test="args[0].evType != null">
+AND patu.ev_type = #{args[0].evType,javaType=java.lang.Integer}
+</if>
+<if test="args[0].gradeId != null">
+AND patu.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+</if>
+<if test="args[0].teamId != null">
+AND patu.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+</if>
+<if test="args[0].subjectCode != null">
+AND ptt.subject_code = #{args[0].subjectCode}
+</if>
+<if test="args[0].teacherName != null">
+AND ptt.name LIKE CONCAT(CONCAT('%', #{args[0].teacherName}),'%')
+</if>
+GROUP BY
+	patu.teacher_id
+ ORDER BY patu.team_id
+	</select>
+	<select id="findTeamStuentCount" resultMap="AptsTeamStuentCountTaskResult">
+SELECT COUNT(*) as count ,pt.id as teamId FROM pj_team_student pts
+
+INNER JOIN pj_team pt ON pt.school_id=#{args[0]} AND pt.id=pts.team_id AND pt.is_delete=0 AND  pt.school_year=#{args[1]}
+
+WHERE 
+
+pts.is_delete=0 AND pts.in_state=1
+
+GROUP BY pt.id
+	</select>
+
+</mapper>

@@ -1,0 +1,1705 @@
+@charset "utf-8";
+html {
+    color: #000;
+    background: #F2F2F2
+}
+*{
+	marring:0;
+	padding:0;
+	}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+    font-size:12px;
+}
+
+input,
+button,
+select,
+textarea {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+fieldset, img {
+    border: 0
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-style: normal;
+    font-weight: normal
+}
+
+ol, ul {
+    list-style: none
+}
+
+caption, th {
+    text-align: left
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal
+}
+
+q:before, q:after {
+    content: ''
+}
+
+abbr, acronym {
+    border: 0;
+    font-variant: normal
+}
+
+sup {
+    vertical-align: text-top
+}
+
+sub {
+    vertical-align: text-bottom
+}
+
+input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit
+}
+
+input, textarea, select {
+    *font-size: 100%
+}
+
+legend {
+    color: #000
+}
+
+article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary {
+    display: block;
+    margin: 0;
+    padding: 0
+}
+
+a {
+    text-decoration: none
+}
+
+button {
+    cursor: pointer
+}
+
+.clear {
+    clear: both;
+}
+.main{
+	background-color:rgba(48,48,48,0.4);
+	position:absolute;
+	width:100%;
+	top:0;
+	left:0;
+	z-index:1;
+}
+.main_bg{
+	position:fixed;
+	width:100%;
+	top:0;
+	left:0;
+	z-index:0;
+	 background-color: #eeeeee;
+	min-height: 100%;
+	 background-size:100%;
+	 /* background:url("images/bizhi1.jpg") no-repeat; */
+}
+.content{
+	padding:18px 0 0 20px;
+	/* background:url("images/bizhi4.jpg") no-repeat; */
+	min-height:715px;
+}
+.content .i_right{
+	width:467px;
+	position:absolute;
+	right:52px;
+	top:74px;
+	z-index:2;
+}
+.content .i_right .time{
+	height:175px;
+}
+.content .i_right .time .zl{
+	width:277px;
+	height:135px;
+	float:left;
+	margin-right:10px;
+	padding:20px;
+/* 	background:rgba(252,252,252,0.1); */
+/* 	position: relative; */
+/*    background-image: linear-gradient(rgba(252,252,252,0.1) 0px, rgba(252,252,252,0.08) 100%); */
+/*     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ddffffff', endColorstr='#ddffffff'); */
+}
+.shadeDiv,.shadeDiv2{
+	background:#999;
+	padding:20px;
+    filter: Alpha(opacity=20);
+    background:rgba(252,252,252,0.1);
+    position: absolute;
+    width: 277px;
+    height: 135px;
+    z-index: -100;
+}
+.content .i_right .time .zl img{
+	width:103px;
+	height:103px;
+	border-radius:50%;
+	float:left
+}
+.time .zl .z_right{
+	
+}
+.time .zl .z_right .name{
+	margin-left:123px;
+	font-size:18px;
+	font-weight:bold;
+	font-family:"΢���ź�";
+	color:#FFFFFF;
+	line-height:27px;
+	margin-top:6px;
+	margin-bottom:12px;
+}
+.time .zl .z_right .js{
+	margin-left:123px;
+}
+.time .zl .z_right .js .js_li{
+	font-family:"΢���ź�";
+	
+	width:56px;
+	float:left;
+	height:38px;
+}
+.time .zl .z_right .js .js_li .p1{
+	color:#fff;
+}
+.time .zl .z_right .js .js_li .p2{
+	font-size:13px;
+	font-weight:bold;
+	color:#fff;
+}
+.time .zl .z_right .data{
+	font-family:"΢���ź�";
+	color:#fff;
+	font-size:16px;
+	margin-top:80px;
+}
+.content .i_right .time .tianqi{
+	width:129px;
+	float:left;
+/* 	background:rgba(252,252,252,0.1); */
+/* 	background-image: linear-gradient(rgba(252,252,252,0.1) 0px, rgba(252,252,252,0.08) 100%); */
+/*     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ddffffff', endColorstr='#ddffffff'); */
+}
+.kebiao{
+	min-height:303px;
+	width:465px;
+	margin-top:10px;
+	padding-bottom:20px;
+/* 	background:rgba(252,252,252,0.1); */
+	/* padding:12px 20px; */
+/* 	background-image: linear-gradient(rgba(252,252,252,0.1) 0px, rgba(252,252,252,0.08) 100%); */
+/*     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ddffffff', endColorstr='#ddffffff'); */
+}
+.kebiao .kb_select{
+	height:50px;
+	margin-bottom:18px;
+/* 	background-image: linear-gradient(rgba(252,252,252,0.2) 0px, rgba(252,252,252,0.18) 100%); */
+/*     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ddffffff', endColorstr='#ddffffff'); */
+}
+.kebiao .kb_select a{
+	font-size:14px;
+	font-family:"΢���ź�";
+	color:#fff;
+	line-height:50px;
+	display:block;
+	float:left;
+	padding:0 20px;
+	text-align:center;
+	
+}
+.kebiao .kb_select .on{
+	background: rgba(252,252,252,0.1);
+	background-image: linear-gradient(rgba(252,252,252,0.1) 0px, rgba(252,252,252,0.08) 100%);
+/* 	background:#7D7B7B; */
+}
+.kebiao .kb_list{
+	/* height:257px; */ 
+	padding: 0 20px;
+}
+.kebiao .kb_list .kcb{
+	
+}
+.kebiao .kb_list .kcb thead th,.kebiao .kb_list .kcb tbody td{
+	text-align:center;
+	color:#fff;
+}
+.kebiao .kb_list .kcb thead th:first-child{
+	min-width:38px;
+}
+.kebiao .kb_list .kcb thead th{
+	height:25px;
+	width:56px;
+/* 	background: rgba(252,252,252,0.1); */
+/* 	filter: Alpha(opacity=20); */
+/* 	background-image: linear-gradient(rgba(238,238,238, 0.2) 0px, rgba(238,238,238, 0.18) 100%); */
+/*     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#B3eeeeee', endColorstr='#B3eeeeee'); */
+}
+.kebiao .kb_list .kcb tbody td{
+	/* border-right:1px solid #e0e0e0; */
+	height:31px;
+/* 	background: rgba(252,252,252,0.1); */
+/* 	filter: Alpha(opacity=20); */
+/* 	background-image: linear-gradient(rgba(247,247,247, 0.2) 0px, rgba(247,247,247, 0.18) 100%); */
+/*     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#B3F7F7F7', endColorstr='#B3F7F7F7'); */
+}
+/* .kebiao .kb_list .kcb tbody td:first-child{
+	background-image: linear-gradient(rgba(238,238,238, 0.7) 0px, rgba(238,238,238, 0.6) 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#B3EEEEEE', endColorstr='#B3EEEEEE');
+} */
+/* .kebiao .table-striped tbody > tr:nth-child(2n+1) > td,.kebiao  .table-striped tbody > tr:nth-child(2n+1) > th{
+	background-image: linear-gradient(rgba(15, 15, 15, 0.7) 0px, rgba(15, 15, 15, 0.6) 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#B30f0f0f', endColorstr='#B30f0f0f');
+} */
+.table-striped tbody > tr:nth-child(2n+1) > td, .table-striped tbody > tr:nth-child(2n+1) > th{
+	background:transparent
+}
+.yyxz{
+	width:467px;
+	min-height:167px;
+	/* padding:20px; */
+	margin-top:10px;
+	filter: Alpha(opacity=20);
+    background: rgba(252,252,252,0.1);
+/* 	background-image: linear-gradient(rgba(252,252,252,0.1) 0px, rgba(252,252,252,0.08) 100%); */
+/*     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ddffffff', endColorstr='#ddffffff'); */
+}
+.yyxz .yy_title{
+	font-family:"΢���ź�";
+	font-size:14px;
+	color:#fff;
+	font-weight:bold;
+	padding:0 20px;
+	line-height:36px;
+/* 	background-image: linear-gradient(rgba(252,252,252,0.2) 0px, rgba(252,252,252,0.18) 100%); */
+}
+.yyxz ul{
+	padding:0 20px; 
+}
+.yyxz ul li{
+	float:left;
+	width:72px;
+	margin:20px 20px 20px 0px;
+}
+.yyxz ul li a{
+	display:block;
+}
+.yyxz ul li span{
+	 text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        display: block;
+       word-wrap:normal;
+       color:#fff;
+       margin-top:10px;
+       text-align:center;
+}
+.yyxz ul li img{
+	width:63px;
+	height:64px;
+	margin-left:4px;
+}
+.content .i_left{
+	margin-right:530px;
+	z-index:2;
+	position:relative;
+}
+.content .i_left .mk_list{
+    padding-bottom:12px;
+    margin-bottom:10px;
+}
+.content .i_left .mk_list .title{
+	font-family:"΢���ź�";
+	font-size:24px;
+	color:#FFFFFF;
+	line-height:38px;
+	margin-bottom:10px;
+	font-weight:bold;
+	padding:0 14px;
+}
+.content .i_left .mk_list ul{
+	padding:0 14px;
+}
+.content .i_left .mk_list ul li{
+	float:left;
+	width:99px;
+	height:99px;
+	margin:8px 6px;
+	/* padding:0 10px; */
+	position:relative;
+	/*  opacity: 0.85; */
+ 	-moz-box-shadow: 0 0px 1px #555;
+   	-webkit-box-shadow: 0 0px 1px #555;
+   	box-shadow: 0 0px 1px #555 ;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#555')";
+}
+
+.content .i_left .mk_list ul li:hover{
+	/*  opacity:1; */
+}
+.content .i_left .mk_list ul li a{
+	display:block;
+	padding:0 10px;
+	height:99px;
+	background:url("images/indexli_bg.png") no-repeat;
+}
+.content .i_left .mk_list ul li a:hover{
+	background: transparent;
+}
+.content .i_left .mk_list li img{
+	position:absolute;
+	top:20px;
+	left:32px;
+}
+.content .i_left .mk_list ul li b{
+	background-color:#FF3531;
+	color:#fff;
+	font-size:18px;
+	width:27px;
+	height:27px;
+	border-radius:50%;
+	line-height:27px;
+	text-align:center;
+	position:absolute;
+	right:-7px;
+	top:-7px;
+	font-family:"Arial"
+}
+.mk_list li span{
+	width: 84px;
+  	margin-left: -3px;
+}
+.content .i_left .mk_list li span{
+	font-size:14px;
+	font-family:"΢���ź�";
+	color:#fff;
+/* 	text-overflow: ellipsis; */
+        white-space: nowrap;
+        overflow: hidden;
+        display: block;
+       word-wrap:normal;
+       padding-top:73px;
+       text-align: center;
+}
+.content .i_left .mk_list .green{
+	background-color:#44AC2D;
+}
+.content .i_left .mk_list .green_1{
+	background-color:#209081;
+}
+.content .i_left .mk_list .orange{
+	background-color:#922EB3;
+}
+.content .i_left .mk_list .yellow{
+	background-color:#D48E0D;
+}
+.content .i_left .mk_list .green_2{
+	background-color:#339E1B;
+}
+.content .i_left .mk_list .red{
+	background-color:#BF4A49;
+}
+.content .i_left .mk_list .blue{
+	background-color:#248AD3;
+}
+.content .i_left .mk_list .blue_1{
+	background-color:#3A9DE7;
+}
+.content .i_left .mk_list .yellow_1{
+	background-color:#D09C1A;
+}
+.content .i_left .mk_list .green_3{
+	background-color:#2DAE82;
+}
+.content .change_bg{	
+	position:absolute;
+	right:0;
+	top:56px;
+	z-index:2;	
+}
+.content .change_bg a{
+	background:url("images/cs.png") no-repeat  0 0;
+	width:45px;
+	height:35px;
+	display:block;
+	float:right;
+	position:relative;
+}
+.content .change_bg a:hover{
+	background:url("images/cs_02.png") no-repeat ;
+}
+.bizhi{
+	width:900px;
+	position:absolute;
+	z-index:4;
+}
+.bizhi .b_top{
+	height:48px;
+	background-color:#2F6244;
+}
+.bizhi .b_top p{
+	line-height:48px;
+	font-size:18px;
+	font-family:"΢���ź�";
+	font-weight:bold;
+	margin-left:18px;
+	float:left;
+	color:#fff;
+}
+.bizhi .b_top  a{
+	float:right;
+	color:#334f3f;
+	font-size:24px;
+	font-weight:bold;
+	line-height:48px;
+	margin-right:20px;
+}
+.bizhi .b_middle{
+	padding:10px 30px;
+	background-color:#fff;
+}
+.bizhi .b_middle .title{
+	padding-left:6px;
+	font-size:16px;
+	line-height:28px;
+	font-weight:bold;
+}
+.bizhi .b_middle ul li{
+	float:left;
+	position:relative;
+	height:100px;
+	width:150px;
+	margin:0 6px;
+	border:3px solid #fff;
+}
+.bizhi .b_middle ul .on{
+	border:3px solid #0EA2E7;
+}
+.bizhi .b_middle li img{
+	width:150px;
+	height:100px;
+}
+.bizhi .b_middle li span{
+	position:absolute;
+	bottom:0;
+	height:20px;
+	line-height:20px;
+	text-align:center;
+	display:block;
+	color:#fff;
+	width:150px;
+	background-image: linear-gradient(rgba(14, 162, 231, 0.7) 0px, rgba(14, 162, 231, 0.6) 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#B30ea2e7', endColorstr='#B30ea2e7');
+}
+.f_0d7bd5{
+	background-color:#0d7bd5;
+}
+.f_45b84b{
+	background-color:#45b84b;
+}
+.f_000000{
+	background-color:#000000;
+}
+.f_02adb3{
+	background-color:#02adb3;
+}
+.f_b3027b{
+	background-color:#b3027b;
+}
+.bizhi .ghzts{
+	padding-bottom:25px;
+}
+.bizhi .ghzts ul li{
+	height:40px;
+}
+.bizhi .ghzts ul li div{
+	height:40px;
+}
+.bizhi .b_bottom{
+	height:47px;
+	padding-top:15px;
+	background-color:#2F6244;
+	text-align:center;
+}
+.kebiao .kb_list .wdkc{
+/* 	background-image: linear-gradient(rgba(247,247,247, 0.2) 0px, rgba(247,247,247, 0.18) 100%); */
+/*     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#B3F7F7F7', endColorstr='#B3F7F7F7'); */
+/*    background:rgba(252,252,252,0.1); */
+}
+.btn {
+  display: inline-block;
+  *display: inline;
+  padding: 7px 18px;
+  margin-bottom: 0;
+  *margin-left: .3em;
+  font-size: 12px;
+  line-height: 20px;
+  color: #444444;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: #d0cfd6;
+  border: 0px;
+  *zoom: 1;
+  margin:0 5px;
+}
+.btn {
+	padding:5px 12px;
+	border: rgba(0, 0, 0, .1) 1px solid;
+}
+.btn-warning {
+  color: #ffffff;
+  background-color: #e88a05;
+}
+
+.btn-warning:hover,
+.btn-warning:active,
+.btn-warning.active,
+.btn-warning.disabled,
+.btn-warning[disabled] {
+  color: #ffffff;
+  background-color: #b06700;
+}
+
+.btn-warning:active,
+.btn-warning.active {
+  background-color: #c67605 \9;
+}
+.zhezhao {
+   background-image: linear-gradient(rgba(30, 30, 30, 0.9) 0px, rgba(30, 30, 30, 0.9) 100%);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#B3303030', endColorstr='#B3303030');
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: 3;
+}
+/*办学决策中心*/
+.XUE_XIAO_TONG_JI1{
+	background:url("images/icon/xuexiaotongji.png") no-repeat 50% 50% #3A9DE7;
+}
+.JIAOSHITONGJI{
+	background:url("images/icon/xuexiaotongji.png") no-repeat 50% 50% #3A9DE7;
+}
+.XUESHNEGTONGJI{
+	background:url("images/icon/xuexiaotongji.png") no-repeat 50% 50% #3A9DE7;
+}
+.ZIYUANTONGJI{
+	background:url("images/icon/xuexiaotongji.png") no-repeat 50% 50% #3A9DE7;
+}
+.GERENZIYUANTONGJI{
+	background:url("images/icon/tongji.png") no-repeat 50% 50% #3A9DE7;
+}
+/*数据分析中心*/
+.XITONGGUANLI{
+	background:url("images/icon/system.png") no-repeat 50% 50% #3A9DE7;
+}
+.YUNZIYUAN{
+	background:url("images/icon/cloud-storage.png") no-repeat 50% 50% #3A9DE7;
+}
+/*人力资源中心*/
+.xingzhengguanli{
+	background:url("images/icon/permissions.png") no-repeat 50% 50% #3A9DE7;
+}
+.JIESONGGUANLI{
+	background:url("images/icon/jiesongguanli.png") no-repeat 50% 50% #3A9DE7;
+}
+/*后勤保障中心*/
+.HOUQINGFUWU{
+	background:url("images/icon/hqgs.png") no-repeat 50% 50% #3A9DE7;
+}
+.XIAOWUGUANLI{
+	background:url("images/icon/xwgl_sys.png") no-repeat 50% 50% #3A9DE7;
+}
+/*教师发展中心*/
+.KECHENGGUANLI{
+	background:url("images/icon/schedule.png") no-repeat 50% 50% #3A9DE7;
+}
+.XUESHENGDANAN{
+	background:url("images/icon/chenzhang.png") no-repeat 50% 50% #3A9DE7;
+}
+/*课程开发中心*/
+.CHANGGUIJIAOXUE{
+	background:url("images/icon/classroom.png") no-repeat 50% 50% #3A9DE7;
+}
+/*学生成长中心*/
+.XUESHENGPINGJIA{
+	background:url("images/icon/xueshengchenzhang.png") no-repeat 50% 50% #3A9DE7;
+}
+.BANZHURENPINGJIA{
+	background:url("images/icon/banzhuren.png") no-repeat 50% 50% #3A9DE7;
+}
+.JIAXIAOHEZUO{
+	background:url("images/icon/jiaxiaofankui.png") no-repeat 50% 50% #3A9DE7;
+}
+/*.TONG_ZHI_GONG_GAO,.GZ_LIUYANGUANLI{
+	background:url("images/icon/ybg_1.png") no-repeat 50% 50% #3A9DE7;
+}*/
+/*.GONG_WEN_GUAN_LI,.GZ_XIAONEIXINXI,.GZ_GONGWENLIUZHUAN,.GZ_WANGLUOCIPAN{
+	background:url("images/icon/ybg_2.png") no-repeat 50% 50% #3A9DE7;
+}
+.HUI_YI,.HUI_YI_GUAN_LI2,.GZ_HUIYIJILU{
+	background:url("images/icon/ybg_3.png") no-repeat 50% 50% #3A9DE7;
+}
+.BAO_XIU{
+	background:url("images/icon/ybg_4.png") no-repeat 50% 50% #3A9DE7;
+}
+.WEN_YIN,.GZ_BEIWANGLu{
+	background:url("images/icon/ybg_5.png") no-repeat 50% 50% #3A9DE7;
+}
+.OA_RI_CHENG_AN_PAI,.GZ_RICHENGANPAI{
+	background:url("images/icon/ybg_6.png") no-repeat 50% 50% #3A9DE7;
+}
+.WEI_XIU{
+	background:url("images/icon/xwgl_5.png") no-repeat 50% 50% #3A9DE7;
+}
+.KE_CHENG_BIAO,.KE_BIAO2,.KE_BIAO{
+	background:url("images/icon/yjx_8.png") no-repeat 50% 50% #DCA313;
+}
+.XUE_SHENG_XUAN_KE,.XUAN_KE{
+	background:url("images/icon/jwgl_5.png") no-repeat 50% 50% #CD9868;
+}
+.ZUO_WEI_BIAO2{
+	background:url("images/icon/yjx_8.png") no-repeat 50% 50% #DCA313;
+}
+.KAO_SHI_CHENG_JI{
+	background: url("images/icon/yjx_6.png") no-repeat 50% 50% #E36A6A;
+}
+.QING_JIA,.GZ_MEIZHOUGONGZUO,.GZ_ZILIAOYINZHI,.GZ_RIZHIGUANLI{
+	background:url("images/icon/ybg_7.png") no-repeat 50% 50% #3A9DE7;
+}
+.CHE_LIANG,.GZ_XIAOCHE{
+	background:url("images/icon/ybg_8.png") no-repeat 50% 50% #3A9DE7;
+}
+.GONG_KAI_KE{
+	background:url("images/icon/ybg_9.png") no-repeat 50% 50% #3A9DE7;
+}
+.XIAO_LI{
+	background:url("images/icon/ybg_10.png") no-repeat 50% 50% #3A9DE7;
+}
+.TONG_XUN_LU{
+	background:url("images/icon/ybg_11.png") no-repeat 50% 50% #3A9DE7;
+}
+.WEI_KE_ZI_YUAN{
+	background:url("images/icon/yzy_1.png") no-repeat 50% 50% #2CAE81;
+}
+.XUE_KE_ZI_YUAN{
+	background:url("images/icon/yzy_2.png") no-repeat 50% 50% #2CAE81;
+}
+.DIAN_ZI_SHU_BAO{
+	background:url("images/icon/yzy_3.png") no-repeat 50% 50% #2CAE81;
+}
+.ZHUAN_TI_XUE_XI{
+	background:url("images/icon/yzy_4.png") no-repeat 50% 50% #2CAE81;
+}
+.TI_KU{
+	background:url("images/icon/yzy_5.png") no-repeat 50% 50% #2CAE81;
+}
+.DIAN_ZI_JIAO_CAI{
+	background:url("images/icon/yzy_6.png") no-repeat 50% 50% #2CAE81;
+}
+.JIAO_SHI_PEI_XUN{
+	background:url("images/icon/yzy_7.png") no-repeat 50% 50% #2CAE81;
+}
+.YUN_JIAO_XUE_WEI_KE,.GZ_JIAXIAOTONGZHI{
+	background:url("images/icon/yjx_1.png") no-repeat 50% 50% #44AC2D;
+}
+.YUN_JIAO_XUE_ZUO_YE,.GZ_JIAXIAOZUOYE{
+	background:url("images/icon/yjx_2.png") no-repeat 50% 50% #209080;
+}
+.YUN_JIAO_XUE_KE_JIAN,.DU_SHU_TONG_JI,.YUE_DU_HUI_SHEN_HE,.JIA_ZHANG_SHU_ZHAI{
+	background:url("images/icon/yjx_6.png") no-repeat 50% 50% #922EB3;
+}
+.YUN_JIAO_XUE_SHI_JUAN{
+	background:url("images/icon/yjx_3.png") no-repeat 50% 50% #D48E0D;
+}
+.YUN_JIAO_XUE_LIAN_XI{
+	background:url("images/icon/yjx_7.png") no-repeat 50% 50% #319B19;
+}
+.WEI_KE{
+	background:url("images/icon/yjx_1.png") no-repeat 50% 50% #44AC2D;
+}
+.YUN_XUE_XI_ZUO_YE{
+	background:url("images/icon/yjx_2.png") no-repeat 50% 50% #209080;
+}
+.YUN_XUE_XI_KE_JIAN{
+	background:url("images/icon/yjx_6.png") no-repeat 50% 50% #922EB3;
+}
+.YUN_XUE_XI_SHI_JUAN{
+	background:url("images/icon/yjx_3.png") no-repeat 50% 50% #D48E0D;
+}
+.YUN_XUE_XI_LIAN_XI{
+	background:url("images/icon/yjx_7.png") no-repeat 50% 50% #319B19;
+}
+.XIAO_LI_GUAN_LI,.XIAO_LI_GUAN_LI1,.GZ_SHUJUQINGXI,.ZUO_WEI_GUAN_LI{
+	background:url("images/icon/jcsj_1.png") no-repeat 50% 50% #19598E;
+}
+.XUE_NIAN_GUAN_LI{
+	background:url("images/icon/jcsj_2.png") no-repeat 50% 50% #19598E;
+}
+.XUE_QI_GUAN_LI,.JIAO_YU_LUN_TAN2{
+	background:url("images/icon/jcsj_2.png") no-repeat 50% 50% #19598E;
+}
+.NIAN_JI_XIN_XI_GUAN_LI,.NIAN_JI_XIN_XI_GUAN_LI1{
+	background:url("images/icon/jcsj_4.png") no-repeat 50% 50% #19598E;
+}
+.BAN_JI_XIN_XI_GUAN_LI,.BAN_JI_XIN_XI_GUAN_LI1,.BU_MEN_XIN_XI_GUAN_LI{
+	background:url("images/icon/jcsj_5.png") no-repeat 50% 50% #19598E;
+}
+.KE_MU_XIN_XI_GUAN_LI,.KE_MU_XIN_XI_GUAN_LI1{
+	background:url("images/icon/jcsj_6.png") no-repeat 50% 50% #19598E;
+}
+.NIAN_JI_KE_MU_GUAN_LI{
+	background:url("images/icon/jcsj_7.png") no-repeat 50% 50% #19598E;
+}
+.KE_REN_JIAO_SHI_GUAN_LI,.GZ_XIAOZUGUANLI,.GZ_JIAOSHITINGPINGKE,.GZ_JIAOSHIPINGJIA,.GZ_MINGSHIGONGZUOSHI,.GZ_JIAOSHIPINGJIA{
+	background:url("images/icon/jcsj_8.png") no-repeat 50% 50% #19598E;
+}
+.XUE_XIAO_GUAN_LI,.GZ_XUEXIAOXINXI,.GZ_XIAOCHANGUANLI,.XUE_XIAO_TONG_JI_NEW{
+	background:url("images/icon/jwgl_8.png") no-repeat 50% 50% #19598E;
+}
+.JIAO_SHI_GUAN_LI{
+	background:url("images/icon/jwgl_1.png") no-repeat 50% 50% #19598E;
+}
+.XUE_SHENG_GUAN_LI{
+	background:url("images/icon/jwgl_2.png") no-repeat 50% 50% #19598E;
+}
+.BAN_JI_GUAN_LI,.BAN_JI_GUAN_LI1,.GZ_BANJICHANGGUIGUANLI,.GZ_BANJIJIAOXUE{
+	background:url("images/icon/jwgl_3.png") no-repeat 50% 50% #19598E;
+}
+.KE_BIAO_GUAN_LI{
+	background:url("images/icon/jwgl_4.png") no-repeat 50% 50% #19598E;
+}
+.KE_BIAO_CHA_XUN,.GZ_DIAOCHAWENJUAN,.GZ_KEBIAOCHAXUN{
+	background:url("images/icon/jwgl_5.png") no-repeat 50% 50% #19598E;
+}
+.KAO_WU_GUAN_LI{
+	background:url("images/icon/jwgl_6.png") no-repeat 50% 50% #19598E;
+}
+.KAO_SHI_CHENG_JI_CHA_XUN,.GZ_KAOSHICHENGJI{
+	background:url("images/icon/jwgl_7.png") no-repeat 50% 50% #19598E;
+}
+.JIAO_CAI_GUAN_LI,.ZHI_SHI_SHU_GUAN_LI{
+	background:url("images/icon/jwgl_10.png") no-repeat 50% 50% #19598E;
+}
+.JIAO_CAI_MU_LU{
+	background:url("images/icon/jwgl_10.png") no-repeat 50% 50% #19598E;
+}
+.XIAO_WAI_SHI_JIAN{
+	background:url("images/icon/jwgl_9.png") no-repeat 50% 50% #19598E;
+}
+.CAI_DAN_GUAN_LI,.GZ_WENZHANGTONGJi{
+	background:url("images/icon/xtgl_3.png") no-repeat 50% 50% #19598E;
+}
+.YONG_HU_GUAN_LI{
+	background:url("images/icon/xtgl_1.png") no-repeat 50% 50% #19598E;
+}
+.JUE_SE_GUAN_LI{
+	background:url("images/icon/xtgl_2.png") no-repeat 50% 50% #19598E;
+}
+.YING_YONG_GUAN_LI{
+	background:url("images/icon/xtgl_4.png") no-repeat 50% 50% #19598E;
+}
+.XIAO_GUAN_GUAN_LI{
+	background:url("images/icon/xtgl_5.png") no-repeat 50% 50% #19598E;
+}
+.ZHANG_HAO_KU{
+	background:url("images/icon/xtgl_6.png") no-repeat 50% 50% #19598E;
+}
+.QU_GUAN_GUAN_LI{
+	background:url("images/icon/xtgl_7.png") no-repeat 50% 50% #19598E;
+}
+.QUE_SHENG_JUE_SE_GUAN_LI{
+	background:url("images/icon/xtgl_8.png") no-repeat 50% 50% #19598E;
+}
+.FU_WU_QI_DI_ZHI_GUAN_LI{
+	background:url("images/icon/xtgl_11.png") no-repeat 50% 50% #19598E;
+}
+.REN_SHI_GUAN_LI,.GZ_RENSHIGUANLI{
+	background:url("images/icon/xwgl_1.png") no-repeat 50% 50% #19598E;
+}
+.HOU_QIN_GUAN_LI,.JIAO_WU_AN_PAI,.GZ_HOUQINGUANLI,.GZ_WEISHENG,.GZ_JIAOYUZIYUANKU{
+	background:url("images/icon/xwgl_2.png") no-repeat 50% 50% #19598E;
+}
+.ZHAO_SHENG_GUAN_LI,.GZ_ZHAOSHENG{
+	background:url("images/icon/xwgl_3.png") no-repeat 50% 50% #19598E;
+}
+.SHE_BEI_GUAN_LI,.GZ_DIANJIAOGUANLI,.GZ_SHEBEIGUANLI{
+	background:url("images/icon/xwgl_4.png") no-repeat 50% 50% #19598E;
+}
+.WEI_XIU_GUAN_LI,.GZ_WEIXIUGUANLI{
+	background:url("images/icon/xwgl_5.png") no-repeat 50% 50% #19598E;
+}
+.MEN_HU_WEI_HU,.GZ_MENHUYULAN{
+	background:url("images/icon/mhgl_1.png") no-repeat 50% 50% #19598E;
+}
+.MEN_HU_YU_LAN,.GZ_MENHUWANGZHANJIANSHE{
+	background:url("images/icon/mhgl_2.png") no-repeat 50% 50% #19598E;
+}
+.JIA_XIAO_TONG_ZHI{
+	background:url("images/icon/jxhd_1.png") no-repeat 50% 50% #19598E;
+}
+.JIA_XIAO_ZUO_YE{
+	background:url("images/icon/jxhd_2.png") no-repeat 50% 50% #19598E;
+}
+.JIA_XIAO_PING_YU{
+	background:url("images/icon/jxhd_3.png") no-repeat 50% 50% #19598E;
+}
+.BAN_JI_KE_BIAO_CHA_XUN,.GZ_XINYONGGUANLI,.GZ_GONGXIANGSHUJU{
+	background:url("images/icon/yjx_8.png") no-repeat 50% 50% #19598E;
+}
+.XUE_SHENG_CHENG_JI,.GZ_JIFENGUIZE,.GZ_JIFENXINYONGHUIZONG{
+	background:url("images/icon/yjx_3.png") no-repeat 50% 50% #19598E;
+}
+.TONG_JI_GL{
+	background:url("images/icon/qygl_1.png") no-repeat 50% 50% #19598E;
+}
+.CHENG_JI_FEN_XI2,.GZ_JIAXIAOCHENGJI{
+	background: url("images/icon/jwgl_7.png") no-repeat 50% 50% #E3696B;
+}
+.ZAI_XIAN_SHI_TI{
+	background: url("images/icon/jwgl_6.png") no-repeat 50% 50% #B66AD1;
+}
+.ZHI_SHI_DIAN_GUAN_LI{
+	background: url("images/icon/jwgl_11.png") no-repeat 50% 50% #19598e;
+}
+.SHI_PIN_HUI_YU2,.SHI_PIN_HUI_YI2{
+	background: url("images/icon/yjx_1.png") no-repeat 50% 50% #44AC2D;
+}
+.ZI_YUAN_SHEN_HE{
+	background: url("images/icon/ybg_4.png") no-repeat 50% 50% #6B6B6B;
+}
+.DIAN_ZI_SHU{
+	background: url("images/icon/yjx_6.png") no-repeat 50% 50% #E36A6A;
+}
+.SHI_PEI_ZI_YUAN{
+	background: url("images/icon/yjx_8.png") no-repeat 50% 50% #DCA313;
+}
+.SU_CAI_ZI_YUAN{
+	background: url("images/icon/yzy_3.png") no-repeat 50% 50% #C28147;
+}
+.SHI_YAN_ZI_YUAN{
+	background: url("images/icon/yzy_1.png") no-repeat 50% 50% #62BE4F;
+}
+.BAN_JI_HU_DONG{
+	background: url("images/icon/yzy_4.png") no-repeat 50% 50% #993BFA;
+}
+.XIE_TONG_BEI_KE{
+	background: url("images/icon/ybg_7.png") no-repeat 50% 50% #3BABFA;
+}
+.ZAI_XIAN_DA_YI{
+	background: url("images/icon/yjx_4.png") no-repeat 50% 50% #EA9F10;
+}
+.ZAI_XIAN_TAO_LUN{
+	background: url("images/icon/ybg_3.png") no-repeat 50% 50% #3BABFA;
+}
+.YUN_JIAO_YAN2{
+	background: url("images/icon/yzy_2.png") no-repeat 50% 50% #66B3A9;
+}
+.KAI_KE_XUAN_KE_GUAN_LI,.GZ_XUANKExITONG{
+	background: url("images/icon/jwgl_5.png") no-repeat 50% 50% #19598E;
+}
+.KE_YAN_GUAN_LI{
+	background: url("images/icon/xwgl_2.png") no-repeat 50% 50% #19598E;
+}
+.YUN_ZI_YUAN_ZUO_YE_ZI_YUAN,.DU_SHU_ZHI_SHU,.BAN_JI_SHU_ZHAI,.SHU_ZHAI_SHU_JI_GUAN_LI{
+	background: url("images/icon/yjx_6.png") no-repeat 50% 50% #E36A6A;
+}
+.YUN_ZI_YUAN_S_J_ZI_YUAN{
+	background: url("images/icon/yzy_2.png") no-repeat 50% 50% #4B7BD3;
+}
+.YUN_ZI_YUAN_JIAO_AN_ZI_YUAN,.GZ_JIAXIAOPINGYU{
+	background: url("images/icon/yzy_5.png") no-repeat 50% 50% #4FB7BE;
+}
+.YUN_ZI_YUAN_SU_CAI_ZI_YUAN,.YUE_DU_HUI_SHEN_QING,.XUE_SHENG_SHU_ZHAI{
+	background: url("images/icon/yzy_4.png") no-repeat 50% 50% #993BFA;
+}
+.YUN_ZI_YUAN_KE_JIAN_ZI_YUAN{
+	background: url("images/icon/yzy_2.png") no-repeat 50% 50% #66B3A9;
+}
+.YUN_XUE_XI_ZAI_XIAN_KE_TANG,.ZAI_XIAN_KE_TANG,.BEI_KE,.DU_SHU_ZHI_SHU_GUI_ZE,.YUE_DU_HUI_ZHAN_SHI,.JIAO_SHI_SHU_ZHAI{
+	background:url("images/icon/yjx_6.png") no-repeat 50% 50% #66B3A9;
+}
+.YUN_SHE_QU2{
+	background:url("images/icon/ybg_3.png") no-repeat 50% 50% #3A9DE7;
+}
+.DIAN_ZI_SHU_BAO2{
+	background: url("images/icon/yzy_4.png") no-repeat 50% 50% #993BFA;
+}
+.GZ_DUSHUGUIHUA{
+	background: url("images/icon/jcsj_2.png") no-repeat 50% 50% #dca313;
+}
+.GZ_DUSHUDANGAN{
+	background: url("images/icon/yzy_1.png") no-repeat 50% 50% #2cae81;
+}
+.JIAO_SHI_TONG_JI{
+	background: url("images/icon/xxtj_1.png") no-repeat 50% 50% #19598E;
+}
+.XUE_SHENG_TONG_JI{
+	background: url("images/icon/xxtj_2.png") no-repeat 50% 50% #19598E;
+}
+.ZI_YUAN_TONG_JI,.JIE_YUE_TONG_JI,.BAO_XIU_TONG_JI,.XIAO_FEI_TONG_JI{
+	background: url("images/icon/xxtj_3.png") no-repeat 50% 50% #19598E;
+}
+.GE_REN_ZI_YUAN_TONG_JI{
+	background: url("images/icon/xxtj_3.png") no-repeat 50% 50% #19598E;
+}
+.SYS_BANNER_GUAN_LI{
+	background: #19598e url("images/icon/wk_1.png") no-repeat  50% 50%;
+}
+.BANNER_GUAN_LI {
+    background: #19598e url("images/icon/wk_1.png") no-repeat  50% 50%;
+}
+.QI_DONG_YE_GUAN_LI {
+	background: #19598e url("images/icon/wk_1.png") no-repeat  50% 50%;
+}
+
+.WEI_KE_ZHI_SHI {
+    background: #19598e url("images/icon/wk_2.png") no-repeat  50% 50%;
+}
+.RE_MEN_WEI_KE {
+    background: #19598e url("images/icon/wk_3.png") no-repeat  50% 50%;
+}
+.JIAO_XUE_JI_HUA{
+	background: #19598e url("images/icon/jwgl_4.png") no-repeat  50% 50%
+}
+.JIAO_XUE_JI_HUA_GUAN_LI{
+	background: #19598e url("images/icon/ybg_10.png") no-repeat  50% 50%
+}
+.JIAO_AN{
+	background: #19598e url("images/icon/jwgl_10.png") no-repeat  50% 50%
+}
+.JIAO_AN_GUAN_LI{
+	background: #19598e url("images/icon/xtgl_3.png") no-repeat  50% 50%
+}
+.JIAO_XUE_JI_HUA_TONG_JI{
+	background: #19598e url("images/icon/jcsj_2.png") no-repeat  50% 50%
+}
+.JIAO_AN_TONG_JI{
+	background: #19598e url("images/icon/jcsj_1.png") no-repeat  50% 50%
+}
+.XUE_SHENG_HUO_DONG{
+	background: #19598e url("images/icon/xtgl_7.png") no-repeat  50% 50%
+}
+.ZUO_WEI_CHA_KAN{
+	 background: #19598e url("images/icon/jwgl_4.png") no-repeat  50% 50%;
+}
+.XUE_SHENG_ZUO_WEI{
+	background: #19598e url("images/icon/ybg_4.png") no-repeat  50% 50%;
+}
+.CHEN_JI_GUAN_LI{
+	background: url("images/icon/jcsj_2.png") no-repeat 50% 50% #19598E;
+}
+.JIAO_XUE_ZI_YUAN_TONG_JI{
+	background: url("images/icon/yzy_2.png") no-repeat 50% 50% #19598E;
+}
+.JIAO_XUE_ZI_YUAN{
+	background: url("images/icon/yzy_2.png") no-repeat 50% 50% #CD9868;
+}
+.REN_YUAN_FEN_ZU{
+	background: url("images/icon/jcsj_6.png") no-repeat 50% 50% #CD9868;
+}
+.FU_WU_GUAN_LI{
+	background: url("images/icon/wk_2.png") no-repeat 50% 50% #19598E;
+}
+.XI_TONG_RI_ZHI{
+	background: url("images/icon/ybg_7.png") no-repeat 50% 50% #19598E;
+}
+.KE_HU_DUAN_SHENG_JI{
+	background: url("images/icon/yzy_6.png") no-repeat 50% 50% #19598E;
+}
+.BAN_BAN_XING_ZHANG_HAO,.ZHBP_ZHANG_HAO{
+	background: url("images/icon/xtgl_7.png") no-repeat 50% 50% #19598E;
+}
+.HUAN_YING_CI_MU_BAN,.XUE_XI_ZOU_BAN_GUAN_LI{
+	background: url("images/icon/xtgl_3.png") no-repeat 50% 50% #19598E;
+}
+.JIAO_XUE_TONG_JI{
+	background: url("images/icon/ybg_5.png") no-repeat 50% 50% #19598E;
+}
+.QU_YU_TONG_JI{
+	background: url("images/icon/qygl_1.png") no-repeat 50% 50% #19598E;
+}
+.BAN_BAN_XING {
+    background: url("images/icon/ybg_3.png") no-repeat 50% 50% #19598E;
+}
+.LUBO,.LU_BO{
+	background: url("images/icon/yjx_2.png") no-repeat 50% 50% #209080;
+}
+.ZHAO_PIAN_GUAN_LI{
+	background: url("images/icon/wk_2.png") no-repeat 50% 50% #19598E;
+}
+.XUE_QI_HUO_DONG{
+	background: url("images/icon/jcsj_6.png") no-repeat 50% 50% #3A9DE7;
+}
+.XUESHENG_SHIJIAN{
+	background: url("images/icon/xtgl_8.png") no-repeat 50% 50% #44AC2D;
+}
+.YOUJIAO_ZIYUAN{
+	background: url("images/icon/yzy_2.png") no-repeat 50% 50% #E36A6A;
+}
+.BAN_JI_TI_PING_JIA{
+	background: url("images/icon/bjtpj.png") no-repeat 50% 50% #19598E;
+}
+.HONG_QI_GONG_SHI{
+	background: url("images/icon/hqgs.png") no-repeat 50% 50% #19598E;
+}
+.KE_TANG_YOU_HUA,.KE_TANG_YOU_HUA_BAN{
+	background: url("images/icon/ktyh.png") no-repeat 50% 50% #19598E;
+}
+.XING_JI_GE_REN{
+	background: url("images/icon/xjgr.png") no-repeat 50% 50% #19598E;
+}
+.FA_ZHAN_PING_JIA_KA,.FA_ZHAN_PING_JIA_KA_BAN{
+	background: url("images/icon/fzpjk.png") no-repeat 50% 50% #19598E;
+}
+.JI_LI_PING_JIA,.JI_LI_PING_JIA_BAN{
+	background: url("images/icon/jlpj.png") no-repeat 50% 50% #19598E;
+}
+.APP_YING_YONG_GUAN_LI{
+	background: url("images/icon/yzy_6.png") no-repeat 50% 50% #19598E;
+}
+.TUI_SHONG_GUAN_LI{
+	background: url("images/icon/yjx_5.png") no-repeat 50% 50% #19598E;
+}
+.DUO_XIAO_QU_GUAN_LI{
+	background: url("images/icon/jwgl_8.png") no-repeat 50% 50% #19598E;
+}
+.ZHBP_SHE_BEI_GUAN_LI{
+	background: url("images/icon/zhbp_sbgl.png") no-repeat 50% 50% #19598E;
+}
+.KAO_QIN_SHI_JIAN_SHE_ZHI{
+	background: url("images/icon/zhbp_kqsjsz.png") no-repeat 50% 50% #19598E;
+}
+.YI_KA_TONG{
+	background:url("images/icon/zhbp_ykt.png") no-repeat 50% 50% #19598E;
+}
+.DING_SHI_KAI_GUAN_JI{
+	background: url("images/icon/zhbp_dskgj.png") no-repeat 50% 50% #19598E;
+}
+.FANG_SHI_GUAN_LI{
+	background: url("images/icon/zhbp_fsgl.png") no-repeat 50% 50% #19598E;
+}
+.GUANG_GAO_JI{
+	background: url("images/icon/zhbp_ggj.png") no-repeat 50% 50% #19598E;
+}
+.ZOU_BAN_KE_CHENG{
+	background: url("images/icon/zhbp_zbkc.png") no-repeat 50% 50% #19598E;
+}
+.KE_CHENG_REN_KE_LAO_SHI{
+	background: url("images/icon/zhbp_rklsgl.png") no-repeat 50% 50% #19598E;
+}
+.ZOU_BAN_KE_CHENG_BIAO_GUAN_LI{
+	background: url("images/icon/zhbp_kcbgl.png") no-repeat 50% 50% #19598E;
+}
+.XUAN_KE_HUO_DONG{
+	background: url("images/icon/zhbp_xkhd.png") no-repeat 50% 50% #19598E;
+}
+.ZHBP_XUE_SHENG_XUAN_KE{
+	background: url("images/icon/zhbp_xkhd.png") no-repeat 50% 50% #19598E;
+}
+.XUAN_KE_LU_QU{
+	background: url("images/icon/zhbp_xklq.png") no-repeat 50% 50% #19598E;
+}
+
+.ZOU_BAN_KE_BIAO_CHA_XUN{
+	background: url("images/icon/zhbp_zbkbcx.png") no-repeat 50% 50% #19598E;
+}.YUN_JIAO_XUE_DAO_XUE_AN {
+    background: url("images/icon/yjx_6.png") no-repeat 50% 50% #DA4848;
+}
+.ZOU_BAN_JIAO_SHI{
+	background: url("images/icon/zhbp_zbjs.png") no-repeat 50% 50% #19598E;
+}.DA_SHU_JU_ZHI_YUAN_TONG_JI{
+	background:url("images/icon/yzy_xbzy.png") no-repeat 50% 50% #19598E;
+}
+.DA_SHU_JU_YUN_YING_TONG_JI{
+	background:url("images/icon/ybg_3.png") no-repeat 50% 50% #19598E;
+}
+.XI_TONG_XUE_XIAO_GUAN_LI{
+	background: url("images/icon/jwgl_8.png") no-repeat 50% 50% #19598E;
+}
+.ZHI_SHI_TU_PU{
+	background: url("images/icon/jwgl_11.png") no-repeat 50% 50% #19598E;
+}
+.DA_SHU_JU_XUE_KE_ZI_YUAN{
+	background: url("images/icon/yzy_xbzy.png") no-repeat 50% 50% #19598E;
+}
+.DA_SHU_JU_WEI_KE_ZI_YUAN{
+	background: url("images/icon/yjx_1.png") no-repeat 50% 50% #19598E;
+}
+.YUN_JI_SUAN{
+	background: url("images/icon/xtgl_4.png") no-repeat 50% 50% #19598E;
+}
+!* ?????? *!
+.JIAN_KONG_XI_TONG{
+	background: url("images/icon/yh_1.png") no-repeat 50% 50% #FFBB36;
+}
+.GUANG_BO_XI_TONG{
+	background: url("images/icon/yh_2.png") no-repeat 50% 50% #52C23D;
+}
+.XIAO_YUAN_WEN_HUA{
+	background: url("images/icon/yh_3.png") no-repeat 50% 50% #FF554D;
+}
+.WEI_KE_GUAN_LI_XI_TONG{
+	background: url("images/icon/yh_4.png") no-repeat 50% 50% #3DC982;
+}
+.YUN_ZHUO_MIAN_GUAN_LI{
+	background: url("images/icon/yh_5.png") no-repeat 50% 50% #8E80E2;
+}
+.XIAO_YUAN_DIAN_SHI{
+	background: url("images/icon/yh_6.png") no-repeat 50% 50% #8E80E2;
+}
+.DIAN_ZI_TU_SHU_GUAN{
+	background: url("images/icon/yh_7.png") no-repeat 50% 50% #52C23D;
+}
+.KAO_SHI_XI_TONG{
+	background: url("images/icon/yh_8.png") no-repeat 50% 50% #FFBB36;
+}
+.PIN_GAO_YUN_PAN{
+	background: url("images/icon/yh_9.png") no-repeat 50% 50% #4DB1FA;
+}
+.XIAO_YUAN_YI_KA_TONG{
+	background: url("images/icon/yh_10.png") no-repeat 50% 50% #3DC982;
+}
+.SU_SE_DUI_JIANG{
+	background: url("images/icon/yh_11.png") no-repeat 50% 50% #FF554D;
+}
+.ZHI_NENG_XIAO_ZHENG_GUAN_LI{
+	background: url(images/icon/yjx_8.png) no-repeat 50% 50% #19598E;
+}
+.ZHI_NENG_XIAO_ZHENG_BAO_BIAO{
+	background: url(images/icon/xxtj_3.png) no-repeat 50% 50% #19598E;
+}
+.SHOU_FEI_CHU_LI{
+	background: url("images/icon/ybg_7.png") no-repeat 50% 50% #19598E;
+}
+.JI_LU_CHA_XUN{
+	background: url("images/icon/jcsj_2.png") no-repeat 50% 50% #19598E;
+}
+.SHOU_FEI_XIANG_MU{
+	background: url("images/icon/yzy_5.png") no-repeat 50% 50% #19598E;
+}
+.KE_HU_TOU_SU{
+	background: url("images/icon/yzy_grzy.png") no-repeat 50% 50% #19598E;
+}
+.TOU_SU_CHU_LI{
+	background: url("images/icon/yzy_xbzy.png") no-repeat 50% 50% #19598E;
+}
+
+.JIAO_XUE_FAN_KUI{
+	background: url(images/icon/yzy_7.png) no-repeat 50% 50% #3A9DE7;
+}.CHENG_JI_FEN_XI_1{
+	background: url("images/icon/cjfx.png") no-repeat 50% 50% #19598E;
+}
+.ZHI_NENG_KA_GUAN_LI{background: url("images/icon/ybg_12.png") no-repeat 50% 50% #19598E;}
+.KAO_QING{background: url("images/icon/xtgl_5.png") no-repeat 50% 50% #19598E;}
+.TONG_ZHI{background: url("images/icon/ybg_1.png") no-repeat 50% 50% #19598E;}
+.ZUO_YE{background: url("images/icon/ybg_5.png") no-repeat 50% 50% #19598E;}
+.KE_CHENG_GUAN_LI{background: url("images/icon/ybg_6.png") no-repeat 50% 50% #19598E;}
+.XIN_WEN{background: url("images/icon/xxtj_1.png") no-repeat 50% 50% #19598E;}
+.XIAO_CHE{background: url("images/icon/ybg_8.png") no-repeat 50% 50% #19598E;}
+.XIAO_YUAN_SHE_ZHI{background: url("images/icon/xwgl_4.png") no-repeat 50% 50% #19598E;}
+.FANG_KE_XI_TONG{background: url("images/icon/xtgl_7.png") no-repeat 50% 50% #19598E;}
+.XIAO_FEI_XI_TONG{background: url("images/icon/wk_2.png") no-repeat 50% 50% #19598E;}
+
+.LI_SHI_YAN_GE{
+	background: url("images/icon/yh_2.png") no-repeat 50% 50% #19598E;
+}
+.KE_CHENG_XI_TONG_1{
+	background: url("images/icon/xwgl_sys.png") no-repeat 50% 50% #19598E;
+}
+.OA_XI_TONG_1{
+	background: url("images/icon/xtgl_7.png") no-repeat 50% 50% #19598E;
+}
+.JI_CHU_DAI_MA{
+	background: url("images/icon/ybg_6.png") no-repeat 50% 50% #19598E;
+}
+.WANG_LUO_JIAO_YAN_XI_TONG{
+	background: url("images/icon/yh_2.png") no-repeat 50% 50% #19598E;
+}
+.YINGYONG_ZHONGXIN{
+	background: url("images/icon/yjx_8.png") no-repeat 50% 50% #19598E;
+}
+.WEN_JUAN_GUAN_LI{
+	background: url("images/icon/dcwj.png") no-repeat 50% 50% #19598E;
+}
+
+.BUKAGUANLI{
+	background: url("images/icon/buka.png") no-repeat 50% 50% #19598E;
+}
+.KAO_QING_GUAN_LI{
+	background: url("images/icon/kaoqing.png") no-repeat 50% 50% #19598E;
+}
+
+.SHU_JU_CHU_SHI_HUA{
+	background: url("images/icon/shujuchushihua.png") no-repeat 50% 50% #19598E;
+}
+.GE_REN_ZI_ZONG_WU_SHU_JU{
+	background: url("images/icon/tongji.png") no-repeat 50% 50% #19598E;
+}
+.NEW_WEI_KE_GUAN_LI{
+	background: url("images/icon/kecheng.png") no-repeat 50% 50% #19598E;
+}
+.JIA_XIAO_FAN_KUI{
+	background: url("images/icon/fankui.png") no-repeat 50% 50% #19598E;
+}
+.DENG_LU_GUAN_LIS{
+	background: url("images/icon/applets_login.png") no-repeat 50% 50% #19598E;
+}
+
+.BANNER_GUAN_LIS{
+	background: url("images/icon/banner.png") no-repeat 50% 50% #19598E;
+}
+
+.XUE_SHENG_JIANG_KANG{
+	background: url("images/icon/health.png") no-repeat 50% 50% #19598E;
+}
+.SHITCZ{
+	background: url("images/icon/pay.png") no-repeat 50% 50% #19598E;
+}
+!*
+  2022,06,08新增图标
+*!
+.bjdkj{
+	background: url("images/icon/kejian.png") no-repeat 50% 50% #19598E;
+}
+.XIAOCHEGUANLI{
+	background: url("images/icon/xiaocheguanli.png") no-repeat 50% 50% #19598E;
+}
+.JIA_ZZH{
+	background: url("images/icon/jiazhangguanli.png") no-repeat 50% 50% #19598E;
+}
+.bjdxhd{
+	background: url("images/icon/daxinghuodong.png") no-repeat 50% 50% #19598E;
+}
+.dkgl{
+	background: url("images/icon/daike.png") no-repeat 50% 50% #19598E;
+}
+.CHENGZHANGBAOGAO{
+	 background: url("images/icon/daochu.png") no-repeat 50% 50% #19598E;
+ }
+.tkgl{
+	  background: url("images/icon/tiaoke.png") no-repeat 50% 50% #19598E;
+}
+.StudentErWerMa{
+	   background: url("images/icon/erweima.png") no-repeat 50% 50% #19598E;
+}
+.visit{
+	background: url("images/icon/fagke.png") no-repeat 50% 50% #19598E;
+}
+.xsgrry{
+	 background: url("images/icon/rongyu.png") no-repeat 50% 50% #19598E;
+ }
+.hdsgl{
+	background: url("images/icon/huodongshi.png") no-repeat 50% 50% #19598E;
+}
+.bjjtry{
+	background: url("images/icon/jitirongyu.png") no-repeat 50% 50% #19598E;
+}
+.jsgl1{
+	background: url("images/icon/jiesongguanli.png") no-repeat 50% 50% #19598E;
+}
+.bjnjpj{
+	background: url("images/icon/nianjipingjia.png") no-repeat 50% 50% #19598E;
+}
+.PIN_GEYANGCHENG{
+	background: url("images/icon/pinggeyangcheng.png") no-repeat 50% 50% #19598E;
+}
+.qxjzjs{
+	background: url("images/icon/quanjiesong.png") no-repeat 50% 50% #19598E;
+}
+.rkjsysy{
+	background: url("images/icon/renkejiaoshi.png") no-repeat 50% 50% #19598E;
+}
+.rkjszhk{
+	background: url("images/icon/renkejiaoshi.png") no-repeat 50% 50% #19598E;
+}
+.SHIJIANCHUANGXIN{
+	 background: url("images/icon/shijianchuangxin.png") no-repeat 50% 50% #19598E;
+ }
+.TIZHI_JIANGKANG{
+	background: url("images/icon/tizhijiangkang.png") no-repeat 50% 50% #19598E;
+}
+.TUSGGL{
+	background: url("images/icon/tushuguan.png") no-repeat 50% 50% #19598E;
+}
+.xnhd{
+	 background: url("images/icon/xiaoneihuodong.png") no-repeat 50% 50% #19598E;
+ }
+.xwhd{
+	  background: url("images/icon/xiaowaihuodong.png") no-repeat 50% 50% #19598E;
+  }
+.XUEKESUYANG{
+	background: url("images/icon/xuekesuyang.png") no-repeat 50% 50% #19598E;
+}
+.XUEXIXIGUAN{
+	background: url("images/icon/xuexixiguan.png") no-repeat 50% 50% #19598E;
+}
+.bjxxcj{
+	background: url("images/icon/xuexiaochouyang.png") no-repeat 50% 50% #19598E;
+}
+.yxbjyrcg{
+	background: url("images/icon/yirichanggui.png") no-repeat 50% 50% #19598E;
+}
+.YISHUSHENMEI{
+	background: url("images/icon/yishushennei.png") no-repeat 50% 50% #19598E;
+}
+.dyyxbzr,.dyyxbzrcs,.dyyxbarzp,.yxfbzr{
+	background: url("images/icon/youxiubanji.png") no-repeat 50% 50% #19598E;
+}
+.barmxxs,.ZMXXSgly{
+	background: url("images/icon/zhoumingxing.png") no-repeat 50% 50% #19598E;
+}
+.ZUOWEIBIAO{
+	background: url("images/icon/zuoweibiao.png") no-repeat 50% 50% #19598E;
+}*/
+
+.second_main{
+	padding:30px 20px 0 0;
+}
+.second_main ul {
+	
+}
+.second_main ul li{
+	margin:0 0 20px 30px;
+	width:368px;
+	height:99px;
+	float:left;
+	background-position:36px center;
+	-moz-box-shadow: 0 1px 2px #c5c5c5;
+    -webkit-box-shadow: 0 1px 2px #c5c5c5;
+    box-shadow: 0 1px 2px #c5c5c5 ;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#c5c5c5')";
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#c5c5c5');
+	/* border:1px solid #eee; */
+}
+.second_main ul li a{
+	display:block;
+	height:99px;
+}
+.second_main ul li:hover{
+	/* border:1px solid rgba(0, 0, 0, 0); */
+	-moz-box-shadow: 0 1px 2px #666;
+    -webkit-box-shadow: 0 1px 2px #666;
+    box-shadow: 0 1px 2px #666 ;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#999999')";
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#999999');
+}
+.second_main ul li .intro{
+	background-color:#fff;
+	font-family:"΢���ź�";
+	width:249px;
+	height:99px;
+	display:block;
+	float:right;
+	padding-left:20px;
+	position:relative;
+	background:url("images/span_bg.png") no-repeat;
+}
+.second_main ul li .span1{
+	font-size:22px;
+	color:#145C97;
+	display:block;
+	line-height:44px;
+	margin-bottom:5px;
+}
+.second_main ul li .span2{
+	font-size:14px;
+	color:#666666;
+	display:block;
+	line-height:22px;
+	height:44px;
+	overflow:hidden;
+}
+.tj_nav{
+	position:absolute;
+	top:0;
+	padding-left:222px;
+}
+/* .tj_nav i{
+	display:block;
+	width:10px;
+	border-bottom:1px solid #fff;
+	height:48px;
+	float:left;
+	padding-top:7px;
+} */
+.tj_nav ul{
+	padding-top:7px;
+	
+}
+.tj_nav ul li{
+	float:left;
+	height:48px;
+    background:url("images/nav_right.png") no-repeat right center;
+    border-bottom:1px solid #fff;
+}
+.tj_nav ul li i{
+	background:url("images/cpyy_icon.png") no-repeat left center;
+	width:20px;
+	height:48px;
+	display:block;
+	float:left;
+}
+.tj_nav ul li:last-child{background:none;}
+.tj_nav ul li.on{
+	 position: relative;
+    left: -1px;
+    border:1px solid  #fff;
+	border-bottom:0 none;
+	background:none;
+}
+.tj_nav ul li.on a{
+	
+}
+.tj_nav ul li a{
+	padding:0 12px;
+	font-size:15px;
+	line-height:48px;
+	color:#fff;
+	display:block;
+}
+
+.index_tjdiv{
+	position:relative
+}
+.index_tj{
+     margin-right: 530px;
+    z-index: 2;
+    position: relative;
+    display:block;
+ }
+ .bjyy{
+ 		background:#999;
+    filter: Alpha(opacity=20);
+    background:rgba(252,252,252,0.1);
+ }
+ .index_tj .title{
+ 	height:46px;
+ 	color:#fff;
+ 	font:18px/46px Microsoft YaHei;
+ 	padding-left:20px;
+ }
+.div_jg{
+	margin-bottom:10px;
+}
+.sl_ul{
+	
+}
+.sl_ul ul li{
+	float:left;
+	margin-right:3%;
+	width:30%;
+	color:#fff;
+	font-family:"??????";
+	height:90px;
+}
+.sl_ul ul li .left{
+	width:80px;
+	height:90px;
+	float:left;
+}
+.sl_ul ul li .zz_1{
+	line-height:28px;
+	padding-left:90px;
+	display:block;
+}
+.sl_ul ul li .p1{
+	line-height:40px;
+	margin-left: 80px;
+	text-align:center;
+}
+.sl_ul ul li .p1 span{
+	font-size:38.75px;
+	margin-right:5px;
+}
+.sl_ul ul li .zz_2{
+	line-height:20px;
+	padding-right:10px;
+	float:right;
+}
+.sl_ul ul li.l1{
+	background:#9273f2;
+    filter: Alpha(opacity=60);
+    background:rgba(180,139,214,0.6);
+}
+.sl_ul ul li.l2{
+	background:#fd9364;
+    filter: Alpha(opacity=60);
+    background:rgba(253,147,100,0.6);
+}
+.sl_ul ul li.l3{
+	background:#2cc97a;
+    filter: Alpha(opacity=60);
+    background:rgba(44,201,122,0.6);
+}
+.sl_ul ul li.l4{
+	background:#1171e8;
+    filter: Alpha(opacity=60);
+    background:rgba(17,113,232,0.6);
+}
+.sl_ul ul li.l5{
+	background:#9273f2;
+    filter: Alpha(opacity=60);
+    background:rgba(146,115,242,0.6);
+}
+.sl_ul ul li.l6{
+	background:#2cc97a;
+    filter: Alpha(opacity=60);
+    background:rgba(44,201,122,0.6);
+}
+.sl_ul ul li.l7{
+	background:#73acf2;
+    filter: Alpha(opacity=60);
+    background:rgba(44,201,122,0.6);
+}
+.sl_ul ul li.l8{
+	background:#fdba64;
+    filter: Alpha(opacity=60);
+    background:rgba(253,186,100,0.6);
+}
+.sl_ul ul li.l9{
+	background:#2cc97a;
+    filter: Alpha(opacity=60);
+    background:rgba(44,201,122,0.6);
+}
+.sl_ul ul li.l1 .left{
+	background:url("images/tj_1.png") no-repeat 50% 50% #9273f2;
+}
+.sl_ul ul li.l2 .left{
+	background:url("images/tj_2.png") no-repeat 50% 50% #fd9364;
+}
+.sl_ul ul li.l3 .left{
+	background:url("images/tj_3.png") no-repeat 50% 50% #2cc97a;
+}
+.sl_ul ul li.l4 .left{
+	background:url("images/tj_4.png") no-repeat 50% 50% #1171e8;
+}
+.sl_ul ul li.l5 .left{
+	background:url("images/tj_5.png") no-repeat 50% 50% #9273f2;
+}
+.sl_ul ul li.l6 .left{
+	background:url("images/tj_1.png") no-repeat 50% 50% #2cc97a;
+}
+.sl_ul ul li.l7 .left{
+	background:url("images/tj_6.png") no-repeat 50% 50% #73acf2;
+}
+.sl_ul ul li.l8 .left{
+	background:url("images/tj_7.png") no-repeat 50% 50% #fdba64;
+}
+.sl_ul ul li.l9 .left{
+	background:url("images/tj_8.png") no-repeat 50% 50% #2cc97a;
+}
+.half_div{
+	width:49%;
+	margin-right:1%;
+	float:left;
+}
+.div_padding{
+	padding:13px 13px 0;
+}
+.index_sl{
+	width:48%;
+	float:left;
+}
+.index_sl ul li{
+	width:100%;
+	margin-bottom:15px;
+	height:115px;
+	font-size:16px;
+}
+.second_sl ul li{
+	height:109px;
+}
+.index_sl ul li .left{
+	width:127px;
+	height:116px;
+	float:left;
+}
+.second_sl ul li .left{
+	width:80px;
+	height:109px;
+	float:left;
+}
+.index_sl ul li .zz_1{
+	line-height:33px;
+	padding-left:137px;
+}
+.index_sl ul li .p1 span{
+	font-size:52px;
+	margin-right:10px;
+}
+.school_rank ul{
+	
+}
+.school_rank ul li{
+	float:left;
+	line-height:55px;
+	color:#fff;
+	width:30%;
+	margin-left:3%;
+	opacity:0.5;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    word-wrap:normal;
+	
+}
+.school_rank ul li span{
+	margin-right:9px;
+}
+.school_rank ul .first,.school_rank ul .second,.school_rank ul .third{
+	opacity:1;
+}
+.school_rank ul .first span,.school_rank ul .second span,.school_rank ul .third span{
+	display:inline-block;
+	background:url("images/prev_icon.png") no-repeat;
+	width:27px;
+	height:38px;
+	line-height:38px;
+	text-align:center;
+}
+.school_rank ul .second span{
+	background-position:0 -55px;	
+}
+.school_rank ul .third span{
+	background-position:0 -109px;	
+}
+@media screen and (max-width: 1550px) { 
+.tj_nav ul li a{
+	font-size:12px;
+}
+.sl_ul ul li .p1 span{
+	font-size:40px;
+}
+} 
+/* css???????????????????��??1201px? abc ???1200px??? */ 
+ 
+@media screen and (max-width: 1365px) { 
+.tj_nav ul li a{
+	padding:0 3px;
+	font-size:12px;
+}
+.sl_ul ul li .p1 span{
+	font-size:32px;
+}
+}
+/* ???????????????????1200px? abc ???1365px??? */ 

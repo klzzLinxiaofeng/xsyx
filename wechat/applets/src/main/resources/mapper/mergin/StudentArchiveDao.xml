@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.StudentArchiveDao">
+
+    <resultMap id="StudentArchiveResult" type="com.xunyunedu.mergin.vo.StudentArchive">
+        <result property="id" column="id" />
+        <result property="studentId" column="student_id" />
+        <result property="personId" column="person_id" />
+        <result property="enrollType" column="enroll_type" />
+        <result property="enrollMark" column="enroll_mark" />
+        <result property="ceNumber" column="ce_number" />
+        <result property="studentSource" column="student_source" />
+        <result property="graduationSchool" column="graduation_school" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="isPreeducated" column="is_preeducated" />
+        <result property="isBuyedDegree" column="is_buyed_degree" />
+        <result property="isMartyrChild" column="is_martyr_child" />
+        <result property="isOrphan" column="is_orphan" />
+        <result property="isSponsored" column="is_sponsored" />
+        <result property="isFirstRecommended" column="is_first_recommended" />
+        <result property="isSupportNourishment" column="is_support_nourishment" />
+        <result property="disabilityType" column="disability_type" />
+        <result property="followStudy" column="follow_study" />
+        <result property="needSpecialCare" column="need_special_care" />
+        <result property="isUnattendedChild" column="is_unattended_child" />
+        <result property="isMigratedChild" column="is_migrated_child" />
+        <result property="isCityLabourChild" column="is_city_labour_child" />
+        <result property="attendSchoolType" column="attend_school_type" />
+        <result property="bySchoolBus" column="by_school_bus" />
+        <result property="trafficType" column="traffic_type" />
+        <result property="schoolDistance" column="school_distance" />
+    </resultMap>
+
+
+    <select id="findByStudentId" resultMap="StudentArchiveResult" useCache="false">
+		SELECT * FROM pj_student_archive WHERE student_id = #{studentId,javaType=java.lang.Integer}
+	</select>
+
+</mapper>

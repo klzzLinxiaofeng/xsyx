@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.ishangkelilu.dao.StudyHabitsDao">
+
+
+  <resultMap id="StudyHabitsMap" type="com.xunyunedu.ishangkelilu.pojo.StudyHabits">
+    <id property="id" column="id" />
+    <result column="studentId" property="studentId"/>
+    <result column="teacherId" property="teacherId"/>
+    <result column="score" property="score"/>
+    <result column="stats" property="stats"/>
+    <result column="create_time" property="createTime"/>
+    <result column="leixing" property="leixing"/>
+      <result column="subjectName" property="subjectName"></result>
+      <result column="subjectId" property="subjectId"/>
+      <result column="teamId" property="teamId"/>
+  </resultMap>
+    <resultMap id="StudyHabitsMap2" type="com.xunyunedu.ishangkelilu.pojo.StudyHabits">
+        <id column="id" property="id"></id>
+        <result column="studentId" property="studentId"></result>
+        <result column="teamId" property="teamId"></result>
+        <result column="studentName" property="studentName"></result>
+        <result column="teacherId" property="teacherId"></result>
+        <result column="leixing" property="leixing"></result>
+        <result column="score" property="score"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="is_delete" property="stats"></result>
+        <result column="subjectName" property="subjectName"></result>
+        <result column="subjectId" property="subjectId"></result>
+    </resultMap>
+    <resultMap id="ZuoWeiHangfLieMap" type="com.xunyunedu.login.pojo.ZuoWeiHangLie">
+        <id column="id" property="id"></id>
+        <result column="team_id" property="teamId"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="moide_time" property="modelTime"></result>
+        <result column="zu_number" property="zuNumber"></result>
+        <result column="hang_number" property="hangNumber"></result>
+        <result column="lie_number" property="lieNumber"></result>
+    </resultMap>
+
+  <select id="findByTeam" resultType="com.xunyunedu.team.pojo.TeamPojo">
+    select pt.id,pt.name from pj_team_teacher ptt inner join pj_team pt on pt.id=ptt.team_id
+    where ptt.is_delete=0 and ptt.school_year=#{schoolYear} and ptt.teacher_id=#{teacherId}  and pt.school_id=#{schoolId}
+    group by pt.id
+  </select>
+  <select id="findByStudentTeamId" resultType="java.lang.Integer">
+    select ps.team_id from pj_student ps
+        where ps.id=#{studentId} and ps.school_id=#{schoolId} and ps.is_delete=0
+  </select>
+
+  <select id="findByStudentGradeId" resultType="java.lang.Integer">
+        select pts.grade_id from pj_student ps inner join pj_team_student pts inner join
+        pj_grade pg on pg.id=pts.grade_id
+        where ps.id=#{studentId} and ps.school_id=#{schoolId} and pts.is_delete=0 and ps.is_delete=0 and pg.school_year=#{schoolYear}
+  </select>
+
+  <select id="findByStudentStudyHabits" resultMap="StudyHabitsMap">
+    select leixing,(sum(score)+80) as score,studentId from pj_student_jinu where studentId=#{studentId} and leixing=#{leixing}  group by leixing
+  </select>
+  <select id="findByTeamStudyHabits" resultMap="StudyHabitsMap">
+    select  psj.leixing,sum(psj.score) as score from pj_student ps
+    inner join pj_student_jinu  psj on ps.id=psj.studentId
+    where ps.school_id=#{schoolId} and psj.leixing=#{leixing} and ps.team_id=#{teamId} and ps.is_delete=0 group by psj.leixing
+  </select>
+  <select id="findByGradeStudyHabits" resultMap="StudyHabitsMap">
+     select psj.leixing, sum(psj.score) as score from pj_student ps
+     inner join pj_student_jinu  psj on ps.id=psj.studentId
+     inner join pj_team_student ptss on ps.id=ptss.student_id
+     where ps.school_id=#{schoolId}  and ps.is_delete=0 and ptss.grade_id=#{gradeId} and psj.leixing=#{leixing} and ptss.is_delete=0 group by psj.leixing
+  </select>
+
+  <insert id="create" parameterType="com.xunyunedu.ishangkelilu.pojo.StudyHabits">
+    insert  into pj_student_zanshijiu(studentId,score,teacherId,create_time,is_delete,leixing,teamId,subjectId)
+    value(#{studentId},#{score},#{teacherId},#{createTime},0,#{leixing},#{teamId},#{subjectId})
+  </insert>
+
+    <insert id="createTwo" parameterType="com.xunyunedu.ishangkelilu.pojo.StudyHabits">
+        insert  into pj_student_jinu(studentId,score,teacherId,create_time,stats,
+                                      leixing,subjectId,pingyu,team_id,school_year,school_trem,grade_id)
+        value(#{studyHabits.studentId},#{studyHabits.score},
+        #{studyHabits.teacherId},#{studyHabits.createTime},1,
+        #{studyHabits.leixing},#{studyHabits.subjectId},null,
+        #{studyHabits.teamId},#{studyHabits.schoolYear},#{studyHabits.schoolTrem},#{studyHabits.gradeId})
+    </insert>
+
+    <select id="findByteamNumber" resultType="java.lang.Integer">
+        select count(*) from pj_student where is_delete=0 and team_id=#{teamId}
+    </select>
+
+    <select id="findByGradeNumber" resultType="java.lang.Integer">
+          select count(ps.*) from pj_student ps inner join pj_team_student pts  on ps.id=pts.student_id
+          where ps.is_delete=0 and pts.is_delete=0 and pts.grade_id=#{gradeId}
+    </select>
+    <select id="findBysdjw" resultMap="StudyHabitsMap">
+        select * from pj_student_zanshijiu where is_delete=0 and teamId=#{teamId}  and leixing=#{leixing}
+    </select>
+    <update id="update" parameterType="com.xunyunedu.ishangkelilu.pojo.StudyHabits">
+        update pj_student_zanshijiu set score=score+#{score} where is_delete=0 and teamId=#{teamId} and leixing=#{leixing}
+    </update>
+
+    <select id="findByShangke" resultMap="StudyHabitsMap2">
+        select psz.*,ps.name as studentName, pst.name as subjectName from pj_student_zanshijiu psz
+        inner join pj_student ps on ps.id=psz.studentId
+        inner join pj_subject pst on pst.id=psz.subjectId
+        <where>
+            psz.teamId=#{teamId} and psz.is_delete=0
+            and  psz.teacherId=#{teacherId}
+        </where>
+    </select>
+
+    <select id="findByStudy" resultMap="StudyHabitsMap">
+        select * from pj_student_zanshijiu
+        where studentId=#{studyHabits.studentId} and teacherId=#{studyHabits.teacherId} and leixing=#{studyHabits.leixing} and is_delete=0 and subjectId=#{studyHabits.subjectId}
+    </select>
+
+    <insert id="createZanshi" parameterType="com.xunyunedu.ishangkelilu.pojo.StudyHabits">
+        insert into pj_student_zanshijiu(studentId,teacherId,score,is_delete,create_time,leixing,teamId,subjectId)
+        value(#{studyHabits.studentId},#{studyHabits.teacherId},#{studyHabits.score},0,null,#{studyHabits.leixing},#{studyHabits.teamId},#{studyHabits.subjectId})
+    </insert>
+
+    <update id="updateZanshi" parameterType="com.xunyunedu.ishangkelilu.pojo.StudyHabits">
+        update pj_student_zanshijiu
+        <set>
+            <if test="studyHabits.score!=null">
+                score=score+#{studyHabits.score},
+            </if>
+            <if test="studyHabits.stats!=null">
+                is_delete=1,
+            </if>
+            id=id
+        </set>
+        where  is_delete=0  and studentId=#{studyHabits.studentId} and teacherId=#{studyHabits.teacherId} and leixing=#{studyHabits.leixing}
+    </update>
+
+    <update id="updateZanshi2" parameterType="com.xunyunedu.ishangkelilu.pojo.StudyHabits">
+        update pj_student_zanshijiu
+        <set>
+            <if test="studyHabits.score!=null">
+                score=score+#{studyHabits.score}
+            </if>
+        </set>
+        where  studentId=#{studyHabits.studentId} and teacherId=#{studyHabits.teacherId} and leixing=#{studyHabits.leixing}
+    </update>
+
+    <select id="findByXiake" resultMap="StudyHabitsMap">
+            select * from pj_student_zanshijiu where teacherId=#{teacherId} and teamId=#{teamId} and is_delete=0
+        </select>
+
+    <select id="findByzuoweiHangfLie" resultMap="ZuoWeiHangfLieMap">
+           select * from pj_zuoweihanglie where is_delete=0 and team_id=#{teamId}
+    </select>
+
+</mapper>

@@ -1,0 +1,266 @@
+
+@font-face {
+    font-family: "Symbola";
+    src: local("Symbola Regular"), local("Symbola"), url("font/Symbola.ttf") format("truetype"), url("font/Symbola.otf") format("opentype"), url("font/Symbola.svg#Symbola") format("svg");
+}
+.mathquill-editable {
+    display: inline-block;
+}
+.mathquill-editable .cursor {
+    border-left: 1px solid #000000;
+    display: inline-block;
+    margin-right: -1px;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+.mathquill-editable .cursor.blink {
+    visibility: hidden;
+}
+.mathquill-editable, .mathquill-embedded-latex .mathquill-editable {
+    border: 1px solid #808080;
+    padding: 2px;
+}
+.mathquill-embedded-latex .mathquill-editable {
+    margin: 1px;
+}
+.mathquill-editable.hasCursor, .mathquill-editable .hasCursor {
+    box-shadow: 0 0 3px 2px #68B4DF;
+}
+.mathquill-editable .latex-command-input {
+    border: 1px solid #808080;
+    color: inherit;
+    font-family: "Courier New",monospace;
+    margin-left: 2px;
+    margin-right: 1px;
+    padding-right: 1px;
+}
+.mathquill-editable .latex-command-input.empty {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.mathquill-editable .latex-command-input.hasCursor {
+    border-color: activeborder;
+}
+.mathquill-editable.empty:after, .mathquill-textbox:after, .mathquill-rendered-math .empty:after {
+    content: "c";
+    visibility: hidden;
+}
+.mathquill-editable .cursor:only-child:after, .mathquill-editable .textarea + .cursor:last-child:after {
+    content: "c";
+    visibility: hidden;
+}
+.mathquill-textbox {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.mathquill-rendered-math {
+    display: inline-block;
+    font-size: 115%;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1;
+}
+.mathquill-rendered-math .non-leaf, .mathquill-rendered-math .scaled {
+    display: inline-block;
+}
+.mathquill-rendered-math var, .mathquill-rendered-math .text, .mathquill-rendered-math .nonSymbola {
+    font-family: "Times New Roman",Symbola,serif;
+    line-height: 0.9;
+}
+.mathquill-rendered-math * {
+    -moz-user-select: none;
+    border-color: #000000;
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+    white-space: pre-wrap;
+}
+.mathquill-rendered-math .empty {
+    background: none repeat scroll 0 0 #CCCCCC;
+}
+.mathquill-rendered-math.empty {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+.mathquill-rendered-math .text {
+    font-size: 87%;
+}
+.mathquill-rendered-math .font {
+    font: 1em "Times New Roman",Symbola,serif;
+}
+.mathquill-rendered-math .font * {
+    font-family: inherit;
+    font-style: inherit;
+}
+.mathquill-rendered-math b, .mathquill-rendered-math b.font {
+    font-weight: bolder;
+}
+.mathquill-rendered-math var, .mathquill-rendered-math i, .mathquill-rendered-math i.font {
+}
+.mathquill-rendered-math var.florin {
+    margin: 0 -0.1em;
+}
+.mathquill-rendered-math big {
+    font-size: 125%;
+}
+.mathquill-rendered-math .roman {
+    font-style: normal;
+}
+.mathquill-rendered-math .sans-serif {
+    font-family: sans-serif,Symbola,serif;
+}
+.mathquill-rendered-math .monospace {
+    font-family: monospace,Symbola,serif;
+}
+.mathquill-rendered-math .overline {
+    border-top: 1px solid #000000;
+    margin-top: 1px;
+}
+.mathquill-rendered-math .underline {
+    border-bottom: 1px solid #000000;
+    margin-bottom: 1px;
+}
+.mathquill-rendered-math .binary-operator {
+    display: inline-block;
+    padding: 0 0.2em;
+}
+.mathquill-rendered-math .unary-operator {
+    padding-left: 0.2em;
+}
+.mathquill-rendered-math sup, .mathquill-rendered-math sub {
+    font-size: 90%;
+    position: relative;
+}
+.mathquill-rendered-math sup .binary-operator, .mathquill-rendered-math sub .binary-operator {
+    padding: 0 0.1em;
+}
+.mathquill-rendered-math sup .unary-operator, .mathquill-rendered-math sub .unary-operator {
+    padding-left: 0.1em;
+}
+.mathquill-rendered-math sup.limit, .mathquill-rendered-math sub.limit, .mathquill-rendered-math sup.nthroot, .mathquill-rendered-math sub.nthroot {
+    font-size: 80%;
+}
+.mathquill-rendered-math sup .fraction, .mathquill-rendered-math sub .fraction {
+    font-size: 70%;
+    vertical-align: -0.4em;
+}
+.mathquill-rendered-math sup .numerator, .mathquill-rendered-math sub .numerator {
+    padding-bottom: 0;
+}
+.mathquill-rendered-math sup .denominator, .mathquill-rendered-math sub .denominator {
+    padding-top: 0;
+}
+.mathquill-rendered-math sup {
+    vertical-align: 0.5em;
+}
+.mathquill-rendered-math sup.limit, .mathquill-rendered-math sup.nthroot {
+    vertical-align: 0.8em;
+}
+.mathquill-rendered-math sup.nthroot {
+    margin-left: 0.2em;
+    margin-right: -0.6em;
+    min-width: 0.5em;
+}
+.mathquill-rendered-math sub {
+    vertical-align: -0.4em;
+}
+.mathquill-rendered-math sub.limit {
+    vertical-align: -0.6em;
+}
+.mathquill-rendered-math .paren {
+    padding: 0 0.1em;
+    transform-origin: center bottom 0;
+    vertical-align: bottom;
+}
+.mathquill-rendered-math .array {
+    text-align: center;
+    vertical-align: middle;
+}
+.mathquill-rendered-math .array > span {
+    display: block;
+}
+.mathquill-rendered-math .non-italicized-function {
+    font-family: Symbola,"Times New Roman",serif;
+    font-style: normal;
+    line-height: 0.9;
+    padding-right: 0.2em;
+}
+.mathquill-rendered-math .fraction {
+    font-size: 90%;
+    padding: 0 0.2em;
+    text-align: center;
+    vertical-align: -0.5em;
+}
+.mathquill-rendered-math .fraction, .mathquill-rendered-math x:-moz-any-link {
+    display: -moz-groupbox;
+}
+.mathquill-rendered-math .fraction, .mathquill-rendered-math x:-moz-any-link, .mathquill-rendered-math x:default {
+    display: inline-block;
+}
+.mathquill-rendered-math .numerator, .mathquill-rendered-math .denominator {
+    display: block;
+}
+.mathquill-rendered-math .numerator {
+    margin-bottom: -0.1em;
+    padding: 0 0.1em;
+    border-bottom: 1px solid;
+}
+.mathquill-rendered-math .denominator {
+    border-top: 1px solid;
+    margin-left: -0.1em;
+    margin-right: -0.1em;
+    padding: 0.1em 0.1em 0;
+    display:inline-block;
+}
+.mathquill-rendered-math .sqrt-prefix {
+    padding-top: 0;
+    position: relative;
+    top: 0.1em;
+    transform-origin: center top 0;
+    vertical-align: top;
+}
+.mathquill-rendered-math .sqrt-stem {
+    border-top: 1px solid;
+    margin-right: 0.1em;
+    margin-top: 1px;
+    padding-left: 0.15em;
+    padding-right: 0.2em;
+}
+.mathquill-rendered-math, .mathquill-rendered-math .mathquill-editable {
+    cursor: text;
+    font-family: Symbola,"Times New Roman",serif;
+}
+.mathquill-rendered-math .selection, .mathquill-editable .selection, .mathquill-rendered-math .selection .non-leaf, .mathquill-editable .selection .non-leaf, .mathquill-rendered-math .selection .scaled, .mathquill-editable .selection .scaled {
+    background: none repeat scroll 0 0 highlight !important;
+    border-color: highlighttext;
+    color: highlighttext;
+}
+.mathquill-rendered-math .selection .matrixed, .mathquill-editable .selection .matrixed {
+    background: none repeat scroll 0 0 #3399FF !important;
+}
+.mathquill-rendered-math .selection .matrixed-container, .mathquill-editable .selection .matrixed-container {
+}
+.mathquill-rendered-math .selection.blur, .mathquill-editable .selection.blur, .mathquill-rendered-math .selection.blur .non-leaf, .mathquill-editable .selection.blur .non-leaf, .mathquill-rendered-math .selection.blur .matrixed, .mathquill-editable .selection.blur .matrixed {
+    background: none repeat scroll 0 0 #D4D4D4 !important;
+    border-color: #000000;
+    color: #000000;
+}
+.mathquill-rendered-math .selection.blur .matrixed-container, .mathquill-editable .selection.blur .matrixed-container {
+}
+.mathquill-editable .textarea, .mathquill-rendered-math .textarea {
+    -moz-user-select: text;
+    position: relative;
+}
+.mathquill-editable .textarea textarea, .mathquill-rendered-math .textarea textarea, .mathquill-editable .selectable, .mathquill-rendered-math .selectable {
+    -moz-user-select: text;
+    clip: rect(1em, 1em, 1em, 1em);
+    position: absolute;
+}
+.mathquill-rendered-math .matrixed {
+    background: none repeat scroll 0 0 #FFFFFF;
+    display: inline-block;
+}
+.mathquill-rendered-math .matrixed-container {
+    margin-top: -0.1em;
+}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.socialresponsibility.dao.SocialalBehaviorDao">
+
+    <resultMap id="LifeIndicatorsResult" type="com.xunyunedu.socialresponsibility.vo.SocialIndicators">
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="score" column="score" />
+        <result property="createTime" column="create_time" />
+        <result property="modiyTime" column="modiy_time" />
+        <result property="isDelete" column="is_delete" />
+        <result property="schoolYear" column="school_year" />
+        <result property="schoolTrem" column="school_trem" />
+    </resultMap>
+    <resultMap id="studentResult" type="com.xunyunedu.student.pojo.StudentPojo">
+        <id property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+        <result property="isDelete" column="is_delete" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+        <result property="isSendHikdoor" column="is_send_hikdoor"/>
+        <result property="isSendLibrary" column="is_send_library"/>
+        <result property="teacherId" column="teacher_id"/>
+    </resultMap>
+    <select id="findByaLL" resultMap="LifeIndicatorsResult">
+     select * from zy_social_indicators where is_delete=0 and  school_year=#{schoolYear} and school_trem=#{schoolTrem}
+    </select>
+
+    <insert id="create">
+        <!-- <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+             SELECT LAST_INSERT_ID() AS id
+         </selectKey>-->
+        INSERT INTO zy_social_behavior (
+        social_indicators_id,
+        student_id,
+        fenshu,
+        school_year,
+        school_trem,
+        create_time,
+        modiy_time,
+        is_delete,
+        pingyu,
+        teacher_name
+        )
+        VALUES (
+        #{socialBehavior.socialIndicatorsId},
+        #{socialBehavior.studentId},
+        #{socialBehavior.fenshu},
+        #{socialBehavior.schoolYear},
+        #{socialBehavior.schoolTrem},
+        NOW(),
+        NOW(),
+        0,
+        #{socialBehavior.pingyu},
+        #{socialBehavior.teacherName}
+        )
+    </insert>
+    <select id="findByFenShu" resultType="java.lang.Integer">
+        select sum(fenshu) from zy_social_behavior
+        <where>
+            is_delete=0
+            <if test="studentId!=null">
+                and  student_id=#{studentId}
+            </if>
+            <if test="schoolYear!=null">
+                and  school_year=#{schoolYear}
+            </if>
+            <if test="schoolTrem!=null">
+                and  school_trem=#{schoolTrem}
+            </if>
+            <if test="zhibiaoId!=null">
+                and  social_indicators_id=#{zhibiaoId}
+            </if>
+        </where>
+    </select>
+    <select id="findById" resultMap="LifeIndicatorsResult">
+        select * from  zy_social_indicators where id=#{zhibiaoId} and is_delete=0
+    </select>
+
+    <select id="findByteamId" resultMap="studentResult">
+        select name,team_name from pj_student where is_delete=0 and study_state='01'
+         and team_id=#{teamId}
+         and id !=#{studentId}
+         and name like concat('%',#{studentName},'%')
+    </select>
+
+</mapper>

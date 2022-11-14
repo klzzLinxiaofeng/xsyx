@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.resource.dao.ResPaidResourceDao">
+  <resultMap id="ResultMap" type="com.xunyunedu.resource.pojo.ResPaidResource">
+    <id property="id" column="id" />
+    <result property="title" column="title"/>
+    <result property="description" column="description"/>
+    <result property="entityId" column="entity_id"/>
+    <result property="price" column="price"/>
+    <result property="uuid" column="uuid"/>
+    <result property="userId" column="user_id"/>
+    <result property="createDate" column="createDate"/>
+  </resultMap>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    insert into res_paid_resource
+    <trim prefix="(" suffix=")" prefixOverrides=",">
+      <if test="title != null and title != ''">
+        title,
+      </if>
+      <if test="description != null and description != ''">
+        description,
+      </if>
+      <if test="entityId != null and entityId != ''">
+        entity_id,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="uuid != null and uuid != ''">
+        uuid,
+      </if>
+      create_date
+    </trim>
+    values
+    <trim prefix="(" suffix=")" prefixOverrides=",">
+      <if test="title != null and title != ''">
+        #{title},
+      </if>
+      <if test="description != null and description != ''">
+        #{description},
+      </if>
+      <if test="entityId != null and entityId != ''">
+        #{entityId},
+      </if>
+      <if test="price != null">
+        #{price},
+      </if>
+      <if test="userId != null">
+        #{userId},
+      </if>
+      <if test="uuid != null and uuid != ''">
+        #{uuid},
+      </if>
+      NOW()
+    </trim>
+  </insert>
+
+  <select id="selectById" resultMap="ResultMap">
+    select * from res_paid_resource where id = #{id}
+  </select>
+
+  <select id="selectByUuid" resultMap="ResultMap">
+    select * from res_paid_resource where uuid = #{uuid}
+  </select>
+</mapper>

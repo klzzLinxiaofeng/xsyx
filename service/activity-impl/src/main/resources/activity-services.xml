@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" default-autowire="byName">
+
+    <bean id="inSchoolActivityDao" parent="baseDao">
+        <property name="target" value="platform.education.service.dao.InSchoolActivityDao"/>
+    </bean>
+    <bean id="inSchoolActivityService" class="platform.education.service.service.impl.InSchoolActivityServiceImpl"/>
+    <!--  generator-insert-location -->
+    <bean id="inSchoolRoomDao" parent="baseDao">
+        <property name="target" value="platform.education.service.dao.InSchoolRoomDao"/>
+    </bean>
+    <bean id="inSchoolRoomService" class="platform.education.service.service.impl.InSchoolRoomServiceImpl"/>
+    <!--  generator-insert-location -->
+    <bean id="inSchoolActivityUserDao" parent="baseDao">
+        <property name="target" value="platform.education.service.dao.InSchoolActivityUserDao"/>
+    </bean>
+    <bean id="inSchoolActivityUserService" class="platform.education.service.service.impl.InSchoolActivityUserServiceImpl"/>
+    <!--  generator-insert-location -->
+    <bean id="inSchoolActivityApprovalDao" parent="baseDao">
+        <property name="target" value="platform.education.service.dao.InSchoolActivityApprovalDao"/>
+    </bean>
+    <bean id="inSchoolActivityApprovalService" class="platform.education.service.service.impl.InSchoolActivityApprovalServiceImpl"/>
+    <!--  generator-insert-location -->
+    <bean id="outSchoolActivitySummaryPicDao" parent="baseDao">
+        <property name="target" value="platform.education.service.dao.OutSchoolActivitySummaryPicDao"/>
+    </bean>
+    <bean id="outSchoolActivitySummaryPicService" class="platform.education.service.service.impl.OutSchoolActivitySummaryPicServiceImpl"/>
+    <!--  generator-insert-location -->
+    <bean id="outSchoolActivitySummaryDao" parent="baseDao">
+        <property name="target" value="platform.education.service.dao.OutSchoolActivitySummaryDao"/>
+    </bean>
+    <bean id="outSchoolActivitySummaryService" class="platform.education.service.service.impl.OutSchoolActivitySummaryServiceImpl"/>
+    <!--  generator-insert-location -->
+    <bean id="outSchoolActivityApprovalDao" parent="baseDao">
+        <property name="target" value="platform.education.service.dao.OutSchoolActivityApprovalDao"/>
+    </bean>
+    <bean id="outSchoolActivityApprovalService" class="platform.education.service.service.impl.OutSchoolActivityApprovalServiceImpl"/>
+    <!--  generator-insert-location -->
+    <bean id="outSchoolActivityDao" parent="baseDao">
+        <property name="target" value="platform.education.service.dao.OutSchoolActivityDao"/>
+    </bean>
+    <bean id="outSchoolActivityService" class="platform.education.service.service.impl.OutSchoolActivityServiceImpl"/>
+    <!--  generator-insert-location -->
+    <bean id="substituteDao" parent="baseDao">
+        <property name="target" value="platform.education.service.dao.SubstituteDao"/>
+    </bean>
+    <bean id="substituteService" class="platform.education.service.service.impl.SubstituteServiceImpl"/>
+</beans>

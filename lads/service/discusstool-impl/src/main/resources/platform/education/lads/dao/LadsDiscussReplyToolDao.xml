@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.lads.dao.LadsDiscussReplyToolDao">
+
+    <resultMap id="LadsDiscussReplyToolResult" type="platform.education.lads.model.LadsDiscussReplyTool">
+        <result property="id" column="id" />
+        <result property="content" column="content" />
+        <result property="discuss" column="discuss" />
+        <result property="parentReply" column="parent_reply" />
+        <result property="attachment" column="attachment" />
+        <result property="userId" column="user_id" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="uuid" column="uuid" />
+    </resultMap>
+    
+    <resultMap id="LadsDiscussAttachmentResult" type="platform.education.lads.vo.discussToolVo.LadsDiscussAttachmentResult">
+        <result property="uuid" column="uuid" />
+        <result property="attachment" column="attachment" />
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.lads.model.LadsDiscussReplyTool">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO lads_discuss_reply_tool (
+        id, 
+        content, 
+        discuss, 
+        parent_reply, 
+        attachment, 
+        user_id, 
+        create_date, 
+        modify_date, 
+        uuid
+        )
+        VALUES (
+        #{id}, 
+        #{content}, 
+        #{discuss}, 
+        #{parentReply}, 
+        #{attachment}, 
+        #{userId}, 
+        #{createDate}, 
+        #{modifyDate}, 
+        #{uuid}
+        )
+    </insert>
+
+    <select id="read" resultMap="LadsDiscussReplyToolResult" useCache="false">
+        SELECT * FROM lads_discuss_reply_tool WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>  
+        ORDER BY id DESC
+    </select>
+	
+    <select id="findLadsDiscussReplyToolByCondition" resultMap="LadsDiscussReplyToolResult" useCache="false">
+        SELECT * FROM lads_discuss_reply_tool 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].content != null and args[0].content != ''">
+                AND content = #{args[0].content,javaType=java.lang.String}
+            </if>
+            <if test="args[0].discuss != null and args[0].discuss != ''">
+                AND discuss = #{args[0].discuss,javaType=java.lang.String}
+            </if>
+            <if test="args[0].parentReply != null and args[0].parentReply != ''">
+                AND parent_reply = #{args[0].parentReply,javaType=java.lang.String}
+            </if>
+            <if test="args[0].attachment != null and args[0].attachment != ''">
+                AND attachment = #{args[0].attachment,javaType=java.lang.String}
+            </if>
+            <if test="args[0].userId != null">
+                AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+        </if>
+    </select>
+	
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM lads_discuss_reply_tool 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].content != null and args[0].content != ''">
+                AND content = #{args[0].content,javaType=java.lang.String}
+            </if>
+            <if test="args[0].discuss != null and args[0].discuss != ''">
+                AND discuss = #{args[0].discuss,javaType=java.lang.String}
+            </if>
+            <if test="args[0].parentReply != null and args[0].parentReply != ''">
+                AND parent_reply = #{args[0].parentReply,javaType=java.lang.String}
+            </if>
+            <if test="args[0].attachment != null and args[0].attachment != ''">
+                AND attachment = #{args[0].attachment,javaType=java.lang.String}
+            </if>
+            <if test="args[0].userId != null">
+                AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+        </if>
+    </select>
+	
+    <select id="findById" resultMap="LadsDiscussReplyToolResult" useCache="false">
+        SELECT * FROM lads_discuss_reply_tool WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+	
+    <update id="update" parameterType="platform.education.lads.model.LadsDiscussReplyTool">
+        UPDATE lads_discuss_reply_tool
+        SET 
+        <if test="content != null">
+            content=#{content},
+        </if>
+        <if test="discuss != null">
+            discuss=#{discuss},
+        </if>
+        <if test="parentReply != null">
+            parent_reply=#{parentReply},
+        </if>
+        <if test="attachment != null">
+            attachment=#{attachment},
+        </if>
+        <if test="userId != null">
+            user_id=#{userId},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        <if test="uuid != null">
+            uuid=#{uuid},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+	
+    <delete id="delete">
+        DELETE FROM lads_discuss_reply_tool
+        WHERE id = #{id}
+    </delete>
+        
+    <!--以下是业务方法-->
+    <select id="findByUuid" resultMap="LadsDiscussReplyToolResult" useCache="false">
+        SELECT * FROM lads_discuss_reply_tool WHERE uuid = #{args[0],javaType=java.lang.String}
+    </select>
+        
+        
+    <select id="findAttachMentByDiscussIdAndUserId" resultMap="LadsDiscussAttachmentResult" useCache="false">
+        SELECT 
+        dr.uuid AS uuid ,
+        dr.attachment AS attachment
+        FROM lads_discuss_reply_tool dr 
+        WHERE 1=1 
+        AND
+        dr.discuss = #{args[0].discuss,javaType=java.lang.String} 
+        AND
+        dr.user_id = #{args[0].userId,javaType=java.lang.Integer}
+        AND 
+        dr.attachment IS NOT NULL 
+        ORDER BY  dr.create_date DESC
+    </select>
+        
+    <select id="findReplyListByToolId" resultMap="LadsDiscussReplyToolResult" useCache="false">
+        SELECT 
+        dr.*
+        FROM
+        lads_discuss_reply_tool dr
+        LEFT JOIN
+        lads_discuss_tool dt
+        ON
+        dr.discuss = dt.uuid
+        WHERE 1 = 1
+        AND dr.parent_reply IS NULL
+        AND dt.tool_id = #{args[0],javaType=java.lang.String}
+    </select>
+    
+    <select id="findReplyListByToolIdAndUserId" resultMap="LadsDiscussReplyToolResult" useCache="false">
+        SELECT 
+        dr.*
+        FROM
+        lads_discuss_reply_tool dr
+        LEFT JOIN
+        lads_discuss_tool et
+        ON
+        dr.discuss = et.uuid
+        WHERE 1 = 1
+        AND dr.user_id = #{args[0].userId,javaType=java.lang.Integer}
+        AND et.tool_id = #{args[0].toolId,javaType=java.lang.String}
+    </select>
+        
+    <select id="countFinishedStatus" resultType="java.lang.Long" useCache="false">
+        SELECT 
+        COUNT(DISTINCT et.uuid) 
+        FROM 
+        lads_discuss_reply_tool dr
+        LEFT JOIN
+        lads_discuss_tool et
+        ON
+        dr.discuss = et.uuid
+        WHERE 1=1
+        AND dr.user_id = #{args[0].userId,javaType=java.lang.Integer}
+        AND 
+        <foreach item="id" index="index" collection="args[0].toolIds" open="(" separator="OR" close=")">  
+            et.tool_id = #{id}  
+        </foreach>  
+    </select>    
+        
+</mapper>

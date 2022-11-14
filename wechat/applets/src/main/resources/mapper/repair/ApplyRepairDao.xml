@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.repair.dao.ApplyRepairDao">
+
+    <resultMap id="ApplyRepairResult" type="com.xunyunedu.repair.pojo.ApplyrepairPojo">
+        <result property="id" column="id" />
+        <result property="shcoolId" column="shcool_id" />
+        <result property="title" column="title" />
+        <result property="picture" column="picturess" />
+        <result property="pictureUrl" column="pictureUrl" />
+        <result property="wholePicture" column="whole_picture" />
+        <result property="details" column="details" />
+        <result property="place" column="place" />
+        <result property="bildingId" column="bilding_id" />
+        <result property="roomId" column="room_id" />
+        <result property="contact" column="contact" />
+        <result property="phone" column="phone" />
+        <result property="appointmentDate" column="appointment_date" />
+        <result property="status" column="status" />
+        <result property="remark" column="remark" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="isDelete" column="is_delete" />
+        <result property="proposerId" column="proposer_id" />
+        <result property="proposerName" column="proposer_name" />
+        <result property="proposerName" column="proposer_name" />
+        <result property="departmentId" column="department_id" />
+        <result property="number" column="number" />
+        <result property="typeName" column="type_name" />
+        <result property="typeId" column="type_id" />
+        <result property="shenherenName" column="shenheren_name" />
+        <result property="shenherenId" column="shenheren_id" />
+        <result property="isHaoCai" column="isHaoCai" />
+        <result property="isShenHe" column="is_shenhe" />
+        <result property="weixiuGongId" column="weixiugong" />
+        <result property="shenqingPictureId" column="pictureId" />
+        <result property="weixiuGongName" column="weixiuGongName" />
+        <result property="liyou" column="liyou" />
+        <result property="weixiuTime" column="ac_accept_date"></result>
+        <result property="weixiuphone" column="ac_phone"></result>
+        <result property="weixiumodiyDate" column="ac_modify_date"></result>
+        <result property="xingji" column="ac_appraise"></result>
+        <result property="weixiuremark" column="ac_remark"></result>
+
+    </resultMap>
+
+
+    <insert id="add" parameterType="com.xunyunedu.repair.pojo.ApplyrepairPojo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO oa_apply_repair (
+        proposer_id,
+        proposer_name,
+        shcool_id,
+        title,
+        picture,
+        whole_picture,
+        details,
+        place,
+        bilding_id,
+        room_id,
+        contact,
+        phone,
+        appointment_date,
+        status,
+        remark,
+        create_date,
+        modify_date,
+        departmentId,
+        number,
+        type_id,
+        is_delete,
+        weixiugong,
+        pictureId,
+        is_haocai,
+        shenheren_id,
+        shenheren_name,
+        is_shenhe,
+        liyou
+        )
+        VALUES (
+        #{proposerId},
+        #{proposerName},
+        #{shcoolId},
+        #{title},
+        #{picture},
+        #{wholePicture},
+        #{details},
+        #{place},
+        #{bildingId},
+        #{roomId},
+        #{contact},
+        #{phone},
+        #{appointmentDate},
+        #{status},
+        #{remark},
+        #{createDate},
+        #{modifyDate},
+        #{departmentId},
+        #{number},
+        #{typeId},
+        <choose>
+            <when test="isDelete != null">
+                <choose>
+                    <when test="isDelete == true">
+                        1
+                    </when>
+                    <otherwise>
+                        0
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                0
+            </otherwise>
+        </choose>,
+        null,
+        #{shenqingPictureId},
+        null,
+        #{shenherenId},
+        #{shenherenName},
+        0,
+        null
+        )
+    </insert>
+
+    <select id="selectByCondition" resultMap="ApplyRepairResult" >
+        SELECT r.*,a.accept_date as ac_accept_date,a.accepter_name as ac_accepter_name,
+        a.phone as ac_phone,a.modify_date as ac_modify_date,a.appraise as ac_appraise,
+        a.remark as ac_remark,i.`name` as type_name,a.picture as picturess,pt.name as weixiuGongName,
+        a.is_haocai as isHaoCai
+        FROM oa_apply_repair r
+        left join oa_accept_repair a on a.repari_id=r.id
+        left join jc_gc_item i on i.id=r.type_id
+        left join pj_teacher pt on pt.user_id=r.weixiugong
+        <where>
+            <if test="id!=null">
+               and r.id=#{id}
+            </if>
+            <if test="proposerId!=null">
+                and r.proposer_id=#{proposerId}
+            </if>
+            <if test="workerUserId!=null">
+                and a.accepter_id=#{workerUserId}
+            </if>
+            <if test="status!=null">
+                <choose>
+                    <when test="status==1">
+                        and r.status='01'
+                    </when>
+<!--                    <otherwise>-->
+<!--                        and r.status!='01'-->
+<!--                    </otherwise>-->
+                </choose>
+            </if>
+        </where>
+        order by r.create_date desc
+    </select>
+
+
+    <update id="commentRepair">
+        update oa_accept_repair
+        set appraise=#{appraise},modify_date=now()
+        where repari_id=#{repairId};
+    </update>
+
+    <insert id="addAcceptRepari" parameterType="com.xunyunedu.repair.pojo.AcceptRepari">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO oa_accept_repair (
+        id,
+        accepter_id,
+        accepter_name,
+        phone,
+        accept_date,
+        appraise,
+        remark,
+        picture,
+        create_date,
+        modify_date,
+        school_id,
+        is_delete,
+        repari_id,
+        solution,
+        is_haocai
+        )
+        VALUES (
+        #{id},
+        #{accepterId},
+        #{accepterName},
+        #{phone},
+        #{acceptDate},
+        #{appraise},
+        #{remark},
+        #{picture},
+        #{createDate},
+        #{modifyDate},
+        #{schoolId},
+        <choose>
+            <when test="isDelete != null">
+                <choose>
+                    <when test="isDelete == true">
+                        1,
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                0,
+            </otherwise>
+        </choose>
+        #{repariId},
+        #{solution},
+        #{isHaoCai}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.xunyunedu.repair.pojo.ApplyrepairPojo">
+        UPDATE oa_apply_repair
+        SET
+        <if test="shcoolId != null">
+            shcool_id=#{shcoolId},
+        </if>
+        <if test="proposerId != null">
+            AND proposer_id = #{proposerId},
+        </if>
+        <if test="proposerName != null">
+            AND proposer_name = #{proposerName},
+        </if>
+        <if test="title != null">
+            title=#{title},
+        </if>
+        <if test="picture != null">
+            picture=#{picture},
+        </if>
+        <if test="wholePicture != null">
+            whole_picture = #{wholePicture},
+        </if>
+        <if test="details != null">
+            details=#{details},
+        </if>
+        <if test="place != null">
+            place=#{place},
+        </if>
+        <if test="bildingId != null">
+            bilding_id=#{bildingId},
+        </if>
+        <if test="roomId != null">
+            room_id=#{roomId},
+        </if>
+        <if test="contact != null">
+            contact=#{contact},
+        </if>
+        <if test="phone != null">
+            phone=#{phone},
+        </if>
+        <if test="appointmentDate != null">
+            appointment_date=#{appointmentDate},
+        </if>
+        <if test="status != null">
+            status=#{status},
+        </if>
+        <if test="remark != null">
+            remark=#{remark},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        <if test="departmentId != null">
+            departmentId = #{departmentId}
+        </if>
+        <if test="number != null">
+            number = #{number}
+        </if>
+        <if test="isDelete != null">
+            <choose>
+                <when test="isDelete == true">
+                    is_delete  = 1,
+                </when>
+                <otherwise>
+                    is_delete  = 0,
+                </otherwise>
+            </choose>
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+    <update id="updateShenhe" parameterType="com.xunyunedu.repair.pojo.model.ShenHe">
+          UPDATE oa_apply_repair set
+        is_shenhe=#{isShenhe}
+          <if test="weixiugong!=null">
+              ,weixiugong=#{weixiugong}
+          </if>
+        <if test="liyou!=null">
+        ,liyou=#{liyou}
+        </if>
+         where id=#{id}
+    </update>
+    <select id="findById" resultMap="ApplyRepairResult">
+        select * from  oa_apply_repair where id=#{id}
+    </select>
+    <insert id="addShiJian" parameterType="com.xunyunedu.repair.pojo.ApplyrepairPojo">
+        insert into oa_apply_notice(title,receiver_id,applicant_name,apply_explain,apply_result,data_id_type,data_id,create_date,handle_date)
+        value(#{title},#{shenherenId},
+                #{proposerName},#{details},0,'wxsq',#{id},NOW(),null)
+    </insert>
+
+    <update id="updateShenHeLie">
+        update oa_apply_notice set apply_result=#{type}   where data_id=#{dataId}
+    </update>
+</mapper>

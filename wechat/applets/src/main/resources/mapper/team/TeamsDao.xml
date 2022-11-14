@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.team.dao.TeamsDao">
+    <resultMap id="studentResult" type="com.xunyunedu.student.pojo.StudentPojo">
+        <id property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="personId" column="person_id" />
+		<result property="userId" column="user_id" />
+		<result property="teamId" column="team_id" />
+		<result property="userName" column="user_name" />
+		<result property="teamName" column="team_name" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="studentNumber" column="student_number" />
+		<result property="studentNumber2" column="student_number2" />
+		<result property="isBoarded" column="is_boarded" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="mobile" column="mobile" />
+		<result property="studyState" column="study_state" />
+		<result property="studentType" column="student_type" />
+		<result property="position" column="position" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="alias" column="alias" />
+		<result property="empCard" column="emp_card"/>
+		<result property="empCode" column="emp_code"/>
+		<result property="number" column="number"/>
+    </resultMap>
+
+    <resultMap id="teamResult" type="com.xunyunedu.team.pojo.TeamPojo">
+        <result column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="grade_id" property="gradeId"/>
+        <result column="full_name" property="fullName"/>
+        <result column="name" property="name"/>
+        <result column="team_number" property="teamNumber"/>
+        <result column="code" property="code"/>
+        <result column="code2" property="code2"/>
+        <result column="team_type" property="teamType"/>
+        <result column="team_property" property="teamProperty"/>
+        <result column="school_year" property="schoolYear"/>
+        <result column="member_count" property="memberCount"/>
+        <result column="begin_date" property="beginDate"/>
+        <result column="finish_date" property="finishDate"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="student_count" property="studentCount"/>
+        <result column="teacher_count" property="teacherCount"/>
+        <result column="uuid" property="uuid"/>
+        <result column="altered_status" property="alteredStatus"/>
+    </resultMap>
+
+    <select id="getTeamList" resultMap="teamResult">
+        select * from pj_team
+        where is_delete = 0
+            <if test="id != null"> and id = #{id}</if>
+            <if test="schoolId != null"> and school_id = #{schoolId}</if>
+    </select>
+
+    <select id="getTeacherSubject" resultType="java.util.Map">
+        select distinct ps.name,ps.code from pj_subject ps
+        join pj_exam_team_subject pets on ps.code = pets.subject_code
+        where pets.school_id = #{schoolId} and pets.is_delete = 0  
+        and ps.school_id = #{schoolId} and ps.is_delete = 0
+        and pets.team_id = #{teamId}
+        <if test="type != null and type == 1"> and pets.exam_type != 3</if>
+        <if test="type != null and type == 0"> and pets.exam_type = 3</if>
+    </select>
+    <select id="getStuSubject" resultType="java.util.Map">
+        select distinct ps.name,ps.code from pj_subject ps
+        join pj_exam_team_subject pets on ps.code = pets.subject_code
+        join pj_student_score pss on pss.exam_team_subject_id = pets.id
+        where pets.school_id = #{schoolId} and pets.is_delete = 0  
+        and ps.school_id = #{schoolId} and ps.is_delete = 0
+        and pss.school_id = #{schoolId} and pss.is_delete = 0
+        and pss.student_id = #{stuId}
+        <if test="type != null and type == 1"> and pets.exam_type != 3</if>
+        <if test="type != null and type == 0"> and pets.exam_type = 3</if>
+    </select>
+
+    <select id="getTeams" resultType="com.xunyunedu.student.pojo.TeamDO">
+        SELECT distinct pt.id teamId, pt.name teamName FROM `pj_team` pt
+        join `pj_team_teacher` ptt on pt.id = ptt.team_id
+        where pt.is_delete = 0  and ptt.is_delete = 0 and ptt.teacher_id = #{teacherId}
+    </select>
+
+    <select id="getTeamStus" resultMap="studentResult">
+        select ps.id, ps.school_id, ps.person_id, ps.user_id, ps.user_name, ps.name, ps.sex, ps.student_number, ps.student_number2, ps.enroll_date, ps.leave_date, ps.mobile, ps.study_state, ps.student_type,
+        ps.team_id, ps.team_name, ps.is_boarded, ps.is_delete, ps.create_date, ps.modify_date, ps.alias, ps.emp_card, ps.emp_code,pts.number
+        from pj_student ps
+        join pj_team_student pts  on ps.id = pts.student_id
+        where pts.team_id = #{teamId} and pts.is_delete = 0 and ps.is_delete = 0
+    </select>
+    <select id="findTeamOfGradeAndSchool" resultMap="teamResult">
+            SELECT * FROM pj_team WHERE 1=1 and is_delete=0
+            <if test="gradeId != null">
+                AND grade_id = #{gradeId}
+            </if>
+            <if test="schoolId != null">
+                AND school_id = #{schoolId}
+            </if>
+            ORDER BY team_number
+    </select>
+
+</mapper>

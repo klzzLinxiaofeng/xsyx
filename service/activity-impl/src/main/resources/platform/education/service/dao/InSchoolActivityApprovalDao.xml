@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.service.dao.InSchoolActivityApprovalDao">
+
+    <resultMap id="InSchoolActivityApprovalResult" type="platform.education.service.model.InSchoolActivityApproval">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="status" column="status"/>
+        <result property="feedback" column="feedback"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.service.model.InSchoolActivityApproval">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO at_in_school_activity_approval (
+        id,
+        user_id,
+        activity_id,
+        `status`,
+        feedback,
+        create_date,
+        modify_date
+        )
+        VALUES (
+        #{id},
+        #{userId},
+        #{activityId},
+        #{status},
+        #{feedback},
+        #{createDate},
+        #{modifyDate}
+        )
+    </insert>
+
+    <select id="read" resultMap="InSchoolActivityApprovalResult" useCache="false">
+        SELECT * FROM at_in_school_activity_approval WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findInSchoolActivityApprovalByCondition" resultMap="InSchoolActivityApprovalResult" useCache="false">
+        SELECT * FROM at_in_school_activity_approval
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].userId != null">
+                AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].activityId != null">
+                AND activity_id = #{args[0].activityId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].status != null">
+                AND `status` = #{args[0].status,javaType=Integer}
+            </if>
+            <if test="args[0].feedback != null and args[0].feedback != ''">
+                AND feedback = #{args[0].feedback,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM at_in_school_activity_approval
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].userId != null">
+                AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].activityId != null">
+                AND activity_id = #{args[0].activityId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].status != null">
+                AND `status` = #{args[0].status,javaType=Integer}
+            </if>
+            <if test="args[0].feedback != null and args[0].feedback != ''">
+                AND feedback = #{args[0].feedback,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="InSchoolActivityApprovalResult" useCache="false">
+        SELECT *
+        FROM at_in_school_activity_approval
+        WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+
+    <update id="update" parameterType="platform.education.service.model.InSchoolActivityApproval">
+        UPDATE at_in_school_activity_approval
+        SET
+        <if test="userId != null">
+            user_id=#{userId},
+        </if>
+        <if test="activityId != null">
+            activity_id=#{activityId},
+        </if>
+        <if test="status != null">
+            `status`=#{status},
+        </if>
+        <if test="feedback != null">
+            feedback=#{feedback},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM at_in_school_activity_approval
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findInSchoolActivityApprovalByActivity" resultMap="InSchoolActivityApprovalResult" useCache="false">
+        SELECT isaa.*
+        FROM at_in_school_activity_approval isaa
+                 LEFT JOIN at_in_school_activity isa ON isaa.activity_id = isa.id
+        WHERE isa.start_time &gt;= #{args[0],javaType=java.util.Date}
+          AND isa.end_time &lt;= #{args[1],javaType=java.util.Date}
+          AND isa.room_id = #{args[2],javaType=java.lang.Integer}
+          AND isaa.activity_id != #{args[3],javaType=java.lang.Integer}
+    </select>
+</mapper>

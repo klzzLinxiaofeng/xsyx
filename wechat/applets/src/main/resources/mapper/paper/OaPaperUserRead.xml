@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.paper.dao.OaPaperUserReadDao">
+  <resultMap id="ResultMap" type="com.xunyunedu.paper.pojo.OaPaperUserRead">
+    <id property="id" column="id" />
+    <result property="ownerId" column="owner_id" />
+    <result property="ownerType" column="owner_type" />
+    <result property="paperId" column="paper_id" />
+    <result property="userId" column="user_id" />
+    <result property="readStatus" column="read_status" />
+    <result property="createDate" column="create_date" />
+    <result property="modifyDate" column="modify_date" />
+    <result property="isDeleted" column="is_deleted" />
+  </resultMap>
+
+
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO oa_paper_user_read (
+    owner_id,
+    owner_type,
+    paper_id,
+    user_id,
+    read_status,
+    create_date,
+    modify_date,
+    is_deleted
+    )
+    VALUES (
+    #{ownerId},
+    #{ownerType},
+    #{paperId},
+    #{userId},
+    <choose>
+      <when test="readStatus != null">
+        <choose>
+          <when test="readStatus == true">
+            1,
+          </when>
+          <otherwise>
+            0,
+          </otherwise>
+        </choose>
+      </when>
+      <otherwise>
+        0,
+      </otherwise>
+    </choose>
+    #{createDate},
+    #{modifyDate},
+    <choose>
+      <when test="isDeleted != null">
+        <choose>
+          <when test="isDeleted == true">
+            1
+          </when>
+          <otherwise>
+            0
+          </otherwise>
+        </choose>
+      </when>
+      <otherwise>
+        0
+      </otherwise>
+    </choose>
+    )
+  </insert>
+
+
+  <update id="updateToRead">
+    update oa_paper_user_read set read_status=1 where user_id=#{userId} and paper_id=#{paperId}
+  </update>
+
+  <select id="isExists" resultType="Integer">
+    select exists(select 1 from oa_paper_user_read where user_id=#{userId} and paper_id=#{paperId} and read_status=0)
+  </select>
+<!--  <select id="selectByCondition" resultMap="ResultMap">-->
+<!--    select * from oa_paper-->
+<!--    <where>-->
+<!--      <if test="posterId != null">-->
+<!--        poster_id = #{posterId}-->
+<!--      </if>-->
+<!--      <if test="ownerId != null">-->
+<!--        and owner_id = #{ownerId}-->
+<!--      </if>-->
+<!--      <if test="ownerType != null and ownerType != ''">-->
+<!--        and owner_type = #{ownerType}-->
+<!--      </if>-->
+<!--    </where>-->
+<!--    order by create_date desc-->
+<!--  </select>-->
+</mapper>

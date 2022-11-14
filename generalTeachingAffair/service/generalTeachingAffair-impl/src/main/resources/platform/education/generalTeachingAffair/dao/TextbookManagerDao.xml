@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.TextbookManagerDao">
+
+	<resultMap id="TextbookManagerResult" type="platform.education.generalTeachingAffair.model.TextbookManager">
+		<result property="id" column="id" />
+		<result property="stageCode" column="stage_code" />
+		<result property="gradeCode" column="grade_code" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="volumn" column="volumn" />
+		<result property="version" column="version" />
+		<result property="name" column="name" />
+		<result property="teacherId" column="teacher_id" />
+		<result property="publisherId" column="publisher_id" />
+		<result property="isbn" column="isbn" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyTime" column="modify_time" />
+		<result property="price" column="price" />
+		<result property="type" column="type" />
+		<result property="isDelete" column="is_delete" />
+		<result property="count" column="count" />
+		<result property="countType" column="count_type" />
+		<result property="addType" column="add_type" />
+		<result property="schoolId" column="school_id" />
+		<result property="schoolYear" column="school_year" />
+		<result property="termCode" column="term_code" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="teacherName" column="teacher_name" />
+		
+		<result property="stageCodeName" column="stage_code_name" />
+		<result property="gradeCodeName" column="grade_code_name" />
+		<result property="subjectCodeName" column="subject_code_name" />
+		<result property="volumnName" column="volumn_name" />
+		<result property="versionName" column="version_name" />
+		<result property="gradeIdName" column="grade_id_name" />
+		<result property="teamIdName" column="team_id_name" />
+		
+	</resultMap>
+	
+	
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.TextbookManager">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_textbook_manager (
+			id, 
+			stage_code, 
+			grade_code, 
+			subject_code, 
+			volumn, 
+			version, 
+			name, 
+			teacher_id, 
+			publisher_id, 
+			isbn, 
+			create_date, 
+			modify_time, 
+			price, 
+			type, 
+			is_delete, 
+			count, 
+			count_type, 
+			add_type, 
+			school_id, 
+			school_year, 
+			term_code, 
+			grade_id, 
+			team_id, 
+			teacher_name,
+			stage_code_name,
+			grade_code_name,
+			subject_code_name,
+			volumn_name,
+			version_name,
+			grade_id_name,
+			team_id_name
+			
+		)
+		VALUES (
+			#{id}, 
+			#{stageCode}, 
+			#{gradeCode}, 
+			#{subjectCode}, 
+			#{volumn}, 
+			#{version}, 
+			#{name}, 
+			#{teacherId}, 
+			#{publisherId}, 
+			#{isbn}, 
+			#{createDate}, 
+			#{modifyTime}, 
+			#{price}, 
+			#{type}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{count}, 
+			#{countType}, 
+			#{addType}, 
+			#{schoolId}, 
+			#{schoolYear}, 
+			#{termCode}, 
+			#{gradeId}, 
+			#{teamId}, 
+			#{teacherName},
+			#{stageCodeName},
+			#{gradeCodeName},
+			#{subjectCodeName},
+			#{volumnName},
+			#{versionName},
+			#{gradeIdName},
+			#{teamIdName}
+			
+		)
+	</insert>
+
+
+	<select id="read" resultMap="TextbookManagerResult" useCache="false">
+		SELECT * FROM pj_textbook_manager WHERE 1=1 and is_delete = 0 
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findTextbookManagerByCondition" resultMap="TextbookManagerResult" useCache="false">
+		SELECT * FROM pj_textbook_manager WHERE 1=1 and is_delete = 0 
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].stageCode != null and args[0].stageCode != ''">
+				AND stage_code = #{args[0].stageCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].volumn != null and args[0].volumn != ''">
+				AND volumn = #{args[0].volumn,javaType=java.lang.String}
+			</if>
+			<if test="args[0].version != null and args[0].version != ''">
+				AND version = #{args[0].version,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null and args[0].teacherId != ''">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publisherId != null">
+				AND publisher_id = #{args[0].publisherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isbn != null and args[0].isbn != ''">
+				AND isbn = #{args[0].isbn,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyTime != null">
+				AND modify_time = #{args[0].modifyTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].price != null and args[0].price != ''">
+				AND price = #{args[0].price,javaType=java.lang.String}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].count != null and args[0].count != ''">
+				AND count = #{args[0].count,javaType=java.lang.String}
+			</if>
+			<if test="args[0].countType != null and args[0].countType != ''">
+				AND count_type = #{args[0].countType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].addType != null and args[0].addType != ''">
+				AND add_type = #{args[0].addType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].termCode != null and args[0].termCode != ''">
+				AND term_code = #{args[0].termCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teacherName != null and args[0].teacherName != ''">
+				AND teacher_name = #{args[0].teacherName,javaType=java.lang.String}
+			</if>
+			
+			<if test="args[0].stageCodeName != null and args[0].stageCodeName != ''">
+				AND stage_code_name = #{args[0].stageCodeName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCodeName != null and args[0].gradeCodeName != ''">
+				AND grade_code_name = #{args[0].gradeCodeName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCodeName != null and args[0].subjectCodeName != ''">
+				AND subject_code_name = #{args[0].subjectCodeName,javaType=java.lang.String}
+			</if>
+			
+			<if test="args[0].volumnName != null and args[0].volumnName != ''">
+				AND volumn_name = #{args[0].volumnName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].versionName != null and args[0].versionName != ''">
+				AND version_name = #{args[0].versionName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeIdName != null and args[0].gradeIdName != ''">
+				AND grade_id_name = #{args[0].gradeIdName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamIdName != null and args[0].teamIdName != ''">
+				AND team_id_name = #{args[0].teamIdName,javaType=java.lang.String}
+			</if>
+			
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_textbook_manager  WHERE 1=1 and is_delete = 0 
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].stageCode != null and args[0].stageCode != ''">
+				AND stage_code = #{args[0].stageCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].volumn != null and args[0].volumn != ''">
+				AND volumn = #{args[0].volumn,javaType=java.lang.String}
+			</if>
+			<if test="args[0].version != null and args[0].version != ''">
+				AND version = #{args[0].version,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null and args[0].teacherId != ''">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publisherId != null">
+				AND publisher_id = #{args[0].publisherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isbn != null and args[0].isbn != ''">
+				AND isbn = #{args[0].isbn,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyTime != null">
+				AND modify_time = #{args[0].modifyTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].price != null and args[0].price != ''">
+				AND price = #{args[0].price,javaType=java.lang.String}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].count != null and args[0].count != ''">
+				AND count = #{args[0].count,javaType=java.lang.String}
+			</if>
+			<if test="args[0].countType != null and args[0].countType != ''">
+				AND count_type = #{args[0].countType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].addType != null and args[0].addType != ''">
+				AND add_type = #{args[0].addType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].termCode != null and args[0].termCode != ''">
+				AND term_code = #{args[0].termCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teacherName != null and args[0].teacherName != ''">
+				AND teacher_name = #{args[0].teacherName,javaType=java.lang.String}
+			</if>
+			
+			<if test="args[0].stageCodeName != null and args[0].stageCodeName != ''">
+				AND stage_code_name = #{args[0].stageCodeName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCodeName != null and args[0].gradeCodeName != ''">
+				AND grade_code_name = #{args[0].gradeCodeName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCodeName != null and args[0].subjectCodeName != ''">
+				AND subject_code_name = #{args[0].subjectCodeName,javaType=java.lang.String}
+			</if>
+			
+			<if test="args[0].volumnName != null and args[0].volumnName != ''">
+				AND volumn_name = #{args[0].volumnName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].versionName != null and args[0].versionName != ''">
+				AND version_name = #{args[0].versionName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeIdName != null and args[0].gradeIdName != ''">
+				AND grade_id_name = #{args[0].gradeIdName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamIdName != null and args[0].teamIdName != ''">
+				AND team_id_name = #{args[0].teamIdName,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="TextbookManagerResult" useCache="false">
+		SELECT * FROM pj_textbook_manager WHERE id = #{args[0],javaType=java.lang.Integer} and is_delete=0 
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.TextbookManager">
+		UPDATE pj_textbook_manager
+		SET 
+		<if test="stageCode != null">
+			stage_code=#{stageCode},
+		</if>
+		<if test="gradeCode != null">
+			grade_code=#{gradeCode},
+		</if>
+		<if test="subjectCode != null">
+			subject_code=#{subjectCode},
+		</if>
+		<if test="volumn != null">
+			volumn=#{volumn},
+		</if>
+		<if test="version != null">
+			version=#{version},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="teacherId != null">
+			teacher_id=#{teacherId},
+		</if>
+		<if test="publisherId != null">
+			publisher_id=#{publisherId},
+		</if>
+		<if test="isbn != null">
+			isbn=#{isbn},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyTime != null">
+			modify_time=#{modifyTime},
+		</if>
+		<if test="price != null">
+			price=#{price},
+		</if>
+		<if test="type != null">
+			type=#{type},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="count != null">
+			count=#{count},
+		</if>
+		<if test="countType != null">
+			count_type=#{countType},
+		</if>
+		<if test="addType != null">
+			add_type=#{addType},
+		</if>
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="schoolYear != null">
+			school_year=#{schoolYear},
+		</if>
+		<if test="termCode != null">
+			term_code=#{termCode},
+		</if>
+		<if test="gradeId != null">
+			grade_id=#{gradeId},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="teacherName != null">
+			teacher_name=#{teacherName},
+		</if>
+		
+		
+			<if test="stageCodeName != null">
+				stage_code_name = #{stageCodeName},
+			</if>
+			<if test="gradeCodeName != null">
+				grade_code_name = #{gradeCodeName},
+			</if>
+			<if test="subjectCodeName != null">
+				subject_code_name = #{subjectCodeName},
+			</if>
+			
+			<if test="volumnName != null">
+				volumn_name = #{volumnName},
+			</if>
+			<if test="versionName != null">
+				version_name = #{versionName},
+			</if>
+			<if test="gradeIdName != null">
+				grade_id_name = #{gradeIdName},
+			</if>
+			<if test="teamIdName != null">
+				team_id_name = #{teamIdName"},
+			</if>
+		id = #{id}
+		WHERE id = #{id} and is_delete=0 
+	</update>
+	
+	<update id="delete">
+		UPDATE pj_textbook_manager
+		SET is_delete=1,
+		<if test="modifyTime != null">
+			modify_time=#{modifyTime},
+		</if>
+		id = #{id}
+		WHERE id = #{id} and is_delete=0 
+	</update>
+</mapper>

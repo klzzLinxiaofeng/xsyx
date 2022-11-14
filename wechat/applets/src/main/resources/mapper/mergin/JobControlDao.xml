@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.JobControlDao">
+    <resultMap id="JobControlResult" type="com.xunyunedu.mergin.vo.JobControl">
+        <result property="id" column="id" />
+        <result property="appKey" column="app_key" />
+        <result property="name" column="name" />
+        <result property="objectId" column="object_id" />
+        <result property="interrupteur" column="Interrupteur" />
+        <result property="state" column="state" />
+        <result property="isDeleted" column="is_deleted" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+
+    <select id="findJobControlByCondition" resultMap="JobControlResult" useCache="false">
+        SELECT * FROM pj_job_control
+        <if test="jobControlCondition != null">
+            WHERE 1=1
+            <if test="jobControlCondition.id != null">
+                AND id = #{jobControlCondition.id,javaType=java.lang.Integer}
+            </if>
+            <if test="jobControlCondition.appKey != null and jobControlCondition.appKey != ''">
+                AND app_key = #{jobControlCondition.appKey,javaType=java.lang.String}
+            </if>
+            <if test="jobControlCondition.name != null and jobControlCondition.name != ''">
+                AND name = #{jobControlCondition.name,javaType=java.lang.String}
+            </if>
+            <if test="jobControlCondition.objectId != null">
+                AND object_id = #{jobControlCondition.objectId,javaType=java.lang.Integer}
+            </if>
+            <if test="jobControlCondition.interrupteur != null">
+                <choose>
+                    <when test="jobControlCondition.interrupteur == true">
+                        AND Interrupteur  = 1
+                    </when>
+                    <otherwise>
+                        AND Interrupteur  = 0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="jobControlCondition.state != null and jobControlCondition.state != ''">
+                AND state = #{jobControlCondition.state,javaType=java.lang.String}
+            </if>
+            <if test="jobControlCondition.isDeleted != null">
+                <choose>
+                    <when test="jobControlCondition.isDeleted == true">
+                        AND is_deleted  = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted  = 0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="jobControlCondition.createDate != null">
+                AND create_date = #{jobControlCondition.createDate,javaType=java.util.Date}
+            </if>
+            <if test="jobControlCondition.modifyDate != null">
+                AND modify_date = #{jobControlCondition.modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+</mapper>

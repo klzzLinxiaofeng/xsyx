@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.RepairDao">
+
+	<resultMap id="RepairResult" type="platform.education.oa.model.Repair">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="appId" column="app_id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="title" column="title" />
+		<result property="posterId" column="poster_id" />
+		<result property="posterName" column="poster_name" />
+		<result property="postTime" column="post_time" />
+		<result property="departmentId" column="department_id" />
+		<result property="departmentName" column="department_name" />
+		<result property="dealStatus" column="deal_status" />
+		<result property="receiverId" column="receiver_id" />
+		<result property="receiverName" column="receiver_name" />
+		<result property="handler" column="handler" />
+		<result property="handlerPhone" column="handler_phone" />
+		<result property="dealTime" column="deal_time" />
+		<result property="finishTime" column="finish_time" />
+		<result property="content" column="content" />
+		<result property="score" column="score" />
+		<result property="comment" column="comment" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+	</resultMap>
+	
+	<resultMap id="RepairResult1" type="platform.education.oa.vo.RepairVo">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="appId" column="app_id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="title" column="title" />
+		<result property="posterId" column="poster_id" />
+		<result property="posterName" column="poster_name" />
+		<result property="postTime" column="post_time" />
+		<result property="departmentId" column="department_id" />
+		<result property="departmentName" column="department_name" />
+		<result property="dealStatus" column="deal_status" />
+		<result property="receiverId" column="receiver_id" />
+		<result property="receiverName" column="receiver_name" />
+		<result property="handler" column="handler" />
+		<result property="handlerPhone" column="handler_phone" />
+		<result property="dealTime" column="deal_time" />
+		<result property="finishTime" column="finish_time" />
+		<result property="content" column="content" />
+		<result property="score" column="score" />
+		<result property="comment" column="comment" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="ownerType" column="owner_type" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.Repair">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_repair (
+			id, 
+			uuid, 
+			app_id, 
+			owner_id,
+			owner_type,
+			title, 
+			poster_id, 
+			poster_name, 
+			post_time, 
+			department_id, 
+			department_name, 
+			deal_status, 
+			receiver_id, 
+			receiver_name, 
+			handler, 
+			handler_phone, 
+			deal_time, 
+			finish_time, 
+			content, 
+			score, 
+			comment, 
+			create_date, 
+			modify_date, 
+			is_delete
+		)
+		VALUES (
+			#{id}, 
+			#{uuid}, 
+			#{appId}, 
+			#{ownerId}, 
+			#{ownerType}, 
+			#{title}, 
+			#{posterId}, 
+			#{posterName}, 
+			#{postTime}, 
+			#{departmentId}, 
+			#{departmentName}, 
+			#{dealStatus}, 
+			#{receiverId},
+			#{receiverName},
+			#{handler}, 
+			#{handlerPhone}, 
+			#{dealTime}, 
+			#{finishTime}, 
+			#{content}, 
+			#{score}, 
+			#{comment}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="RepairResult" useCache="false">
+		SELECT * FROM oa_repair WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findRepairAllByCondition" resultMap="RepairResult1" useCache="false">
+		SELECT * FROM oa_repair 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null and args[0].ownerId != ''">
+				AND owner_id = #{args[0].ownerId}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type = #{args[0].ownerType}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title LIKE CONCAT(CONCAT('%',#{args[0].title}),'%')
+			</if>
+			<if test="args[0].posterId != null">
+				AND poster_id = #{args[0].posterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].posterName != null and args[0].posterName != ''">
+				AND poster_name LIKE CONCAT(CONCAT('%',#{args[0].posterName}),'%')
+			</if>
+			<if test="args[0].postTime != null">
+				AND post_time = #{args[0].postTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentName != null and args[0].departmentName != ''">
+				AND department_name = #{args[0].departmentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].dealStatus != null and args[0].dealStatus != ''">
+				AND deal_status = #{args[0].dealStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].receiverId != null and args[0].receiverId != ''">
+				AND receiver_id = #{args[0].receiverId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].handler != null and args[0].handler != ''">
+				AND handler = #{args[0].handler,javaType=java.lang.String}
+			</if>
+			<if test="args[0].handlerPhone != null and args[0].handlerPhone != ''">
+				AND handler_phone = #{args[0].handlerPhone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].dealTime != null">
+				AND deal_time = #{args[0].dealTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishTime != null">
+				AND finish_time = #{args[0].finishTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+				AND content = #{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score LIKE CONCAT(CONCAT('%',#{args[0].score}),'%')
+			</if>
+			<if test="args[0].comment != null and args[0].comment != ''">
+				AND comment = #{args[0].comment,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findRepairByCondition" resultMap="RepairResult" useCache="false">
+		SELECT * FROM oa_repair 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null and args[0].ownerId != ''">
+				AND owner_id = #{args[0].ownerId}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type = #{args[0].ownerType}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].posterId != null">
+				AND poster_id = #{args[0].posterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].posterName != null and args[0].posterName != ''">
+				AND poster_name = #{args[0].posterName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].postTime != null">
+				AND post_time = #{args[0].postTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentName != null and args[0].departmentName != ''">
+				AND department_name = #{args[0].departmentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].dealStatus != null and args[0].dealStatus != ''">
+				AND deal_status = #{args[0].dealStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].receiverId != null and args[0].receiverId != ''">
+				AND receiver_id = #{args[0].receiverId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].handler != null and args[0].handler != ''">
+				AND handler = #{args[0].handler,javaType=java.lang.String}
+			</if>
+			<if test="args[0].handlerPhone != null and args[0].handlerPhone != ''">
+				AND handler_phone = #{args[0].handlerPhone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].dealTime != null">
+				AND deal_time = #{args[0].dealTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishTime != null">
+				AND finish_time = #{args[0].finishTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+				AND content = #{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].comment != null and args[0].comment != ''">
+				AND comment = #{args[0].comment,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_repair 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null and args[0].ownerId != ''">
+				AND owner_id = #{args[0].ownerId}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type = #{args[0].ownerType}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].posterId != null">
+				AND poster_id = #{args[0].posterId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].posterName != null and args[0].posterName != ''">
+				AND poster_name = #{args[0].posterName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].postTime != null">
+				AND post_time = #{args[0].postTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentName != null and args[0].departmentName != ''">
+				AND department_name = #{args[0].departmentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].dealStatus != null and args[0].dealStatus != ''">
+				AND deal_status = #{args[0].dealStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].receiverId != null and args[0].receiverId != ''">
+				AND receiver_id = #{args[0].receiverId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].handler != null and args[0].handler != ''">
+				AND handler = #{args[0].handler,javaType=java.lang.String}
+			</if>
+			<if test="args[0].handlerPhone != null and args[0].handlerPhone != ''">
+				AND handler_phone = #{args[0].handlerPhone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].dealTime != null">
+				AND deal_time = #{args[0].dealTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishTime != null">
+				AND finish_time = #{args[0].finishTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+				AND content = #{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].comment != null and args[0].comment != ''">
+				AND comment = #{args[0].comment,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="RepairResult" useCache="false">
+		SELECT * FROM oa_repair WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.Repair">
+		UPDATE oa_repair
+		SET 
+		<if test="uuid != null">
+			uuid=#{uuid},
+		</if>
+		<if test="appId != null">
+			app_id=#{appId},
+		</if>
+		<if test="ownerId != null">
+			owner_id=#{ownerId},
+		</if>
+		<if test="ownerType != null">
+			owner_type = #{ownerType}
+		</if>
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="posterId != null">
+			poster_id=#{posterId},
+		</if>
+		<if test="posterName != null">
+			poster_name=#{posterName},
+		</if>
+		<if test="postTime != null">
+			post_time=#{postTime},
+		</if>
+		<if test="departmentId != null">
+			department_id=#{departmentId},
+		</if>
+		<if test="departmentName != null">
+			department_name=#{departmentName},
+		</if>
+		<if test="dealStatus != null">
+			deal_status=#{dealStatus},
+		</if>
+		<if test="receiverId != null">
+			receiver_id=#{receiverId},
+		</if>
+		<if test="receiverName != null">
+			receiver_name=#{receiverName},
+		</if>
+		<if test="handler != null">
+			handler=#{handler},
+		</if>
+		<if test="handlerPhone != null">
+			handler_phone=#{handlerPhone},
+		</if>
+		<if test="dealTime != null">
+			deal_time=#{dealTime},
+		</if>
+		<if test="finishTime != null">
+			finish_time=#{finishTime},
+		</if>
+		<if test="content != null">
+			content=#{content},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="comment != null">
+			comment=#{comment},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_repair
+		WHERE id = #{id}
+	</delete>
+</mapper>

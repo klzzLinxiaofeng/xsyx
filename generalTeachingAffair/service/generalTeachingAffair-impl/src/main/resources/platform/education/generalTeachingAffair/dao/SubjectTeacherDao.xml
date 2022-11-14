@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SubjectTeacherDao">
+
+	<resultMap id="SubjectTeacherResult" type="platform.education.generalTeachingAffair.model.SubjectTeacher">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="stageCode" column="stage_code" />
+		<result property="teacherId" column="teacher_id" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="name" column="name" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	
+	<resultMap id="SubjectTeacherVoResult" type="platform.education.generalTeachingAffair.vo.SubjectTeacherVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="stageCode" column="stage_code" />
+		<result property="teacherId" column="teacher_id" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="name" column="name" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="gradeName" column="gn" />
+		<result property="subjectName" column="sn" />
+		<result property="teacherName" column="tn" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.SubjectTeacher">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_subject_teacher (
+			id, 
+			school_id,
+			stage_code, 
+			teacher_id, 
+			subject_code, 
+			name, 
+			create_date, 
+			is_deleted,
+			modify_date
+		) VALUES (
+			#{id}, 
+			#{schoolId},
+			#{stageCode}, 
+			#{teacherId}, 
+			#{subjectCode}, 
+			#{name}, 
+			#{createDate},
+			<choose>
+				<when test="isDeleted != null">
+					#{isDeleted},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose> 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="SubjectTeacherResult" useCache="false">
+		SELECT * FROM pj_subject_teacher WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findSubjectTeacherByCondition" resultMap="SubjectTeacherResult" useCache="false">
+		SELECT * FROM pj_subject_teacher 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].stageCode != null and args[0].stageCode != ''">
+			AND stage_code = #{args[0].stageCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null and args[0].teacherId != ''">
+			AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+			AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+			AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				AND is_deleted = #{args[0].isDeleted}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findSubjectTeacherVoByCondition" resultMap="SubjectTeacherVoResult" useCache="false">
+		SELECT DISTINCT st.*,  s.name sn FROM pj_subject_teacher st 
+		LEFT JOIN (SELECT ps.*  FROM pj_subject ps LEFT JOIN pj_subject_teacher pst ON ps.school_id=pst.school_id WHERE ps.is_delete=0) s ON st.subject_code = s.code
+		
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+			AND st.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND st.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].stageCode != null and args[0].stageCode!= ''">
+			AND st.stage_code = #{args[0].stageCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null and args[0].teacherId != ''">
+			AND st.teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+			AND st.subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+			AND st.name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+			AND st.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND st.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+		    
+			ORDER BY  s.code
+	</select>
+	
+	
+	<select id="findById" resultMap="SubjectTeacherResult" useCache="false">
+		SELECT * FROM pj_subject_teacher WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.SubjectTeacher">
+		UPDATE pj_subject_teacher
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="stageCode != null">
+			stage_code=#{stageCode},
+		</if>
+		<if test="teacherId != null">
+			teacher_id=#{teacherId},
+		</if>
+		<if test="subjectCode != null">
+			subject_code=#{subjectCode},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			is_deleted=#{isDeleted},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_subject_teacher
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 根据年级、班级id查找课程列表，无论该科目是否有教师 -->
+	<select id="findSubjectsWithTeacher" resultType="platform.education.generalTeachingAffair.vo.SubjectTeamTeacherVo" useCache="false">
+		SELECT t.schoolId, t.subjectCode, t.subjectName, tt.teacher_id teacherId, tt.user_id userId, tt.name teacherName from 
+		(
+		SELECT sg.school_id schoolId, sg.subject_code subjectCode, s.name subjectName, g.id gradeId, g.name gradeName FROM pj_subject_grade sg 
+		LEFT OUTER JOIN pj_subject s ON (s.school_id = sg.school_id AND s.`code` = sg.subject_code) 
+		LEFT OUTER JOIN pj_grade g ON (sg.grade_code = g.uni_grade_code AND sg.school_id = g.school_id)
+		WHERE sg.is_deleted = 0
+		AND g.is_deleted = 0
+		AND g.id = #{args[0],javaType=java.lang.Integer}) t
+		LEFT OUTER JOIN pj_team_teacher tt ON tt.grade_id = t.gradeId
+		AND tt.subject_code = t.subjectCode
+		AND tt.is_delete = 0
+		AND tt.type = "2"
+		AND tt.team_id = #{args[1],javaType=java.lang.Integer}
+	</select>
+
+</mapper>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.aesthetic.dao.AestheticDao">
+
+    <resultMap id="AestheticPojoMap" type="platform.szxyzxx.aesthetic.pojo.AestheticPojo">
+        <result property="id" column="id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="studentName" column="name"/>
+        <result property="fineArtId" column="fine_art_id"/>
+        <result property="fineArtUrl" column="fine_art_url"/>
+        <result property="review" column="review"/>
+        <result property="reviewSore" column="review_score"/>
+        <result property="gameWorksId" column="game_works_id"/>
+        <result property="gameWorksUrl" column="ganework_url"/>
+        <result property="jiangzhuanId" column="jiangzhuan_id"/>
+        <result property="jiangzhuanUrl" column="jiangzhuan_url"/>
+        <result property="comments" column="comments"/>
+        <result property="createTime" column="create_time"/>
+        <result property="schoolYear" column="school_year"/>
+        <result property="schoolTrem" column="school_trem"/>
+    </resultMap>
+
+
+    <resultMap id="ErWeiMaMap" type="platform.szxyzxx.aesthetic.pojo.ErWerMa">
+        <result property="id" column="id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="studnetName" column="student_name"/>
+        <result property="url" column="url"/>
+        <result property="iDelete" column="is_delete"/>
+        <result property="teamName" column="team_name"/>
+        <result property="gradeId" column="grade_id"/>
+        <result property="teamId" column="team_id"/>
+        <result property="schoolYear" column="school_year"/>
+        <result property="xq" column="xq"/>
+        <result property="createTime" column="create_time"/>
+        <result property="uuid" column="uuid"/>
+    </resultMap>
+
+
+    <resultMap id="StudentResult"
+               type="platform.education.generalTeachingAffair.model.Student">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+        <!--<result property="isDelete" column="is_delete" />-->
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+        <result property="isSendHikdoor" column="is_send_hikdoor"/>
+        <result property="isSendLibrary" column="is_send_library"/>
+        <result property="isSendSeewo" column="is_send_seewo"/>
+        <result property="deptName" column="deptName"/>
+    </resultMap>
+
+    <select id="findByAesthetic" resultMap="AestheticPojoMap">
+        select pa.*,ps.name from pj_aesthetic pa
+        inner join pj_student ps on ps.id=pa.student_id
+        <where>
+            ps.school_id=#{args[1]}  and pa.student_id=#{args[0]} and ps.is_delete=0
+            <if test="args[2]!=null">
+              and   pa.school_year=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+               and  pa.school_trem=#{args[3]}
+            </if>
+        </where>
+    </select>
+    <select id="findByAestheticPojoId" resultMap="AestheticPojoMap">
+        select pa.*,ps.name from pj_aesthetic pa
+        inner join pj_student ps on ps.id=pa.student_id
+        where  pa.id=#{args[0]} and ps.is_delete=0
+    </select>
+
+    <select id="findByStudentId" resultMap="StudentResult">
+        select * from pj_student where id=#{args[0]} and school_id=#{args[1]} and is_delete=0
+    </select>
+
+    <insert id="create" parameterType="platform.szxyzxx.aesthetic.pojo.AestheticPojo">
+        insert into pj_aesthetic(student_id,fine_art_id,review,review_score,game_works_id,jiangzhuan_id,comments,create_time,school_year,school_trem)
+        value(#{args[0].studentId},#{args[0].fineArtId},#{args[0].review},#{args[0].reviewSore},#{args[0].gameWorksId},#{args[0].jiangzhuanId},#{args[0].comments},#{args[0].createTime},#{args[0].schoolYear},#{args[0].schoolTrem})
+  </insert>
+
+    <update id="update" parameterType="platform.szxyzxx.aesthetic.pojo.AestheticPojo">
+        update pj_aesthetic
+        <set>
+            <if test="args[0].studentId!=null">
+                student_id=#{args[0].studentId},
+            </if>
+            <if test="args[0].fineArtId!=null">
+                fine_art_id=#{args[0].fineArtId},
+            </if>
+            <if test="args[0].review!=null">
+                review=#{args[0].review},
+            </if>
+            <if test="args[0].reviewSore!=null">
+                review_score=#{args[0].reviewSore},
+            </if>
+            <if test="args[0].gameWorksId!=null">
+                game_works_id=#{args[0].gameWorksId},
+            </if>
+            <if test="args[0].jiangzhuanId!=null">
+                jiangzhuan_id=#{args[0].jiangzhuanId},
+            </if>
+             <if test="args[0].comments!=null">
+                 comments=#{args[0].comments},
+             </if>
+            <if test="args[0].schoolYear!=null">
+                school_year=#{args[0].schoolYear},
+            </if>
+            <if test="args[0].schoolTrem!=null">
+                school_trem=#{args[0].schoolTrem}
+            </if>
+        </set>
+        where id=#{args[0].id}
+    </update>
+
+    <insert id="createErweima" parameterType="platform.szxyzxx.aesthetic.pojo.ErWerMa">
+        insert into pj_student_erweima(student_id,url,is_delete,create_time,school_year,uuid)
+        value(#{args[0].studentId},#{args[0].url},0,#{args[0].createTime},#{args[0].schoolYear},#{args[0].uuid})
+    </insert>
+
+    <select id="findByEeWeiMa" resultMap="ErWeiMaMap">
+        select * from pj_student_erweima
+        where is_delete=0 and student_id=#{args[0]} and school_year=#{args[1]}
+    </select>
+
+
+</mapper>

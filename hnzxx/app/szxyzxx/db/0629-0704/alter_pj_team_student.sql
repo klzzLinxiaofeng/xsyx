@@ -1,0 +1,1 @@
+ALTER TABLE `pj_team_student` ADD COLUMN `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记' AFTER `modify_date`;

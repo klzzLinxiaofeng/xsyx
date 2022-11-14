@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.visit.dao.VisitVisitApplyDao">
+  <resultMap id="BaseResultMap" type="com.xunyunedu.visit.pojo.VisitVisitApply">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="applicant_open_id" jdbcType="VARCHAR" property="applicantOpenId" />
+    <result column="applicant_name" jdbcType="VARCHAR" property="applicantName" />
+    <result column="applicant_phone" jdbcType="VARCHAR" property="applicantPhone" />
+    <result column="applicant_units" jdbcType="VARCHAR" property="applicantUnits" />
+    <result column="purpose" jdbcType="VARCHAR" property="purpose" />
+    <result column="visit_user_id" jdbcType="INTEGER" property="visitUserId" />
+    <result column="visit_user_name" jdbcType="VARCHAR" property="visitUserName" />
+    <result column="visis_user_approval_time"  property="visisUserApprovalTime" />
+    <result column="admin_approval_time"  property="adminApprovalTime" />
+    <result column="visit_status" jdbcType="INTEGER" property="visitStatus" />
+    <result column="refuse_cause" jdbcType="VARCHAR" property="refuseCause" />
+    <result column="approval_admin_user_id" jdbcType="INTEGER" property="approvalAdminUserId" />
+    <result column="approval_admin_user_name" jdbcType="VARCHAR" property="approvalAdminUserName" />
+    <result column="qrcode_content" jdbcType="VARCHAR" property="qrcodeContent" />
+    <result column="create_date"  property="createDate" />
+    <result column="visit_date"  property="visitDate" />
+
+    <result column="used_qrcode" jdbcType="BIT" property="usedQrcode" />
+    <result column="visit_user_count" jdbcType="INTEGER" property="visitUserCount" />
+  </resultMap>
+
+  <resultMap id="associationResultMap" type="com.xunyunedu.visit.pojo.VisitVisitApply" extends="BaseResultMap">
+    <collection property="visitUserList" ofType="com.xunyunedu.visit.pojo.VisitVisitApplyUser">
+      <result column="visitor_name" jdbcType="VARCHAR" property="visitorName" />
+      <result column="visitor_id" jdbcType="VARCHAR" property="visitorId" />
+      <result column="visitor_phone" jdbcType="VARCHAR" property="visitorPhone" />
+    </collection>
+  </resultMap>
+
+
+
+  <sql id="Base_Column_List">
+    id, applicant_open_id, applicant_name,applicant_phone, purpose, visit_user_id,
+    visit_user_name, visis_user_approval_time,
+    admin_approval_time, visit_status, refuse_cause, approval_admin_user_id, approval_admin_user_name, 
+    qrcode_content,create_date,visit_date,used_qrcode,visit_user_count,applicant_units
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from visit_visit_apply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectDetailByPrimaryKey" parameterType="java.lang.Integer" resultMap="associationResultMap">
+        select a.*,u.visitor_name,u.visitor_id,u.visitor_phone
+        from visit_visit_apply a
+        left join visit_visit_apply_user u on u.apply_id=a.id
+        where a.id = #{id,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="selectByCondition" parameterType="com.xunyunedu.visit.pojo.VisitApplyCondition" resultMap="BaseResultMap">
+     select *
+     from visit_visit_apply
+    <where>
+      <if test="date!=null and date!=''">
+        and visit_date=#{date}
+      </if>
+
+      <if test="openId!=null and openId!=''">
+        and applicant_open_id=#{openId}
+      </if>
+
+      <if test="userId!=null">
+        and (visit_user_id=#{userId} or approval_admin_user_id=#{userId})
+      </if>
+      <choose>
+          <when test="statusList!=null and statusList.size()>0">
+            and (
+            <choose>
+              <when test="statusList.size()==1">
+                visit_status=#{statusList[0]}
+              </when>
+              <otherwise>
+                 visit_status in
+                <foreach collection="statusList" item="item" open="(" separator="," close=")">
+                  #{item}
+                </foreach>
+              </otherwise>
+            </choose>
+
+            <if test="drxFlag!=null">
+              <if test="drxFlag==0">
+                or (visit_status=3 and  visit_date >= #{nowDate} )
+              </if>
+              <if test="drxFlag==1">
+                or (visit_status=3 and #{nowDate} > visit_date )
+              </if>
+            </if>
+            )
+          </when>
+          <otherwise>
+            <if test="drxFlag!=null">
+              <if test="drxFlag==0">
+                and visit_status=3 and  visit_date >= #{nowDate}
+              </if>
+              <if test="drxFlag==1">
+                and visit_status=3 and #{nowDate} > visit_date
+              </if>
+            </if>
+          </otherwise>
+      </choose>
+    </where>
+    order by create_date desc
+  </select>
+
+  <select id="selectMyNotApproval" parameterType="com.xunyunedu.visit.pojo.VisitApplyCondition" resultMap="BaseResultMap">
+    select *
+    from visit_visit_apply
+    where
+          (visit_user_id=#{userId} and visit_status=0)
+            <if test="isAdmin">
+                or visit_status=1
+            </if>
+    order by create_date desc
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from visit_visit_apply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.visit.pojo.VisitVisitApply" useGeneratedKeys="true">
+    insert into visit_visit_apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="applicantOpenId != null">
+        applicant_open_id,
+      </if>
+      <if test="applicantName != null">
+        applicant_name,
+      </if>
+      <if test="applicantPhone != null">
+        applicant_phone,
+      </if>
+      <if test="usedQrcode != null">
+        used_qrcode,
+      </if>
+      <if test="purpose != null">
+        purpose,
+      </if>
+      <if test="visitUserId != null">
+        visit_user_id,
+      </if>
+      <if test="visitUserName != null">
+        visit_user_name,
+      </if>
+
+      <if test="visisUserApprovalTime != null">
+        visis_user_approval_time,
+      </if>
+
+      <if test="adminApprovalTime != null">
+        admin_approval_time,
+      </if>
+      <if test="visitStatus != null">
+        visit_status,
+      </if>
+      <if test="refuseCause != null">
+        refuse_cause,
+      </if>
+      <if test="approvalAdminUserId != null">
+        approval_admin_user_id,
+      </if>
+      <if test="approvalAdminUserName != null">
+        approval_admin_user_name,
+      </if>
+      <if test="qrcodeContent != null">
+        qrcode_content,
+      </if>
+      <if test="visitDate != null">
+        visit_date,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="visitUserCount != null">
+        visit_user_count,
+      </if>
+      <if test="applicantUnits != null">
+        applicant_units,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="applicantOpenId != null">
+        #{applicantOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantName != null">
+        #{applicantName,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantPhone != null">
+        #{applicantPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="usedQrcode != null">
+        #{usedQrcode,jdbcType=BIT},
+      </if>
+      <if test="purpose != null">
+        #{purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="visitUserId != null">
+        #{visitUserId,jdbcType=INTEGER},
+      </if>
+      <if test="visitUserName != null">
+        #{visitUserName,jdbcType=VARCHAR},
+      </if>
+
+      <if test="visisUserApprovalTime != null">
+        #{visisUserApprovalTime},
+      </if>
+
+      <if test="adminApprovalTime != null">
+        #{adminApprovalTime},
+      </if>
+      <if test="visitStatus != null">
+        #{visitStatus,jdbcType=INTEGER},
+      </if>
+      <if test="refuseCause != null">
+        #{refuseCause,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalAdminUserId != null">
+        #{approvalAdminUserId,jdbcType=INTEGER},
+      </if>
+      <if test="approvalAdminUserName != null">
+        #{approvalAdminUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="qrcodeContent != null">
+        #{qrcodeContent,jdbcType=VARCHAR},
+      </if>
+      <if test="visitDate != null">
+        #{visitDate},
+      </if>
+      <if test="createDate != null">
+        #{createDate},
+      </if>
+      <if test="visitUserCount != null">
+        #{visitUserCount},
+      </if>
+      <if test="applicantUnits != null">
+        #{applicantUnits},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunyunedu.visit.pojo.VisitVisitApply">
+    update visit_visit_apply
+    <set>
+      <if test="applicantOpenId != null">
+        applicant_open_id = #{applicantOpenId,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantName != null">
+        applicant_name = #{applicantName,jdbcType=VARCHAR},
+      </if>
+      <if test="applicantPhone != null">
+        applicant_phone = #{applicantPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="usedQrcode != null">
+        used_qrcode = #{usedQrcode,jdbcType=BIT},
+      </if>
+      <if test="purpose != null">
+        purpose = #{purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="visitUserId != null">
+        visit_user_id = #{visitUserId,jdbcType=INTEGER},
+      </if>
+      <if test="visitUserName != null">
+        visit_user_name = #{visitUserName,jdbcType=VARCHAR},
+      </if>
+
+      <if test="visisUserApprovalTime != null">
+        visis_user_approval_time = #{visisUserApprovalTime},
+      </if>
+
+      <if test="adminApprovalTime != null">
+        admin_approval_time = #{adminApprovalTime},
+      </if>
+      <if test="visitStatus != null">
+        visit_status = #{visitStatus,jdbcType=INTEGER},
+      </if>
+      <if test="refuseCause != null">
+        refuse_cause = #{refuseCause,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalAdminUserId != null">
+        approval_admin_user_id = #{approvalAdminUserId,jdbcType=INTEGER},
+      </if>
+      <if test="approvalAdminUserName != null">
+        approval_admin_user_name = #{approvalAdminUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="qrcodeContent != null">
+        qrcode_content = #{qrcodeContent,jdbcType=VARCHAR},
+      </if>
+      <if test="visitDate != null">
+        visit_date = #{visitDate},
+      </if>
+      <if test="visitUserCount != null">
+        visit_user_count = #{visitUserCount},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+    <display-name>CPC Application version 1.00</display-name>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:app.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+    </listener>
+
+    <!-- encodeing -->
+    <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>CAS Single Sign Out Filter</filter-name>
+        <filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
+    </filter>
+
+    <!-- shiro framework -->
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>autoLoginFilter</filter-name>
+        <filter-class>platform.education.commonResource.web.common.filter.AutoLoginFilter</filter-class>
+        <init-param>
+            <param-name>excludedDir</param-name>
+            <param-value>/res/</param-value>
+        </init-param>
+        <init-param>
+            <param-name>rememberMeEnable</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>casEnable</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <servlet-name>springmvc</servlet-name>
+    </filter-mapping>
+
+    <!-- spring dispatcher -->
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:dispatcher.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>CAS Single Sign Out Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>autoLoginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <servlet-name>dispatcher</servlet-name>
+    </filter-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/static/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.gif</url-pattern>
+        <url-pattern>*.ico</url-pattern>
+        <url-pattern>*.otf</url-pattern>
+        <url-pattern>*.eot</url-pattern>
+        <url-pattern>*.svg</url-pattern>
+        <url-pattern>*.ttf</url-pattern>
+        <url-pattern>*.woff</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>dispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/contants</taglib-uri>
+            <taglib-location>/WEB-INF/tags/SysContantsFunctions.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/szxy/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tags/SecurityFunctions.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/entity</taglib-uri>
+            <taglib-location>/WEB-INF/tags/Entity.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/cache/jcgc</taglib-uri>
+            <taglib-location>/WEB-INF/tags/jcGcCacheTag.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/cache/jcgc/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tags/JcGcCacheFunctions.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/cache/jc</taglib-uri>
+            <taglib-location>/WEB-INF/tags/jcCacheTag.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/cache/jc/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tags/JcCacheFunctions.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/cache/dou</taglib-uri>
+            <taglib-location>/WEB-INF/tags/DataOfUserTag.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/cache/dou/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tags/DataOfUserFunctions.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/textbook/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tags/TextbookFunctions.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/icon/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tags/ResourceIconFunctions.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/number/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tags/ResourceNumberFunctions.tld</taglib-location>
+        </taglib>
+
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/thumbnail/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tags/ThumbnailUrlFunctions.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/lads</taglib-uri>
+            <taglib-location>/WEB-INF/tags/Lads.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/entity/url/functions</taglib-uri>
+            <taglib-location>/WEB-INF/tags/EntityHttpUrlFunctions.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>http://www.jiaoxueyun.com/resource/avatar</taglib-uri>
+            <taglib-location>/WEB-INF/tags/AvatarAccesser.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <error-page>
+        <error-code>503</error-code>
+        <location>/views/error/page-403.jsp</location>
+    </error-page>
+    <!-- 出现403返回403页面提示 -->
+    <error-page>
+        <error-code>403</error-code>
+        <location>/views/error/page-403.jsp</location>
+    </error-page>
+    <!-- 出现404返回404页面提示 -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/views/error/page-404.jsp</location>
+    </error-page>
+    <!-- 出现500返回500页面提示 -->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/views/error/page-500.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>503</error-code>
+        <location>/views/error/page-503.jsp</location>
+    </error-page>
+</web-app>

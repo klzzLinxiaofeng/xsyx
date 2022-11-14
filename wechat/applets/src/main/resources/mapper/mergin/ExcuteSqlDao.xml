@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.ExcuteSqlDao">
+    <select id="findBySql" resultType="java.util.HashMap"
+            parameterType="String" useCache="false">
+        <if test="var1!=null and var1!=null">
+            ${var1}
+        </if>
+    </select>
+    <select id="findUniqueBySql" resultType="java.util.HashMap"
+            parameterType="String" useCache="false">
+        <if test="var1!=null and var1!=null">
+            ${var1}
+        </if>
+    </select>
+</mapper>

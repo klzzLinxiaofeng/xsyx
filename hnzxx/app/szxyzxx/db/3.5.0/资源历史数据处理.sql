@@ -1,0 +1,2 @@
+INSERT INTO `res_resource_library` (`uuid`, `app_id`, `ower_id`, `region_code`, `name`, `create_date`, `modify_date`) VALUES ('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 6, 0, NULL, '广州迅云教育资源部', '2015-9-25 09:32:41', '2015-9-25 09:35:43');
+UPDATE res_resource a set a.library_id = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' where a.library_id is null and a.app_id = '6';

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.changdi.dao.ChangDiDao">
+
+ <resultMap id="ChangDiMap" type="platform.szxyzxx.changdi.vo.ChangDi">
+   <id column="id" property="id"></id>
+   <result column="changdi_name" property="name"></result>
+   <result column="address" property="address"></result>
+   <result column="is_delete" property="isDelete"></result>
+   <result column="create_time" property="craeteTime"></result>
+     <result column="modiy_time" property="modiyTime"></result>
+ </resultMap>
+
+    <select id="findByAll" resultMap="ChangDiMap">
+        select * from zy_changdi
+        <where>
+        is_delete=0
+            <if test="args[0]!=null and args[0]!=''">
+                and changdi_name like concat ('%',#{args[0]},'%')
+            </if>
+            <if test="args[1]!=null and args[1]!=''">
+                and address like concat ('%',#{args[1]},'%')
+            </if>
+        </where>
+    </select>
+    <insert id="createchangdi">
+    insert into zy_changdi(changdi_name,address,create_time,modiy_time,is_delete)
+    value(#{args[0].name},#{args[0].address},NOW(),null,0)
+    </insert>
+
+    <update id="deleteChangDi">
+        update zy_changdi  set is_delete=1 where id=#{args[0]}
+    </update>
+    <update id="updatechangdi">
+     update  zy_changdi set modiy_time=#{args[0].modiyTime},changdi_name=#{args[0].name},address=#{args[0].address}
+     where id=#{args[0].id} and is_delete=0
+    </update>
+
+    <select id="findById" resultMap="ChangDiMap">
+        select * from zy_changdi
+        where id=#{args[0]}  and is_delete=0
+    </select>
+    
+</mapper>

@@ -1,0 +1,57 @@
+body{
+    background: #e7eaeb;font-family: "宋体";
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+.choice{
+    background: #fff;min-height:120px;border-bottom: 1px #d9dfe7 solid;padding:1px;
+}
+.choice ul{
+    padding: 0px;margin: 10px;
+}
+.choice ul li{
+    background: #f8f8f8;margin-bottom: 1px;
+}
+.choice ul li a{
+    height:30px;width: 80px;background: #a8a8a8;color: #fff;font-size: 12px;float: left;text-align: center;line-height: 30px;margin: 10px;
+}
+.choice ul li a:hover{
+    background: #0d7bd5;
+}
+.nj a.on{
+    background: #0d7bd5;
+}
+
+.choice ul li a.y{
+    background: #0d7bd5;
+}
+
+.seat{
+    line-height: 30px;background: #5cb85c;color: #fff;float: left;text-align: center;margin: 10px 0 0 20px;border:0px #fff solid;
+}
+.install button.h{
+    background: red;width: 60px;line-height: 30px;float: left;text-align: center;margin: 10px 10px 0 0;color: #fff;font-size: 12px;border:0px #fff solid;
+}
+.install button.b{
+    background: #f0ad4e;width: 60px;line-height: 30px;float: left;text-align: center;margin: 10px 20px 0 0;color: #fff;font-size: 12px;border:0px #fff solid;
+}
+.install button.zidong{
+    background:#428bca;width: 88px;line-height: 30px;float: left;text-align: center;color: #fff;font-size: 12px;margin-top: 10px;border:0px #fff solid;
+}
+.nj a.on{
+    background: #0d7bd5;
+}
+.bj a.on{
+    background: #0d7bd5;
+}
+    float: right;background:#47b9f4;width: 60px;line-height:30px;color:#fff;text-align: center;margin:-50px 20px 0 0;
+}
+.js a.on{
+    background: #0d7bd5;
+}
+
+

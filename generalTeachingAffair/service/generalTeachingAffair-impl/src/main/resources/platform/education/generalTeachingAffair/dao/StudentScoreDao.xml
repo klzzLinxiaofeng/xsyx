@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentScoreDao">
+
+	<resultMap id="StudentScoreResult" type="platform.education.generalTeachingAffair.model.StudentScore">
+		<result property="id" column="id" />
+		<result property="examTeamSubjectId" column="exam_team_subject_id" />
+		<result property="studentId" column="student_id" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="score" column="score" />
+		<result property="teamRank" column="team_rank" />
+		<result property="gradeRank" column="grade_rank" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		
+		<result property="schoolYear" column="school_year" />
+		<result property="termCode" column="term_code" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="examType" column="exam_type" />
+		<result property="examName" column="exam_name" />
+		<result property="schoolId" column="school_id" />
+		<result property="comment" column="comment" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.StudentScore">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_student_score (
+			id, 
+			exam_team_subject_id, 
+			student_id, 
+			subject_code, 
+			score, 
+			team_rank, 
+			grade_rank, 
+			is_delete, 
+			create_date, 
+			modify_date,
+			school_year,
+			term_code,
+			grade_id,
+			team_id,
+			exam_type,
+			exam_name,
+			school_id,comment
+		)
+		VALUES (
+			#{id}, 
+			#{examTeamSubjectId}, 
+			#{studentId}, 
+			#{subjectCode}, 
+			#{score}, 
+			#{teamRank}, 
+			#{gradeRank}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate},
+			#{schoolYear},
+			#{termCode},
+			#{gradeId},
+			#{teamId},
+			#{examType},
+			#{examName},
+			#{schoolId},
+			#{comment}
+		)
+	</insert>
+
+	<select id="read" resultMap="StudentScoreResult" useCache="false">
+		SELECT * FROM pj_student_score WHERE 1=1 and is_delete = 0 
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findStudentScoreByCondition" resultMap="StudentScoreResult" useCache="false">
+		SELECT * FROM pj_student_score WHERE 1=1 and is_delete = 0 
+		<if test="args[0] != null">
+			
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examTeamSubjectId != null">
+				AND exam_team_subject_id = #{args[0].examTeamSubjectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null and args[0].score != ''">
+				AND score = #{args[0].score,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamRank != null and args[0].teamRank != ''">
+				AND team_rank = #{args[0].teamRank,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeRank != null and args[0].gradeRank != ''">
+				AND grade_rank = #{args[0].gradeRank,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			
+			
+			<if test="args[0].schoolYear != null">
+				AND school_year = #{args[0].schoolYear}
+			</if>
+			<if test="args[0].termCode != null">
+				AND term_code = #{args[0].termCode}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examType != null">
+				AND exam_type = #{args[0].examType}
+			</if>
+			<if test="args[0].examName != null">
+				AND exam_name = #{args[0].examName}
+			</if>
+			
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+		</if>
+		ORDER BY score + 0 DESC,student_id
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_student_score WHERE 1=1 
+		<if test="args[0] != null">
+			
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examTeamSubjectId != null">
+				AND exam_team_subject_id = #{args[0].examTeamSubjectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null and args[0].score != ''">
+				AND score = #{args[0].score,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamRank != null and args[0].teamRank != ''">
+				AND team_rank = #{args[0].teamRank,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeRank != null and args[0].gradeRank != ''">
+				AND grade_rank = #{args[0].gradeRank,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			
+			
+			<if test="args[0].schoolYear != null">
+				AND school_year = #{args[0].schoolYear}
+			</if>
+			<if test="args[0].termCode != null">
+				AND term_code = #{args[0].termCode}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examType != null">
+				AND exam_type = #{args[0].examType}
+			</if>
+			<if test="args[0].examName != null">
+				AND exam_name = #{args[0].examName}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="StudentScoreResult" useCache="false">
+		SELECT * FROM pj_student_score WHERE id = #{args[0],javaType=java.lang.Integer} and is_delete = 0 
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.StudentScore">
+		UPDATE pj_student_score
+		SET 
+		<if test="examTeamSubjectId != null">
+			exam_team_subject_id=#{examTeamSubjectId},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="subjectCode != null">
+			subject_code=#{subjectCode},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="teamRank != null">
+			team_rank=#{teamRank},
+		</if>
+		<if test="gradeRank != null">
+			grade_rank=#{gradeRank},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					AND is_delete  = 1,
+				</when>
+				<otherwise>
+					AND is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		
+		<if test="schoolYear != null">
+			school_year = #{schoolYear},
+		</if>
+		<if test="termCode != null">
+			term_code = #{termCode},
+		</if>
+		<if test="gradeId != null">
+			grade_id = #{gradeId,javaType=java.lang.Integer},
+		</if>
+		<if test="teamId != null">
+			team_id = #{teamId,javaType=java.lang.Integer},
+		</if>
+		<if test="examType != null">
+			exam_type = #{examType},
+		</if>
+		<if test="examName != null">
+			exam_name = #{examName},
+		</if>
+		<if test="schoolId != null">
+			school_id = #{schoolId,javaType=java.lang.Integer},
+		</if>
+
+		<if test="comment != null">
+			comment = #{comment}
+		</if>
+
+		WHERE id = #{id}
+		and is_delete = 0 
+	</update>
+	
+	<delete id="delete">
+		 update  pj_student_score set is_delete=1
+		WHERE id = #{id}
+	</delete>
+	<delete id="deleteByExamTeamSubjectId">
+	    update  pj_student_score set is_delete=1
+	    where exam_team_subject_id = #{examTeamSubjectId,javaType=java.lang.Integer}
+    </delete>
+
+    <update id="updateByexamTeamSubjectId">
+		UPDATE pj_student_score
+		SET
+		<if test="examName != null and examName != ''">
+			exam_name = #{examName}
+		</if>
+		WHERE exam_team_subject_id = #{examTeamSubjectId}
+	</update>
+	<select id="readByexamTeamSubjectId" resultMap="StudentScoreResult" useCache="false">
+		SELECT * FROM pj_student_score limit 1
+	</select>
+
+	<select id="findByStudentIdAndExamId" resultMap="StudentScoreResult">
+		select * from pj_student_score
+		where student_id=#{args[0]} and exam_team_subject_id=#{args[1]} and is_delete=0
+	</select>
+
+	<select id="findByYearAndTrem" resultMap="StudentScoreResult">
+		select * from pj_student_score
+		<where>
+			is_delete=0
+			<if test="args[0]!=null">
+				and student_id=#{args[0]}
+			</if>
+			<if test="args[1]!=null">
+				and school_year=#{args[1]}
+			</if>
+			<if test="args[2]!=null">
+			and term_code=#{args[2]}
+		    </if>
+			<if test="args[3]!=null">
+				and subject_code=#{args[3]}
+			</if>
+			<if test="args[5]!=null">
+				and grade_id=#{args[5]}
+			</if>
+			<if test="args[6]!=null">
+				and team_id=#{args[6]}
+			</if>
+			<if test="args[7]!=null">
+				and exam_team_subject_id=#{args[7]}
+			</if>
+
+		</where>
+	</select>
+
+</mapper>

@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.DeviceDao">
+
+	<resultMap id="DeviceResult" type="platform.education.oa.model.Device">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="schoolId" column="school_id" />
+		<result property="code" column="code" />
+		<result property="name" column="name" />
+		<result property="englishName" column="english_name" />
+		<result property="propertyRight" column="property_right" />
+		<result property="serviceCondition" column="service_condition" />
+		<result property="category" column="category" />
+		<result property="model" column="model" />
+		<result property="exFactoryDate" column="ex_factory_date" />
+		<result property="purchaseDate" column="purchase_date" />
+		<result property="manufacturer" column="manufacturer" />
+		<result property="sourceType" column="source_type" />
+		<result property="documentNumber" column="document_number" />
+		<result property="place" column="place" />
+		<result property="blidingId" column="bliding_id" />
+		<result property="roomId" column="room_id" />
+		<result property="price" column="price" />
+		<result property="warrantyExpDate" column="warranty_exp_date" />
+		<result property="remark" column="remark" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="totalNumber" column="total_number" />
+	</resultMap>
+	
+	<resultMap id="DeviceResult1" type="platform.education.oa.vo.DeviceVo">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="schoolId" column="school_id" />
+		<result property="code" column="code" />
+		<result property="name" column="name" />
+		<result property="englishName" column="english_name" />
+		<result property="propertyRight" column="property_right" />
+		<result property="serviceCondition" column="service_condition" />
+		<result property="category" column="category" />
+		<result property="model" column="model" />
+		<result property="exFactoryDate" column="ex_factory_date" />
+		<result property="purchaseDate" column="purchase_date" />
+		<result property="manufacturer" column="manufacturer" />
+		<result property="sourceType" column="source_type" />
+		<result property="documentNumber" column="document_number" />
+		<result property="place" column="place" />
+		<result property="blidingId" column="bliding_id" />
+		<result property="roomId" column="room_id" />
+		<result property="price" column="price" />
+		<result property="warrantyExpDate" column="warranty_exp_date" />
+		<result property="remark" column="remark" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="totalNumber" column="total_number" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.Device">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_device (
+			id, 
+			uuid, 
+			school_id, 
+			code, 
+			name, 
+			english_name, 
+			property_right, 
+			service_condition, 
+			category, 
+			model, 
+			ex_factory_date, 
+			purchase_date, 
+			manufacturer, 
+			source_type, 
+			document_number, 
+			place, 
+			bliding_id, 
+			room_id, 
+			price, 
+			warranty_exp_date, 
+			remark, 
+			is_delete, 
+			create_date, 
+			modify_date,
+			total_number
+		)
+		VALUES (
+			#{id}, 
+			#{uuid}, 
+			#{schoolId}, 
+			#{code}, 
+			#{name}, 
+			#{englishName}, 
+			#{propertyRight}, 
+			#{serviceCondition}, 
+			#{category}, 
+			#{model}, 
+			#{exFactoryDate}, 
+			#{purchaseDate}, 
+			#{manufacturer}, 
+			#{sourceType}, 
+			#{documentNumber}, 
+			#{place}, 
+			#{blidingId}, 
+			#{roomId}, 
+			#{price}, 
+			#{warrantyExpDate}, 
+			#{remark}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate},
+			#{totalNumber}
+		)
+	</insert>
+
+	<select id="read" resultMap="DeviceResult" useCache="false">
+		SELECT * FROM oa_device WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findDeviceByCondition" resultMap="DeviceResult" useCache="false">
+		SELECT * FROM oa_device 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].englishName != null and args[0].englishName != ''">
+				AND english_name LIKE CONCAT(CONCAT('%', #{args[0].englishName}),'%')
+			</if>
+			<if test="args[0].propertyRight != null and args[0].propertyRight != ''">
+				AND property_right = #{args[0].propertyRight,javaType=java.lang.String}
+			</if>
+			<if test="args[0].serviceCondition != null and args[0].serviceCondition != ''">
+				AND service_condition = #{args[0].serviceCondition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].category != null and args[0].category != ''">
+				AND category = #{args[0].category,javaType=java.lang.String}
+			</if>
+			<if test="args[0].model != null and args[0].model != ''">
+				AND model = #{args[0].model,javaType=java.lang.String}
+			</if>
+			<if test="args[0].exFactoryDate != null">
+				AND ex_factory_date = #{args[0].exFactoryDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].purchaseDate != null">
+				AND purchase_date = #{args[0].purchaseDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].manufacturer != null and args[0].manufacturer != ''">
+				AND manufacturer LIKE CONCAT(CONCAT('%', #{args[0].manufacturer}),'%')
+			</if>
+			<if test="args[0].sourceType != null and args[0].sourceType != ''">
+				AND source_type = #{args[0].sourceType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].documentNumber != null and args[0].documentNumber != ''">
+				AND document_number = #{args[0].documentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].place != null and args[0].place != ''">
+				AND place = #{args[0].place,javaType=java.lang.String}
+			</if>
+			<if test="args[0].blidingId != null">
+				AND bliding_id = #{args[0].blidingId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].roomId != null">
+				AND room_id = #{args[0].roomId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].price != null and args[0].price != ''">
+				AND price = #{args[0].price,javaType=java.lang.String}
+			</if>
+			<if test="args[0].warrantyExpDate != null">
+				AND warranty_exp_date = #{args[0].warrantyExpDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].totalNumber != null">
+				AND total_number = #{args[0].totalNumber}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findDeviceNameByCondition" resultMap="DeviceResult" useCache="false">
+		SELECT * FROM oa_device 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].englishName != null and args[0].englishName != ''">
+				AND english_name LIKE CONCAT(CONCAT('%', #{args[0].englishName}),'%')
+			</if>
+			<if test="args[0].propertyRight != null and args[0].propertyRight != ''">
+				AND property_right = #{args[0].propertyRight,javaType=java.lang.String}
+			</if>
+			<if test="args[0].serviceCondition != null and args[0].serviceCondition != ''">
+				AND service_condition = #{args[0].serviceCondition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].category != null and args[0].category != ''">
+				AND category = #{args[0].category,javaType=java.lang.String}
+			</if>
+			<if test="args[0].model != null and args[0].model != ''">
+				AND model = #{args[0].model,javaType=java.lang.String}
+			</if>
+			<if test="args[0].exFactoryDate != null">
+				AND ex_factory_date = #{args[0].exFactoryDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].purchaseDate != null">
+				AND purchase_date = #{args[0].purchaseDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].manufacturer != null and args[0].manufacturer != ''">
+				AND manufacturer LIKE CONCAT(CONCAT('%', #{args[0].manufacturer}),'%')
+			</if>
+			<if test="args[0].sourceType != null and args[0].sourceType != ''">
+				AND source_type = #{args[0].sourceType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].documentNumber != null and args[0].documentNumber != ''">
+				AND document_number = #{args[0].documentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].place != null and args[0].place != ''">
+				AND place = #{args[0].place,javaType=java.lang.String}
+			</if>
+			<if test="args[0].blidingId != null">
+				AND bliding_id = #{args[0].blidingId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].roomId != null">
+				AND room_id = #{args[0].roomId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].price != null and args[0].price != ''">
+				AND price = #{args[0].price,javaType=java.lang.String}
+			</if>
+			<if test="args[0].warrantyExpDate != null">
+				AND warranty_exp_date = #{args[0].warrantyExpDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].totalNumber != null">
+				AND total_number = #{args[0].totalNumber}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findDeviceAllByCondition" resultMap="DeviceResult1" useCache="false">
+		SELECT * FROM oa_device 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].englishName != null and args[0].englishName != ''">
+				AND english_name LIKE CONCAT(CONCAT('%', #{args[0].englishName}),'%')
+			</if>
+			<if test="args[0].propertyRight != null and args[0].propertyRight != ''">
+				AND property_right = #{args[0].propertyRight,javaType=java.lang.String}
+			</if>
+			<if test="args[0].serviceCondition != null and args[0].serviceCondition != ''">
+				AND service_condition = #{args[0].serviceCondition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].category != null and args[0].category != ''">
+				AND category = #{args[0].category,javaType=java.lang.String}
+			</if>
+			<if test="args[0].model != null and args[0].model != ''">
+				AND model = #{args[0].model,javaType=java.lang.String}
+			</if>
+			<if test="args[0].exFactoryDate != null">
+				AND ex_factory_date = #{args[0].exFactoryDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].purchaseDate != null">
+				AND purchase_date = #{args[0].purchaseDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].manufacturer != null and args[0].manufacturer != ''">
+				AND manufacturer LIKE CONCAT(CONCAT('%', #{args[0].manufacturer}),'%')
+			</if>
+			<if test="args[0].sourceType != null and args[0].sourceType != ''">
+				AND source_type = #{args[0].sourceType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].documentNumber != null and args[0].documentNumber != ''">
+				AND document_number = #{args[0].documentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].place != null and args[0].place != ''">
+				AND place = #{args[0].place,javaType=java.lang.String}
+			</if>
+			<if test="args[0].blidingId != null">
+				AND bliding_id = #{args[0].blidingId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].roomId != null">
+				AND room_id = #{args[0].roomId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].price != null and args[0].price != ''">
+				AND price = #{args[0].price,javaType=java.lang.String}
+			</if>
+			<if test="args[0].warrantyExpDate != null">
+				AND warranty_exp_date = #{args[0].warrantyExpDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].totalNumber != null">
+				AND total_number = #{args[0].totalNumber}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_device 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].englishName != null and args[0].englishName != ''">
+				AND english_name = #{args[0].englishName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].propertyRight != null and args[0].propertyRight != ''">
+				AND property_right = #{args[0].propertyRight,javaType=java.lang.String}
+			</if>
+			<if test="args[0].serviceCondition != null and args[0].serviceCondition != ''">
+				AND service_condition = #{args[0].serviceCondition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].category != null and args[0].category != ''">
+				AND category = #{args[0].category,javaType=java.lang.String}
+			</if>
+			<if test="args[0].model != null and args[0].model != ''">
+				AND model = #{args[0].model,javaType=java.lang.String}
+			</if>
+			<if test="args[0].exFactoryDate != null">
+				AND ex_factory_date = #{args[0].exFactoryDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].purchaseDate != null">
+				AND purchase_date = #{args[0].purchaseDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].manufacturer != null and args[0].manufacturer != ''">
+				AND manufacturer = #{args[0].manufacturer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].sourceType != null and args[0].sourceType != ''">
+				AND source_type = #{args[0].sourceType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].documentNumber != null and args[0].documentNumber != ''">
+				AND document_number = #{args[0].documentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].place != null and args[0].place != ''">
+				AND place = #{args[0].place,javaType=java.lang.String}
+			</if>
+			<if test="args[0].blidingId != null">
+				AND bliding_id = #{args[0].blidingId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].roomId != null">
+				AND room_id = #{args[0].roomId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].price != null and args[0].price != ''">
+				AND price = #{args[0].price,javaType=java.lang.String}
+			</if>
+			<if test="args[0].warrantyExpDate != null">
+				AND warranty_exp_date = #{args[0].warrantyExpDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].totalNumber != null">
+				AND total_number = #{args[0].totalNumber}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="DeviceResult" useCache="false">
+		SELECT * FROM oa_device WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.Device">
+		UPDATE oa_device
+		SET 
+		<if test="uuid != null">
+			uuid=#{uuid},
+		</if>
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="code != null">
+			code=#{code},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="englishName != null">
+			english_name=#{englishName},
+		</if>
+		<if test="propertyRight != null">
+			property_right=#{propertyRight},
+		</if>
+		<if test="serviceCondition != null">
+			service_condition=#{serviceCondition},
+		</if>
+		<if test="category != null">
+			category=#{category},
+		</if>
+		<if test="model != null">
+			model=#{model},
+		</if>
+		<if test="exFactoryDate != null">
+			ex_factory_date=#{exFactoryDate},
+		</if>
+		<if test="purchaseDate != null">
+			purchase_date=#{purchaseDate},
+		</if>
+		<if test="manufacturer != null">
+			manufacturer=#{manufacturer},
+		</if>
+		<if test="sourceType != null">
+			source_type=#{sourceType},
+		</if>
+		<if test="documentNumber != null">
+			document_number=#{documentNumber},
+		</if>
+		<if test="place != null">
+			place=#{place},
+		</if>
+		<if test="blidingId != null">
+			bliding_id=#{blidingId},
+		</if>
+		<if test="roomId != null">
+			room_id=#{roomId},
+		</if>
+		<if test="price != null">
+			price=#{price},
+		</if>
+		<if test="warrantyExpDate != null">
+			warranty_exp_date=#{warrantyExpDate},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="totalNumber != null">
+			total_number = #{totalNumber},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_device
+		WHERE id = #{id}
+	</delete>
+</mapper>

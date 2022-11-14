@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.exam.dao.EmExamDao">
+  <resultMap id="ExamResult" type="com.xunyunedu.exam.pojo.EmExam">
+    <result property="id" column="id" />
+    <result property="createDate" column="create_date" />
+    <result property="modifyDate" column="modify_date" />
+    <result property="title" column="title" />
+    <result property="description" column="description" />
+    <result property="uuid" column="uuid" />
+    <result property="type" column="type" />
+    <result property="userId" column="user_id" />
+    <result property="appId" column="app_id" />
+    <result property="entityId" column="entity_id" />
+    <result property="paperId" column="paper_id" />
+    <result property="subjectCode" column="subject_code" />
+  </resultMap>
+
+  <select id="selectById" resultMap="ExamResult">
+    select * from res_entity where id = #{id}
+  </select>
+
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+     INSERT INTO em_exam (
+        create_date,
+        modify_date,
+        title,
+        description,
+        uuid,
+        `type`,
+        user_id,
+        app_id,
+        entity_id,
+        paper_id,
+        subject_code
+        )
+        VALUES (
+        #{createDate},
+        #{modifyDate},
+        #{title},
+        #{description},
+        #{uuid},
+        #{type},
+        #{userId},
+        #{appId},
+        #{entityId},
+        #{paperId},
+        #{subjectCode}
+        )
+  </insert>
+</mapper>

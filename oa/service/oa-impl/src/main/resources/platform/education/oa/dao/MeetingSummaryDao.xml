@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.MeetingSummaryDao">
+
+	<resultMap id="MeetingSummaryResult" type="platform.education.oa.model.MeetingSummary">
+		<result property="id" column="id" />
+		<result property="meetingId" column="meeting_id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="summaryContent" column="summary_content" />
+		<result property="meetingAttend" column="meeting_attend" />
+		<result property="meetingAbsent" column="meeting_absent" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.MeetingSummary">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_meeting_summary (
+			id, 
+			meeting_id, 
+			user_id, 
+			user_name, 
+			summary_content, 
+			meeting_attend, 
+			meeting_absent, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{meetingId}, 
+			#{userId}, 
+			#{userName}, 
+			#{summaryContent}, 
+			#{meetingAttend}, 
+			#{meetingAbsent}, 
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="MeetingSummaryResult" useCache="false">
+		SELECT * FROM oa_meeting_summary WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findMeetingSummaryByCondition" resultMap="MeetingSummaryResult" useCache="false">
+		SELECT * FROM oa_meeting_summary 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].meetingId != null">
+				AND meeting_id = #{args[0].meetingId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null and args[0].userName != ''">
+				AND user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].summaryContent != null and args[0].summaryContent != ''">
+				AND summary_content = #{args[0].summaryContent,javaType=java.lang.String}
+			</if>
+			<if test="args[0].meetingAttend != null and args[0].meetingAttend != ''">
+				AND meeting_attend = #{args[0].meetingAttend,javaType=java.lang.String}
+			</if>
+			<if test="args[0].meetingAbsent != null and args[0].meetingAbsent != ''">
+				AND meeting_absent = #{args[0].meetingAbsent,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_meeting_summary 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].meetingId != null">
+				AND meeting_id = #{args[0].meetingId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null and args[0].userName != ''">
+				AND user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].summaryContent != null and args[0].summaryContent != ''">
+				AND summary_content = #{args[0].summaryContent,javaType=java.lang.String}
+			</if>
+			<if test="args[0].meetingAttend != null and args[0].meetingAttend != ''">
+				AND meeting_attend = #{args[0].meetingAttend,javaType=java.lang.String}
+			</if>
+			<if test="args[0].meetingAbsent != null and args[0].meetingAbsent != ''">
+				AND meeting_absent = #{args[0].meetingAbsent,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="MeetingSummaryResult" useCache="false">
+		SELECT * FROM oa_meeting_summary WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.MeetingSummary">
+		UPDATE oa_meeting_summary
+		SET 
+		<if test="meetingId != null">
+			meeting_id=#{meetingId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="userName != null">
+			user_name=#{userName},
+		</if>
+		<if test="summaryContent != null">
+			summary_content=#{summaryContent},
+		</if>
+		<if test="meetingAttend != null">
+			meeting_attend=#{meetingAttend},
+		</if>
+		<if test="meetingAbsent != null">
+			meeting_absent=#{meetingAbsent},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_meeting_summary
+		WHERE id = #{id}
+	</delete>
+</mapper>

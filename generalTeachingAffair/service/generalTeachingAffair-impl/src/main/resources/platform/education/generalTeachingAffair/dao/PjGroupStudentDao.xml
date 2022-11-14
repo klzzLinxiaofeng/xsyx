@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PjGroupStudentDao">
+
+	<resultMap id="PjGroupStudentResult" type="platform.education.generalTeachingAffair.model.PjGroupStudent">
+		<result property="id" column="id" />
+		<result property="groupId" column="group_id" />
+		<result property="groupNumber" column="group_number" />
+		<result property="studentId" column="student_id" />
+		<result property="userId" column="user_id" />
+		<result property="studentNumber" column="student_number" />
+		<result property="isLeader" column="is_leader" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	<resultMap id="PjGroupStudentVoResult" type="platform.education.generalTeachingAffair.vo.PjGroupStudentVo" extends="PjGroupStudentResult">
+		<result property="studentName" column="student_name" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.PjGroupStudent">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_group_student (
+			id, 
+			group_id, 
+			group_number, 
+			student_id, 
+			user_id, 
+			student_number, 
+			is_leader, 
+			create_date, 
+			modify_date, 
+			is_deleted
+		)
+		VALUES (
+			#{id}, 
+			#{groupId}, 
+			#{groupNumber}, 
+			#{studentId}, 
+			#{userId}, 
+			#{studentNumber}, 
+			<choose>
+				<when test="isLeader != null">
+					<choose>
+						<when test="isLeader == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="PjGroupStudentResult" useCache="false">
+		SELECT * FROM pj_group_student WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPjGroupStudentByCondition" resultMap="PjGroupStudentResult" useCache="false">
+		SELECT * FROM pj_group_student 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupId != null">
+				AND group_id = #{args[0].groupId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupNumber != null">
+				AND group_number = #{args[0].groupNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND student_number = #{args[0].studentNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isLeader != null">
+				<choose>
+					<when test="args[0].isLeader == true">
+						AND is_leader  = 1
+					</when>
+					<otherwise>
+						AND is_leader  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+
+	<select id="findPjGroupStudentVoByCondition" resultMap="PjGroupStudentVoResult" useCache="false">
+		SELECT pgs.*,ps.`name` student_name FROM pj_group_student pgs
+		LEFT JOIN pj_student ps on ps.id=pgs.student_id
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND pgs.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupId != null">
+				AND pgs.group_id = #{args[0].groupId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupNumber != null">
+				AND pgs.group_number = #{args[0].groupNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND pgs.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND pgs.user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND pgs.student_number = #{args[0].studentNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isLeader != null">
+				<choose>
+					<when test="args[0].isLeader == true">
+						AND pgs.is_leader  = 1
+					</when>
+					<otherwise>
+						AND pgs.is_leader  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND pgs.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND pgs.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND pgs.is_deleted  = 1
+					</when>
+					<otherwise>
+						AND pgs.is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_group_student 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupId != null">
+				AND group_id = #{args[0].groupId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupNumber != null">
+				AND group_number = #{args[0].groupNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND student_number = #{args[0].studentNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isLeader != null">
+				<choose>
+					<when test="args[0].isLeader == true">
+						AND is_leader  = 1
+					</when>
+					<otherwise>
+						AND is_leader  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PjGroupStudentResult" useCache="false">
+		SELECT * FROM pj_group_student WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.PjGroupStudent">
+		UPDATE pj_group_student
+		SET 
+		<if test="groupId != null">
+			group_id=#{groupId},
+		</if>
+		<if test="groupNumber != null">
+			group_number=#{groupNumber},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="studentNumber != null">
+			student_number=#{studentNumber},
+		</if>
+		<if test="isLeader != null">
+			<choose>
+				<when test="isLeader == true">
+					is_leader  = 1,
+				</when>
+				<otherwise>
+					is_leader  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteByPjGroupStudentCondition">
+			UPDATE pj_group_student
+			SET
+				is_deleted  = 1
+			WHERE
+				group_id = #{args[0]}
+				AND group_number = #{args[1]}
+				AND is_deleted  = 0
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_group_student
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findPjGroupStudentVoByTeamId" parameterType="java.lang.Integer" resultMap="PjGroupStudentVoResult">
+		SELECT gs.id id,
+		gs.group_id group_id,
+		gs.group_number group_number,
+		gs.is_leader is_leader,
+		gs.student_number student_number,
+		ts.name student_name,
+		ts.user_id user_id,
+		ts.student_id student_id
+		FROM pj_group g
+		right join  `pj_group_student` gs
+		on gs.group_id=g.id
+		and gs.is_deleted = 0
+		and g.is_deleted = 0
+		<choose>
+			<when test="args.size() > 1 and args[1] != null">
+				and gs.group_id = #{args[1]}
+			</when>
+			<otherwise>
+				and g.is_default = 1
+			</otherwise>
+		</choose>
+		right join pj_team_student ts
+		on ts.student_id=gs.student_id
+		and g.team_id=ts.team_id
+		where ts.team_id=#{args[0]}
+		and ts.is_delete = 0
+		and ts.in_state = 1
+	</select>
+
+	<select id="findPjGroupStudentVoByStudentId" parameterType="java.lang.Integer" resultMap="PjGroupStudentVoResult">
+		SELECT
+			*
+		FROM
+			pj_group_student
+		WHERE
+			student_id = #{args[0]}
+			AND is_deleted = 0
+	</select>
+</mapper>

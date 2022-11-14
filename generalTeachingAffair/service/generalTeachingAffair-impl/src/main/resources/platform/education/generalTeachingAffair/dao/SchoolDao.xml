@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SchoolDao">
+
+	<resultMap id="SchoolResult" type="platform.education.generalTeachingAffair.model.School">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="name" column="name" />
+		<result property="englishName" column="english_name" />
+		<result property="code" column="code" />
+		<result property="code2" column="code2" />
+		<result property="stageScope" column="stage_scope" />
+		<result property="schoolSystem" column="school_system" />
+		<result property="schoolType" column="school_type" />
+		<result property="runningType" column="running_type" />
+		<result property="buildDate" column="build_date" />
+		<result property="decorationDay" column="decoration_day" />
+		<result property="province" column="province" />
+		<result property="city" column="city" />
+		<result property="district" column="district" />
+		<result property="regionCode" column="region_code" />
+		<result property="address" column="address" />
+		<result property="zipcode" column="zipcode" />
+		<result property="telephone" column="telephone" />
+		<result property="websit" column="websit" />
+		<result property="remark" column="remark" />
+		<result property="entityId_badge" column="entityId_badge" />
+		<result property="entityId_image" column="entityId_image" />
+		<result property="street" column="street" />
+		<result property="email" column="email" />
+		<result property="fax" column="fax" />
+		<result property="enrollScope" column="enroll_scope" />
+		<result property="cityType" column="city_type" />
+		<result property="econonyType" column="economy_type" />
+		<result property="institutionCode" column="institution_code" />
+		<result property="authority" column="authority" />
+		<result property="corporation" column="corporation" />
+		<result property="certificate" column="certificate" />
+		<result property="schoolMaster" column="school_master" />
+		<result property="partyCommittee" column="party_committee" />
+		<result property="mainLanguage" column="main_language" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_deleted" />
+		<result property="attributePlatform" column="attribute_platform" />
+	</resultMap>
+	
+	<resultMap id="SchoolInfoResult" type="platform.education.generalTeachingAffair.model.SchoolInfo">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="name" column="name" />
+		<result property="stageScope" column="stage_scope" />
+		<result property="entityId_image" column="entityId_image" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.School">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_school 
+		(id,uuid, name, english_name, code,code2, stage_scope, school_system, 
+		school_type, running_type, build_date, decoration_day, province, 
+		city, district, region_code, address, zipcode, telephone, websit, 
+		remark, entityId_badge, entityId_image, street,email,fax,enroll_scope,city_type,
+		economy_type,institution_code,
+		authority,corporation,certificate,school_master,party_committee,main_language,
+		create_date, modify_date,is_deleted,attribute_platform)
+		VALUES 
+		(#{id},#{uuid}, #{name}, #{englishName}, #{code},#{code2}, #{stageScope}, #{schoolSystem},
+		#{schoolType}, #{runningType}, #{buildDate}, #{decorationDay}, #{province}, 
+		#{city}, #{district}, #{regionCode}, #{address}, #{zipcode}, #{telephone}, #{websit}, 
+		#{remark}, #{entityId_badge}, #{entityId_image},#{street},#{email},#{fax},#{enrollScope},#{cityType},
+		#{econonyType},#{institutionCode},
+		#{authority},#{corporation},#{certificate},#{schoolMaster},#{partyCommittee},#{mainLanguage},
+		#{createDate}, #{modifyDate},#{isDelete},#{attributePlatform})
+		 
+	</insert>
+
+	<select id="read" resultMap="SchoolResult" useCache="false">
+		SELECT * FROM pj_school WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findSchoolInfoById" resultMap="SchoolInfoResult" useCache="false">
+		select id, uuid, name, stage_scope, entityId_image from pj_school where is_deleted = 0 and  id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	
+	<select id="findSchoolByName" resultMap="SchoolResult" useCache="false">
+		SELECT * FROM pj_school WHERE is_deleted=0 and  name = #{args[0],javaType=java.lang.String}
+	</select>
+	
+	<select id="findSchoolByCode" resultMap="SchoolResult" useCache="false">
+		SELECT * FROM pj_school WHERE is_deleted=0 and code = #{args[0],javaType=java.lang.String}
+	</select>
+	
+	<select id="findSchoolByCondition" resultMap="SchoolResult" useCache="false">
+		SELECT * FROM pj_school 
+		<if test="args[0] != null">
+			WHERE 1=1 and is_deleted=0
+			<if test="args[0].id != null and args[0].id != ''">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].englishName != null and args[0].englishName != ''">
+				AND english_name = #{args[0].englishName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code2 != null and args[0].code2 != ''">
+				AND code2 = #{args[0].code2,javaType=java.lang.String}
+			</if>
+			<if test="args[0].stageScope != null and args[0].stageScope != ''">
+				AND stage_scope = #{args[0].stageScope,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolSystem != null and args[0].schoolSystem != ''">
+				AND school_system = #{args[0].schoolSystem,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolType != null and args[0].schoolType != ''">
+				AND school_type = #{args[0].schoolType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].runningType != null and args[0].runningType != ''">
+				AND running_type = #{args[0].runningType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].buildDate != null and args[0].buildDate != ''">
+				AND build_date = #{args[0].buildDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].decorationDay != null">
+				AND decoration_day = #{args[0].decorationDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].province != null and args[0].province != ''">
+				AND province = #{args[0].province,javaType=java.lang.String}
+			</if>
+			<if test="args[0].city != null and args[0].city != ''">
+				AND city = #{args[0].city,javaType=java.lang.String}
+			</if>
+			<if test="args[0].district != null and args[0].district != ''">
+				AND district = #{args[0].district,javaType=java.lang.String}
+			</if>
+			<if test="args[0].regionCode != null and args[0].regionCode != ''">
+				AND region_code = #{args[0].regionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].address != null and args[0].address != ''">
+				AND address = #{args[0].address,javaType=java.lang.String}
+			</if>
+			<if test="args[0].zipcode != null and args[0].zipcode != ''">
+				AND zipcode = #{args[0].zipcode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].websit != null and args[0].websit != ''">
+				AND websit = #{args[0].websit,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId_badge != null and args[0].entityId_badge != ''">
+				AND badge = #{args[0].entityId_badge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId_image != null and args[0].entityId_image != ''">
+				AND image = #{args[0].entityId_image,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findSchoolInfoByCondition" resultMap="SchoolInfoResult" useCache="false">
+		SELECT id, name, stage_scope FROM pj_school 
+		<if test="args[0] != null">
+			WHERE 1=1 and is_deleted=0
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].englishName != null and args[0].englishName != ''">
+				AND english_name = #{args[0].englishName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code2 != null and args[0].code2 != ''">
+				AND code2 = #{args[0].code2,javaType=java.lang.String}
+			</if>
+			<if test="args[0].stageScope != null and args[0].stageScope != ''">
+				AND stage_scope = #{args[0].stageScope,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolSystem != null and args[0].schoolSystem != ''">
+				AND school_system = #{args[0].schoolSystem,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolType != null and args[0].schoolType != ''">
+				AND school_type = #{args[0].schoolType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].runningType != null and args[0].runningType != ''">
+				AND running_type = #{args[0].runningType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].buildDate != null and args[0].buildDate != ''">
+				AND build_date = #{args[0].buildDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].decorationDay != null">
+				AND decoration_day = #{args[0].decorationDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].province != null and args[0].province != ''">
+				AND province = #{args[0].province,javaType=java.lang.String}
+			</if>
+			<if test="args[0].city != null and args[0].city != ''">
+				AND city = #{args[0].city,javaType=java.lang.String}
+			</if>
+			<if test="args[0].district != null and args[0].district != ''">
+				AND district = #{args[0].district,javaType=java.lang.String}
+			</if>
+			<if test="args[0].regionCode != null and args[0].regionCode != ''">
+				AND region_code = #{args[0].regionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].address != null and args[0].address != ''">
+				AND address = #{args[0].address,javaType=java.lang.String}
+			</if>
+			<if test="args[0].zipcode != null and args[0].zipcode != ''">
+				AND zipcode = #{args[0].zipcode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].websit != null and args[0].websit != ''">
+				AND websit = #{args[0].websit,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId_badge != null and args[0].entityId_badge != ''">
+				AND badge = #{args[0].entityId_badge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId_image != null and args[0].entityId_image != ''">
+				AND image = #{args[0].entityId_image,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="SchoolResult" useCache="false">
+		SELECT * FROM pj_school WHERE 1=1 and is_deleted=0 and  id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.School">
+		UPDATE pj_school
+		SET 
+				<if test="name != null">
+					name=#{name},
+				</if>
+				<if test="englishName != null">
+					english_name=#{englishName},
+				</if>
+				<if test="code != null">
+					code=#{code},
+				</if>
+				<if test="code2 != null">
+					code2=#{code2},
+				</if>
+				<if test="stageScope != null">
+					stage_scope=#{stageScope},
+				</if>
+				<if test="schoolSystem != null">
+					school_system=#{schoolSystem},
+				</if>
+				<if test="schoolType != null">
+					school_type=#{schoolType},
+				</if>
+				<if test="runningType != null">
+					running_type=#{runningType},
+				</if>
+				<if test="buildDate != null">
+					build_date=#{buildDate},
+				</if>
+				<if test="decorationDay != null">
+					decoration_day=#{decorationDay},
+				</if>
+				<if test="province != null">
+					province=#{province},
+				</if>
+				<if test="city != null">
+					city=#{city},
+				</if>
+				<if test="district != null">
+					district=#{district},
+				</if>
+				<if test="regionCode != null">
+					region_code=#{regionCode},
+				</if>
+				<if test="address != null">
+					address=#{address},
+				</if>
+				<if test="zipcode != null">
+					zipcode=#{zipcode},
+				</if>
+				<if test="telephone != null">
+					telephone=#{telephone},
+				</if>
+				<if test="websit != null">
+					websit=#{websit},
+				</if>
+				<if test="remark != null">
+					remark=#{remark},
+				</if>
+				<if test="entityId_badge != null">
+					entityId_badge=#{entityId_badge},
+				</if>
+				<if test="entityId_image != null">
+					entityId_image=#{entityId_image},
+				</if>
+				<if test="createDate != null">
+					create_date=#{createDate},
+				</if>
+				<if test="modifyDate != null">
+					modify_date=#{modifyDate},
+				</if>
+				<if test="isDelete != null">
+					is_deleted=#{isDelete},
+				</if>
+				<if test="email != null">
+					email=#{email},
+				</if>
+				<if test="fax != null">
+					fax=#{fax},
+				</if>
+				<if test="schoolMaster != null">
+					school_master=#{schoolMaster},
+				</if>
+				<if test="partyCommittee != null">
+					party_committee=#{partyCommittee},
+				</if>
+				<if test="certificate != null">
+					certificate=#{certificate},
+				</if>
+				<if test="corporation != null">
+					corporation=#{corporation},
+				</if>
+				<if test="mainLanguage != null">
+					main_language=#{mainLanguage},
+				</if>
+				<if test="institutionCode != null">
+					institution_code=#{institutionCode},
+				</if>
+				<if test="authority != null">
+					authority=#{authority},
+				</if>
+				<if test="enrollScope != null">
+					enroll_scope=#{enrollScope},
+				</if>
+				<if test="cityType != null">
+					city_type=#{cityType},
+				</if>
+				<if test="econonyType != null">
+					economy_type=#{econonyType},
+				</if>
+				<if test="street != null">
+					street=#{street},
+				</if>
+				
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="findSchoolOfRegionByCondition" resultMap="SchoolResult" useCache="false">
+	    select pjc.* from pj_school pjc,yh_app_school yas
+	     where pjc.id = yas.school_id
+		<if test="args!=null and args[0]!=null">
+			and yas.app_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args!=null and args[1]!=null">
+			and pjc.region_code=#{args[1],javaType=java.lang.String}
+		</if>
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM pj_school
+		WHERE id = #{id}
+	</delete>
+	
+	<select id="findUserBySchoolAndGroupAndRoleId" resultMap="platform.education.user.dao.UserDao.UserResult" useCache="false">
+		SELECT u.* FROM yh_group_user gu LEFT JOIN yh_group g ON gu.group_id = g.id LEFT JOIN pj_school s ON g.owner_id = s.id LEFT JOIN yh_user_role ur ON gu.user_id = ur.user_id LEFT JOIN yh_user u ON gu.user_id = u.id WHERE s.is_deleted = 0 AND u.is_deleted = 0
+		<if test="args[0] != null">
+			<if test="args[0].id != null and args[0].id != ''">
+				AND s.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND s.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].englishName != null and args[0].englishName != ''">
+				AND s.english_name = #{args[0].englishName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND s.code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].stageScope != null and args[0].stageScope != ''">
+				AND s.stage_scope = #{args[0].stageScope,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolSystem != null and args[0].schoolSystem != ''">
+				AND s.school_system = #{args[0].schoolSystem,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolType != null and args[0].schoolType != ''">
+				AND s.school_type = #{args[0].schoolType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].runningType != null and args[0].runningType != ''">
+				AND s.running_type = #{args[0].runningType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].buildDate != null and args[0].buildDate != ''">
+				AND s.build_date = #{args[0].buildDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].decorationDay != null">
+				AND s.decoration_day = #{args[0].decorationDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].province != null and args[0].province != ''">
+				AND s.province = #{args[0].province,javaType=java.lang.String}
+			</if>
+			<if test="args[0].city != null and args[0].city != ''">
+				AND s.city = #{args[0].city,javaType=java.lang.String}
+			</if>
+			<if test="args[0].district != null and args[0].district != ''">
+				AND s.district = #{args[0].district,javaType=java.lang.String}
+			</if>
+			<if test="args[0].regionCode != null and args[0].regionCode != ''">
+				AND s.region_code = #{args[0].regionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].address != null and args[0].address != ''">
+				AND s.address = #{args[0].address,javaType=java.lang.String}
+			</if>
+			<if test="args[0].zipcode != null and args[0].zipcode != ''">
+				AND s.zipcode = #{args[0].zipcode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND s.telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].websit != null and args[0].websit != ''">
+				AND s.websit = #{args[0].websit,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND s.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId_badge != null and args[0].entityId_badge != ''">
+				AND s.badge = #{args[0].entityId_badge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId_image != null and args[0].entityId_image != ''">
+				AND s.image = #{args[0].entityId_image,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND s.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND s.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+		<if test="args[1] != null">
+			<if test="args[1].id != null">
+				AND g.id = #{args[1].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[1].ownerId != null">
+				AND g.owner_id = #{args[1].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[1].name != null and args[1].name != ''">
+				AND g.name LIKE CONCAT(CONCAT('%', #{args[1].name}),'%')
+			</if>
+			<if test="args[1].type != null">
+				AND g.type = #{args[1].type}
+			</if>
+			<if test="args[1].createDate != null">
+				AND g.create_date = #{args[1].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[1].modifyDate != null">
+				AND g.modify_date = #{args[1].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+		<if test="args[2] != null">
+			AND ur.role_id = #{args[2],javaType=java.lang.Integer}
+		</if>
+	</select>
+	
+	<select id="findGroupBySchoolCondition" resultMap="platform.education.user.dao.GroupDao.GroupResult" useCache="false">
+		SELECT g.* FROM yh_group g, pj_school s WHERE g.owner_id = s.id AND s.is_deleted = 0
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+				AND g.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND g.owner_id = #{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].type != null">
+				AND g.type = #{args[0].type}
+			</if>
+			<if test="args[0].createDate != null">
+				AND g.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND g.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND g.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+		</if>
+		<if test="args[1] != null">
+			<if test="args[1].id != null and args[1].id != ''">
+				AND s.id = #{args[1].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[1].englishName != null and args[1].englishName != ''">
+				AND s.english_name = #{args[1].englishName,javaType=java.lang.String}
+			</if>
+			<if test="args[1].code != null and args[1].code != ''">
+				AND s.code = #{args[1].code,javaType=java.lang.String}
+			</if>
+			<if test="args[1].stageScope != null and args[1].stageScope != ''">
+				AND s.stage_scope = #{args[1].stageScope,javaType=java.lang.String}
+			</if>
+			<if test="args[1].schoolSystem != null and args[1].schoolSystem != ''">
+				AND s.school_system = #{args[1].schoolSystem,javaType=java.lang.String}
+			</if>
+			<if test="args[1].schoolType != null and args[1].schoolType != ''">
+				AND s.school_type = #{args[1].schoolType,javaType=java.lang.String}
+			</if>
+			<if test="args[1].runningType != null and args[1].runningType != ''">
+				AND s.running_type = #{args[1].runningType,javaType=java.lang.String}
+			</if>
+			<if test="args[1].buildDate != null and args[1].buildDate != ''">
+				AND s.build_date = #{args[1].buildDate,javaType=java.lang.String}
+			</if>
+			<if test="args[1].decorationDay != null">
+				AND s.decoration_day = #{args[1].decorationDay,javaType=java.util.Date}
+			</if>
+			<if test="args[1].province != null and args[1].province != ''">
+				AND s.province = #{args[1].province,javaType=java.lang.String}
+			</if>
+			<if test="args[1].city != null and args[1].city != ''">
+				AND s.city = #{args[1].city,javaType=java.lang.String}
+			</if>
+			<if test="args[1].district != null and args[1].district != ''">
+				AND s.district = #{args[1].district,javaType=java.lang.String}
+			</if>
+			<if test="args[1].regionCode != null and args[1].regionCode != ''">
+				AND s.region_code = #{args[1].regionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[1].address != null and args[1].address != ''">
+				AND s.address = #{args[1].address,javaType=java.lang.String}
+			</if>
+			<if test="args[1].zipcode != null and args[1].zipcode != ''">
+				AND s.zipcode = #{args[1].zipcode,javaType=java.lang.String}
+			</if>
+			<if test="args[1].telephone != null and args[1].telephone != ''">
+				AND s.telephone = #{args[1].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[1].websit != null and args[1].websit != ''">
+				AND s.websit = #{args[1].websit,javaType=java.lang.String}
+			</if>
+			<if test="args[1].remark != null and args[1].remark != ''">
+				AND s.remark = #{args[1].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[1].entityId_badge != null and args[1].entityId_badge != ''">
+				AND s.badge = #{args[1].entityId_badge,javaType=java.lang.String}
+			</if>
+			<if test="args[1].entityId_image != null and args[1].entityId_image != ''">
+				AND s.image = #{args[1].entityId_image,javaType=java.lang.String}
+			</if>
+			<if test="args[1].createDate != null">
+				AND s.create_date = #{args[1].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[1].modifyDate != null">
+				AND s.modify_date = #{args[1].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[1].name != null and args[1].name != ''">
+				AND s.name LIKE CONCAT(CONCAT('%', #{args[1].name}),'%')
+			</if>
+		</if>
+	</select>
+
+	<select id="findIncrementData" resultMap="SchoolResult" useCache="false">
+		SELECT * FROM pj_school
+		WHERE 1=1
+		<if test="args[0] != null">
+			<choose>
+				<when test="args[0] == true">
+					AND is_deleted = 1
+				</when>
+				<otherwise>
+					AND is_deleted = 0
+				</otherwise>
+			</choose>
+		</if>
+		<if test="args[1] != null">
+			AND modify_date > #{args[1],javaType=java.util.Date}
+		</if>
+		<if test="args[2] != null">
+			<choose>
+				<when test="args[3] == true">
+					AND id > #{args[2],javaType=java.lang.Integer}
+				</when>
+				<otherwise>
+					AND id BETWEEN 0 AND #{args[2],javaType=java.lang.Integer}
+				</otherwise>
+			</choose>
+		</if>
+		ORDER BY modify_date, id
+	</select>
+
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="platform.szxyzxx.resultsStatistical.dao.GradeSubjectScoresMapper">
+    <select id="findByGss" parameterType="platform.szxyzxx.resultsStatistical.pojo.vo.GssQuery"
+            resultType="platform.szxyzxx.resultsStatistical.pojo.GradeSubjectScores">
+        select pt.name as className,count(*) as classNumber,
+        /*参考人数*/
+        (select count(*) from pj_student_score where team_id=pt.id and score is not null and score !=0.00) as referenceNumber,
+        SUM(score) as totalScore,avg(score) as average,
+        /*全镇平均成绩*/
+        (select average from performance_analysis where grade=pg.name and subjects='语文' and testName='期末考试') as paAverage,
+        /*合格人数*/
+        (select count(*) from pj_student_score where score>=60 and  team_id=pt.id ) as qualifiedNumber,
+        (select ((select count(*) from pj_student_score where score>=60 and team_id=pt.id )/
+        (select count(*) from pj_student_score where team_id=pt.id and score is not null and score !=0.00)) from pj_student_score where team_id=pt.id group by team_id) as percent,
+        (select percentPass from performance_analysis where grade=pg.name and subjects='语文' and testName='期末考试') as paPercent,
+        /*不合格人数*/
+        (select count(*) from pj_student_score where score &lt; 60 and  team_id=pt.id ) as unqualifiedNumber,
+        (select ((select count(*) from pj_student_score where score &lt; 60 and team_id=pt.id)/(select count(*) from pj_student_score where team_id=pt.id and score is not null and score !=0.00)) from pj_student_score where team_id=pt.id group by team_id) as unpercent,
+        /*优秀人数*/
+           <!-- <if test="args[0].grade">
+                (select count(*) from pj_student_score where score>=90 and  team_id=pt.id ) as eugenics,
+            </if>
+            <if test="">
+
+            </if>-->
+        (select count(*) from pj_student_score where score>=90 and  team_id=pt.id ) as eugenics,
+        (select ((select count(*) from pj_student_score where score>=90 and team_id=pt.id)/(select count(*) from pj_student_score where team_id=pt.id and score is not null and score !=0.00)) from pj_student_score where team_id=pt.id group by team_id) as paHealthy,
+        (select proficiency from performance_analysis where grade=pg.name and subjects='语文' and testName='期末考试') as proficiency,
+        ptt.name as teatherName
+        from pj_student_score pss inner join  pj_team_student pts on pss.student_id=pts.student_id
+        inner join pj_grade pg on pts.grade_id=pg.id
+        inner join pj_team pt on pss.team_id=pt.id
+        inner join pj_team_teacher ptt on ptt.team_id=pss.team_id
+        where pss.is_delete=0 and  ptt.subject_name='语文'
+        GROUP BY pss.team_id
+    </select>
+
+
+</mapper>

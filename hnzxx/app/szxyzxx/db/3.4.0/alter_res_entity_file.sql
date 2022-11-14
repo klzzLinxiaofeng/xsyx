@@ -1,0 +1,1 @@
+ALTER TABLE `edu_gzzhxy`.`res_entity_file` CHANGE COLUMN `content_type` `content_type` varchar(255) NOT NULL DEFAULT '' COMMENT '文件头类型 ';

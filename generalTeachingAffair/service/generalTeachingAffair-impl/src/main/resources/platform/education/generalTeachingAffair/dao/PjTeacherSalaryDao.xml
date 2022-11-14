@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PjTeacherSalaryDao">
+
+	<resultMap id="PjTeacherSalaryResult" type="platform.education.generalTeachingAffair.model.PjTeacherSalary">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<!-- <result property="departmentId" column="department_id" /> -->
+		<result property="teacherId" column="teacher_id" />
+		<result property="userId" column="user_id" />
+		<result property="name" column="name" />
+		<result property="payYear" column="pay_year" />
+		<result property="payMonth" column="pay_month" />
+		<result property="salaryTotal" column="salary_total" />
+		<result property="s1" column="s_1" />
+		<result property="s2" column="s_2" />
+		<result property="s3" column="s_3" />
+		<result property="s4" column="s_4" />
+		<result property="s5" column="s_5" />
+		<result property="s6" column="s_6" />
+		<result property="s7" column="s_7" />
+		<result property="s8" column="s_8" />
+		<result property="s9" column="s_9" />
+		<result property="s10" column="s_10" />
+		<result property="s11" column="s_11" />
+		<result property="s12" column="s_12" />
+		<result property="s13" column="s_13" />
+		<result property="s14" column="s_14" />
+		<result property="s15" column="s_15" />
+		<result property="s16" column="s_16" />
+		<result property="s17" column="s_17" />
+		<result property="s18" column="s_18" />
+		<result property="s19" column="s_19" />
+		<result property="s20" column="s_20" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.PjTeacherSalary">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_teacher_salary (
+			id, 
+			school_id, 
+			teacher_id, 
+			user_id, 
+			name, 
+			pay_year, 
+			pay_month, 
+			salary_total, 
+			s_1, 
+			s_2, 
+			s_3, 
+			s_4, 
+			s_5, 
+			s_6, 
+			s_7, 
+			s_8, 
+			s_9, 
+			s_10, 
+			s_11, 
+			s_12, 
+			s_13, 
+			s_14, 
+			s_15, 
+			s_16, 
+			s_17, 
+			s_18, 
+			s_19, 
+			s_20, 
+			create_date, 
+			modify_date, 
+			is_deleted
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{teacherId}, 
+			#{userId}, 
+			#{name}, 
+			#{payYear}, 
+			#{payMonth}, 
+			#{salaryTotal}, 
+			#{s1}, 
+			#{s2}, 
+			#{s3}, 
+			#{s4}, 
+			#{s5}, 
+			#{s6}, 
+			#{s7}, 
+			#{s8}, 
+			#{s9}, 
+			#{s10}, 
+			#{s11}, 
+			#{s12}, 
+			#{s13}, 
+			#{s14}, 
+			#{s15}, 
+			#{s16}, 
+			#{s17}, 
+			#{s18}, 
+			#{s19}, 
+			#{s20}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="PjTeacherSalaryResult" useCache="false">
+		SELECT * FROM pj_teacher_salary WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPjTeacherSalaryYearBySchoolId" resultType="java.lang.Integer" useCache="false">
+		SELECT DISTINCT pay_year
+		FROM pj_teacher_salary 
+		WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		GROUP BY pay_year 
+		ORDER BY pay_year DESC
+	</select>
+	
+	<select id="findPjTeacherSalaryByCondition" resultMap="PjTeacherSalaryResult" useCache="false">
+		SELECT DISTINCT 
+			sal.id, 
+			sal.school_id, 
+			sal.teacher_id, 
+			sal.user_id, 
+			sal.name, 
+			sal.pay_year, 
+			sal.pay_month, 
+			sal.salary_total, 
+			sal.s_1, 
+			sal.s_2, 
+			sal.s_3, 
+			sal.s_4, 
+			sal.s_5, 
+			sal.s_6, 
+			sal.s_7, 
+			sal.s_8, 
+			sal.s_9, 
+			sal.s_10, 
+			sal.s_11, 
+			sal.s_12, 
+			sal.s_13, 
+			sal.s_14, 
+			sal.s_15, 
+			sal.s_16, 
+			sal.s_17, 
+			sal.s_18, 
+			sal.s_19, 
+			sal.s_20, 
+			sal.create_date, 
+			sal.modify_date, 
+			sal.is_deleted 
+		FROM pj_teacher_salary sal 
+			left join pj_department_teacher dep	
+		on sal.teacher_id = dep.teacher_id
+		<if test="args[0] != null">
+			where 1=1 
+			<if test="args[0].departmentId != null">	    	
+				AND dep.department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND sal.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].payYear != null">
+				AND sal.pay_year = #{args[0].payYear,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].payMonth != null">
+				AND sal.pay_month = #{args[0].payMonth,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].id != null">
+				AND sal.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND sal.teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND sal.user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND sal.name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].salaryTotal != null">
+				AND sal.salary_total = #{args[0].salaryTotal,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s1 != null">
+				AND sal.s_1 = #{args[0].s1,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s2 != null">
+				AND sal.s_2 = #{args[0].s2,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s3 != null">
+				AND sal.s_3 = #{args[0].s3,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s4 != null">
+				AND sal.s_4 = #{args[0].s4,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s5 != null">
+				AND sal.s_5 = #{args[0].s5,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s6 != null">
+				AND sal.s_6 = #{args[0].s6,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s7 != null">
+				AND sal.s_7 = #{args[0].s7,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s8 != null">
+				AND sal.s_8 = #{args[0].s8,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s9 != null">
+				AND sal.s_9 = #{args[0].s9,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s10 != null">
+				AND sal.s_10 = #{args[0].s10,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s11 != null">
+				AND sal.s_11 = #{args[0].s11,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s12 != null">
+				AND sal.s_12 = #{args[0].s12,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s13 != null">
+				AND sal.s_13 = #{args[0].s13,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s14 != null">
+				AND sal.s_14 = #{args[0].s14,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s15 != null">
+				AND sal.s_15 = #{args[0].s15,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s16 != null">
+				AND sal.s_16 = #{args[0].s16,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s17 != null">
+				AND sal.s_17 = #{args[0].s17,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s18 != null">
+				AND sal.s_18 = #{args[0].s18,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s19 != null">
+				AND sal.s_19 = #{args[0].s19,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s20 != null">
+				AND sal.s_20 = #{args[0].s20,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].createDate != null">
+				AND sal.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND sal.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND sal.is_deleted  = 1
+					</when>
+					<otherwise>
+						AND sal.is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+		ORDER BY pay_year DESC,pay_month DESC
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_teacher_salary 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].payYear != null">
+				AND pay_year = #{args[0].payYear,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].payMonth != null">
+				AND pay_month = #{args[0].payMonth,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].salaryTotal != null">
+				AND salary_total = #{args[0].salaryTotal,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s1 != null">
+				AND s_1 = #{args[0].s1,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s2 != null">
+				AND s_2 = #{args[0].s2,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s3 != null">
+				AND s_3 = #{args[0].s3,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s4 != null">
+				AND s_4 = #{args[0].s4,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s5 != null">
+				AND s_5 = #{args[0].s5,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s6 != null">
+				AND s_6 = #{args[0].s6,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s7 != null">
+				AND s_7 = #{args[0].s7,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s8 != null">
+				AND s_8 = #{args[0].s8,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s9 != null">
+				AND s_9 = #{args[0].s9,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s10 != null">
+				AND s_10 = #{args[0].s10,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s11 != null">
+				AND s_11 = #{args[0].s11,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s12 != null">
+				AND s_12 = #{args[0].s12,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s13 != null">
+				AND s_13 = #{args[0].s13,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s14 != null">
+				AND s_14 = #{args[0].s14,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s15 != null">
+				AND s_15 = #{args[0].s15,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s16 != null">
+				AND s_16 = #{args[0].s16,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s17 != null">
+				AND s_17 = #{args[0].s17,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s18 != null">
+				AND s_18 = #{args[0].s18,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s19 != null">
+				AND s_19 = #{args[0].s19,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].s20 != null">
+				AND s_20 = #{args[0].s20,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PjTeacherSalaryResult" useCache="false">
+		SELECT * FROM pj_teacher_salary WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.PjTeacherSalary">
+		UPDATE pj_teacher_salary
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="teacherId != null">
+			teacher_id=#{teacherId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="payYear != null">
+			pay_year=#{payYear},
+		</if>
+		<if test="payMonth != null">
+			pay_month=#{payMonth},
+		</if>
+		<if test="salaryTotal != null">
+			salary_total=#{salaryTotal},
+		</if>
+		<if test="s1 != null">
+			s_1=#{s1},
+		</if>
+		<if test="s2 != null">
+			s_2=#{s2},
+		</if>
+		<if test="s3 != null">
+			s_3=#{s3},
+		</if>
+		<if test="s4 != null">
+			s_4=#{s4},
+		</if>
+		<if test="s5 != null">
+			s_5=#{s5},
+		</if>
+		<if test="s6 != null">
+			s_6=#{s6},
+		</if>
+		<if test="s7 != null">
+			s_7=#{s7},
+		</if>
+		<if test="s8 != null">
+			s_8=#{s8},
+		</if>
+		<if test="s9 != null">
+			s_9=#{s9},
+		</if>
+		<if test="s10 != null">
+			s_10=#{s10},
+		</if>
+		<if test="s11 != null">
+			s_11=#{s11},
+		</if>
+		<if test="s12 != null">
+			s_12=#{s12},
+		</if>
+		<if test="s13 != null">
+			s_13=#{s13},
+		</if>
+		<if test="s14 != null">
+			s_14=#{s14},
+		</if>
+		<if test="s15 != null">
+			s_15=#{s15},
+		</if>
+		<if test="s16 != null">
+			s_16=#{s16},
+		</if>
+		<if test="s17 != null">
+			s_17=#{s17},
+		</if>
+		<if test="s18 != null">
+			s_18=#{s18},
+		</if>
+		<if test="s19 != null">
+			s_19=#{s19},
+		</if>
+		<if test="s20 != null">
+			s_20=#{s20},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_teacher_salary
+		WHERE id = #{id}
+	</delete>
+</mapper>

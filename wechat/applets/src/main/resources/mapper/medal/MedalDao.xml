@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.medal.dao.MedalDao">
+    <!--    奖章表-->
+    <resultMap id="medalResult" type="com.xunyunedu.medal.model.Medal">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="grade" column="grade"/>
+        <result property="background" column="background"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modeifyDate" column="modify_date"/>
+    </resultMap>
+    <!--    奖章学生表-->
+    <resultMap id="AwardsMedalResult" type="com.xunyunedu.medal.model.MvAwardsMedal">
+        <result property="id" column="id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="year" column="year"/>
+        <result property="medalId" column="medal_id"/>
+        <result property="grade" column="grade"/>
+        <result property="studentNumber" column="student_number"/>
+        <result property="awardsStudent" column="awards_student"/>
+        <result property="teacherName" column="teacher_name"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="classes" column="class"/>
+        <result property="studentId" column="student_id"/>
+        <result property="schoolTerm" column="school_term"/>
+
+
+    </resultMap>
+    <!--    创建奖章-->
+    <insert id="crateMedal" parameterType="com.xunyunedu.medal.model.Medal">
+INSERT into mv_medal(id,name,grade,background,description,create_date,modify_date)
+VALUES(#{id},#{name},#{grade},#{background},#{description},NOW(),NOW())
+    </insert>
+    <!--    删除奖章-->
+    <delete id="deleteMedal" parameterType="java.lang.Integer">
+         delete  FROM mv_medal where id=#{id}
+    </delete>
+    <!--    更新奖章信息-->
+    <update id="updateMedal" parameterType="com.xunyunedu.medal.model.Medal">
+        UPDATE mv_medal SET name=#{name}
+
+        <if test="grade !=null ">
+            ,grade=#{grade}
+        </if>
+        <if test="background !=null">
+            , background=#{background}
+        </if>
+        <if test="description !=null">
+            , description=#{description}
+        </if>
+        , modify_date=NOW()
+        WHERE id=#{id}
+    </update>
+    <!--    查询所有奖章信息-->
+    <select id="findMedalAll" resultMap="medalResult">
+        select * from mv_medal
+    </select>
+    <!--    通过id查询奖章信息-->
+    <select id="findMeDalById" parameterType="java.lang.Integer" resultMap="medalResult">
+         select * FROM mv_medal where id=#{id}
+    </select>
+    <!--    批量创建奖章学生-->
+    <insert id="crateMedalStudent" parameterType="com.xunyunedu.medal.model.MvAwardsMedal">
+        INSERT INTO mv_awards_medal(id,school_id,year,medal_id,grade,student_number,class,awards_student,teacher_name,create_date,modify_date,student_id,school_term)
+        VALUES
+        <foreach collection="list" item="AwardsMedal" index="index" separator=",">
+        (null,#{AwardsMedal.schoolId},#{AwardsMedal.year},#{AwardsMedal.medalId},#{AwardsMedal.grade},#{AwardsMedal.studentNumber},#{AwardsMedal.classes},#{AwardsMedal.awardsStudent},#{AwardsMedal.teacherName},NOW(),NOW(),#{AwardsMedal.studentId},#{AwardsMedal.schoolTerm})
+        </foreach>
+    </insert>
+<!--    查询学生获取的奖章-->
+    <select id="findMvAwardsMedalByStudent" parameterType="java.lang.Integer" resultMap="AwardsMedalResult">
+        select * from  mv_awards_medal where student_id=#{studentId}
+    </select>
+<select id="findMvAwardsMedalByStudentAndMeDalById" resultMap="AwardsMedalResult" parameterType="Map">
+      select * from  mv_awards_medal where student_id=#{studentId} and medal_id=#{medalId}
+</select>
+</mapper>

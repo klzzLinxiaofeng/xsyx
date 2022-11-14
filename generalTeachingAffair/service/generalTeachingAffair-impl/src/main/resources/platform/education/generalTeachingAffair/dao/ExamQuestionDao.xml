@@ -1,0 +1,1500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ExamQuestionDao">
+
+	<resultMap id="ExamQuestionResult"
+		type="platform.education.generalTeachingAffair.model.ExamQuestion">
+		<result property="id" column="id" />
+		<result property="examId" column="exam_id" />
+		<result property="questionType" column="question_type" />
+		<result property="answerCount" column="answer_count" />
+		<result property="emptyCount" column="empty_count" />
+		<result property="rightAnswerCount" column="right_answer_count" />
+		<result property="score" column="score" />
+		<result property="averageScore" column="average_score" />
+		<result property="teamRank" column="team_rank" />
+		<result property="gradeRank" column="grade_rank" />
+		<result property="warningFactor" column="warning_factor" />
+		<result property="totalTime" column="total_time" />
+		<result property="averageTime" column="average_time" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="questionUuid" column="question_uuid" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="knowledgeId" column="knowledge_id" />
+		<result property="difficulity" column="difficulity" />
+		<result property="cognition" column="cognition" />
+		<result property="fullScore" column="full_score" />
+		<result property="teamScoringRate" column="team_scoring_rate" />
+		<result property="gradeScoringRate" column="grade_scoring_rate" />
+		<result property="pos" column="pos" /> 
+	</resultMap>
+	
+		<resultMap id="ExamQuestionVoResult" type="platform.education.generalTeachingAffair.vo.ExamQuestionVo">
+		<result property="id" column="id" />
+		<result property="examId" column="exam_id" />
+		<result property="questionType" column="question_type" />
+		<result property="answerCount" column="answer_count" />
+		<result property="emptyCount" column="empty_count" />
+		<result property="rightAnswerCount" column="right_answer_count" />
+		<result property="score" column="score" />
+		<result property="averageScore" column="average_score" />
+		<result property="teamRank" column="team_rank" />
+		<result property="gradeRank" column="grade_rank" />
+		<result property="warningFactor" column="warning_factor" />
+		<result property="totalTime" column="total_time" />
+		<result property="averageTime" column="average_time" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="questionUuid" column="question_uuid" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="knowledgeId" column="knowledge_id" />
+		<result property="difficulity" column="difficulity" />
+		<result property="cognition" column="cognition" />
+		<result property="fullScore" column="full_score" />
+		<result property="teamScoringRate" column="team_scoring_rate" />
+		<result property="gradeScoringRate" column="grade_scoring_rate" />
+		<result property="teamNumber" column="team_number" />
+	</resultMap>
+
+	<resultMap id="ScoringAverageVoResult"
+		type="platform.education.generalTeachingAffair.vo.ScoringAverageVo">
+		<result property="examId" column="exam_id" />
+		<result property="knowledgeId" column="knowledge_id" />
+		<result property="knowledgeName" column="knowledgeName" />
+		<result property="percent" column="percent" />
+		<result property="type" column="type" />
+	</resultMap>
+
+	<resultMap id="KnolwdgeDiffVoResult"
+		type="platform.education.generalTeachingAffair.vo.KnolwdgeDiffVo">
+		<result property="examId" column="exam_id" />
+		<result property="knowledgeId" column="knowledge_id" />
+		<result property="knowledgeName" column="knowledgeName" />
+		<result property="easyScore" column="easyScore" />
+		<result property="mediumScore" column="mediumScore" />
+		<result property="difficultyScore" column="difficultyScore" />
+		<result property="fullScore" column="fullScore" />
+	</resultMap>
+
+	<resultMap id="ExamErrorVoResult"
+		type="platform.education.generalTeachingAffair.vo.ExamErrorVo">
+		<result property="pos" column="pos" />
+		<result property="type" column="type" />
+		<result property="questionUuid" column="questionUuid" />
+		<result property="knowledgeName" column="knowledgeName" />
+		<result property="errorPercent" column="errorPercent" />
+		<result property="knowledgeId" column="knowledgeId" />
+	</resultMap>
+
+	<resultMap id="ExamQuetionWrongResult"
+		type="platform.education.generalTeachingAffair.vo.ExamQuestionWrongVo">
+		<result property="teamScoringRate" column="team_scoring_rate" />
+		<result property="gradeScoringRate" column="grade_scoring_rate" />
+		<result property="content" column="content" />
+		<result property="complexTitle" column="extra_content" />
+		<result property="answer" column="answer" />
+		<result property="correctAnswer" column="correct_answer" />
+		<result property="questionType" column="question_type" />
+		<result property="difficulity" column="difficulity" />
+		<result property="explanation" column="explanation" />
+		<result property="questionUuid" column="uuid" />
+		<result property="averageTime" column="average_time" />
+		<result property="answerCount" column="answer_count" />
+		<result property="rightAnswerCount" column="right_answer_count" />
+		<result property="parentId" column="parent_id" />
+		<result property="number"  column="number" />
+		<result property="score"  column="score" />
+		<result property="paperTitle"  column="paperTitle" />
+		<result property="questionId"  column="questionId" />
+		<result property="examQuestionId"  column="examQuestionId" />
+		<result property="parentType"  column="parentType" />
+	</resultMap>
+
+	<insert id="create"
+		parameterType="platform.education.generalTeachingAffair.model.ExamQuestion">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_exam_question (
+		id,
+		exam_id,
+		question_type,
+		answer_count,
+		empty_count,
+		right_answer_count,
+		score,
+		average_score,
+		team_rank,
+		grade_rank,
+		warning_factor,
+		total_time,
+		average_time,
+		create_date,
+		modify_date,
+		is_deleted,
+		question_uuid,
+		subject_code,
+		knowledge_id,
+		difficulity,
+		cognition,
+		full_score,
+		team_scoring_rate,
+		grade_scoring_rate,
+		pos
+		)
+		VALUES (
+		#{id},
+		#{examId},
+		#{questionType},
+		#{answerCount},
+		#{emptyCount},
+		#{rightAnswerCount},
+		#{score},
+		#{averageScore},
+		#{teamRank},
+		#{gradeRank},
+		#{warningFactor},
+		#{totalTime},
+		#{averageTime},
+		#{createDate},
+		#{modifyDate},
+		<choose>
+			<when test="isDeleted != null">
+				<choose>
+					<when test="isDeleted == true">
+						1,
+					</when>
+					<otherwise>
+						0,
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{questionUuid},
+		#{subjectCode},
+		#{knowledgeId},
+		#{difficulity},
+		#{cognition},
+		#{fullScore},
+		#{teamScoringRate},
+		#{gradeScoringRate},
+		#{pos}
+		)
+	</insert>
+
+	<select id="read" resultMap="ExamQuestionResult" useCache="false">
+		SELECT * FROM pj_exam_question WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findExamQuestionByCondition" resultMap="ExamQuestionResult"
+		useCache="false">
+		SELECT * FROM pj_exam_question
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examId != null">
+				AND exam_id =
+				#{args[0].examId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionType != null and args[0].questionType != ''">
+				AND question_type =
+				#{args[0].questionType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answerCount != null">
+				AND answer_count =
+				#{args[0].answerCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].emptyCount != null">
+				AND empty_count =
+				#{args[0].emptyCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].rightAnswerCount != null">
+				AND right_answer_count =
+				#{args[0].rightAnswerCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].averageScore != null">
+				AND average_score =
+				#{args[0].averageScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].pos != null">
+				AND pos = #{args[0].pos,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamRank != null">
+				AND team_rank =
+				#{args[0].teamRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeRank != null">
+				AND grade_rank =
+				#{args[0].gradeRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].warningFactor != null">
+				AND warning_factor =
+				#{args[0].warningFactor,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].totalTime != null">
+				AND total_time =
+				#{args[0].totalTime,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].averageTime != null">
+				AND average_time =
+				#{args[0].averageTime,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid =
+				#{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code =
+				#{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].knowledgeId != null">
+				AND knowledge_id =
+				#{args[0].knowledgeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].difficulity != null">
+				AND difficulity =
+				#{args[0].difficulity,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].cognition != null and args[0].cognition != ''">
+				AND cognition =
+				#{args[0].cognition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].pos != null">
+				AND pos = #{args[0].pos,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fullScore != null">
+				AND full_score =
+				#{args[0].fullScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].teamScoringRate != null">
+				AND team_scoring_rate =
+				#{args[0].teamScoringRate,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].gradeScoringRate != null">
+				AND grade_scoring_rate =
+				#{args[0].gradeScoringRate,javaType=java.lang.Float}
+			</if>
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_exam_question
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examId != null">
+				AND exam_id =
+				#{args[0].examId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionType != null and args[0].questionType != ''">
+				AND question_type =
+				#{args[0].questionType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answerCount != null">
+				AND answer_count =
+				#{args[0].answerCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].emptyCount != null">
+				AND empty_count =
+				#{args[0].emptyCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].rightAnswerCount != null">
+				AND right_answer_count =
+				#{args[0].rightAnswerCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].averageScore != null">
+				AND average_score =
+				#{args[0].averageScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].teamRank != null">
+				AND team_rank =
+				#{args[0].teamRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeRank != null">
+				AND grade_rank =
+				#{args[0].gradeRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].warningFactor != null">
+				AND warning_factor =
+				#{args[0].warningFactor,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].totalTime != null">
+				AND total_time =
+				#{args[0].totalTime,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].averageTime != null">
+				AND average_time =
+				#{args[0].averageTime,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid =
+				#{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code =
+				#{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].knowledgeId != null">
+				AND knowledge_id =
+				#{args[0].knowledgeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].difficulity != null">
+				AND difficulity =
+				#{args[0].difficulity,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].cognition != null and args[0].cognition != ''">
+				AND cognition =
+				#{args[0].cognition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fullScore != null">
+				AND full_score =
+				#{args[0].fullScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].teamScoringRate != null">
+				AND team_scoring_rate =
+				#{args[0].teamScoringRate,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].gradeScoringRate != null">
+				AND grade_scoring_rate =
+				#{args[0].gradeScoringRate,javaType=java.lang.Float}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="ExamQuestionResult" useCache="false">
+		SELECT * FROM pj_exam_question WHERE id =
+		#{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<update id="update"
+		parameterType="platform.education.generalTeachingAffair.model.ExamQuestion">
+		UPDATE pj_exam_question
+		SET
+		<if test="examId != null">
+			exam_id=#{examId},
+		</if>
+		<if test="questionType != null">
+			question_type=#{questionType},
+		</if>
+		<if test="answerCount != null">
+			answer_count=#{answerCount},
+		</if>
+		<if test="emptyCount != null">
+			empty_count=#{emptyCount},
+		</if>
+		<if test="rightAnswerCount != null">
+			right_answer_count=#{rightAnswerCount},
+		</if>
+			<if test="pos != null">
+			pos=#{pos},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="averageScore != null">
+			average_score=#{averageScore},
+		</if>
+		<if test="teamRank != null">
+			team_rank=#{teamRank},
+		</if>
+		<if test="gradeRank != null">
+			grade_rank=#{gradeRank},
+		</if>
+		<if test="warningFactor != null">
+			warning_factor=#{warningFactor},
+		</if>
+		<if test="totalTime != null">
+			total_time=#{totalTime},
+		</if>
+		<if test="averageTime != null">
+			average_time=#{averageTime},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted = 1,
+				</when>
+				<otherwise>
+					is_deleted = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="questionUuid != null">
+			question_uuid=#{questionUuid},
+		</if>
+		<if test="subjectCode != null">
+			subject_code=#{subjectCode},
+		</if>
+		<if test="knowledgeId != null">
+			knowledge_id=#{knowledgeId},
+		</if>
+		<if test="difficulity != null">
+			difficulity=#{difficulity},
+		</if>
+		<if test="cognition != null">
+			cognition=#{cognition},
+		</if>
+		<if test="fullScore != null">
+			full_score=#{fullScore},
+		</if>
+		<if test="teamScoringRate != null">
+			team_scoring_rate=#{teamScoringRate},
+		</if>
+		<if test="gradeScoringRate != null">
+			grade_scoring_rate=#{gradeScoringRate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_exam_question
+		WHERE id = #{id}
+	</delete>
+
+	<resultMap id="ExamQuestionResultVo"
+		type="platform.education.generalTeachingAffair.vo.ExamQuestionVo"
+		extends="ExamQuestionResult">
+		<result property="teamName" column="team_name" />
+		<result property="rightAnswerCount" column="right_answer_count" />
+		<result property="rightRate" column="ris" />
+	</resultMap>
+	<select id="findExamQuestionByExamIdAndTeamId" resultMap="ExamQuestionResultVo"
+		useCache="false">
+		SELECT
+		eq.id,
+		eq.exam_id,
+		team.id team_id,
+		eq.question_uuid,
+		team.team_number team_name,
+		eq.question_type,
+		eq.answer_count,
+		eq.right_answer_count,
+		eq.average_score,
+		eq.full_score,
+		eq.team_scoring_rate,
+		(
+		SELECT
+		count(s.average_score) + 1
+		FROM
+		(
+		SELECT
+		up.id,
+		up.average_score
+		FROM
+		pj_exam_question up
+		where 1=1
+		<if test="args[1] != null">
+			and up.exam_id = #{args[1]}
+		</if>
+		ORDER BY
+		up.average_score DESC
+		) s
+		WHERE s.average_score > eq.average_score
+		) teamRightRate
+		FROM
+		pj_exam_question eq
+		LEFT JOIN pj_exam e on eq.exam_id = e.id AND e.is_delete = 0
+		LEFT JOIN pj_team team on
+		team.id = e.team_id
+		where 1=1
+		<if test="args[0] != null">
+			and team.id=#{args[0]}
+		</if>
+
+		<if test="args[0] != null">
+			<if test="args[1] != null">
+				and e.id=#{args[1]}
+			</if>
+		</if>
+		<if test="args[2] != null">
+			and e.joint_exam_code = #{args[2]}
+		</if>
+		<if test="args[3] != null">
+			and eq.question_uuid = #{args[3]}
+		</if>
+		ORDER BY team.id
+	</select>
+
+	<select id="findExamQuestionByJointExamCodeAndQuestionUuid"
+		resultMap="ExamQuestionResultVo" useCache="false">
+		SELECT
+		t.id,
+		t.exam_id,
+		team.id team_id,
+		t.ris,
+		t.question_uuid,
+		team.team_number team_name,
+		t.question_type,
+		t.answer_count,
+		t.right_answer_count,
+		t.average_score,
+
+		(
+		SELECT
+		count(s.ris) + 1
+		FROM
+		(
+		SELECT
+		s.ris
+		FROM
+		(
+		SELECT
+		IFNULL(
+		(
+		q.right_answer_count / q.answer_count
+		),
+		0
+		) ris
+		FROM
+		pj_exam_question q
+		LEFT JOIN pj_exam e ON e.joint_exam_code = #{args[0]} AND e.is_delete = 0
+		WHERE
+		q.exam_id = e.id
+		AND question_uuid = #{args[1]}
+		ORDER BY
+		ris DESC
+		) s
+		GROUP BY
+		s.ris
+		ORDER BY
+		s.ris DESC
+		) s
+		WHERE
+		s.ris > t.ris
+		) team_rank,
+		t.team_scoring_rate,
+		t.grade_scoring_rate
+
+		FROM
+		(
+		SELECT
+		IFNULL(
+		(
+		q.right_answer_count / q.answer_count
+		),
+		0
+		) ris,
+		q.exam_id,
+		q.id,
+		q.question_uuid,
+		q.question_type,
+		q.answer_count,
+		q.right_answer_count,
+		q.average_score,
+		q.team_scoring_rate,
+		q.grade_scoring_rate
+
+		FROM
+		pj_exam_question q
+		LEFT JOIN pj_exam e ON e.joint_exam_code = #{args[0]} AND e.is_delete = 0
+		WHERE
+		q.exam_id = e.id
+		AND question_uuid = #{args[1]}
+		ORDER BY
+		ris DESC
+		) t
+		LEFT JOIN pj_exam pe ON pe.id = t.exam_id  AND pe.is_delete = 0
+		LEFT JOIN pj_team team ON
+		pe.team_id = team.id
+		ORDER BY team.id
+	</select>
+
+	<update id="updateExamQuestionCorrectAnswerCount">
+		UPDATE pj_exam_question es,
+		(
+		SELECT
+		count(*) answerCount,
+		up.question_uuid
+		FROM
+		pa_user_question up
+		WHERE 1=1
+
+		<if test="args[0] != null">
+			AND up.team_id =#{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND up.owner_id =#{args[1]}
+		</if>
+		<if test="args[2] != null">
+			AND up.type =#{args[2]}
+		</if>
+		<if test="args[3] != null">
+			AND up.is_correct =#{args[3]}
+		</if>
+		<if test="args[4] != null">
+			AND up.answer =#{args[4]}
+		</if>
+
+		GROUP BY up.question_uuid
+		) a
+		SET
+		<if test="args[3] != null">
+			es.right_answer_count = a.answerCount
+		</if>
+		<if test="args[3] == null">
+			es.answer_count = a.answerCount
+		</if>
+
+		WHERE 1=1
+		<if test="args[5] != null">
+			AND es.exam_id =#{args[5]}
+		</if>
+		and es.question_uuid = a.question_uuid
+	</update>
+
+	<update id="updateExamQuestionScore">
+		UPDATE pj_exam_question es,
+		(
+		SELECT
+		SUM(up.score) totalScore,
+		up.question_uuid
+		FROM
+		pa_user_question up
+		WHERE 1=1
+
+		<if test="args[0] != null">
+			AND up.team_id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			and up.owner_id = #{args[1]}
+		</if>
+		<if test="args[2] != null">
+			and up.type = #{args[2]}
+		</if>
+		<if test="args[4] != null">
+			and up.object_id = #{args[4]}
+		</if>
+		group by up.question_uuid
+		) a
+		SET es.score = a.totalScore
+		WHERE 1=1
+		<if test="args[3] != null">
+			AND es.exam_id =#{args[3]}
+		</if>
+		and es.question_uuid = a.question_uuid
+	</update>
+
+	<select id="findScoringAverageByExamId" resultMap="ScoringAverageVoResult"
+		useCache="false">
+		SELECT * FROM(
+		SELECT
+		eq.exam_id,
+		qk.knowledge_code knowledge_id,
+		eq.question_type AS type,
+		(SUM(eq.score)/SUM(eq.full_score * eq.answer_count))*100 AS percent
+		FROM
+		pj_exam_question eq
+		LEFT JOIN pa_question q
+		on q.uuid = eq.question_uuid
+		LEFT JOIN pa_question_knoledge qk
+		on qk.question_id = q.id
+		WHERE
+		eq.exam_id = #{args[0]}
+		GROUP BY
+		qk.knowledge_code
+		HAVING
+		qk.knowledge_code IS NOT NULL
+		)a WHERE a.percent IS NOT NULL
+	</select>
+
+	<select id="findKnowledgeDiffByExamId" resultMap="KnolwdgeDiffVoResult"
+		useCache="false">
+		SELECT * FROM(
+		(SELECT (SUM(score)/(SUM(full_score)*
+		answer_count))*100 as difficultyScore from pj_exam_question WHERE
+		difficulity &gt;= 0 AND difficulity &lt;= 0.3 AND exam_id =
+		#{args[0]}) a,
+		(SELECT (SUM(score)/(SUM(full_score)* answer_count))*100
+		as mediumScore from pj_exam_question WHERE difficulity &gt; 0.3 AND
+		difficulity &lt;= 0.6 AND exam_id = #{args[0]}) b,
+		(SELECT
+		(SUM(score)/(SUM(full_score)* answer_count))*100 as easyScore from
+		pj_exam_question WHERE difficulity &gt; 0.6 AND difficulity &lt;= 1
+		AND exam_id = #{args[0]}) c
+		)
+	</select>
+
+	<select id="findKnowledgeCognitionByExamId" resultMap="ScoringAverageVoResult"
+		useCache="false">
+		SELECT
+		exam_id,
+		cognition AS type,
+		(SUM(score)/(SUM(full_score)*answer_count))*100 as percent
+		FROM
+		pj_exam_question
+		where
+		exam_id = #{args[0]}
+		GROUP BY
+		cognition
+	</select>
+
+	<select id="findCountQuestiontTypeByExamId" resultMap="ScoringAverageVoResult"
+		useCache="false">
+		SELECT
+		exam_id,
+		question_type AS type,
+		(SUM(score)/(SUM(full_score)*answer_count))*100 as percent
+		FROM
+		pj_exam_question
+		where
+		exam_id = #{args[0]}
+		GROUP BY
+		question_type
+	</select>
+
+	<update id="updateExamQuestionAverageScore">
+		UPDATE pj_exam_question es
+		SET es.average_score = (es.score / es.answer_count)
+		WHERE
+		exam_id = #{args[0]}
+	</update>
+
+	<!--获取班级在某试卷中的知识点得分率 -->
+	<select id="findTeamKnoledgeScoreByExamId" resultMap="ScoringAverageVoResult"
+		useCache="false">
+		SELECT
+		(SUM(eq.score)/SUM(eq.full_score*eq.answer_count))*100 as percent,
+		qk.knowledge_code knowledge_id
+		FROM
+		pj_exam_question eq
+		LEFT JOIN pa_question q
+		on q.uuid = eq.question_uuid
+		LEFT JOIN pa_question_knoledge qk on  
+		qk.question_id = q.id
+		WHERE
+		exam_id = #{args[0]}
+		GROUP BY
+		qk.knowledge_code
+	</select>
+
+	<!--获取班级在某试卷中的丢分率率 -->
+	<select id="findExamErrorByExamId" resultMap="ExamErrorVoResult"
+		useCache="false">
+		SELECT * FROM (
+		SELECT
+		pt.pos,
+		eq.question_uuid AS questionUuid,
+		qk.knowledge_code knowledgeId,
+		eq.question_type as type,
+		eq.score/(eq.full_score*eq.answer_count) as errorPercent
+		FROM
+		pj_exam_question eq
+		LEFT JOIN pa_question q
+		on q.uuid = eq.question_uuid
+		LEFT JOIN pa_question_knoledge qk on  
+		qk.question_id = q.id
+		LEFT JOIN pa_paper_tree pt on
+		pt.question_id = q.id
+		WHERE
+		eq.exam_id = #{args[0]}
+		) a ORDER BY a.errorPercent ASC
+	</select>
+
+
+	<update id="updateExamQuestiontotalTime">
+		UPDATE pj_exam_question es,
+		(
+		SELECT
+		SUM(up.answer_time) totalTime,
+		up.question_uuid
+		FROM
+		pa_user_question up
+		WHERE 1=1
+
+		<if test="args[0] != null">
+			AND up.team_id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			and up.owner_id = #{args[1]}
+		</if>
+		<if test="args[2] != null">
+			and up.type = #{args[2]}
+		</if>
+		<if test="args[4] != null">
+			and up.object_id = #{args[4]}
+		</if>
+		group by up.question_uuid
+		) a
+		SET es.total_time = a.totalTime
+		WHERE 1=1
+		<if test="args[3] != null">
+			AND es.exam_id =#{args[3]}
+		</if>
+		and es.question_uuid = a.question_uuid
+	</update>
+	<!-- 批量更新数据 -->
+
+	<update id="batchUpdateExamQuestiontotalTime">
+		<foreach item="item" index="index" collection="args[0]" open="("
+			separator="," close=")">
+			UPDATE pj_exam_question es,
+			(
+			SELECT
+			SUM(up.answer_time) totalTime,
+			up.question_uuid
+			FROM
+			pa_user_question up
+			WHERE 1=1
+
+			AND up.team_id =#{item.teamId}
+			AND up.owner_id =#{item.ownerId}
+			AND up.type =#{item.paperType}
+
+			group by up.question_uuid
+			) a
+			SET es.total_time = a.totalTime
+			WHERE 1=1
+			AND es.exam_id =#{item.examId}
+
+			and es.question_uuid = a.question_uuid
+		</foreach>
+	</update>
+
+	<update id="batchUpateExamQuestionTeamScoringRate">
+		UPDATE pj_exam_question eq set eq.team_scoring_rate =
+		#{args[0].teamScoringRate}
+		WHERE 1=1
+		AND eq.id =#{args[0].id}
+	</update>
+
+
+
+
+	<update id="batchUpdateExamQuestionAverageScore">
+		<foreach item="item" index="index" collection="args[0]" open="("
+			separator="," close=")">
+			UPDATE pj_exam_question es
+			SET es.average_score = (es.score /
+			es.answer_count)
+			WHERE 1=1
+			AND es.exam_id =#{item.examId}
+		</foreach>
+	</update>
+
+	<update id="batchUpdateExamQuestionAnswerCount">
+		<foreach item="item" index="index" collection="args[0]" open="("
+			separator="," close=")">
+			UPDATE pj_exam_question es,
+			(
+			SELECT
+			count(*) answerCount,
+			up.question_uuid
+			FROM
+			pa_user_question up
+			WHERE 1=1
+
+			AND up.team_id =#{item.teamId}
+			AND up.owner_id =#{item.ownerId}
+			AND up.type =#{item.paperType}
+			AND up.object_id=#{item.unitId}
+
+			GROUP BY up.question_uuid
+			) a
+			SET
+			es.answer_count = a.answerCount
+			WHERE 1=1
+			AND es.exam_id =#{item.examId}
+			and es.question_uuid = a.question_uuid
+		</foreach>
+	</update>
+
+
+	<update id="batchUpdateExamQuestionCorrectAnswerCount">
+		<foreach item="item" index="index" collection="args[0]" open="("
+			separator="," close=")">
+			UPDATE pj_exam_question es,
+			(
+			SELECT
+			count(*) answerCount,
+			up.question_uuid
+			FROM
+			pa_user_question up
+			WHERE 1=1
+
+			AND up.team_id =#{item.teamId}
+			AND up.owner_id =#{item.ownerId}
+			AND up.type =#{item.paperType}
+			AND up.is_correct =1
+			AND up.object_id=#{item.unitId}
+
+			GROUP BY up.question_uuid
+			) a
+			SET
+
+			es.right_answer_count = a.answerCount
+
+			WHERE 1=1
+			AND es.exam_id =#{item.examId}
+			and es.question_uuid = a.question_uuid
+		</foreach>
+	</update>
+
+
+	<update id="batchUpdateExamQuestionEmptyAnswerCount">
+		<foreach item="item" index="index" collection="args[0]" open="("
+			separator="," close=")">
+			UPDATE pj_exam_question es,
+			(
+			SELECT
+			count(*) answerCount,
+			up.question_uuid
+			FROM
+			pa_user_question up
+			WHERE 1=1
+
+			AND up.team_id =#{item.teamId}
+			AND up.owner_id =#{item.ownerId}
+			AND up.type =#{item.paperType}
+			AND up.answer = '[]'
+			AND up.object_id=#{item.unitId}
+
+			GROUP BY up.question_uuid
+			) a
+			SET
+
+			es.empty_count = a.answerCount
+
+			WHERE 1=1
+			AND es.exam_id =#{item.examId}
+			and es.question_uuid = a.question_uuid
+		</foreach>
+	</update>
+
+	<update id="batchUpdateExamQuestionScore">
+		<foreach item="item" index="index" collection="args[0]" open="("
+			separator="," close=")">
+			UPDATE pj_exam_question es,
+			(
+			SELECT
+			SUM(up.score) totalScore,
+			up.question_uuid
+			FROM
+			pa_user_question up
+			WHERE 1=1
+
+			AND up.team_id =#{item.teamId}
+			AND up.owner_id =#{item.ownerId}
+			AND up.type =#{item.paperType}
+			AND up.object_id=#{item.unitId}
+			group by up.question_uuid
+			) a
+			SET es.score = a.totalScore
+			WHERE 1=1
+			AND es.exam_id =#{item.examId}
+			and es.question_uuid = a.question_uuid
+		</foreach>
+	</update>
+
+
+
+	<!-- 20170521 优化SQL -->
+	<update id="updateExamQuestionEmptyCount">
+		UPDATE pj_exam_question eq
+		SET eq.empty_count = #{args[0]}
+		WHERE
+		1 = 1
+		AND eq.question_uuid = #{args[1]}
+		AND eq.exam_id = #{args[2]}
+	</update>
+
+	<update id="updateExamQuestionCorrectCount">
+		UPDATE pj_exam_question eq
+		SET eq.right_answer_count = #{args[0]}
+		WHERE
+		1 = 1
+		AND eq.question_uuid = #{args[1]}
+		AND eq.exam_id = #{args[2]}
+	</update>
+
+
+	<update id="updateExamQuestionEmptyAndCorrectAnswerCount">
+		UPDATE pj_exam_question eq
+		SET eq.right_answer_count = #{args[0]}
+		WHERE
+		1 = 1
+		AND eq.question_uuid = #{args[1]}
+		AND eq.exam_id = #{args[2]}
+	</update>
+
+	<update id="updateExamQuestionTotalScore">
+		UPDATE pj_exam_question eq
+		SET eq.score = = #{args[0]}
+		WHERE
+		1 = 1
+		AND eq.question_uuid = #{args[1]}
+		AND eq.exam_id = #{args[2]}
+	</update>
+
+
+	<update id="updateExamQuestionTotalAnswerTime">
+		UPDATE pj_exam_question eq
+		SET eq.total_time = = #{args[0]}
+		WHERE
+		1 = 1
+		AND eq.question_uuid = #{args[1]}
+		AND eq.exam_id = #{args[2]}
+	</update>
+
+	<!-- 11111 -->
+	<update id="updateExamQuestionEmptyCount1">
+		<foreach collection="args[0]" item="item" index="index" open=""
+			close="" separator=";">
+			UPDATE pj_exam_question eq
+			SET eq.empty_count = #{item.answerCount}
+			WHERE
+			1 = 1
+			AND eq.question_uuid = #{item.questionUuid}
+			AND eq.exam_id =
+			#{item.examId}
+		</foreach>
+	</update>
+
+	<update id="updateExamQuestionCorrectCount1">
+		<foreach collection="args[0]" item="item" index="index" open=""
+			close="" separator=";">
+			UPDATE pj_exam_question eq
+			SET eq.right_answer_count = #{item.answerCount}
+			WHERE
+			1 = 1
+			AND eq.question_uuid = #{item.questionUuid}
+			AND eq.exam_id =
+			#{item.examId}
+		</foreach>
+	</update>
+
+	<update id="updateExamQuestionAnswerCount">
+		UPDATE pj_exam_question es,
+		(
+		SELECT
+		count(*) answerCount,
+		up.question_uuid
+		FROM
+		pa_user_question up
+		WHERE 1=1
+
+		<if test="args[0] != null">
+			AND up.team_id =#{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND up.owner_id =#{args[1]}
+		</if>
+		<if test="args[2] != null">
+			AND up.type =#{args[2]}
+		</if>
+		<if test="args[3] != null">
+			AND up.is_correct =#{args[3]}
+		</if>
+		<if test="args[4] != null">
+			AND up.answer =#{args[4]}
+		</if>
+		<if test="args[6] != null">
+			AND up.object_id =#{args[6]}
+		</if>
+
+		GROUP BY up.question_uuid
+		) a
+		SET
+		<if test="args[3] != null">
+			es.right_answer_count = a.answerCount
+		</if>
+		<if test="args[3] == null">
+			es.answer_count = a.answerCount
+		</if>
+
+		WHERE 1=1
+		<if test="args[5] != null">
+			AND es.exam_id =#{args[5]}
+		</if>
+		and es.question_uuid = a.question_uuid
+	</update>
+
+
+	<update id="updateExamQuestionEmptyAndCorrectAnswerCount1">
+		<foreach collection="args[0]" item="item" index="index" open=""
+			close="" separator=";">
+			UPDATE pj_exam_question eq
+			SET eq.right_answer_count = #{item.answerCount}
+			WHERE
+			1 = 1
+			AND eq.question_uuid = #{item.questionUuid}
+			AND eq.exam_id =
+			#{item.examId}
+		</foreach>
+	</update>
+
+	<update id="updateExamQuestionTotalScore1">
+		<foreach collection="args[0]" item="item" index="index" open=""
+			close="" separator=";">
+			UPDATE pj_exam_question eq
+			SET eq.score = #{item.totalScore}
+			WHERE
+			1 = 1
+			AND eq.question_uuid = #{item.questionUuid}
+			AND eq.exam_id =
+			#{item.examId}
+		</foreach>
+	</update>
+
+	<update id="updateExamQuestionTotalAnswerTime1">
+		<foreach collection="args[0]" item="item" index="index" open=""
+			close="" separator=";">
+			UPDATE pj_exam_question eq
+			SET eq.total_time = #{item.totalTime}
+			WHERE
+			1 = 1
+			AND eq.question_uuid = #{item.questionUuid}
+			AND eq.exam_id =
+			#{item.examId}
+		</foreach>
+	</update>
+
+	<!-- 统计年级得分率 -->
+
+	<update id="updateExamQuestionGradeScoringRate">
+		UPDATE pj_exam_question eq,
+		(
+		SELECT
+		(
+		SUM(score) / (
+		sum(answer_count) * full_score
+		)
+		) gradeScoringRate,
+		question_uuid
+		FROM
+		pj_exam_question
+		WHERE
+		exam_id IN (
+		SELECT
+		id
+		FROM
+		pj_exam
+		WHERE
+		joint_exam_code = #{args[0]}
+		)
+		GROUP BY
+		question_uuid
+		) a
+		SET eq.grade_scoring_rate = a.gradeScoringRate
+		WHERE
+		eq.question_uuid = a.question_uuid
+	</update>
+
+	<select id="findExamQuestionWrongbyExamId" resultMap="ExamQuetionWrongResult">
+SELECT 
+    (
+      CASE
+     WHEN pq.parent_id=0 THEN ''
+     ELSE
+     (SELECT pq1.content FROM pa_question pq1 WHERE pq1.id=pq.parent_id)
+      END 
+     )AS extra_content,
+    (
+      CASE
+     WHEN pq.parent_id=0 THEN 'none'
+     ELSE
+     (SELECT pq1.question_type FROM pa_question pq1 WHERE pq1.id=pq.parent_id)
+      END 
+     )AS parentType,
+        pq.id AS questionId,
+        pq.parent_id,
+		pq.question_type,
+		pq.uuid,
+		pq.content,
+		pq.difficulity,
+		pq.answer,
+		pq.correct_answer,
+		pq.explanation,
+		pq.average_time,
+        pq.answer_count,
+        pq.right_answer_count,
+		eq.team_scoring_rate,
+		pptr.node_order+1  AS number,
+		pptr.score,
+		pp.title AS paperTitle,
+		eq.id AS examQuestionId,
+		eq.grade_scoring_rate FROM pj_exam_question eq INNER JOIN pa_question pq ON
+		eq.question_uuid=pq.uuid
+
+		INNER JOIN pj_exam pe ON pe.id =eq.exam_id
+		INNER JOIN pa_paper pp ON pp.paper_uuid=pe.paper_uuid
+		INNER JOIN pa_paper_tree pptr ON pptr.question_id=pq.id AND pptr.paper_id= pp.id
+		WHERE eq.exam_id IN
+		<foreach collection="args[0]" item="item" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="args[1]!=null   and args[2]!=null   and args[1] == 1">
+			And eq.team_scoring_rate &lt;= #{args[2]}
+		</if>
+		<if test="args[1]!=null   and args[2]!=null   and args[1] == 2">
+			And eq.grade_scoring_rate &lt;= #{args[2]}
+		</if>
+		GROUP BY eq.question_uuid;
+	</select>
+
+    <select id="findExamQuestionWrongForStudent" resultMap="ExamQuetionWrongResult">
+        SELECT
+        (
+        CASE
+        WHEN pq.parent_id=0 THEN ''
+        ELSE
+        (SELECT pq1.content FROM pa_question pq1 WHERE pq1.id=pq.parent_id)
+        END
+        )AS extra_content,
+        pq.question_type,
+        pq.uuid,
+        pq.content,
+        pq.difficulity,
+        pq.answer,
+        pq.correct_answer,
+        pq.explanation,
+		eq.team_scoring_rate,
+        eq.grade_scoring_rate
+        FROM pa_question pq
+		JOIN (
+			SELECT t1.exam_id, t1.question_uuid, t1.team_scoring_rate, t1.grade_scoring_rate
+			FROM `pj_exam_question` AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM `pj_exam_question`) - (SELECT MIN(id) FROM `pj_exam_question`)) + (SELECT MIN(id) FROM `pj_exam_question`)) AS id) AS t2
+			WHERE t1.id BETWEEN 0 and t2.id
+			<if test="args[3]!=null   and args[4]!=null   and args[3] == 1">
+				And t1.team_scoring_rate BETWEEN 0 and  #{args[4]}
+			</if>
+			<if test="args[3]!=null   and args[4]!=null   and args[3] == 2">
+				And t1.grade_scoring_rate BETWEEN 0 and  #{args[4]}
+			</if>
+			ORDER BY t1.id DESC LIMIT 1)
+		AS eq on pq.uuid = eq.question_uuid
+		LEFT JOIN pj_exam pe ON pe.id = eq.exam_id
+		LEFT JOIN pa_question_catalog pqc ON pqc.question_id = pq.id
+		<!--WHERE eq.exam_id IN
+        <foreach collection="args[0]" item="item" index="index" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>-->
+		<where>
+        <if test="args[0]!=null">
+            AND pe.grade_id = #{args[0]}
+        </if>
+        <if test="args[1]!=null">
+            AND pe.team_id = #{args[1]}
+        </if>
+        <if test="args[2]!=null and args[2]!=''">
+            AND pqc.subject_code = #{args[2]}
+        </if>
+		</where>
+		<!--不知道为什么，这个语句用分页插件会生成错误的countSQL,导致数据库报错-->
+    </select>
+
+	<update id="batchUpdateExamQuestionGradeRank">
+		UPDATE pj_exam_question t1,
+		(select c.id,c.score,
+		(select count(id)+1
+		from pj_exam_question
+		where team_scoring_rate>c.team_scoring_rate and (
+		exam_id in
+		<foreach collection="args[0]" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+
+		) ) as rank
+		from pj_exam_question c where
+		exam_id in
+		<foreach collection="args[0]" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+		)as t2
+		SET t1.grade_rank = t2.rank
+		WHERE t1.id=t2.id
+	</update>
+	<select id="findExamQuestionByJointExamCode" resultMap="ExamQuestionResult">
+		SELECT
+		eq.*
+		FROM
+		pj_exam_question eq
+		INNER JOIN pj_exam ep ON eq.exam_id = ep.id
+		
+		AND ep.joint_exam_code = #{args[0]}
+		
+		AND  ep.is_delete = 0
+		
+		WHERE
+		
+		eq.question_uuid = #{args[1]}
+
+
+	</select>
+	
+	
+	<delete id="deleteByExamId">
+	 DELETE FROM pj_exam_question WHERE exam_id= #{args[0]}
+	</delete>
+	
+	<select id="findCountQuestiontByExamIdAndQuestionUuids" resultMap="ExamQuestionResult">
+		select * from pj_exam_question where 1=1 
+		<if test="args[0] != null">
+			and exam_id = #{args[0]}
+		</if>
+		<if test="args[1]!=null">
+		and question_uuid in
+		<foreach collection="args[1]" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+		</if>
+	</select>
+	<insert id="createBatch">
+		INSERT INTO pj_exam_question (
+		id,
+		exam_id,
+		question_type,
+		create_date,
+		modify_date,
+		question_uuid,
+		difficulity,
+		cognition,
+		pos,
+		full_score
+		)
+		
+		VALUES 
+		<foreach collection="args[0]" item="item" index="index" separator="," >  
+		(
+		#{item.id},
+		#{item.examId},
+		#{item.questionType},
+		#{item.createDate},
+		#{item.modifyDate},
+		#{item.questionUuid},
+		#{item.difficulity},
+		#{item.cognition},
+		#{item.pos},
+		#{item.fullScore}
+		)
+		</foreach>
+	</insert>
+	
+	<select id="findExamQuestionBycodeAndQuestionUuid" resultMap="ExamQuestionVoResult">
+	
+	SELECT peq.* ,pt.team_number FROM pj_exam pe 
+
+   INNER JOIN pj_exam_question peq ON peq.exam_id=pe.id AND peq.question_uuid=#{args[1]}
+   
+   INNER JOIN pj_team  pt ON pt.id =pe.team_id
+
+   WHERE pe.joint_exam_code=#{args[0]}  AND  pe.exam_type=#{args[2]}
+
+   ORDER BY pt.team_number
+	
+	</select>
+	<select id="findExamQuestionWrongbyExamIdAndQuestionUuids" resultMap="ExamQuetionWrongResult">
+SELECT 
+    (
+      CASE
+     WHEN pq.parent_id=0 THEN ''
+     ELSE
+     (SELECT pq1.content FROM pa_question pq1 WHERE pq1.id=pq.parent_id)
+      END 
+     )AS extra_content,
+     (
+      CASE
+     WHEN pq.parent_id=0 THEN 'none'
+     ELSE
+     (SELECT pq1.question_type FROM pa_question pq1 WHERE pq1.id=pq.parent_id)
+      END 
+     )AS parentType,
+        pq.id AS questionId,
+        pq.parent_id,
+		pq.question_type,
+		pq.uuid,
+		pq.content,
+		pq.difficulity,
+		pq.answer,
+		pq.correct_answer,
+		pq.explanation,
+		pq.average_time,
+        pq.answer_count,
+        pq.right_answer_count,
+		eq.team_scoring_rate,
+		pptr.node_order+1  AS number,
+		pptr.score,
+		pp.title AS paperTitle,
+		eq.id AS examQuestionId,
+		eq.grade_scoring_rate FROM pj_exam_question eq INNER JOIN pa_question pq ON
+		eq.question_uuid=pq.uuid
+		INNER JOIN pj_exam pe ON pe.id =eq.exam_id
+		INNER JOIN pa_paper pp ON pp.paper_uuid=pe.paper_uuid
+		INNER JOIN pa_paper_tree pptr ON pptr.question_id=pq.id AND pptr.paper_id= pp.id
+		WHERE eq.id IN
+		<foreach collection="args[0]" item="item" index="index" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	group by pq.uuid
+	</select>
+	
+</mapper>

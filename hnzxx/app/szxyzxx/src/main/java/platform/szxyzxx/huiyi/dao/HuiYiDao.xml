@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.huiyi.dao.HuiYiDao">
+
+ <resultMap id="HuiYiMap" type="platform.szxyzxx.huiyi.vo.HuiYi">
+   <id column="id" property="id"></id>
+   <result column="theme" property="theme"></result>
+   <result column="department_id" property="departmentId"></result>
+   <result column="department_name" property="departmentName"></result>
+   <result column="applicant" property="applicant"></result>
+     <result column="applicant_name" property="applicantName"></result>
+     <result column="eventManager" property="eventManager"></result>
+     <result column="reviewer" property="reviewer"></result>
+     <result column="kaishi_time" property="kaishiTime"></result>
+     <result column="changdi_id" property="changdiId"></result>
+     <result column="changdi_name" property="changdiName"></result>
+     <result column="leadership" property="leadership"></result>
+     <result column="activity_supplies" property="activitySupplies"></result>
+     <result column="equipment" property="equipment"></result>
+     <result column="meeting" property="meeting"></result>
+     <result column="fujianId" property="fujianId"></result>
+     <result column="staff" property="staff"></result>
+     <result column="attendanceNumber" property="attendanceNumber"></result>
+     <result column="create_time" property="createTime"></result>
+     <result column="modiy_time" property="modiyTime"></result>
+     <result column="is_delete" property="isDelete"></result>
+     <result column="is_audit" property="isAudit"></result>
+     <result column="liyou" property="liyou"></result>
+     <result column="huiwufuzeren" property="huiwufuzeId"></result>
+     <result column="huiwufu_name" property="huiwufuzeName"></result>
+     <result column="reviewer_name" property="reviewerName"></result>
+     <result column="eventManager_name" property="eventManagerName"></result>
+     <result column="qitaRenYuan" property="qitaRenYuan"></result>
+     <result column="school_year" property="schoolYear"></result>
+     <result column="school_trem" property="schoolTrem"></result>
+ </resultMap>
+
+    <select id="findByAll" resultMap="HuiYiMap">
+        select zh.*,pd.name as department_name,zc.changdi_name  from zy_huiyi zh
+        inner join pj_department pd on zh.department_id=pd.id
+        inner join zy_changdi  zc on zh.changdi_id=zc.id
+        <where>
+        zh.is_delete=0
+            <if test="args[0]!=null and args[0]!=''">
+                and zh.theme like concat ('%',#{args[0]},'%')
+            </if>
+            <if test="args[1]!=null and args[1]!=''">
+                and zh.department_id=#{args[1]}
+            </if>
+            <if test="args[2]!=null and args[2]!=''">
+                and zh.applicant=#{args[2]}
+            </if>
+            <if test="args[3]!=null and args[3]!=''">
+                and zh.eventManager like concat ('%',#{args[3]},'%')
+            </if>
+            <if test="args[4]!=null and args[4]!=''">
+                and zc.changdi_name  like concat ('%',#{args[4]},'%')
+            </if>
+            <if test="args[5]!=null and args[6]!=null">
+                and zh.kaishi_time between #{args[5]} and #{args[6]}
+            </if>
+            <if test="args[7]!=null and args[7]!=''">
+                and zh.applicant=#{args[7]}
+            </if>
+            <if test="args[8]!=null and args[8]!=''">
+                and zh.applicant_name like concat ('%',#{args[8]},'%')
+                and zh.huiwufu_name like concat ('%',#{args[8]},'%')
+                and zh.reviewer_name like concat ('%',#{args[8]},'%')
+            </if>
+        </where>
+        group by zh.id
+        order by  zh.create_time desc
+    </select>
+
+
+    <select id="findByAllDaoChu" resultMap="HuiYiMap">
+        select zh.*,pd.name as department_name,zc.changdi_name  from zy_huiyi zh
+        inner join pj_department pd on zh.department_id=pd.id
+        inner join zy_changdi  zc on zh.changdi_id=zc.id
+        <where>
+        zh.is_delete=0 and zh.is_audit!=0 and  zh.is_audit!=2
+        <if test="args[0]!=null and args[0]!=''">
+            and zh.theme like concat ('%',#{args[0]},'%')
+        </if>
+        <if test="args[1]!=null and args[1]!=''">
+            and zh.department_id=#{args[1]}
+        </if>
+        <if test="args[2]!=null and args[2]!=''">
+            and zh.applicant=#{args[2]}
+        </if>
+        <if test="args[3]!=null and args[3]!=''">
+            and zh.eventManager like concat ('%',#{args[3]},'%')
+        </if>
+        <if test="args[4]!=null and args[4]!=''">
+            and zc.name  like concat ('%',#{args[4]},'%')
+        </if>
+        <if test="args[5]!=null and args[6]!=null">
+            and zh.kaishi_time between #{args[5]} and #{args[6]}
+        </if>
+            <if test="args[7]!=null and args[7]!=''">
+                and zh.applicant=#{args[7]}
+            </if>
+            <if test="args[8]!=null and args[8]!=''">
+                and zh.applicant_name like concat ('%',#{args[8]},'%')
+                and zh.huiwufu_name like concat ('%',#{args[8]},'%')
+                and zh.reviewer_name like concat ('%',#{args[8]},'%')
+            </if>
+        </where>
+        group by zh.id
+        order by zh.create_time desc
+    </select>
+
+    <select id="findByTime" resultMap="HuiYiMap">
+        select * from zy_huiyi where
+        kaishi_time like concat ('%',#{args[0]},'%') and is_delete=0
+    </select>
+    <select id="findById" resultMap="HuiYiMap">
+        select zh.*,pd.name as department_name,zc.changdi_name  from zy_huiyi zh
+        inner join pj_department pd on zh.department_id=pd.id
+        inner join zy_changdi  zc on zh.changdi_id=zc.id
+        where zh.id=#{args[0]} and zh.is_delete=0
+    </select>
+      <insert id="create" useGeneratedKeys="true" keyProperty="args[0].id" keyColumn="id">
+        insert  into zy_huiyi(theme,
+        department_id,
+        applicant,eventManager,
+        reviewer,kaishi_time,
+        changdi_id,leadership,
+        activity_supplies,
+        equipment,meeting,
+        fujianId,staff,
+        attendanceNumber,
+        create_time,
+        modiy_time,
+        is_delete,
+        is_audit,
+        liyou,
+        huiwufuzeren,
+        huiwufu_name,
+        reviewer_name,
+        eventManager_name,
+        applicant_name,
+        qitaRenYuan,
+        school_year,
+        school_trem)
+        value(#{args[0].theme},
+        #{args[0].departmentId},
+        #{args[0].applicant},
+        #{args[0].eventManager},
+        #{args[0].reviewer},
+        #{args[0].kaishiTime},
+        #{args[0].changdiId},
+        #{args[0].leadership},
+        #{args[0].activitySupplies},
+        #{args[0].equipment},
+        #{args[0].meeting},
+        #{args[0].fujianId},
+        #{args[0].staff},
+        #{args[0].attendanceNumber},
+        #{args[0].createTime},
+        null,
+        0,
+        0,
+        null,
+        #{args[0].huiwufuzeId},
+        #{args[0].huiwufuzeName},
+        #{args[0].reviewerName},
+        #{args[0].eventManagerName},
+        #{args[0].applicantName},
+        #{args[0].qitaRenYuan},
+        #{args[0].schoolYear},
+        #{args[0].schoolTrem}
+        )
+    </insert>
+    <update id="update">
+    update zy_huiyi set
+    theme=#{args[0].theme},department_id=#{args[0].departmentId},
+    applicant=#{args[0].applicant},eventManager=#{args[0].eventManager},
+    reviewer=#{args[0].eventManager},kaishi_time=#{args[0].kaishiTime},
+    changdi_id=#{args[0].changdiId},leadership=#{args[0].leadership},
+    activity_supplies=#{args[0].activitySupplies},equipment=#{args[0].equipment},
+    meeting=#{args[0].meeting},fujianId=#{args[0].fujianId},
+    staff=#{args[0].staff},attendanceNumber=#{args[0].attendanceNumber},qitaRenYuan=#{args[0].qitaRenYuan}
+    ,modiy_time=NOW()
+     where id=#{args[0].id} and is_delete=0
+    </update>
+    <update id="updateshanchu">
+        update zy_huiyi set is_delete=1 where id=#{args[0]} and is_delete=0
+    </update>
+
+    <update id="updateShenHe">
+           update zy_huiyi set
+        is_audit=#{args[1]}
+        <if test="args[2]!=null">
+         ,liyou=#{args[2]}
+         </if>
+          where id=#{args[0]} and is_delete=0
+    </update>
+    <insert id="createshenhe">
+          insert into oa_apply_notice(title,receiver_id,applicant_name,apply_explain,apply_result,data_id_type,data_id,create_date,handle_date)
+        value(#{args[0].schoolYear},#{args[0].reviewer},
+                #{args[0].applicantName},#{args[0].theme},0,'hwxq',#{args[0].id},NOW(),null)
+    </insert>
+</mapper>

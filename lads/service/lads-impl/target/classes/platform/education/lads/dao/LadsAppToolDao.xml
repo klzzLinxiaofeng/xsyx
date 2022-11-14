@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.lads.dao.LadsAppToolDao">
+
+    <resultMap id="LadsAppToolResult" type="platform.education.lads.model.LadsAppTool">
+        <result property="id" column="id" />
+        <result property="appId" column="app_id" />
+        <result property="toolIds" column="tool_ids" />
+        <result property="uuid" column="uuid" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.lads.model.LadsAppTool">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO lads_app_tool (id, app_id, tool_ids, uuid, create_date, modify_date)
+        VALUES (#{id}, #{appId}, #{toolIds}, #{uuid}, #{createDate}, #{modifyDate})
+    </insert>
+
+    <select id="read" resultMap="LadsAppToolResult" useCache="false">
+        SELECT * FROM lads_app_tool WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>  
+        ORDER BY id DESC
+    </select>
+	
+    <select id="findLadsAppToolByCondition" resultMap="LadsAppToolResult" useCache="false">
+        SELECT * FROM lads_app_tool 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null and args[0].id != ''">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].appId != null and args[0].appId != ''">
+                AND app_id = #{args[0].appId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].toolIds != null and args[0].toolIds != ''">
+                AND tool_ids = #{args[0].toolIds,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null and args[0].createDate != ''">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+	
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM lads_app_tool 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null and args[0].id != ''">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].appId != null and args[0].appId != ''">
+                AND app_id = #{args[0].appId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].toolIds != null and args[0].toolIds != ''">
+                AND tool_ids = #{args[0].toolIds,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null and args[0].createDate != ''">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+	
+    <select id="findById" resultMap="LadsAppToolResult" useCache="false">
+        SELECT * FROM lads_app_tool WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+	
+    <update id="update" parameterType="platform.education.lads.model.LadsAppTool">
+        UPDATE lads_app_tool
+        SET 
+        <if test="appId != null">
+            app_id=#{appId},
+        </if>
+        <if test="toolIds != null">
+            tool_ids=#{toolIds},
+        </if>
+        <if test="uuid != null">
+            uuid=#{uuid},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+	
+    <delete id="delete">
+        DELETE FROM lads_app_tool
+        WHERE id = #{id}
+    </delete>
+	
+    <delete id="deleteByCondition">
+        DELETE FROM lads_app_tool
+        WHERE 1=1
+        <if test="id != null and id != ''">
+            AND id = #{id,javaType=java.lang.Integer}
+        </if>
+        <if test="appId != null and appId != ''">
+            AND app_id = #{appId,javaType=java.lang.String}
+        </if>
+        <if test="toolIds != null and toolIds != ''">
+            AND tool_ids = #{toolIds,javaType=java.lang.String}
+        </if>
+        <if test="uuid != null and uuid != ''">
+            AND uuid = #{uuid,javaType=java.lang.String}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            AND create_date = #{createDate,javaType=java.util.Date}
+        </if>
+        <if test="modifyDate != null and modifyDate != ''">
+            AND modify_date = #{modifyDate,javaType=java.util.Date}
+        </if>
+    </delete>
+    
+    <!--以下是业务方法-->
+    <select id="findByUuid" resultMap="LadsAppToolResult" useCache="false">
+        SELECT * FROM lads_app_tool WHERE uuid = #{args[0],javaType=java.lang.String}
+    </select>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.paper.dao.OaPaperDao">
+  <resultMap id="PaperResult" type="com.xunyunedu.paper.pojo.OaPaper">
+    <id property="id" column="id" />
+    <result property="uuid" column="uuid" />
+    <result property="appId" column="app_id" />
+    <result property="ownerId" column="owner_id" />
+    <result property="ownerType" column="owner_type" />
+    <result property="title" column="title" />
+    <result property="author" column="author" />
+    <result property="posterId" column="poster_id" />
+    <result property="posterName" column="poster_name" />
+    <result property="documentType" column="document_type" />
+    <result property="emergencyLevel" column="emergency_level" />
+    <result property="secretLevel" column="secret_level" />
+    <result property="receiverType" column="receiver_type" />
+    <result property="receiverCount" column="receiver_count" />
+    <result property="readCount" column="read_count" />
+    <result property="receiver" column="receiver" />
+    <result property="content" column="content" />
+    <result property="attachmentUuid" column="attachment_uuid" />
+    <result property="isDeleted" column="is_deleted" />
+    <result property="remark" column="remark" />
+    <result property="publishDate" column="publish_date" />
+    <result property="createDate" column="create_date" />
+    <result property="modifyDate" column="modify_date" />
+  </resultMap>
+
+
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO oa_paper (
+    uuid,
+    app_id,
+    owner_id,
+    owner_type,
+    title,
+    author,
+    poster_id,
+    poster_name,
+    document_type,
+    emergency_level,
+    secret_level,
+    receiver_type,
+    receiver_count,
+    read_count,
+    receiver,
+    content,
+    attachment_uuid,
+    is_deleted,
+    remark,
+    publish_date,
+    create_date,
+    modify_date
+    )
+    VALUES (
+    #{uuid},
+    #{appId},
+    #{ownerId},
+    #{ownerType},
+    #{title},
+    #{author},
+    #{posterId},
+    #{posterName},
+    #{documentType},
+    #{emergencyLevel},
+    #{secretLevel},
+    #{receiverType},
+    #{receiverCount},
+    #{readCount},
+    #{receiver},
+    #{content},
+    #{attachmentUuid},
+    <choose>
+      <when test="isDeleted != null">
+        <choose>
+          <when test="isDeleted == true">
+            1,
+          </when>
+          <otherwise>
+            0,
+          </otherwise>
+        </choose>
+      </when>
+      <otherwise>
+        0,
+      </otherwise>
+    </choose>
+    #{remark},
+    #{publishDate},
+    #{createDate},
+    #{modifyDate}
+    )
+  </insert>
+
+
+  <select id="selectById" resultMap="PaperResult">
+    select * from oa_paper where id=#{id}
+  </select>
+
+  <select id="selectByCondition" resultMap="PaperResult">
+    select p.* from oa_paper p
+    <if test="dataType==0">
+        left join oa_paper_user_read r on r.paper_id=p.id and r.user_id=#{currUserId}
+    </if>
+    <where>
+        <if test="dataType==0">
+            and r.id is not null
+        </if>
+        <if test="dataType==1">
+            and p.poster_id=#{currUserId}
+        </if>
+    </where>
+    order by p.create_date desc
+  </select>
+</mapper>

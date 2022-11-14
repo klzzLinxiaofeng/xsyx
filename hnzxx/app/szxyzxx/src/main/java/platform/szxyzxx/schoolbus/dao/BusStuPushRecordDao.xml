@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.schoolbus.dao.BusStuPushRecordDao">
+
+
+  <resultMap id="stuAndPushRecordResultMap" type="platform.szxyzxx.schoolbus.pojo.StuAndPushRecord">
+     <id column="stu_id" jdbcType="INTEGER" property="stuId" />
+     <result column="user_id" jdbcType="INTEGER" property="userId" />
+     <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <collection property="pushRecordList" ofType="platform.szxyzxx.schoolbus.pojo.BusStuPushRecord">
+      <result column="pick_time" jdbcType="VARCHAR" property="pickTime" />
+    </collection>
+
+  </resultMap>
+
+    <select id="findAllStuRecord" resultMap="stuAndPushRecordResultMap">
+        SELECT
+            s.user_id,
+            pu.open_id,
+            s.id stu_id,
+            s.`name`,
+            r.pick_time
+        FROM
+            pj_student s
+                left join pj_parent_student ps on s.user_id=ps.student_user_id and ps.rank=1
+                LEFT JOIN yh_user pu ON pu.id = ps.parent_user_id
+                LEFT JOIN bus_stu_push_record r ON r.stu_id = s.id and r.date=#{args[0].date}
+        WHERE
+            s.is_delete = 0 and ps.is_delete=0
+          AND pu.open_id IS NOT NULL
+
+    </select>
+
+
+
+
+</mapper>

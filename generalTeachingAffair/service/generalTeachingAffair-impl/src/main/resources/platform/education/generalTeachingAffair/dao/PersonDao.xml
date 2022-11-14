@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PersonDao">
+
+	<resultMap id="PersonResult"
+		type="platform.education.generalTeachingAffair.model.Person">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="englishName" column="english_name" />
+		<result property="sex" column="sex" />
+		<result property="birthday" column="birthday" />
+		<result property="idCardNumber" column="id_card_number" />
+		<result property="idCardType" column="id_card_type" />
+		<result property="abroadCode" column="abroad_code" />
+		<result property="isOnlyChild" column="is_only_child" />
+
+		<result property="isFloatingPopulation" column="is_floating_population" />
+		<result property="specialSkill" column="special_skill" />
+		<result property="nationality" column="nationality" />
+		<result property="nativePlace" column="native_place" />
+		<result property="birthPlace" column="birth_place" />
+		<result property="race" column="race" />
+		<result property="marriage" column="marriage" />
+		<result property="politicalStatus" column="political_status" />
+		<result property="residenceType" column="residence_type" />
+		<result property="religion" column="religion" />
+		<result property="healthStatus" column="health_status" />
+		<result property="bloodType" column="blood_type" />
+		<result property="regionCode" column="region_code" />
+		<result property="province" column="province" />
+		<result property="city" column="city" />
+		<result property="district" column="district" />
+		<result property="street" column="street" />
+		<result property="address" column="address" />
+		<result property="resideAddress" column="reside_address" />
+		<result property="residenceAddress" column="residence_address" />
+
+		<result property="mobile" column="mobile" />
+		<result property="telephone" column="telephone" />
+		<result property="email" column="email" />
+		<result property="remark" column="remark" />
+		<result property="photoUuid" column="photo_uuid" />
+		<result property="entityId" column="entity_id" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+
+		<result property="pinyinName" column="pinyin_name" />
+		<result property="usedName" column="used_name" />
+		<result property="idCardDate" column="id_card_date" />
+		<result property="village" column="village" />
+		<result property="zipCode" column="zip_code" />
+		<result property="residenceRemark" column="residence_remark" />
+		<result property="homeAddress" column="home_address" />
+		<result property="houseAuthority" column="house_authority" />
+		<result property="workingPlace" column="working_place" />
+		<result property="position" column="position" />
+		<result property="homepage" column="homepage" />
+		<result property="resume" column="resume" />
+	</resultMap>
+
+	<resultMap id="PersonVoResult"
+		type="platform.education.generalTeachingAffair.vo.PersonVo">
+		<result property="nationalMinority" column="nationalMinority" />
+		<result property="unNationalMinority" column="unNationalMinority" />
+		<result property="notNational" column="notNational" />
+	</resultMap>
+
+	<insert id="create"
+		parameterType="platform.education.generalTeachingAffair.model.Person">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_person
+		(
+		id,
+		name,
+		english_name,
+		id_card_type,
+		special_skill,
+		residence_address,
+		abroad_code,
+		sex,
+		is_only_child,
+		is_floating_population,
+		birthday,
+		id_card_number,
+		nationality,
+		native_place,
+		birth_place,
+		race,
+		marriage,
+		political_status,
+		residence_type,
+		religion,
+		health_status,
+		blood_type,
+		region_code,
+		province,
+		city,
+		district,
+		street,
+		address,
+		reside_address,
+		mobile, telephone,
+		email,
+		remark,
+		photo_uuid,
+		entity_id,
+		is_delete,
+		create_date,
+		modify_date,
+		pinyin_name,
+		used_name,
+		id_card_date,
+		village,
+		zip_code,
+		residence_remark,
+		home_address,
+		house_authority,
+		working_place,
+		position,
+		homepage
+		)
+		VALUES
+		(#{id},
+		#{name},
+		#{englishName},
+		#{idCardType},
+		#{specialSkill},
+		#{residenceAddress},
+		#{abroadCode},
+		#{sex},
+		<choose>
+			<when test="isOnlyChild != null">
+				#{isOnlyChild},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		
+		<choose>
+			<when test="isFloatingPopulation != null">
+				#{isFloatingPopulation},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{birthday},
+		#{idCardNumber},
+		#{nationality},
+		#{nativePlace},
+		#{birthPlace},
+		#{race},
+		#{marriage},
+		#{politicalStatus},
+		#{residenceType},
+		#{religion},
+		#{healthStatus},
+		#{bloodType},
+		#{regionCode},
+		#{province},
+		#{city},
+		#{district},
+		#{street},
+		#{address},
+		#{resideAddress},
+		#{mobile},
+		#{telephone},
+		#{email},
+		#{remark},
+		#{photoUuid},
+		#{entityId},
+		#{isDelete},
+		#{createDate},
+		#{modifyDate},
+		#{pinyinName},
+		#{usedName},
+		#{idCardDate},
+		#{village},
+		#{zipCode},
+		#{residenceRemark},
+		#{homeAddress},
+		#{houseAuthority},
+		#{workingPlace},
+		#{position},
+		#{homepage}
+		)
+	</insert>
+
+	<select id="read" resultMap="PersonResult" useCache="false">
+		SELECT * FROM pj_person WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findPersonNumberOfRaceData" resultMap="PersonVoResult"
+		useCache="false">
+		SELECT
+		COUNT(CASE WHEN p.race = 01 THEN p.race END) as unNationalMinority,
+		COUNT(CASE WHEN p.race != 01 AND p.race IS NOT NULL AND p.race != '' THEN p.race
+		END) as nationalMinority,
+		COUNT(CASE WHEN p.race is null OR p.race = '' THEN 1 ELSE 0 END) as notNational
+		from pj_teacher t INNER JOIN pj_person p ON p.id = t.persion_id
+		AND t.is_delete = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND t.school_id = #{args[0]}
+		</if>
+	</select>
+
+
+	<select id="findJwPersonByCondition" resultMap="PersonResult"
+		useCache="false">
+		SELECT * FROM pj_person
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+
+			<choose>
+				<when test="args[0].name != null and args[0].name != ''">
+					<choose>
+						<when test="args[0].nameLike == true">
+							and name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+						</when>
+						<otherwise>
+							and name = #{args[0].name,javaType=java.lang.String}
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+
+				</otherwise>
+			</choose>
+
+			<!-- <if test="args[0].name != null and args[0].name != ''"> -->
+			<!-- AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%') -->
+			<!-- </if> -->
+
+			<if test="args[0].sex != null and args[0].sex != ''">
+				AND sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].birthday != null and args[0].birthday != ''">
+				AND birthday = #{args[0].birthday,javaType=java.util.Date}
+			</if>
+
+			<choose>
+				<when test="args[0].idCardNumber != null and args[0].idCardNumber != ''">
+					<choose>
+						<when test="args[0].idCardNumberLike == true">
+							and id_card_number LIKE CONCAT(CONCAT('%',
+							#{args[0].idCardNumber}),'%')
+						</when>
+						<otherwise>
+							and id_card_number =
+							#{args[0].idCardNumber,javaType=java.lang.String}
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+
+				</otherwise>
+			</choose>
+
+			<!-- <if test="args[0].idCardNumber != null and args[0].idCardNumber != 
+				''"> -->
+			<!-- AND id_card_number LIKE CONCAT(CONCAT('%', #{args[0].idCardNumber}),'%') -->
+			<!-- </if> -->
+
+			<if test="args[0].nationality != null and args[0].nationality != ''">
+				AND nationality = #{args[0].nationality,javaType=java.lang.String}
+			</if>
+			<if test="args[0].nativePlace != null and args[0].nativePlace != ''">
+				AND native_place = #{args[0].nativePlace,javaType=java.lang.String}
+			</if>
+			<if test="args[0].birthPlace != null and args[0].birthPlace != ''">
+				AND birth_place = #{args[0].birthPlace,javaType=java.lang.String}
+			</if>
+			<if test="args[0].race != null and args[0].race != ''">
+				AND race = #{args[0].race,javaType=java.lang.String}
+			</if>
+			<if test="args[0].marriage != null and args[0].marriage != ''">
+				AND marriage = #{args[0].marriage,javaType=java.lang.String}
+			</if>
+			<if
+				test="args[0].politicalStatus != null and args[0].politicalStatus != ''">
+				AND political_status =
+				#{args[0].politicalStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].residenceType != null and args[0].residenceType != ''">
+				AND residence_type = #{args[0].residenceType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].religion != null and args[0].religion != ''">
+				AND religion = #{args[0].religion,javaType=java.lang.String}
+			</if>
+			<if test="args[0].healthStatus != null and args[0].healthStatus != ''">
+				AND health_status = #{args[0].healthStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].bloodType != null and args[0].bloodType != ''">
+				AND blood_type = #{args[0].bloodType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].regionCode != null and args[0].regionCode != ''">
+				AND region_code = #{args[0].regionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].province != null and args[0].province != ''">
+				AND province = #{args[0].province,javaType=java.lang.String}
+			</if>
+			<if test="args[0].city != null and args[0].city != ''">
+				AND city = #{args[0].city,javaType=java.lang.String}
+			</if>
+			<if test="args[0].street != null and args[0].street != ''">
+				AND street = #{args[0].street,javaType=java.lang.String}
+			</if>
+			<if test="args[0].address != null and args[0].address != ''">
+				AND address = #{args[0].address,javaType=java.lang.String}
+			</if>
+			<if test="args[0].resideAddress != null and args[0].resideAddress != ''">
+				AND reside_address = #{args[0].resideAddress,javaType=java.lang.String}
+			</if>
+
+			<if test="args[0].mobile != null and args[0].mobile != ''">
+				AND mobile = #{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND telephone = #{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].email != null and args[0].email != ''">
+				AND email = #{args[0].email,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].photoUuid != null and args[0].photoUuid != ''">
+				AND photo_uuid = #{args[0].photoUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId != null and args[0].entityId != ''">
+				AND entity_id = #{args[0].entityId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null and args[0].isDelete != ''">
+				AND is_delete = #{args[0].isDelete,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+
+			<if test="args[0].pinyinName != null and args[0].pinyinName != ''">
+				AND pinyin_name = #{args[0].pinyinName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].usedName != null and args[0].usedName != ''">
+				AND used_name = #{args[0].usedName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].idCardDate != null and args[0].idCardDate != ''">
+				AND id_card_date = #{args[0].idCardDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].village != null and args[0].village != ''">
+				AND village = #{args[0].village,javaType=java.lang.String}
+			</if>
+			<if test="args[0].zipCode != null and args[0].zipCode != ''">
+				AND zip_code = #{args[0].zipCode,javaType=java.lang.String}
+			</if>
+			<if
+				test="args[0].residenceRemark != null and args[0].residenceRemark != ''">
+				AND residence_remark =
+				#{args[0].residenceRemark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].homeAddress != null and args[0].homeAddress != ''">
+				AND home_address = #{args[0].homeAddress,javaType=java.lang.String}
+			</if>
+			<if test="args[0].houseAuthority != null and args[0].houseAuthority != ''">
+				AND house_authority =
+				#{args[0].houseAuthority,javaType=java.lang.String}
+			</if>
+			<if test="args[0].workingPlace != null and args[0].workingPlace != ''">
+				AND working_place = #{args[0].workingPlace,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].homepage != null and args[0].homepage != ''">
+				AND homepage = #{args[0].homepage,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="PersonResult" useCache="false">
+		SELECT *
+		FROM pj_person WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<update id="update"
+		parameterType="platform.education.generalTeachingAffair.model.Person">
+		UPDATE pj_person
+		SET
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="englishName != null">
+			english_name=#{englishName},
+		</if>
+		<if test="sex != null">
+			sex=#{sex},
+		</if>
+		<if test="birthday != null">
+			birthday=#{birthday},
+		</if>
+		<if test="idCardType != null">
+			id_card_type=#{idCardType},
+		</if>
+		<if test="abroadCode != null">
+			abroad_code=#{abroadCode},
+		</if>
+		<if test="specialSkill != null">
+			special_skill=#{specialSkill},
+		</if>
+
+		<if test="idCardNumber != null">
+			id_card_number=#{idCardNumber},
+		</if>
+		<if test="nationality != null">
+			nationality=#{nationality},
+		</if>
+		<if test="isFloatingPopulation != null">
+			is_floating_population=#{isFloatingPopulation},
+		</if>
+		<if test="isOnlyChild != null">
+			is_only_child=#{isOnlyChild},
+		</if>
+		<if test="nativePlace != null">
+			native_place=#{nativePlace},
+		</if>
+		<if test="birthPlace != null">
+			birth_place=#{birthPlace},
+		</if>
+		<if test="race != null">
+			race=#{race},
+		</if>
+		<if test="marriage != null">
+			marriage=#{marriage},
+		</if>
+		<if test="politicalStatus != null">
+			political_status=#{politicalStatus},
+		</if>
+		<if test="residenceType != null">
+			residence_type=#{residenceType},
+		</if>
+		<if test="religion != null">
+			religion=#{religion},
+		</if>
+		<if test="healthStatus != null">
+			health_status=#{healthStatus},
+		</if>
+		<if test="bloodType != null">
+			blood_type=#{bloodType},
+		</if>
+		<if test="regionCode != null">
+			region_code=#{regionCode},
+		</if>
+		<if test="province != null">
+			province=#{province},
+		</if>
+		<if test="city != null">
+			city=#{city},
+		</if>
+		<if test="district != null">
+			district=#{district},
+		</if>
+		<if test="street != null">
+			street=#{street},
+		</if>
+		<if test="address != null">
+			address=#{address},
+		</if>
+		<if test="resideAddress != null">
+			reside_address=#{resideAddress},
+		</if>
+		<if test="residenceAddress != null">
+			residence_address=#{residenceAddress},
+		</if>
+		<if test="mobile != null">
+			mobile=#{mobile},
+		</if>
+		<if test="telephone != null">
+			telephone=#{telephone},
+		</if>
+		<if test="email != null">
+			email=#{email},
+		</if>
+		<if test="resume != null">
+			resume=#{resume},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="photoUuid != null">
+			photo_uuid=#{photoUuid},
+		</if>
+		<if test="entityId != null">
+			entity_id=#{entityId},
+		</if>
+		<if test="isDelete != null">
+			is_delete=#{isDelete},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+
+		<if test="pinyinName != null">
+			pinyin_name = #{pinyinName},
+		</if>
+		<if test="usedName != null">
+			used_name = #{usedName},
+		</if>
+		<if test="idCardDate != null">
+			id_card_date = #{idCardDate},
+		</if>
+		<if test="village != null">
+			village = #{village},
+		</if>
+		<if test="zipCode != null">
+			zip_code = #{zipCode},
+		</if>
+		<if test="residenceRemark != null">
+			residence_remark = #{residenceRemark},
+		</if>
+		<if test="homeAddress != null">
+			home_address = #{homeAddress},
+		</if>
+		<if test="houseAuthority != null">
+			house_authority = #{houseAuthority},
+		</if>
+		<if test="workingPlace != null">
+			working_place = #{workingPlace},
+		</if>
+		<if test="position != null">
+			position = #{position},
+		</if>
+		<if test="homepage != null">
+			homepage = #{homepage},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_person
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findPersonOfMaxAgeBySchool" resultMap="PersonResult"
+		useCache="false">
+		SELECT pp.*,MAX(pp.birthday) FROM pj_person pp
+		LEFT JOIN pj_student ps ON ps.person_id = pp.id
+		WHERE pp.birthday IS NOT NULL AND ps.school_id =
+		#{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<select id="findPersonOfMinAgeBySchool" resultMap="PersonResult"
+		useCache="false">
+		SELECT pp.*,MIN(pp.birthday) FROM pj_person pp
+		LEFT JOIN pj_student ps ON ps.person_id = pp.id
+		WHERE pp.birthday IS NOT NULL AND ps.school_id =
+		#{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	
+	<select id="findbyIds" resultMap="PersonResult" useCache="false">
+		SELECT * FROM pj_person WHERE is_delete = 0
+		AND id IN
+		<foreach collection="args[0]" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="findPersonByStuId" resultMap="PersonResult">
+        select * from pj_person where id = (select person_id from pj_student where id = #{args[0],javaType=java.lang.Integer})
+    </select>
+	
+</mapper>

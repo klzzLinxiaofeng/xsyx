@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.TeamStudentDao">
+
+    <resultMap id="TeamStudentResult" type="com.xunyunedu.mergin.vo.TeamStudent">
+        <result property="id" column="id" />
+        <result property="gradeId" column="grade_id" />
+        <result property="teamId" column="team_id" />
+        <result property="studentId" column="student_id" />
+        <result property="name" column="name" />
+        <result property="number" column="number" />
+        <result property="joinDate" column="join_date" />
+        <result property="finishDate" column="finish_date" />
+        <result property="recordDate" column="record_date" />
+        <result property="position" column="position" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+
+        <result property="isDelete" column="is_delete" />
+        <!-- 用户ID（2015-12-15） -->
+        <result property="userId" column="user_id" />
+        <!-- 迁入/迁出状态（2015-12-22） -->
+        <result property="inState" column="in_state" />
+
+    </resultMap>
+
+    <select id="findUnique" resultMap="TeamStudentResult" useCache="false">
+    SELECT * FROM pj_team_student WHERE is_delete =0 and team_id = #{teamId,javaType=java.lang.Integer} AND student_id = #{studentId,javaType=java.lang.Integer} AND finish_date IS NULL AND join_date IS NOT NULL
+</select>
+
+    <select id="findTeamStudentByCondition" resultMap="TeamStudentResult" useCache="false">
+        SELECT * FROM pj_team_student
+        <if test="teamStudentCondition != null">
+            WHERE 1=1 and is_delete=0
+            <if test="teamStudentCondition.id != null">
+                AND id = #{teamStudentCondition.id,javaType=java.lang.Integer}
+            </if>
+            <if test="teamStudentCondition.gradeId != null">
+                AND grade_id = #{teamStudentCondition.gradeId,javaType=java.lang.Integer}
+            </if>
+            <if test="teamStudentCondition.teamId != null">
+                AND team_id = #{teamStudentCondition.teamId,javaType=java.lang.Integer}
+            </if>
+            <if test="teamStudentCondition.studentId != null">
+                AND student_id = #{teamStudentCondition.studentId,javaType=java.lang.Integer}
+            </if>
+            <!-- 用户ID（2015-12-15） -->
+            <if test="teamStudentCondition.userId != null">
+                AND user_id = #{teamStudentCondition.userId,javaType=java.lang.Integer}
+            </if>
+            <choose>
+                <when test="teamStudentCondition.pattern">
+                    <if test="teamStudentCondition.name != null and teamStudentCondition.name != ''">
+                        AND name like concat('%', #{teamStudentCondition.name,javaType=java.lang.String}, '%')
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="teamStudentCondition.name != null">
+                        AND name = #{teamStudentCondition.name,javaType=java.lang.String}
+                    </if>
+                </otherwise>
+            </choose>
+            <if test="teamStudentCondition.number != null">
+                AND number = #{teamStudentCondition.number,javaType=java.lang.Integer}
+            </if>
+            <if test="teamStudentCondition.joinDate != null">
+                AND join_date = #{teamStudentCondition.joinDate,javaType=java.util.Date}
+            </if>
+            <if test="teamStudentCondition.finishDate != null">
+                AND finish_date = #{teamStudentCondition.finishDate,javaType=java.util.Date}
+            </if>
+            <if test="teamStudentCondition.recordDate != null">
+                AND record_date = #{teamStudentCondition.recordDate,javaType=java.util.Date}
+            </if>
+            <if test="teamStudentCondition.position != null">
+                AND position = #{teamStudentCondition.position,javaType=java.lang.String}
+            </if>
+            <if test="teamStudentCondition.createDate != null">
+                AND create_date = #{teamStudentCondition.createDate,javaType=java.util.Date}
+            </if>
+            <if test="teamStudentCondition.modifyDate != null">
+                AND modify_date = #{teamStudentCondition.modifyDate,javaType=java.util.Date}
+            </if>
+
+            <!-- 迁入/迁出状态（2015-12-22） -->
+            <if test="teamStudentCondition.inState != null">
+                <choose>
+                    <when test="teamStudentCondition.inState == true">
+                        AND in_state  = 1
+                    </when>
+                    <otherwise>
+                        AND in_state  = 0
+                    </otherwise>
+                </choose>
+            </if>
+
+        </if>
+    </select>
+
+</mapper>

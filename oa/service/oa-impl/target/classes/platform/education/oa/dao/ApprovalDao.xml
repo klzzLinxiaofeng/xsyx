@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.ApprovalDao">
+
+	<resultMap id="ApprovalResult" type="platform.education.oa.model.Approval">
+		<result property="id" column="id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="ownerType" column="owner_type" />
+		<result property="department" column="department" />
+		<result property="teacherId" column="teacher_id" />
+		<result property="approvalResult" column="approval_result" />
+		<result property="approvalExplain" column="approval_explain" />
+		<result property="approvalOrder" column="approval_order" />
+		<result property="projectId" column="project_id" />
+		<result property="projectType" column="project_type" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="isHaoCai" column="is_haocai" />
+		<result property="pictureuuId" column="pictureId" />
+	</resultMap>
+	
+	<resultMap id="ApprovalVoResult" type="platform.education.oa.vo.ApprovalVo">
+		<result property="id" column="id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="ownerType" column="owner_type" />
+		<result property="department" column="department" />
+		<result property="teacherId" column="teacher_id" />
+		<result property="approvalResult" column="approval_result" />
+		<result property="approvalExplain" column="approval_explain" />
+		<result property="approvalOrder" column="approval_order" />
+		<result property="projectId" column="project_id" />
+		<result property="projectType" column="project_type" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.Approval">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_approval (
+			id, 
+			owner_id, 
+			owner_type, 
+			department, 
+			teacher_id, 
+			approval_result, 
+			approval_explain, 
+			approval_order, 
+			project_id, 
+			project_type, 
+			create_date, 
+			modify_date, 
+			is_delete,
+		     pictureId,
+		     is_haocai
+		)
+		VALUES (
+			#{id}, 
+			#{ownerId}, 
+			#{ownerType}, 
+			#{department}, 
+			#{teacherId}, 
+			#{approvalResult}, 
+			#{approvalExplain}, 
+			#{approvalOrder}, 
+			#{projectId}, 
+			#{projectType}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>,
+			#{pictureuuId},
+			#{isHaoCai}
+		)
+	</insert>
+
+	<select id="read" resultMap="ApprovalResult" useCache="false">
+		SELECT * FROM oa_approval WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApprovalByCondition" resultMap="ApprovalVoResult" useCache="false">
+		SELECT * FROM oa_approval 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id = #{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type = #{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].department != null and args[0].department != ''">
+				AND department = #{args[0].department,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].approvalResult != null and args[0].approvalResult != ''">
+				AND approval_result = #{args[0].approvalResult,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approvalExplain != null and args[0].approvalExplain != ''">
+				AND approval_explain = #{args[0].approvalExplain,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approvalOrder != null and args[0].approvalOrder != ''">
+				AND approval_order = #{args[0].approvalOrder,javaType=java.lang.String}
+			</if>
+			<if test="args[0].projectId != null">
+				AND project_id = #{args[0].projectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].projectType != null and args[0].projectType != ''">
+				AND project_type = #{args[0].projectType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_approval 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id = #{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type = #{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].department != null and args[0].department != ''">
+				AND department = #{args[0].department,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].approvalResult != null and args[0].approvalResult != ''">
+				AND approval_result = #{args[0].approvalResult,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approvalExplain != null and args[0].approvalExplain != ''">
+				AND approval_explain = #{args[0].approvalExplain,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approvalOrder != null and args[0].approvalOrder != ''">
+				AND approval_order = #{args[0].approvalOrder,javaType=java.lang.String}
+			</if>
+			<if test="args[0].projectId != null and args[0].projectId != ''">
+				AND project_id = #{args[0].projectId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].projectType != null and args[0].projectType != ''">
+				AND project_type = #{args[0].projectType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApprovalResult" useCache="false">
+		SELECT * FROM oa_approval WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.Approval">
+		UPDATE oa_approval
+		SET 
+		<if test="ownerId != null">
+			owner_id=#{ownerId},
+		</if>
+		<if test="ownerType != null">
+			owner_type=#{ownerType},
+		</if>
+		<if test="department != null">
+			department=#{department},
+		</if>
+		<if test="teacherId != null">
+			teacher_id=#{teacherId},
+		</if>
+		<if test="approvalResult != null">
+			approval_result=#{approvalResult},
+		</if>
+		<if test="approvalExplain != null">
+			approval_explain=#{approvalExplain},
+		</if>
+		<if test="approvalOrder != null">
+			approval_order=#{approvalOrder},
+		</if>
+		<if test="projectId != null">
+			project_id=#{projectId},
+		</if>
+		<if test="projectType != null">
+			project_type=#{projectType},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="pictureuuId != null">
+			pictureId=#{pictureuuId},
+		</if>
+		<if test="isHaoCai != null">
+			is_haocai=#{isHaoCai},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_approval
+		WHERE id = #{id}
+	</delete>
+</mapper>

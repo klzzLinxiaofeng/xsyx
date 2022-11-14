@@ -1,0 +1,130 @@
+.btn-blue{
+    background: -webkit-linear-gradient(left top, #1795EF , #2DA1F8); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #1795EF , #2DA1F8); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#1795EF , #2DA1F8); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #1795EF , #2DA1F8);
+    -moz-box-shadow: 0 3px 9px rgba(34, 153, 238, 0.5);
+    -webkit-box-shadow:0 3px 9px rgba(34, 153, 238, 0.5);
+    box-shadow: 0 3px 9px rgba(34, 153, 238, 0.5);
+    border-radius:4px;
+    border:0 none;
+    color:#fff;
+}
+.btn-blue:hover{
+    background: -webkit-linear-gradient(left top, #0E82D6, #1B8EE4); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #0E82D6, #1B8EE4); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#0E82D6, #1B8EE4); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #0E82D6, #1B8EE4); 
+}
+
+.btn-green{
+    background: -webkit-linear-gradient(left top, #78c843 , #79c843); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #78c843 , #79c843); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#78c843 , #79c843); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #78c843 , #79c843); 
+    -moz-box-shadow: 0 3px 9px rgba(103, 186,47, 0.5);
+    -webkit-box-shadow:0 3px 9px rgba(103, 186,47, 0.5);
+    box-shadow: 0 3px 9px rgba(103, 186,47, 0.5);
+    border-radius:4px;
+    border:0 none;
+}
+.btn-green:hover{
+    background: -webkit-linear-gradient(left top, #3ea919 , #59bb17); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #3ea919 , #59bb17); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#3ea919 , #59bb17); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #3ea919 , #59bb17);
+     color:#fff; 
+}
+
+.btn-peaGreen{
+    background: -webkit-linear-gradient(left top, #1ecf7e , #1ee087); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #1ecf7e , #1ee087); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#1ecf7e , #1ee087); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #1ecf7e , #1ee087); 
+    -moz-box-shadow: 0 3px 9px rgba(30, 207,126, 0.5);
+    -webkit-box-shadow:0 3px 9px rgba(30, 207,126, 0.5);
+    box-shadow: 0 3px 9px rgba(30, 207,126, 0.5);
+    border-radius:4px;
+    border:0 none;
+    color:#fff;
+}
+.btn-peaGreen:hover {
+    background: -webkit-linear-gradient(left top, #18b86f, #1dd681); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #18b86f, #1dd681); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right, #18b86f, #1dd681); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #18b86f, #1dd681); 
+}
+
+.btn-orange{
+    background: -webkit-linear-gradient(left top, #f5a816 , #ffbc00); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #f5a816 , #ffbc00); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#f5a816 , #ffbc00); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #f5a816 , #ffbc00); 
+    -moz-box-shadow: 0 3px 9px rgba(245, 168,21, 0.5);
+    -webkit-box-shadow:0 3px 9px rgba(245, 168,21, 0.5);
+    box-shadow: 0 3px 9px rgba(245, 168,21, 0.5);
+    border-radius:4px;
+    border:0 none;
+    color:#fff;
+}
+.btn-orange:hover {
+    background: -webkit-linear-gradient(left top, #ff7e00, #ff9700); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #ff7e00, #ff9700); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right, #ff7e00, #ff9700); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #ff7e00, #ff9700); 
+}
+.btn:focus {
+    outline: 0 none;
+}
+.btn-red{
+    background: -webkit-linear-gradient(left top, #ff7878 , #ff6363); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #ff7878 , #ff6363); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#ff7878 , #ff6363); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #ff7878 , #ff6363); 
+    -moz-box-shadow: 0 3px 9px rgba(214, 91,74, 0.5);
+    -webkit-box-shadow:0 3px 9px rgba(214, 91,74, 0.5);
+    box-shadow: 0 3px 9px rgba(214, 91,74, 0.5);
+    border-radius:4px;
+    border:0 none;
+    color:#fff;
+}
+.btn-red:hover {
+    background: -webkit-linear-gradient(left top, #e96363, #fa6c6c); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #e96363, #fa6c6c); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right, #e96363, #fa6c6c); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #e96363, #fa6c6c); 
+}
+
+.btn-lightGray{
+    background: -webkit-linear-gradient(left top, #a8bfca , #c2d4dd); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #a8bfca , #c2d4dd); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#a8bfca , #c2d4dd); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #a8bfca , #c2d4dd); 
+    -moz-box-shadow: 0 3px 9px rgba(139, 170,185, 0.5);
+    -webkit-box-shadow:0 3px 9px rgba(139, 170,185, 0.5);
+    box-shadow: 0 3px 9px rgba(139, 170,185, 0.5);
+    border-radius:4px;
+    border:0 none;
+    color:#fff;
+}
+.btn-lightGray:hover{
+    background: -webkit-linear-gradient(left top, #7694a3 , #90acb9); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #7694a3 , #90acb9); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#7694a3 , #90acb9); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #7694a3 , #90acb9); 
+}
+.btn-forbidGray{
+    background: -webkit-linear-gradient(left top, #cacaca , #d8d8d8); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #cacaca , #d8d8d8); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#cacaca , #d8d8d8); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #cacaca , #d8d8d8); 
+    -moz-box-shadow: 0 3px 9px rgba(168, 168, 168 ,0.5);
+    -webkit-box-shadow:0 3px 9px rgba(168, 168, 168 ,0.5);
+    box-shadow: 0 3px 9px rgba(168, 168, 168 ,0.5);
+    border-radius:4px;
+    border:0 none;
+    color:#fff;
+}
+
+
+

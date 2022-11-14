@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PjUserActionDao">
+
+	<resultMap id="PjUserActionResult" type="platform.education.generalTeachingAffair.model.PjUserAction">
+		<result property="id" column="id" />
+		<result property="appId" column="app_id" />
+		<result property="schoolId" column="school_id" />
+		<result property="schoolYear" column="school_year" />
+		<result property="termCode" column="term_code" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="teamId" column="team_id" />
+		<result property="userId" column="user_id" />
+		<result property="objectUuid" column="object_uuid" />
+		<result property="objectType" column="object_type" />
+		<result property="tag" column="tag" />
+		<result property="type" column="type" />
+		<result property="value" column="value" />
+		<result property="uuid" column="uuid" />
+		<result property="document" column="document" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+	
+	<resultMap id="PjUserActionHonorScoreVo" type="platform.education.generalTeachingAffair.vo.PjUserActionHonorScoreVo">
+		<result property="studentName" column="student_name"/>
+		<result property="subjectName" column="subject_name"/>
+		<result property="subjectCode" column="subject_code"/>
+		<result property="score" column="score"/>
+		<result property="createDate" column="create_date"/>
+	</resultMap>
+	
+	<resultMap id="PjUserActionTestVo" type="platform.education.generalTeachingAffair.vo.PjUserActionTestVo">
+		<result property="name" column="name"/>
+		<result property="userId" column="user_id"/>
+		<result property="value" column="value"/>
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.PjUserAction">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_user_action (
+			id, 
+			app_id, 
+			school_id, 
+			school_year, 
+			term_code, 
+			subject_code, 
+			team_id, 
+			user_id, 
+			object_uuid, 
+			object_type, 
+			tag, 
+			type, 
+			value, 
+			uuid, 
+			document, 
+			create_date, 
+			modify_date, 
+			is_deleted
+		)
+		VALUES (
+			#{id}, 
+			#{appId}, 
+			#{schoolId}, 
+			#{schoolYear}, 
+			#{termCode}, 
+			#{subjectCode}, 
+			#{teamId}, 
+			#{userId}, 
+			#{objectUuid}, 
+			#{objectType}, 
+			#{tag}, 
+			#{type}, 
+			#{value}, 
+			#{uuid}, 
+			#{document}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="PjUserActionResult" useCache="false">
+		SELECT * FROM pj_user_action WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPjUserActionByCondition" resultMap="PjUserActionResult" useCache="false">
+		SELECT * FROM pj_user_action 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].termCode != null and args[0].termCode != ''">
+				AND term_code = #{args[0].termCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectUuid != null">
+				AND object_uuid = #{args[0].objectUuid,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectType != null and args[0].objectType != ''">
+				AND object_type = #{args[0].objectType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].tag != null and args[0].tag != ''">
+				AND tag = #{args[0].tag,javaType=java.lang.String}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].value != null and args[0].value != ''">
+				AND value = #{args[0].value,javaType=java.lang.String}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].document != null and args[0].document != ''">
+				AND document = #{args[0].document,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_user_action 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].termCode != null and args[0].termCode != ''">
+				AND term_code = #{args[0].termCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectUuid != null">
+				AND object_uuid = #{args[0].objectUuid,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectType != null and args[0].objectType != ''">
+				AND object_type = #{args[0].objectType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].tag != null and args[0].tag != ''">
+				AND tag = #{args[0].tag,javaType=java.lang.String}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].value != null and args[0].value != ''">
+				AND value = #{args[0].value,javaType=java.lang.String}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].document != null and args[0].document != ''">
+				AND document = #{args[0].document,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PjUserActionResult" useCache="false">
+		SELECT * FROM pj_user_action WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.PjUserAction">
+		UPDATE pj_user_action
+		SET 
+		<if test="appId != null">
+			app_id=#{appId},
+		</if>
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="schoolYear != null">
+			school_year=#{schoolYear},
+		</if>
+		<if test="termCode != null">
+			term_code=#{termCode},
+		</if>
+		<if test="subjectCode != null">
+			subject_code=#{subjectCode},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="objectUuid != null">
+			object_uuid=#{objectUuid},
+		</if>
+		<if test="objectType != null">
+			object_type=#{objectType},
+		</if>
+		<if test="tag != null">
+			tag=#{tag},
+		</if>
+		<if test="type != null">
+			type=#{type},
+		</if>
+		<if test="value != null">
+			value=#{value},
+		</if>
+		<if test="uuid != null">
+			uuid=#{uuid},
+		</if>
+		<if test="document != null">
+			document=#{document},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_user_action
+		WHERE id = #{id}
+	</delete>
+	<insert id="createBatch">
+INSERT INTO pj_user_action (
+			id, 
+			app_id, 
+			school_id, 
+			school_year, 
+			term_code, 
+			subject_code, 
+			team_id, 
+			user_id, 
+			object_uuid, 
+			object_type, 
+			tag, 
+			type, 
+			value, 
+			uuid, 
+			document, 
+			create_date, 
+			modify_date, 
+			is_deleted
+		)
+		VALUES 
+		<foreach collection="args[0]" item="item" index="index" separator="," >  
+		(
+			#{item.id}, 
+			#{item.appId}, 
+			#{item.schoolId}, 
+			#{item.schoolYear}, 
+			#{item.termCode}, 
+			#{item.subjectCode}, 
+			#{item.teamId}, 
+			#{item.userId}, 
+			#{item.objectUuid}, 
+			#{item.objectType}, 
+			#{item.tag}, 
+			#{item.type}, 
+			#{item.value}, 
+			#{item.uuid}, 
+			#{item.document}, 
+			#{item.createDate}, 
+			#{item.modifyDate},
+			0
+		)
+		</foreach>
+	</insert>
+	<select id="findSumCountByType" resultType="java.lang.Float" useCache="false">
+	
+	SELECT SUM(`value`) AS sum FROM pj_user_action 
+	
+	WHERE user_id=#{args[1]} AND type=#{args[0]} 
+
+	AND create_date BETWEEN  #{args[2]}   AND #{args[3]} 
+	
+	AND term_code=#{args[5]}
+	<if test="args[4] != null">
+	AND	subject_code=#{args[4]}
+	</if>
+	
+	</select>
+	
+	
+	<select id="findPjUserActionByUserId" resultType="java.lang.String" useCache="false">
+		SELECT DISTINCT subject_code FROM pj_user_action 
+		WHERE user_id = #{args[0]} 
+		AND team_id = #{args[1]}
+		AND create_date BETWEEN #{args[2]} AND #{args[3]} 
+	</select>
+	
+	<select id="findHonorScoreByDay" resultMap="PjUserActionHonorScoreVo" useCache="false">
+		SELECT ps.`name` student_name, psub.`name` subject_name, pua.subject_code, pua.`value` score, pua.create_date 
+		FROM pj_user_action pua, pj_subject psub, pj_student ps 
+		WHERE pua.type = #{args[0]} 
+		AND pua.user_id = #{args[1]} 
+		<if test='args[4] != ""'>
+			AND pua.subject_code = #{args[4]}
+		</if>
+		AND pua.subject_code = psub.`code` 
+		AND pua.school_id = psub.school_id 
+		AND pua.user_id = ps.user_id 
+		AND pua.team_id = #{args[5]} 
+		AND pua.create_date BETWEEN #{args[2]} AND #{args[3]} 
+	</select>
+	
+	<select id="findHonorScoreSum" resultMap="PjUserActionHonorScoreVo" useCache="false">
+		SELECT ps.`name` student_name, psub.`name` subject_name, pua.subject_code, SUM(pua.`value`) score, pua.create_date 
+		FROM pj_user_action pua, pj_subject psub, pj_student ps 
+		WHERE pua.type = #{args[0]} 
+		AND pua.user_id = #{args[1]} 
+		<if test='args[4] != ""'>
+			AND pua.subject_code = #{args[4]}
+		</if>
+		AND pua.subject_code = psub.`code` 
+		AND pua.school_id = psub.school_id 
+		AND pua.user_id = ps.user_id 
+		AND pua.team_id = #{args[5]} 
+		AND pua.create_date BETWEEN #{args[2]} AND #{args[3]} 
+	</select>
+	
+	<select id="findStudentResByTypeSum" resultType="java.lang.Double" useCache="false">
+		SELECT SUM(`value`) FROM pj_user_action
+		WHERE user_id = #{args[0]} 
+		AND type = #{args[1]}
+		<if test='args[4] != ""'>
+			AND subject_code = #{args[4]}
+		</if>
+		AND team_id = #{args[5]} 
+		AND create_date BETWEEN #{args[2]} AND #{args[3]}
+	</select>
+	
+	<select id="findStudentAchievementSum" resultType="java.lang.Double" useCache="false">
+		SELECT SUM(`value`) FROM pj_user_action 
+		WHERE user_id = #{args[0]} 
+		AND type in(#{args[4]}, #{args[5]})
+		<if test='args[3] != ""'>
+			AND subject_code = #{args[3]}
+		</if>
+		AND team_id = #{args[6]} 
+		AND create_date BETWEEN #{args[1]} AND #{args[2]}
+	</select>
+	
+	<select id="findQuestionCountSumByUserId" resultType="java.lang.Double" useCache="false">
+		SELECT SUM(pua.`value`) FROM pj_user_action pua
+		WHERE pua.user_id = #{args[0]} 
+		AND pua.team_id = #{args[1]} 
+		AND pua.type = #{args[2]} 
+		<if test='args[5] != ""'>
+			AND pua.subject_code = #{args[5]} 
+		</if>
+		AND pua.create_date BETWEEN #{args[3]} AND #{args[4]} 
+	</select>
+	
+	<select id="findStudentTestSumByTeamId" resultMap="PjUserActionTestVo" useCache="true">
+<!-- 		SELECT ps.`name`, pua.user_id, pua.`value` FROM pj_user_action pua, pj_student ps -->
+<!-- 		WHERE pua.user_id = ps.user_id -->
+<!-- 		AND pua.team_id = #{args[0]}  -->
+<!-- 		AND pua.type = #{args[1]}  -->
+<!-- 		<if test='args[2] != ""'> -->
+<!-- 			AND pua.subject_code = #{args[2]}  -->
+<!-- 		</if> -->
+<!-- 		AND pua.create_date BETWEEN #{args[3]} AND #{args[4]}  -->
+<!-- 		ORDER BY pua.`value` DESC  -->
+		
+		SELECT ps.`name`, pua.user_id, SUM(pua.`value`) `value` FROM pj_user_action pua, pj_student ps
+		WHERE pua.user_id = ps.user_id
+		AND pua.team_id = #{args[0]}  
+		AND pua.user_id = #{args[5]}
+		AND pua.type = #{args[1]} 
+		<if test='args[2] != ""'>
+			AND pua.subject_code = #{args[2]} 
+		</if>
+		AND pua.create_date BETWEEN #{args[3]} AND #{args[4]} 
+		ORDER BY pua.`value` DESC 
+	</select>
+	
+	<select id="findUserIdListByTeamId" resultType="java.lang.Integer" useCache="false">
+		SELECT pua.user_id FROM pj_user_action pua, pj_student ps 
+		WHERE pua.user_id = ps.user_id 
+		AND pua.team_id = #{args[0]} 
+		AND pua.type = #{args[1]} 
+		<if test='args[2] != ""'>
+			AND pua.subject_code = #{args[2]} 
+		</if>
+		AND pua.create_date BETWEEN #{args[3]} AND #{args[4]} 
+		GROUP BY pua.user_id 
+	</select>
+	
+	<select id="findAppraiseStudentList" resultType="java.lang.Integer" useCache="false">
+		SELECT DISTINCT user_id FROM pj_user_action 
+		WHERE team_id = #{args[0]}
+		AND type = #{args[1]} 
+		<if test='args[2] != ""'>
+			AND subject_code = #{args[2]} 
+		</if>
+		AND create_date BETWEEN #{args[3]} AND #{args[4]}
+	</select>
+	
+	<select id="findAppraiseSum" resultType="java.lang.Integer" useCache="false">
+		SELECT SUM(pua.`value`) FROM pj_user_action pua 
+		WHERE pua.team_id = #{args[0]} 
+		AND pua.user_id = #{args[1]} 
+		AND pua.type =  #{args[2]} 
+		<if test='args[3] != ""'>
+			AND pua.subject_code = #{args[3]} 
+		</if>
+		AND pua.create_date BETWEEN #{args[4]} AND #{args[5]} 
+<!-- 		ORDER BY pua.`value` DESC  -->
+	</select>
+	
+</mapper>

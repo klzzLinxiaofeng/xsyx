@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.PaPaperDao">
+    <resultMap id="PaPaperResult" type="platform.education.paper.model.PaPaper">
+        <result property="id" column="id" />
+        <result property="createDate" column="create_date" />
+        <result property="title" column="title" />
+        <result property="paperType" column="paper_type" />
+        <result property="publish" column="publish" />
+        <result property="paperTime" column="paper_time" />
+        <result property="reDo" column="re_do" />
+        <result property="score" column="score" />
+        <result property="referAnswer" column="refer_answer" />
+        <result property="subjectCode" column="subject_code" />
+        <result property="publishCode" column="publish_code" />
+        <result property="gradeCode" column="grade_code" />
+        <result property="volumeCode" column="volume_code" />
+        <result property="unitCode" column="unit_code" />
+        <result property="sectionCode" column="section_code" />
+        <result property="userId" column="user_id" />
+        <result property="difficulity" column="difficulity" />
+        <result property="bookId" column="book_id" />
+        <result property="bookUnitId" column="book_unit_id" />
+        <result property="bookSectionId" column="book_section_id" />
+        <result property="knowledge" column="knowledge" />
+        <result property="uuid" column="uuid" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.paper.model.PaPaper">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO pa_paper (id, create_date, title, paper_type, publish, paper_time, re_do, score, refer_answer, subject_code, publish_code, grade_code, volume_code, unit_code, section_code, user_id, difficulity, book_id, book_unit_id, book_section_id, knowledge, uuid, modify_date)
+        VALUES (#{id}, #{createDate}, #{title}, #{paperType}, #{publish}, #{paperTime}, #{reDo}, #{score}, #{referAnswer}, #{subjectCode}, #{publishCode}, #{gradeCode}, #{volumeCode}, #{unitCode}, #{sectionCode}, #{userId}, #{difficulity}, #{bookId}, #{bookUnitId}, #{bookSectionId}, #{knowledge}, #{uuid}, #{modifyDate})
+    </insert>
+
+    <select id="read" resultMap="PaPaperResult" useCache="false">
+        SELECT * FROM pa_paper WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>  
+        ORDER BY id DESC
+    </select>
+	
+    <select id="findPaPaperByCondition" resultMap="PaPaperResult" useCache="false">
+        SELECT * FROM pa_paper 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null and args[0].id != ''">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null and args[0].createDate != ''">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].title != null and args[0].title != ''">
+                AND title = #{args[0].title,javaType=java.lang.String}
+            </if>
+            <if test="args[0].paperType != null and args[0].paperType != ''">
+                AND paper_type = #{args[0].paperType,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].publish != null and args[0].publish != ''">
+                AND publish = #{args[0].publish,javaType=java.lang.String}
+            </if>
+            <if test="args[0].paperTime != null and args[0].paperTime != ''">
+                AND paper_time = #{args[0].paperTime,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].reDo != null and args[0].reDo != ''">
+                AND re_do = #{args[0].reDo,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].score != null and args[0].score != ''">
+                AND score = #{args[0].score,javaType=java.lang.Double}
+            </if>
+            <if test="args[0].referAnswer != null and args[0].referAnswer != ''">
+                AND refer_answer = #{args[0].referAnswer,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+                AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].publishCode != null and args[0].publishCode != ''">
+                AND publish_code = #{args[0].publishCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+                AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].volumeCode != null and args[0].volumeCode != ''">
+                AND volume_code = #{args[0].volumeCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].unitCode != null and args[0].unitCode != ''">
+                AND unit_code = #{args[0].unitCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].sectionCode != null and args[0].sectionCode != ''">
+                AND section_code = #{args[0].sectionCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].userId != null and args[0].userId != ''">
+                AND user_id = #{args[0].userId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].difficulity != null and args[0].difficulity != ''">
+                AND difficulity = #{args[0].difficulity,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].bookId != null and args[0].bookId != ''">
+                AND book_id = #{args[0].bookId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].bookUnitId != null and args[0].bookUnitId != ''">
+                AND book_unit_id = #{args[0].bookUnitId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].bookSectionId != null and args[0].bookSectionId != ''">
+                AND book_section_id = #{args[0].bookSectionId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].knowledge != null and args[0].knowledge != ''">
+                AND knowledge = #{args[0].knowledge,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+	
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM pa_paper 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null and args[0].id != ''">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null and args[0].createDate != ''">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].title != null and args[0].title != ''">
+                AND title = #{args[0].title,javaType=java.lang.String}
+            </if>
+            <if test="args[0].paperType != null and args[0].paperType != ''">
+                AND paper_type = #{args[0].paperType,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].publish != null and args[0].publish != ''">
+                AND publish = #{args[0].publish,javaType=java.lang.String}
+            </if>
+            <if test="args[0].paperTime != null and args[0].paperTime != ''">
+                AND paper_time = #{args[0].paperTime,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].reDo != null and args[0].reDo != ''">
+                AND re_do = #{args[0].reDo,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].score != null and args[0].score != ''">
+                AND score = #{args[0].score,javaType=java.lang.Double}
+            </if>
+            <if test="args[0].referAnswer != null and args[0].referAnswer != ''">
+                AND refer_answer = #{args[0].referAnswer,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+                AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].publishCode != null and args[0].publishCode != ''">
+                AND publish_code = #{args[0].publishCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+                AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].volumeCode != null and args[0].volumeCode != ''">
+                AND volume_code = #{args[0].volumeCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].unitCode != null and args[0].unitCode != ''">
+                AND unit_code = #{args[0].unitCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].sectionCode != null and args[0].sectionCode != ''">
+                AND section_code = #{args[0].sectionCode,javaType=java.lang.String}
+            </if>
+            <if test="args[0].userId != null and args[0].userId != ''">
+                AND user_id = #{args[0].userId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].difficulity != null and args[0].difficulity != ''">
+                AND difficulity = #{args[0].difficulity,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].bookId != null and args[0].bookId != ''">
+                AND book_id = #{args[0].bookId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].bookUnitId != null and args[0].bookUnitId != ''">
+                AND book_unit_id = #{args[0].bookUnitId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].bookSectionId != null and args[0].bookSectionId != ''">
+                AND book_section_id = #{args[0].bookSectionId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].knowledge != null and args[0].knowledge != ''">
+                AND knowledge = #{args[0].knowledge,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+	
+    <select id="findById" resultMap="PaPaperResult" useCache="false">
+        SELECT * FROM pa_paper WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+	
+    <update id="update" parameterType="platform.education.paper.model.PaPaper">
+        UPDATE pa_paper
+        SET 
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="title != null">
+            title=#{title},
+        </if>
+        <if test="paperType != null">
+            paper_type=#{paperType},
+        </if>
+        <if test="publish != null">
+            publish=#{publish},
+        </if>
+        <if test="paperTime != null">
+            paper_time=#{paperTime},
+        </if>
+        <if test="reDo != null">
+            re_do=#{reDo},
+        </if>
+        <if test="score != null">
+            score=#{score},
+        </if>
+        <if test="referAnswer != null">
+            refer_answer=#{referAnswer},
+        </if>
+        <if test="subjectCode != null">
+            subject_code=#{subjectCode},
+        </if>
+        <if test="publishCode != null">
+            publish_code=#{publishCode},
+        </if>
+        <if test="gradeCode != null">
+            grade_code=#{gradeCode},
+        </if>
+        <if test="volumeCode != null">
+            volume_code=#{volumeCode},
+        </if>
+        <if test="unitCode != null">
+            unit_code=#{unitCode},
+        </if>
+        <if test="sectionCode != null">
+            section_code=#{sectionCode},
+        </if>
+        <if test="userId != null">
+            user_id=#{userId},
+        </if>
+        <if test="difficulity != null">
+            difficulity=#{difficulity},
+        </if>
+        <if test="bookId != null">
+            book_id=#{bookId},
+        </if>
+        <if test="bookUnitId != null">
+            book_unit_id=#{bookUnitId},
+        </if>
+        <if test="bookSectionId != null">
+            book_section_id=#{bookSectionId},
+        </if>
+        <if test="knowledge != null">
+            knowledge=#{knowledge},
+        </if>
+        <if test="uuid != null">
+            uuid=#{uuid},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+	
+    <delete id="delete">
+        DELETE FROM pa_paper
+        WHERE id = #{id}
+    </delete>
+	
+    <delete id="deleteByCondition">
+        DELETE FROM pa_paper
+        WHERE 1=1
+        <if test="id != null and id != ''">
+            AND id = #{id,javaType=java.lang.Integer}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            AND create_date = #{createDate,javaType=java.util.Date}
+        </if>
+        <if test="title != null and title != ''">
+            AND title = #{title,javaType=java.lang.String}
+        </if>
+        <if test="paperType != null and paperType != ''">
+            AND paper_type = #{paperType,javaType=java.lang.Integer}
+        </if>
+        <if test="publish != null and publish != ''">
+            AND publish = #{publish,javaType=java.lang.String}
+        </if>
+        <if test="paperTime != null and paperTime != ''">
+            AND paper_time = #{paperTime,javaType=java.lang.Integer}
+        </if>
+        <if test="reDo != null and reDo != ''">
+            AND re_do = #{reDo,javaType=java.lang.Integer}
+        </if>
+        <if test="score != null and score != ''">
+            AND score = #{score,javaType=java.lang.Double}
+        </if>
+        <if test="referAnswer != null and referAnswer != ''">
+            AND refer_answer = #{referAnswer,javaType=java.lang.Integer}
+        </if>
+        <if test="subjectCode != null and subjectCode != ''">
+            AND subject_code = #{subjectCode,javaType=java.lang.String}
+        </if>
+        <if test="publishCode != null and publishCode != ''">
+            AND publish_code = #{publishCode,javaType=java.lang.String}
+        </if>
+        <if test="gradeCode != null and gradeCode != ''">
+            AND grade_code = #{gradeCode,javaType=java.lang.String}
+        </if>
+        <if test="volumeCode != null and volumeCode != ''">
+            AND volume_code = #{volumeCode,javaType=java.lang.String}
+        </if>
+        <if test="unitCode != null and unitCode != ''">
+            AND unit_code = #{unitCode,javaType=java.lang.String}
+        </if>
+        <if test="sectionCode != null and sectionCode != ''">
+            AND section_code = #{sectionCode,javaType=java.lang.String}
+        </if>
+        <if test="userId != null and userId != ''">
+            AND user_id = #{userId,javaType=java.lang.String}
+        </if>
+        <if test="difficulity != null and difficulity != ''">
+            AND difficulity = #{difficulity,javaType=java.lang.Integer}
+        </if>
+        <if test="bookId != null and bookId != ''">
+            AND book_id = #{bookId,javaType=java.lang.String}
+        </if>
+        <if test="bookUnitId != null and bookUnitId != ''">
+            AND book_unit_id = #{bookUnitId,javaType=java.lang.String}
+        </if>
+        <if test="bookSectionId != null and bookSectionId != ''">
+            AND book_section_id = #{bookSectionId,javaType=java.lang.String}
+        </if>
+        <if test="knowledge != null and knowledge != ''">
+            AND knowledge = #{knowledge,javaType=java.lang.String}
+        </if>
+        <if test="uuid != null and uuid != ''">
+            AND uuid = #{uuid,javaType=java.lang.String}
+        </if>
+        <if test="modifyDate != null and modifyDate != ''">
+            AND modify_date = #{modifyDate,javaType=java.util.Date}
+        </if>
+    </delete>
+    
+    <!--以下是业务方法-->
+    
+    <select id="findByUuid" resultMap="PaPaperResult" useCache="false">
+        SELECT * FROM pa_paper WHERE uuid = #{args[0],javaType=java.lang.String}
+    </select>
+
+</mapper>

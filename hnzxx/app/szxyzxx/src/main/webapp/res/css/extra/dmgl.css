@@ -1,0 +1,79 @@
+.dmgl{
+	background-color:#e7e8eb;
+	padding:25px;
+}
+.dm_left{
+	width:270px;
+	float:left;
+}
+.dm_course{
+	margin-bottom:13px;
+}
+.title_top{
+	height:34px;
+	line-height:34px;
+	margin-bottom:13px;
+}
+.title_top p{
+	margin:0;
+}
+.title_top .p1{
+	float:left;
+	color:#333333;
+	font-size:18px;
+}
+.title_top .btn-right{
+	float:right;
+}
+.title_top .btn-right a{
+	border:1px solid #d4d4d4;
+	padding:0 10px;
+	height:32px;
+	line-height:32px;
+	color:#333333;
+	font-size:18px;
+	float:left;
+	margin-left:4px;
+}
+.title_top .btn-right a i{
+	font-weight:normal;
+	line-height:32px;
+	color:#999999;
+}
+.dm_all{
+	
+}
+.dm_all select{
+	width:100%;
+}
+.dmb{
+	border:1px solid #d4d4d4;
+	height:489px;
+	overflow:auto;
+	background-color:#fff;
+}
+.dmb a{
+	display:block;
+	height:32px;
+	line-height:32px;
+	color:#333333;
+	padding-left:10px;
+	border-bottom:1px solid #d4d4d4;
+}
+.dm_all table{
+	width:100%;
+	border-bottom:1px solid #d4d4d4;
+}
+.dm_all table tr td,.dm_all table tr th{
+	padding-left:15px;
+}
+.dm_table{
+	height:579px;
+	overflow:auto;
+}
+.dm_table table{
+	margin:0;
+}
+.dm_right{
+	margin-left:308px;
+}

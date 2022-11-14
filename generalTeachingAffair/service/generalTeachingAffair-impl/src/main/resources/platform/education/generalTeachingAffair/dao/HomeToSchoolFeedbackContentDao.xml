@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.HomeToSchoolFeedbackContentDao">
+
+    <resultMap id="HomeToSchoolFeedbackContentResult"
+               type="platform.education.generalTeachingAffair.model.HomeToSchoolFeedbackContent">
+        <result property="id" column="id" />
+        <result property="createDate" column="create_date"/>
+        <result property="content" column="content"/>
+        <result property="feedbackId" column="feedback_id"/>
+        <result property="schoolId" column="school_id"/>
+    </resultMap>
+
+
+    <select id="read" resultMap="HomeToSchoolFeedbackContentResult" useCache="false">
+        SELECT * FROM pj_home_to_school_feedback_content WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+
+
+
+    <insert id="create" parameterType="platform.education.generalTeachingAffair.model.HomeToSchoolFeedbackContent">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO pj_home_to_school_feedback_content (
+
+        content,feedback_id,create_date,school_id
+        )
+        VALUES (
+        #{content},
+        #{feedbackId},
+        #{createDate},
+        #{schoolId}
+        )
+    </insert>
+
+
+    <delete id="delete">
+        DELETE from pj_home_to_school_feedback_content
+        where feedback_id = #{feedbackId}
+    </delete>
+
+
+
+
+
+
+
+
+</mapper>

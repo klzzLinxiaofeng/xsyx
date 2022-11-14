@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.OaApplycardDepartmentCountDao">
+
+	<resultMap id="OaApplycardDepartmentCountResult" type="platform.education.oa.model.OaApplycardDepartmentCount">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="departmentId" column="department_id" />
+		<result property="number" column="number" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isdelete" column="isdelete" />
+		<result property="audit_status" column="auditStatus" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.OaApplycardDepartmentCount">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_applycard_department_count (
+			id, 
+			school_id, 
+			department_id, 
+			number,
+			audit_status,
+			create_date, 
+			modify_date, 
+			isdelete
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{departmentId}, 
+			#{number},
+			#{auditStatus},
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isdelete != null">
+					<choose>
+						<when test="isdelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="OaApplycardDepartmentCountResult" useCache="false">
+		SELECT * FROM oa_applycard_department_count WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findOaApplycardSqnumByCondition" resultMap="OaApplycardDepartmentCountResult" useCache="false">
+		SELECT id,department_id,sum(number) as number FROM oa_applycard_department_count 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].auditStatus != null">
+				AND audit_status = #{args[0].auditStatus}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isdelete != null">
+				<choose>
+					<when test="args[0].isdelete == true">
+						AND isdelete  = 1
+					</when>
+					<otherwise>
+						AND isdelete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+		GROUP BY department_id
+	</select>
+	
+	<select id="findOaApplycardDepartmentCountByCondition" resultMap="OaApplycardDepartmentCountResult" useCache="false">
+		SELECT * FROM oa_applycard_department_count 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].auditStatus != null">
+				AND audit_status = #{args[0].auditStatus}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isdelete != null">
+				<choose>
+					<when test="args[0].isdelete == true">
+						AND isdelete  = 1
+					</when>
+					<otherwise>
+						AND isdelete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_applycard_department_count 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].auditStatus != null">
+				AND audit_status = #{args[0].auditStatus}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isdelete != null">
+				<choose>
+					<when test="args[0].isdelete == true">
+						AND isdelete  = 1
+					</when>
+					<otherwise>
+						AND isdelete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="OaApplycardDepartmentCountResult" useCache="false">
+		SELECT * FROM oa_applycard_department_count WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.OaApplycardDepartmentCount">
+		UPDATE oa_applycard_department_count
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="departmentId != null">
+			department_id=#{departmentId},
+		</if>
+		<if test="number != null">
+			number=#{number},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isdelete != null">
+			<choose>
+				<when test="isdelete == true">
+					isdelete  = 1,
+				</when>
+				<otherwise>
+					isdelete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_applycard_department_count
+		WHERE id = #{id}
+	</delete>
+</mapper>

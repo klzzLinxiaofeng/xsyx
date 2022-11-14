@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.BannerMicroDao">
+
+	<resultMap id="MicroBannerResult" type="platform.education.generalTeachingAffair.vo.MicroBanner">
+		<result property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="url" column="url" />
+		<result property="description" column="description" />
+		<result property="entityId" column="entity_id" />
+		<result property="pushState" column="push_state" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.vo.MicroBanner">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO mi_micro_banner (
+			id, 
+			title, 
+			url, 
+			description, 
+			entity_id, 
+			push_state,
+			create_date, 
+			modify_date,
+			content
+		)
+		VALUES (
+			#{id}, 
+			#{title}, 
+			#{url}, 
+			#{description}, 
+			#{entityId}, 
+			#{pushState}, 
+			#{createDate}, 
+			#{modifyDate},
+			#{content}
+		)
+	</insert>
+
+	<select id="read" resultMap="MicroBannerResult" useCache="false">
+		SELECT * FROM mi_micro_banner WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findMicroBannerByCondition" resultMap="MicroBannerResult" useCache="false">
+		SELECT * FROM mi_micro_banner 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title LIKE CONCAT(CONCAT('%', #{args[0].title,javaType=java.lang.String}),'%')
+			</if>
+			<if test="args[0].url != null and args[0].url != ''">
+				AND url = #{args[0].url,javaType=java.lang.String}
+			</if>
+			<if test="args[0].description != null and args[0].description != ''">
+				AND description = #{args[0].description,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId != null and args[0].entityId != ''">
+				AND entity_id = #{args[0].entityId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].pushState != null and args[0].pushState != ''">
+				AND push_state = #{args[0].pushState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].notId != null "> and id not in (#{args[0].notId})</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM mi_micro_banner 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].url != null and args[0].url != ''">
+				AND url = #{args[0].url,javaType=java.lang.String}
+			</if>
+			<if test="args[0].description != null and args[0].description != ''">
+				AND description = #{args[0].description,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId != null and args[0].entityId != ''">
+				AND entity_id = #{args[0].entityId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].pushState != null and args[0].pushState != ''">
+				AND push_state = #{args[0].pushState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="MicroBannerResult" useCache="false">
+		SELECT * FROM mi_micro_banner WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.vo.MicroBanner">
+		UPDATE mi_micro_banner
+		SET 
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="url != null">
+			url=#{url},
+		</if>
+		<if test="description != null">
+			description=#{description},
+		</if>
+		<if test="entityId != null">
+			entity_id=#{entityId},
+		</if>
+		<if test="pushState != null">
+			push_state=#{pushState},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="content != null and content != ''">content = #{content},</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM mi_micro_banner
+		WHERE id = #{id}
+	</delete>
+</mapper>

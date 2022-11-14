@@ -1,0 +1,49 @@
+package platform.education.generalTeachingAffair.service.test;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
+import platform.education.generalTeachingAffair.service.TeamUserService;
+import platform.education.generalTeachingAffair.service.test.base.BaseTest;
+
+public class TeamUserServiceTest extends BaseTest{
+
+
+
+	
+	@Autowired
+	@Qualifier("teamUserService")
+	private TeamUserService teamUserService;
+	
+	@Test
+	public void testAdd() {
+		
+	}
+	
+	@Test
+	public void testModify() {
+		
+	}
+
+	@Test
+	public void testModify2() {
+		
+	}
+	
+	@Test
+	public void testFindById() {
+
+	}
+	
+	@Test
+	public void testRemove() {
+
+	}
+	
+	@Test
+	public void testFindByCondition() {
+
+	}
+	
+}

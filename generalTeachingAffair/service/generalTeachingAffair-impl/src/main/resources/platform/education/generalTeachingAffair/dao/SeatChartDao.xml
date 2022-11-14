@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SeatChartDao">
+
+	<resultMap id="SeatChartResult" type="platform.education.generalTeachingAffair.model.SeatChart">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="schoolYear" column="school_year" />
+		<result property="classroomId" column="classroom_id" />
+		<result property="classroomName" column="classroom_name" />
+		<result property="classroomType" column="classroom_type" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="seatType" column="seat_type" />
+		<result property="row" column="row" />
+		<result property="col" column="col" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isMainClassroom" column="is_main_classroom" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.SeatChart">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_seat_chart (
+			id, 
+			school_id, 
+			school_year, 
+			classroom_id, 
+			classroom_name, 
+			classroom_type, 
+			grade_id, 
+			team_id, 
+			seat_type,
+			row, 
+			col, 
+			is_delete, 
+			create_date, 
+			modify_date,
+			is_main_classroom
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{schoolYear}, 
+			#{classroomId}, 
+			#{classroomName}, 
+			#{classroomType}, 
+			#{gradeId}, 
+			#{teamId},
+			#{seatType}, 
+			#{row}, 
+			#{col}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate},
+			<choose>
+				<when test="isMainClassroom != null">
+					<choose>
+						<when test="isMainClassroom == true">
+							1
+						</when>
+						<otherwise>
+							0 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="SeatChartResult" useCache="false">
+		SELECT * FROM pj_seat_chart WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findSeatChartByCondition" resultMap="SeatChartResult" useCache="false">
+		SELECT * FROM pj_seat_chart 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].classroomId != null">
+				AND classroom_id = #{args[0].classroomId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].classroomName != null and args[0].classroomName != ''">
+				AND classroom_name = #{args[0].classroomName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].classroomType != null and args[0].classroomType != ''">
+				AND classroom_type = #{args[0].classroomType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].seatType != null">
+				AND seat_type = #{args[0].seatType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].row != null">
+				AND row = #{args[0].row,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].col != null">
+				AND col = #{args[0].col,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isMainClassroom != null">
+				<choose>
+					<when test="args[0].isMainClassroom == true">
+						AND is_main_classroom  = 1
+					</when>
+					<otherwise>
+						AND is_main_classroom  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findSeatChartOfTeam" resultMap="SeatChartResult" useCache="false">
+		SELECT * FROM pj_seat_chart WHERE 1=1 and is_delete=0
+		<if test="args[0] != null">
+			AND team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND school_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		ORDER BY create_date DESC
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_seat_chart 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].classroomId != null">
+				AND classroom_id = #{args[0].classroomId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].classroomName != null and args[0].classroomName != ''">
+				AND classroom_name = #{args[0].classroomName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].classroomType != null and args[0].classroomType != ''">
+				AND classroom_type = #{args[0].classroomType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].seatType != null">
+				AND seat_type = #{args[0].seatType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].row != null">
+				AND row = #{args[0].row,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].col != null">
+				AND col = #{args[0].col,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isMainClassroom != null">
+				<choose>
+					<when test="args[0].isMainClassroom == true">
+						AND is_main_classroom  = 1
+					</when>
+					<otherwise>
+						AND is_main_classroom  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="SeatChartResult" useCache="false">
+		SELECT * FROM pj_seat_chart WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.SeatChart">
+		UPDATE pj_seat_chart
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="schoolYear != null">
+			school_year=#{schoolYear},
+		</if>
+		<if test="classroomId != null">
+			classroom_id=#{classroomId},
+		</if>
+		<if test="classroomName != null">
+			classroom_name=#{classroomName},
+		</if>
+		<if test="classroomType != null">
+			classroom_type=#{classroomType},
+		</if>
+		<if test="gradeId != null">
+			grade_id=#{gradeId},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="seatType != null">
+			seat_type=#{seatType},
+		</if>
+		<if test="row != null">
+			row=#{row},
+		</if>
+		<if test="col != null">
+			col=#{col},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isMainClassroom != null">
+			<choose>
+				<when test="isMainClassroom == true">
+					AND is_main_classroom  = 1
+				</when>
+				<otherwise>
+					AND is_main_classroom  = 0
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_seat_chart
+		WHERE id = #{id}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,872 @@
+.play-white-border {
+/* 	background-color: #fbfbff; */
+	padding: 0px 7px 7px 0px;
+	width: 1000px;
+	margin: 20px auto 0;
+/* 	box-shadow: 0 0 7px; */
+}
+
+.play-white-border2 {
+ 	background-color: #fbfbff; 
+	padding: 7px 7px 7px 7px;
+	width: 1000px;
+	margin: 20px auto 0;
+ 	box-shadow: 0 0 7px; 
+}
+
+.play-eara {
+	border: 1px solid #5b5b5b;
+ 	background-color: #2e4a70; 
+}
+
+.play-title {
+	text-align: left;
+/* 	text-shadow: -1px 0 0 #fff, 1px 0 0 #fff, 0 1px 0 #fff, 0 -1px 0 #fff; */
+	padding: 0 0 5px;
+}
+
+.play-title h3,.play-title p {
+	color: #1c3f66;
+	margin: 0;
+	letter-spacing: 1px;
+}
+
+.play-title h3 {
+	padding: 10px 0;
+	font-size: 24px;
+	font-family: "微软雅黑";
+}
+
+.play-title p {
+	font-size: 14px;
+	font-family: "黑体";
+}
+
+.play-section {
+	padding: 10px 10px 50px;
+	background: url("/css/teacher/microcourse/images/play_bg.jpg");
+}
+
+.play-null h3{
+	text-align:center; 
+	color:#dddddd;
+	padding-top: 8%;
+}
+
+.play-null H1{
+	text-align:center; 
+	color:#dddddd;
+	padding-top: 8%;
+}
+
+.player {
+	float: left;
+}
+
+.video-describe {
+	float: right;
+	width: 250px;
+}
+
+.video-describe h4 {
+	background-color: #3379aa;
+	color: #ffffff;
+	text-shadow: -1px 0 0 #225a82, 1px 0 0 #225a82, 0 1px 0 #225a82, 0 -1px
+		0 #225a82;
+	letter-spacing: 1px;
+	text-align: center;
+	font-size: 18px;
+	font-family: "黑体";
+	padding: 5px 0;
+	margin: 0;
+}
+
+.video-describe p {
+	height: 150px;
+	border-radius: 0 0 5px 5px;
+	background-color: #FFF;
+	overflow: auto;
+}
+
+.video-describe-data p {
+	height: 128px;
+}
+
+.video-describe-grade p {
+	height: 112px;
+}
+
+
+
+.tab {
+	background: url("/css/teacher/microcourse/images/tab_bg.png") repeat-x
+		scroll 0 0 transparent;
+	border-left: 1px solid #F4F4F4;
+	border-right: 1px solid #F4F4F4;
+	height: 48px;
+	margin-top: 41px;
+}
+
+.tab li {
+	border-right: 1px solid #F4F4F4;
+	display: block;
+	float: left;
+	font-size: 15px;
+	height: 48px;
+	padding: 0 15px;
+}
+
+.tab li.cur {
+	background: none repeat scroll 0 0 #FFFFFF;
+	border-top: 3px solid #0f2d45;
+	height: 45px;
+}
+
+.tab li a {
+	color: #2D2D2D;
+	line-height: 48px;
+	text-decoration: none;
+}
+
+.micro-tab {
+	background: url("/css/teacher/microcourse/images/tab_bg.png") repeat-x
+		scroll 0 0 transparent;
+	border-left: 1px solid #F4F4F4;
+	border-right: 1px solid #F4F4F4;
+	height: 28px;
+	margin-top: 10px;
+}
+
+.micro-tab li {
+	border-right: 1px solid #F4F4F4;
+	display: block;
+	float: left;
+	font-size: 15px;
+	height: 28px;
+	padding: 0 15px;
+}
+
+.micro-tab li.cur {
+	background: none repeat scroll 0 0 #FFFFFF;
+	border-top: 3px solid #0f2d45;
+	height: 25px;
+}
+
+.micro-tab li a {
+	color: #2D2D2D;
+	line-height: 28px;
+	text-decoration: none;
+}
+
+.comment-write {
+	background-color: #FFF;
+	margin-left: 2%;
+	width: 95%;
+}
+
+/*  .comment-write textarea {
+	resize: none;
+	width: 100%;
+	height: 110px;
+	border: 1px solid #c1c1c1;
+	box-shadow: 0 1px 0 #E0E0E0 inset, 0 2px 0 #eaeaea inset, 0 3px 0
+		#f2f2f2 inset, 0 4px 0 #f8f8f8 inset;
+	border-radius: 0px;
+}  */
+
+.comment-submit {
+	text-align: right;
+	padding: 5px 0 0;
+}
+
+.comment-submit input {
+	background-color: #ffce1d;
+	border: 1px solid #df8918;
+	color: #a83d04;
+	box-shadow: 0 1px 0 #ffdb55 inset, 0 -1px 0 #ffbe11 inset;
+	border-radius: 4px;
+	padding: 3px 25px;
+}
+
+.comment-submit input:HOVER {
+	background-color: #f5d9a4;
+}
+
+.comment-submit span em {
+	font-style: normal;
+	color: #ff3300;
+}
+
+.comment-title {
+	background: linear-gradient(bottom, #F4F4F4 20%, #FFFFFF 80%) #F4F4F4;
+	background: -o-linear-gradient(bottom, #F4F4F4 20%, #FFFFFF 80%) #F4F4F4;
+	background: -moz-linear-gradient(bottom, #F4F4F4 20%, #FFFFFF 80%)
+		#F4F4F4;
+	background: -webkit-linear-gradient(bottom, #F4F4F4 20%, #FFFFFF 80%)
+		#F4F4F4;
+	background: -ms-linear-gradient(bottom, #F4F4F4 20%, #FFFFFF 80%)
+		#F4F4F4;
+	background-color: #F4F4F4;
+	padding: 10px 20px;
+	font-weight: bold;
+}
+
+.comment-list {
+	background-color: #ffffff;
+}
+
+.comment-item {
+	padding: 20px;
+	border-bottom: 1px solid #f4f4f4;
+	min-height: 50px;
+}
+
+.comment-img {
+	width: 48px;
+	height: 48px;
+	background-color: #eee;
+	float: left;
+}
+
+.comment-content {
+	float: left;
+	width: 90%;
+	font-size: 14px;
+	padding-left: 10px;
+	color: #666666;
+}
+
+.comment-content h4 {
+	margin: 0;
+	color: #999999;
+	font-size: 14px;
+	padding: 5px 0;
+}
+
+.comment-content h4 .name {
+	color: #4095ce;
+	margin-right: 5px;
+}
+
+.comment-content h4 .floor {
+	float: right;
+	color: #6fbbf1;
+	font-weight: normal;
+}
+
+.page {
+	background-color: #fff;
+	padding: 20px 0;
+}
+
+.page ul {
+	text-align: center;
+}
+
+.page ul li {
+	display: inline-block;
+}
+
+.page ul li a {
+	display: inline-block;
+	width: 35px;
+	height: 35px;
+	line-height: 35px;
+	border: 1px solid #c1c1c1;
+	background: linear-gradient(bottom, #F4F4F4 20%, #FFFFFF 80%) #f1f1f1;
+	background: -o-linear-gradient(bottom, #F4F4F4 20%, #FFFFFF 80%) #f1f1f1;
+	background: -moz-linear-gradient(bottom, #F4F4F4 20%, #FFFFFF 80%)
+		#f1f1f1;
+	background: -webkit-linear-gradient(bottom, #F4F4F4 20%, #FFFFFF 80%)
+		#f1f1f1;
+	background: -ms-linear-gradient(bottom, #F4F4F4 20%, #FFFFFF 80%)
+		#f1f1f1;
+	color: #7f7f7f;
+	border-radius: 3px;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 16px;
+	margin: 0 5px;
+}
+
+.page ul li a.on,.page ul li a:HOVER {
+	background: #498ab5;
+	color: #FFF;
+	border: 1px solid #6ba2b8;
+}
+.page ul li a.on {
+	background: #498ab5;
+	color: #FFF;
+	border: 1px solid #6ba2b8;
+}
+
+.small-rating {
+	background: url("/css/teacher/microcourse/images/sprites.png") repeat
+		scroll 0 0 transparent;
+	display: inline-block;
+	line-height: 0;
+	margin-right: 5px;
+	position: relative;
+	text-align: left;
+	top: 2px;
+	width: 85px;
+}
+
+.small-rating span {
+	background: url("/css/teacher/microcourse/images/sprites.png") repeat
+		scroll 0 -13px transparent;
+	display: inline-block;
+	height: 13px;
+	line-height: 14px;
+}
+
+#callboard {
+	background-color: #FFFFFF;
+	border-radius: 0 0 5px 5px;
+	height: 150px;
+	overflow: auto;
+	line-height: 25px;
+}
+
+#callboard li {
+	height: 25px;
+	padding:0;
+}
+
+#callboard ul {margin-left: 8px;}
+
+.playTime {
+	display: block;
+	font-family: georgia;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: lighter;
+	line-height: 2.0;
+	border-radius: 3px 3px 3px 3px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset, 0 1px 0
+		rgba(255, 255, 255, 0.5);
+	color: #F0F0F0;
+}
+
+.com_nav{
+	margin:15px auto 0;
+	width:1000px;
+}
+
+.com_nav .nav_1{
+	overflow:hidden;
+	width:1000px;
+	margin:0 auto;
+}
+
+.com_nav .nav_1 li{
+	float:left;
+	width:250px;
+}
+
+.com_nav .nav_1 li img{
+	padding:3px 10px 0 80px;
+}
+
+.com_nav .nav_1 li a{
+	width:250px;
+	display: block;
+	height:35px; 
+	background:url("../microcourse/images/white.png") no-repeat ;
+	border-right:#999A9A 1px solid;
+}
+.com_nav .nav_1 li a:hover{
+/* 	 background:url("../microcourse/images/blue.png") no-repeat;
+	 color:white; */
+	 text-decoration:none;
+	 color : #0088CC;
+}
+
+.comment {
+    margin: 15px auto;
+    width: 1000px;
+    background-color:white;
+}
+.comment ul li span{
+	font-size:11px;
+}
+#com_left{
+	float:left;
+	width:700px;
+	display:block;
+	border-right:#D3D3D3 1px solid;
+	background-color:white;
+	padding-left: 15px;
+	padding-right:15px;
+}
+
+.micro_comment {
+    margin: 15px auto;
+    width: 100%;
+    background-color:white;
+    height:100%;
+}
+
+.small-rating span {
+    background: url("images/sprites.png") repeat scroll 0 -13px transparent;
+    display: inline-block;
+    height: 13px;
+    line-height: 14px;
+
+}
+#com_left .introduce .course_list{
+	width:670px;
+	
+}
+
+.course_list dl{
+	height: 160px;
+	overflow: auto;
+}
+
+.course_list dl dt{
+	background-color:#EEEEEE;
+	color:#4F4F4F;
+	height: 30px;
+    margin-bottom: 10px;
+    padding-top: 5px;
+}
+.course_list dl dt span{
+	display:block;
+	float:left;
+	width:100px;
+}
+.course_list dl dt .num{
+	padding-left:40px;
+}
+.course_list dl dt .course{
+	width:340px;
+}
+.course_list dl dd{
+	color:#4F4F4F;
+	margin-left:0;
+	height:30px;
+}
+.course_list dl dd span{
+	display:block;
+	width:100px;
+	float:left;
+}
+.course_list dl dd .num{
+	padding-left:40px;
+}
+.course_list dl dd .course{
+	width:340px;
+	height:20px;
+}
+.course_list dl dd .course p{
+	float:right;
+	padding-right:100px;
+	color:#149520;
+}
+.course_list dl dd a:hover{
+	color:#149552;
+}
+
+.contents p{
+	font-size:12px;
+	color:#727272;
+	margin-bottom: 0;
+	overflow: auto;
+	height: 70px;
+}
+#com_right{
+	background-color:#EBEBEB;
+	width:300px;
+	float:right;
+	padding-left:15px;
+	padding-right:15px;
+}
+
+#com_right .teacher dl{
+	height:100px;
+	margin-bottom:25px;
+}
+#com_right .teacher dl dt{
+	float:left;
+	max-width:100px;
+	min-width:100px;
+	max-height:75px;	
+	min-height:75px;
+	padding-right: 10px;
+}
+#com_right .teacher dl dd{
+	height:25px;
+	font-size:12px;
+}
+
+#com_right .other_cou .title{
+	font-weight:bold;
+	border-bottom:#A4A4A4 1px solid;
+}
+#com_right .other_cou .comcent{
+	
+}
+#com_right .other_cou .comcent ul{
+	margin-left:0;
+}
+#com_right .other_cou .comcent ul li{
+	border-bottom:#C6C6C6 1px dashed;
+	
+}
+#com_right .other_cou .comcent ul li span{
+	font-size:12px;
+}
+#com_right .people{
+	margin-top:20px;
+}
+#com_right .people .title{
+	font-weight:bold;
+}
+#com_right .people ul{
+	margin-left:0;
+}
+#com_right .people ul li{
+	float:left;
+}
+#com_right .people ul li img{
+	margin:15px 15px 15px 0;
+}
+.recommend {
+
+}
+.recommend h4{
+	margin-top:45px;
+}
+.recommend ul{
+	text-align: center;
+    width:700px;
+}
+.course-card {
+background: #fff;
+border-radius: 5px;
+overflow: hidden;
+box-shadow: 0 1px 2px #777;
+margin-bottom: 20px;
+}
+.course-card .thumb {
+float: left;
+width: 230px;
+border-radius: 3px;
+overflow: hidden;
+}
+.course-card .details {
+margin-left: 245px;
+display: block;
+padding: 10px;
+}
+.course-card .title {
+display: block;
+font-size: 20px;
+line-height: 1.2;
+text-align: left;
+}
+.course-card .desc {
+display: block;
+text-align: left;
+font-size: 14px;
+}
+.course-card .share {
+display: block;
+text-align: right;
+font-size: 14px;
+}
+.course-card .bottom {
+border-top: 1px solid #ccc;
+display: block;
+margin-top: 10px;
+padding-top: 1px;
+overflow: hidden;
+}
+.course-card .ins {
+line-height: 15px;
+width: 233px;
+float: left;
+}
+.course-card .ins-thumb {
+float: left;
+margin-right: 11px;
+width: 30px;
+border-radius: 3px;
+overflow: hidden;
+}
+.course-card .ins-name {
+font-weight: bold;
+display: block;
+font-size: 14px;
+text-align: left;
+}
+
+.course-card .ins-job-title {
+	color: #555555;
+	font-family: georgia;
+	font-size: 12px;
+	font-style: italic;
+	font-weight: lighter;
+	line-height: 2.0;
+	margin-top: 2px;
+}
+
+.course-card .ins-title {
+display: block;
+font-size: 14px;
+text-align: left;
+}
+.course-card .price {
+float: right;
+color: #5D951F;
+font-weight: bold;
+font-size: 20px;
+margin: 4px 0 0 0;
+}
+.course-card .count {
+float: right;
+font-size: 14px;
+color: #666;
+margin: 5px 30px 0 20px;
+border-left: 1px solid #ccc;
+padding-left: 10px;
+}
+.course-card .count:before {
+width: 20px;
+height: 13px;
+background-position: 0px -41px;
+float: left;
+margin: 4px 4px 0 0;
+}
+.spb:before, spa:after {
+background-image: url("images/sprites.png?v=10");
+content: '';
+}
+.course-card .small-rating {
+float: right;
+margin: 7px 0 0 0;
+}
+.clear
+ { 
+border-top:1px solid transparent !important;
+margin-top:-1px !important;
+border-top:0;
+margin-top:0;
+clear:both;
+visibility:hidden;
+
+}
+
+
+.main-nav{
+	background-color: rgb(234,235,236);
+	position: relative;
+	border-bottom: 2px solid #D5D6D8;
+}
+.main-nav ul{
+	width:1000px;
+	margin:0 auto;
+	
+}
+
+.main-nav ul li a{
+	color: #000;
+	font-family: "微软雅黑";
+	line-height: 38px;
+}
+.main-nav ul li.search{
+	position: relative;
+	float:right;
+	
+	width: 175px;
+}
+.main-nav .search form{
+	margin-bottom:0;
+}
+
+ul, ol {
+    margin: 0;
+    padding: 0;
+}
+
+.photoThumb {
+	border-radius: 3px;
+	overflow: hidden;	
+}
+.tb {
+	 margin-bottom: -2px;
+	 display:block;
+	 width:1024px;
+}
+
+.tb tr td img{
+	width: 1023px;
+}
+
+.left_back{
+	 background: url("images/1_02.png") repeat-y ;
+    width: 13px;
+}
+.f11{
+	background:url("images/flvlogo .jpg") no-repeat;
+	width:998px;
+	height:71px;
+}
+.f11 .title{
+	display:block;
+	font-size:28px;
+	text-align:center;
+	padding-top:10px;
+		color:#FFFFFF;
+}
+.f11 .message{
+	display:block;
+	text-align:center;
+	font-size:13px;
+	padding-top:10px;
+	color:#FFFFFF;
+}
+.f12 {
+    height: 504px;
+    margin: 0 auto;
+    position: relative;
+    width: 998px;
+}
+.f12 .dleft{
+	background:url("images/flvleft .jpg") no-repeat;
+	float:left;
+	height:504px;
+	position:relative;
+	width:174px;
+}
+.f12 .dleft img{
+    margin:0px 0 10px 0px;
+}
+.f12 .dleft .message{
+	border-top:1px dashed #D3D7DA;
+	border-bottom:1px dashed #D3D7DA;
+	display:block;
+	padding: 10px;
+	width: 90%;
+	text-align: center;
+	display:block;
+	margin-top:40px;
+}
+
+.f12 .dlef .message .sch{
+	display:block;
+	overflow:hidden;
+	align:center;
+}
+.dright{
+	background:url("images/flvright.jpg") no-repeat;
+	float: left;
+    height: 504px;
+    position: relative;
+    width: 186px;
+}
+
+.attachment-content {
+	margin: 35px 0 0 23px;
+    overflow: auto;
+    width: 186px;
+    height: 60%;
+}
+
+.f12 .dright .wjan {
+    background: url("images/rdt.jpg") no-repeat ;
+    border: 1px solid #D9D9D9;
+    color: #525252;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bolder;
+    height: 28px;
+    line-height: 28px;
+    margin-top: 10px;
+    width: 154px;
+    text-align:center;
+}
+.f12 .dright .weid {
+    background: url("images/rdt.jpg") no-repeat ;
+    border: 1px solid #D9D9D9;
+    color: #525252;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bolder;
+    height: 28px;
+    line-height: 28px;
+    margin: 5px 0 0 23px;
+    width: 154px;
+    text-align:center;
+}
+.f12 .dright .jacont, .f12 .dright .kjcont, .f12 .dright .lxcont, .f12 .dright .fscont {
+    width: 156px;
+}
+.f12 .dright .jacont .jiaoan, .f12 .dright .kjcont .jiaoan, .f12 .dright .lxcont .jiaoan, .f12 .dright .fscont .jiaoan {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #D9D9D9;
+    color: #3C3C3C;
+    cursor: pointer;
+    font-size: 14px;
+    height: 28px;
+    line-height: 28px;
+    margin: 1px auto;
+    width: 154px;
+    text-align:center;
+}
+
+.jiaoan a:HOVER {
+	text-decoration: none;
+}
+.f13{
+	 margin-top: -40px;
+	 width:998px;
+}
+.f13 .comment{
+	margin-bottom:0;
+}
+.right_back{
+	 background: url("images/1_03.png") repeat-y ;
+    width: 13px;
+}
+.tb3{
+	margin-top: -5px;
+	 display:block;
+	 width:1024px;
+}
+.video_describe_grade{
+	 margin-left: 20px;
+    width: 162px;
+    bottom: 0;
+    position: absolute;
+}
+.video_describe_grade h4 {
+    background-color: #3379AA;
+    color: #FFFFFF;
+    font-family: "黑体";
+    font-size: 18px;
+    letter-spacing: 1px;
+    margin: 0;
+    padding: 5px 0;
+    text-align: center;
+    text-shadow: -1px 0 0 #225A82, 1px 0 0 #225A82, 0 1px 0 #225A82, 0 -1px 0 #225A82;
+}
+.video_describe_grade p{
+ 	background-color: #FFFFFF;
+	border-radius: 0 0 5px 5px;
+	height: 112px;
+	overflow: hidden;
+}
+ .show-file {
+ 	display: none;
+}
+
+.group-play-right {
+	background-color: #EBEBEB; 
+	height: 800px;
+}
+
+.group-play-left {
+	height: auto;
+}

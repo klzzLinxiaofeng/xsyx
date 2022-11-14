@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd">
+    <tlib-version>1.0</tlib-version>
+    <short-name>calFileSize</short-name>
+    <tag>
+        <description>计算文件大小</description>
+        <display-name>calFileSize</display-name>
+        <name>calFileSize</name>
+        <tag-class>platform.szxyzxx.web.common.tags.CalculateFileSize</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>fileSize</description>
+            <name>fileSize</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Double</type>
+        </attribute>
+        <attribute>
+        	<description>fileSize</description>
+        	<name>unit</name>
+        	 <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Double</type>
+            <type>java.lang.String</type>
+        </attribute>
+        <example>
+        </example>
+    </tag>
+</taglib>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+       default-autowire="byName">
+
+    <!-- 注入job -->
+    <bean id="batchCreateAccountJob" class="platform.szxyzxx.web.common.job.BatchCreateAccountJob">
+    </bean>
+
+    <!-- 定义调用对象和调用对象的方法 -->
+    <bean id="batchCreateAccountJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="batchCreateAccountJob"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="batchCreateAccount"/>
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="batchCreateAccountJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="batchCreateAccountJobDetail"/>
+        <property name="cronExpression">
+            <!-- 0 30 08 * * ? -->
+            <!-- 0 0/1 * * * ? -->
+            <!-- 0 0 12 * * ? -->
+            <!-- <value>0 0 12 * * ?</value> --><!-- cronExpression是Spring定时器的特殊属性 -->
+            <value>0 0 1 * * ?</value>
+            <!-- <value>0/15 * * * * ?</value> -->
+        </property>
+    </bean>
+
+    <!-- 注入job -->
+    <bean id="bpAttendanceJob" class="platform.szxyzxx.web.bbx.job.BpAttendanceJob">
+    </bean>
+
+    <!-- 定义调用对象和调用对象的方法 -->
+    <bean id="bpAttendanceJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="bpAttendanceJob"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="executeInternal"/>
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="bpAttendanceJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="bpAttendanceJobDetail"/>
+        <property name="cronExpression">
+            <!-- 0 30 08 * * ? -->
+            <!-- 0 0/1 * * * ? -->
+            <!-- 0 0 12 * * ? -->
+            <!-- <value>0 0 12 * * ?</value> --><!-- cronExpression是Spring定时器的特殊属性 -->
+            <value>0 0 1 * * ?</value>
+            <!-- <value>0/15 * * * * ?</value> -->
+        </property>
+    </bean>
+
+
+    <!-- 注入job -->
+    <bean id="userCardJob" class="platform.szxyzxx.web.common.job.UserCardJob">
+    </bean>
+
+    <bean id="seewoAndCanteenJob" class="platform.szxyzxx.web.common.job.SeewoAndCanteenJob">
+    </bean>
+
+
+    <bean id="gatePickNotifyJob" class="platform.szxyzxx.web.common.job.GatePickNotifyJob">
+    </bean>
+
+    <bean id="parentCarAutoPickJob" class="platform.szxyzxx.web.common.job.ParentCarAutoPickJob">
+    </bean>
+
+
+  <!--  &lt;!&ndash;校车&ndash;&gt;  2021，12，31改为注解注入BroadCastController.jobMethod
+    <bean id="schoolBusJob" class="platform.szxyzxx.web.common.job.SchoolBusJob">
+    </bean>-->
+
+    <bean id="scanEndedOutSchoolActivityJob" class="platform.szxyzxx.web.office.job.ScanEndedOutSchoolActivityJob">
+    </bean>
+
+    <!-- 海康 -->
+    <bean id="hikvisonJob" class="platform.szxyzxx.web.common.job.HikvisonJob">
+    </bean>
+
+    <!-- 定义调用对象和调用对象的方法 -->
+    <bean id="userCardJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="userCardJob"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="jobMethod"/>
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+
+    <!-- 定义调用对象和调用对象的方法 -->
+    <bean id="seewoAndCanteenJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="seewoAndCanteenJob"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="syncData"/>
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="gatePickNotifyJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="gatePickNotifyJob"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="sendGageNotice"/>
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="parentCarAutoPickDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="parentCarAutoPickJob"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="task"/>
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+
+   <!-- <bean id="schoolBusJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        &lt;!&ndash; 调用的类 &ndash;&gt;
+        <property name="targetObject" ref="schoolBusJob"/>
+        &lt;!&ndash; 调用类中的方法 &ndash;&gt;
+        <property name="targetMethod" value="jobMethod"/>
+        &lt;!&ndash; 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 &ndash;&gt;
+        <property name="concurrent" value="false"/>
+    </bean>-->
+
+    <bean id="scanEndedOutSchoolActivityJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="scanEndedOutSchoolActivityJob"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="execute"/>
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="hikvisonJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject" ref="hikvisonJob"/>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod" value="jobMethod"/>
+        <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+
+    <bean id="userCardJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="userCardJobDetail"/>
+        <property name="cronExpression">
+            <value>0 0 12,22 * * ?</value>
+        </property>
+    </bean>
+
+  <!--  <bean id="schoolBusJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="schoolBusJobDetail"/>
+        <property name="cronExpression">
+            <value>0 0 12,22 * * ?</value>
+        </property>
+    </bean>-->
+
+    <bean id="seewoAndCanteenTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="seewoAndCanteenJobDetail"/>
+        <property name="cronExpression">
+            <value>0 0 2 * * ?</value>
+        </property>
+    </bean>
+
+
+    <bean id="gatePickNotifyJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="gatePickNotifyJobDetail"/>
+        <property name="cronExpression">
+            <value>0 0/2 * * * ?</value>
+        </property>
+    </bean>
+
+<!--    星期一到星期五的15-17点，每两分钟执行一次-->
+    <bean id="parentCarAutoPickTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="parentCarAutoPickDetail"/>
+        <property name="cronExpression">
+            <value>0/5 * 15-19 * * ?</value>
+        </property>
+    </bean>
+
+
+
+    <bean id="scanEndedOutSchoolActivityTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="scanEndedOutSchoolActivityJobDetail"/>
+        <property name="cronExpression">
+            <value>0 0/2 * * * ?</value>
+        </property>
+    </bean>
+
+
+    <bean id="hikvisonJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="hikvisonJobDetail"/>
+        <property name="cronExpression">
+            <value>0 0 12,22 * * ?</value>
+        </property>
+    </bean>
+
+
+    <!-- 指定要进行的任务 -->
+    <bean id="ssdmt-scheduler" lazy-init="true" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="bpAttendanceJobTrigger"/>
+                <ref bean="batchCreateAccountJobTrigger"/>
+                <ref bean="userCardJobTrigger"/>
+                <ref bean="seewoAndCanteenTrigger"/>
+               <!-- <ref bean="schoolBusJobTrigger"/>-->
+                <ref bean="scanEndedOutSchoolActivityTrigger"/>
+                <ref bean="hikvisonJobTrigger"/>
+<!--                <ref bean="gatePickNotifyJobTrigger"/>-->
+<!--                测试环境注释，生产环境需放开-->
+<!--                <ref bean="parentCarAutoPickTrigger"/>-->
+            </list>
+        </property>
+        <!-- 指定属性配置路径 -->
+        <!-- <property name="configLocation" value="classpath:quartz.properties" /> -->
+    </bean>
+
+
+
+</beans>

@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ParentStudentDao">
+
+	<resultMap id="ParentStudentResult" type="platform.education.generalTeachingAffair.model.ParentStudent">
+		<result property="id" column="id" />
+		<result property="studentUserId" column="student_user_id" />
+		<result property="studentName" column="student_name" />
+		<result property="parentUserId" column="parent_user_id" />
+		<result property="parentRelation" column="parent_relation" />
+		<result property="rank" column="rank" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="relationRemarks" column="relation_remarks" />
+		<result property="email" column="email" />
+	</resultMap>
+	
+	<resultMap id="ParentIdResult" type="platform.education.generalTeachingAffair.model.ParentStudent">
+		<result property="parentUserId" column="parent_user_id" />
+		<result property="stuName" column="stuName" />
+		<result property="teamName" column="team_name" />
+		<result property="empCard" column="emp_card" />
+	</resultMap>
+	<resultMap id="ParentIdResult2" type="platform.education.generalTeachingAffair.model.ParentStudentBus">
+		<result property="parentUserId" column="parent_user_id" />
+		<result property="stuName" column="stuName" />
+		<result property="teamName" column="team_name" />
+		<result property="empCard" column="emp_card" />
+		<result property="userName" column="user_name" />
+	</resultMap>
+
+
+	<resultMap id="parentAccAndStuResultMap" type="platform.education.generalTeachingAffair.model.ParentAccountStudent">
+		<id  property="pid" column="pid" />
+		<result property="userId" column="user_id" />
+		<result property="name" column="pname" />
+		<result property="mobile" column="mobile" />
+		<result property="email" column="email" />
+		<result property="carNo" column="license_plate" />
+		<result property="createTime" column="create_date" />
+		<result property="userName" column="user_name" />
+		<result property="status" column="state" />
+		<collection property="studentList" ofType="platform.education.generalTeachingAffair.model.ParentStudentInfo">
+			<result property="rank" column="rank" />
+			<result property="stuName" column="sname" />
+			<result property="teamName" column="team_name" />
+		</collection>
+	</resultMap>
+
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ParentStudent">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_parent_student (id, student_user_id, student_name, parent_user_id, parent_relation, rank, is_delete, create_date, modify_date,relation_remarks,email)
+		VALUES (#{id}, #{studentUserId}, #{studentName}, #{parentUserId}, #{parentRelation}, #{rank}, #{isDelete}, #{createDate}, #{modifyDate},#{relationRemarks},#{email})
+	</insert>
+
+	<select id="read" resultMap="ParentStudentResult" useCache="false">
+		SELECT * FROM pj_parent_student WHERE 1=1
+		<if test="args[0]!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findParentStudentByCondition" resultMap="ParentStudentResult" useCache="false">
+		SELECT * FROM pj_parent_student WHERE 1=1 and is_delete=0 
+		<if test="args[0] != null">
+		
+			<if test="args[0].id != null">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentUserId != null">
+			AND student_user_id = #{args[0].studentUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null">
+			AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].parentUserId != null">
+			AND parent_user_id = #{args[0].parentUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].parentRelation != null">
+			AND parent_relation = #{args[0].parentRelation,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rank != null">
+			AND rank = #{args[0].rank,javaType=java.lang.String}
+			</if>
+			<!-- <if test="args[0].isDelete != null">
+			AND is_delete = #{args[0].isDelete}
+			</if> -->
+			<if test="args[0].createDate != null">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].relationRemarks != null">
+			AND relation_remarks = #{args[0].relationRemarks,javaType=java.lang.String}
+			</if>
+			<if test="args[0].email != null">
+			AND email = #{args[0].email,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findParentStudentListBySchoolId" resultMap="ParentStudentResult" useCache="false">
+		SELECT pps.* from pj_parent_student pps LEFT JOIN pj_student ps on pps.student_user_id = ps.user_id where pps.is_delete = 0 and ps.is_delete = 0 
+		<if test="args[0]!=null and args[0]!=null">
+			AND ps.school_id = #{args[0],javaType=java.lang.Integer}
+		</if> 
+		 GROUP BY pps.parent_user_id  
+	</select>
+	
+	<!-- 
+		@date 2016年08月24日
+		@update 为满足升级业务，接口改为现在这样
+	 -->
+	<select id="findParentIdByCondition" resultMap="ParentIdResult" useCache="false">
+		SELECT pjpa.id,pjp.user_id parent_user_id,pjpa.name stuName,pjpa.team_name from pj_parent pjp INNER JOIN
+		(SELECT pjpstu.parent_user_id,mergestu.*  from pj_parent_student pjpstu
+		INNER JOIN
+		(SELECT pts.`team_id`,pts.`grade_id`,ps.`user_id`,ps.name,ps.team_name,ps.id FROM `pj_student` ps  INNER JOIN  `pj_team_student` pts
+		ON pts.`student_id` = ps.id 
+		WHERE pts.is_delete=0 
+		AND pts.finish_date is NULL
+		and ps.study_state='01'
+		<if test="args[0].schoolId != null">
+		    AND ps.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].gradeId != null">
+		    and pts.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+		</if> 
+		<if test="args[0].teamId != null">
+		    and pts.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].stuName != null and args[0].stuName != ''">
+		    and ps.`name` LIKE CONCAT(CONCAT('%', #{args[0].stuName}),'%')
+		</if>
+		group by ps.id
+		) mergestu 
+		on pjpstu.student_user_id = mergestu.user_id 
+		where pjpstu.is_delete = 0
+            <if test="args[0].parentUserId != null">
+                and pjpstu.parent_user_id = #{args[0].parentUserId,javaType=java.lang.Integer}
+            </if>
+            ) pjpa
+            on pjp.user_id = pjpa.parent_user_id
+             where pjp.is_delete = 0
+
+             <if test="args[0].name != null">
+             and pjp.`name` LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+            </if>
+
+            <if test="args[0].userName != null">
+             and pjp.user_name LIKE CONCAT(CONCAT('%', #{args[0].userName}),'%')
+            </if>
+            <!-- 于2016-11-29添加号码查询  -->
+            <if test="args[0].mobile != null">
+             and pjp.mobile LIKE CONCAT(CONCAT('%', #{args[0].mobile}),'%')
+            </if>
+		
+		 
+		
+	</select>
+
+
+	<select id="countParent" resultType="integer">
+		select
+		       <choose>
+				   <when test="args[0].stuName != null and args[0].stuName != ''">
+					   count(distinct p.id)
+				   </when>
+				   <otherwise>
+					   count(p.id)
+				   </otherwise>
+			   </choose>
+
+		from pj_parent p
+		INNER JOIN yh_user u ON u.id = p.user_id
+		AND u.is_deleted = 0
+		<if test="args[0].stuName != null and args[0].stuName != ''">
+			LEFT JOIN pj_parent_student ps ON ps.parent_user_id = p.user_id
+			AND ps.is_delete = 0
+			LEFT JOIN pj_student s ON s.user_id = ps.student_user_id
+			AND s.is_delete = 0
+			AND s.school_id = 215
+		</if>
+		where p.is_delete=0
+
+		<if test="args[0].mobile != null and args[0].mobile != ''">
+			and p.`mobile` LIKE CONCAT('%', #{args[0].mobile},'%')
+		</if>
+		<if test="args[0].name != null and args[0].name != ''">
+			and p.`name` LIKE CONCAT('%', #{args[0].name},'%')
+		</if>
+		<if test="args[0].carNo != null and args[0].carNo != ''">
+			and p.`license_plate` LIKE CONCAT('%', #{args[0].carNo},'%')
+		</if>
+
+		<if test="args[0].userName != null and args[0].userName !=''">
+			and u.user_name LIKE CONCAT('%',#{args[0].userName},'%')
+		</if>
+
+		<if test="args[0].stuName != null and args[0].stuName != ''">
+			and s.`name` LIKE CONCAT('%', #{args[0].stuName},'%')
+		</if>
+
+	</select>
+
+	<select id="findParentAccountAndStu" resultMap="parentAccAndStuResultMap">
+		SELECT
+		pu.id pid,
+		pu.user_id,
+		pu.`name` pname,
+		pu.mobile,
+		pu.email,
+		pu.license_plate,
+		pu.create_date,
+		pu.user_name,
+		pu.state,
+		ps.id psid,
+		ps.rank,
+		s.`name` sname,
+		s.team_name team_name
+		FROM
+		(
+		    select p.id ,p.user_id,p.`name` ,p.mobile,p.email,p.license_plate,p.create_date,u.user_name,u.state
+			from pj_parent p
+			INNER JOIN yh_user u ON u.id = p.user_id AND u.is_deleted = 0
+		    where p.is_delete=0
+
+			<if test="args[0].mobile != null and args[0].mobile != ''">
+				and p.`mobile` LIKE CONCAT('%', #{args[0].mobile},'%')
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				and p.`name` LIKE CONCAT('%', #{args[0].name},'%')
+			</if>
+			<if test="args[0].carNo != null and args[0].carNo != ''">
+				and p.`license_plate` LIKE CONCAT('%', #{args[0].carNo},'%')
+			</if>
+			<if test="args[0].userName != null and args[0].userName !=''">
+				and u.user_name LIKE CONCAT('%',#{args[0].userName},'%')
+			</if>
+
+			limit #{args[1]},#{args[2]}
+		) pu
+		LEFT JOIN pj_parent_student ps ON ps.parent_user_id = pu.user_id
+		AND ps.is_delete = 0
+		LEFT JOIN pj_student s ON s.user_id = ps.student_user_id
+		AND s.is_delete = 0
+		AND s.school_id = 215
+	</select>
+
+
+	<select id="findParentAccountAndStu2" resultMap="parentAccAndStuResultMap">
+		SELECT
+		p2.id pid,
+		p2.user_id,
+		p2.`name` pname,
+		p2.mobile,
+		p2.email,
+		p2.license_plate,
+		p2.create_date,
+		u2.user_name,
+		u2.state,
+		ps2.id psid,
+		ps2.rank,
+		s2.`name` sname,
+		s2.team_name team_name
+		FROM
+		pj_parent p2
+		INNER JOIN yh_user u2 ON u2.id = p2.user_id
+		AND u2.is_deleted = 0
+		LEFT JOIN pj_parent_student ps2 ON ps2.parent_user_id = p2.user_id
+		AND ps2.is_delete = 0
+		LEFT JOIN pj_student s2 ON s2.user_id = ps2.student_user_id
+		AND s2.is_delete = 0
+		AND s2.school_id = 215
+
+		where p2.id in (
+
+		select id from (
+		    select distinct p.id
+			from pj_parent p
+			INNER JOIN yh_user u ON u.id = p.user_id
+			AND u.is_deleted = 0
+			LEFT JOIN pj_parent_student ps ON ps.parent_user_id = p.user_id
+			AND ps.is_delete = 0
+			LEFT JOIN pj_student s ON s.user_id = ps.student_user_id
+			AND s.is_delete = 0
+			AND s.school_id = 215
+			where p.is_delete=0
+			<if test="args[0].mobile != null and args[0].mobile != ''">and p.`mobile` LIKE CONCAT('%',
+				#{args[0].mobile},'%')
+				and p.`name` LIKE CONCAT('%', #{args[0].name},'%')</if>
+					<if
+							test="args[0].name != null and args[0].name != ''"></if>
+					<if test="args[0].carNo != null and args[0].carNo != ''">
+						and p.`license_plate` LIKE CONCAT('%', #{args[0].carNo},'%')
+					</if>
+
+					<if test="args[0].userName != null and args[0].userName !=''">
+						and u.user_name LIKE CONCAT('%',#{args[0].userName},'%')
+					</if>
+
+					<if test="args[0].stuName != null and args[0].stuName != ''">
+						and s.`name` LIKE CONCAT('%', #{args[0].stuName},'%')
+					</if>
+					limit #{args[1]},#{args[2]}
+		    ) t
+		)
+
+
+
+	</select>
+
+
+
+
+
+	<select id="findParentSutBusByGroupCondition" resultMap="ParentIdResult2" useCache="false">
+	    SELECT pjpa.id,	pjpa.user_name,	pjp.user_id parent_user_id,	pjpa.NAME stuName,	pjpa.team_name ,	pjpa.emp_card
+	    from pj_parent pjp INNER JOIN
+		(SELECT pjpstu.parent_user_id,mergestu.*  from pj_parent_student pjpstu
+		INNER JOIN
+		(SELECT pts.`team_id`,pts.`grade_id`,ps.`user_id`,ps.name,ps.team_name,ps.id,ps.user_name,
+		ps.emp_card FROM `pj_team_student` pts INNER JOIN `pj_student` ps
+		ON pts.`student_id` = ps.id
+		WHERE pts.is_delete=0
+		AND pts.finish_date is NULL
+		<if test="args[0].schoolId != null">
+		    AND ps.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].gradeId != null">
+		    and pts.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].teamId != null">
+		    and pts.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].stuName != null and args[0].stuName != ''">
+		    and ps.`name` LIKE CONCAT(CONCAT('%', #{args[0].stuName}),'%')
+		</if>
+
+		) mergestu
+		on pjpstu.student_user_id = mergestu.user_id
+		where pjpstu.is_delete = 0
+            <if test="args[0].parentUserId != null">
+                and pjpstu.parent_user_id = #{args[0].parentUserId,javaType=java.lang.Integer}
+            </if>
+            ) pjpa
+            on pjp.user_id = pjpa.parent_user_id
+            INNER JOIN pj_school_bus_manger psbm ON pjpa.id = psbm.student_id
+            <!--<if test="args[0].isSendSchoolBusGs != null"> and psbm.is_send_school_bus_gs = #{args[0].isSendSchoolBusGs}</if>-->
+            <if test="args[0].isSendSchoolBusHjs != null">
+             and psbm.is_send_school_bus_hjs = #{args[0].isSendSchoolBusHjs}</if>
+
+             where pjp.is_delete = 0
+
+             <if test="args[0].name != null">
+             and pjp.`name` LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+            </if>
+
+            <if test="args[0].userName != null">
+             and pjp.user_name LIKE CONCAT(CONCAT('%', #{args[0].userName}),'%')
+            </if>
+            <!-- 于2016-11-29添加号码查询  -->
+            <if test="args[0].mobile != null">
+             and pjp.mobile LIKE CONCAT(CONCAT('%', #{args[0].mobile}),'%')
+            </if>
+	</select>
+
+	<select id="findSutBusByGroupCondition" resultMap="ParentIdResult" useCache="false">
+		SELECT pjpa.id,pjp.user_id parent_user_id,pjpa.name stuName,pjpa.team_name,
+	    pjpa.emp_card from pj_parent pjp INNER JOIN
+		(SELECT pjpstu.parent_user_id,mergestu.*  from pj_parent_student pjpstu
+		INNER JOIN
+		(SELECT pts.`team_id`,pts.`grade_id`,ps.`user_id`,ps.name,ps.team_name,ps.id,
+		ps.emp_card FROM `pj_team_student` pts INNER JOIN `pj_student` ps
+		ON pts.`student_id` = ps.id
+		WHERE pts.is_delete=0
+		AND pts.finish_date is NULL
+		<if test="args[0].schoolId != null">
+		    AND ps.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].gradeId != null">
+		    and pts.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].teamId != null">
+		    and pts.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].stuName != null and args[0].stuName != ''">
+		    and ps.`name` LIKE CONCAT(CONCAT('%', #{args[0].stuName}),'%')
+		</if>
+
+		) mergestu
+		on pjpstu.student_user_id = mergestu.user_id
+		where pjpstu.is_delete = 0
+            <if test="args[0].parentUserId != null">
+                and pjpstu.parent_user_id = #{args[0].parentUserId,javaType=java.lang.Integer}
+            </if>
+            ) pjpa
+            on pjp.user_id = pjpa.parent_user_id
+            INNER JOIN pj_school_bus_manger psbm ON pjpa.id = psbm.student_id
+             where pjp.is_delete = 0
+
+             <if test="args[0].name != null">
+             and pjp.`name` LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+            </if>
+
+            <if test="args[0].userName != null">
+             and pjp.user_name LIKE CONCAT(CONCAT('%', #{args[0].userName}),'%')
+            </if>
+            <!-- 于2016-11-29添加号码查询  -->
+            <if test="args[0].mobile != null">
+             and pjp.mobile LIKE CONCAT(CONCAT('%', #{args[0].mobile}),'%')
+            </if>
+
+
+
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_parent_student WHERE 1=1 and is_delete=0 
+		<if test="args[0] != null">
+			
+			<if test="args[0].id != null">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentUserId != null">
+			AND student_user_id = #{args[0].studentUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null">
+			AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].parentUserId != null">
+			AND parent_user_id = #{args[0].parentUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].parentRelation != null">
+			AND parent_relation = #{args[0].parentRelation,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rank != null">
+			AND rank = #{args[0].rank,javaType=java.lang.String}
+			</if>
+			<!-- <if test="args[0].isDelete != null">
+			AND is_delete = #{args[0].isDelete}
+			</if> -->
+			<if test="args[0].createDate != null">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].relationRemarks != null">
+			AND relation_remarks = #{args[0].relationRemarks,javaType=java.lang.String}
+			</if>
+			<if test="args[0].email != null">
+			AND email = #{args[0].email,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ParentStudentResult" useCache="false">
+		SELECT * FROM pj_parent_student WHERE id = #{args[0],javaType=java.lang.Integer} and is_delete=0 
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ParentStudent">
+		UPDATE pj_parent_student
+		SET 
+				<if test="studentUserId != null">
+					student_user_id=#{studentUserId},
+				</if>
+				<if test="studentName != null">
+					student_name=#{studentName},
+				</if>
+				<if test="parentUserId != null">
+					parent_user_id=#{parentUserId},
+				</if>
+				<if test="parentRelation != null">
+					parent_relation=#{parentRelation},
+				</if>
+				<if test="rank != null">
+					rank=#{rank},
+				</if>
+				<if test="isDelete != null">
+					is_delete=#{isDelete},
+				</if>
+				<if test="createDate != null">
+					create_date=#{createDate},
+				</if>
+				<if test="modifyDate != null">
+					modify_date=#{modifyDate},
+				</if>
+				
+				<if test="relationRemarks != null">
+					relation_remarks = #{relationRemarks},
+				</if>
+				<if test="email != null">
+					email = #{email},
+				</if>
+		id = #{id}
+		WHERE id = #{id}
+		and is_delete=0 
+	</update>
+	
+	<update id="updateNoRead">
+		UPDATE pj_parent_student
+		SET 
+		<if test="args[0].studentUserId != null">
+			student_user_id=#{args[0].studentUserId},
+		</if>
+		<if test="args[0].studentName != null">
+			student_name=#{args[0].studentName},
+		</if>
+		<if test="args[0].parentUserId != null">
+			parent_user_id=#{args[0].parentUserId},
+		</if>
+		<if test="args[0].parentRelation != null">
+			parent_relation=#{args[0].parentRelation},
+		</if>
+		<if test="args[0].rank != null">
+			rank=#{args[0].rank},
+		</if>
+		<if test="args[0].isDelete != null">
+			is_delete=#{args[0].isDelete},
+		</if>
+		<if test="args[0].createDate != null">
+			create_date=#{args[0].createDate},
+		</if>
+		<if test="args[0].modifyDate != null">
+			modify_date=#{args[0].modifyDate},
+		</if>
+		<if test="args[0].relationRemarks != null">
+			relation_remarks = #{args[0].relationRemarks},
+		</if>
+		<if test="args[0].email != null">
+			email = #{args[0].email},
+		</if>
+		id = #{args[0].id}
+		WHERE id = #{args[0].id}
+	</update>
+	
+	<update id="delete">
+		update pj_parent_student
+		set is_delete = 1, 
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+		and is_delete=0 
+	</update>
+	
+	<select id="findParentStudentByStudentUserId" resultMap="ParentStudentResult" useCache="false">
+		SELECT * FROM pj_parent_student WHERE student_user_id = #{args[0],javaType=java.lang.Integer} and is_delete=0 
+	</select>
+	
+	<select id="findParentStudentByParentUserId" resultMap="ParentStudentResult" useCache="false">
+		SELECT * FROM pj_parent_student WHERE parent_user_id = #{args[0],javaType=java.lang.Integer} and is_delete=0 
+	</select>
+	
+	<!-- 根据家长和学生的用户ID查找位移数据 -->
+	<select id="findUnique" resultMap="ParentStudentResult" useCache="false">
+		SELECT * FROM pj_parent_student WHERE parent_user_id = #{args[0],javaType=java.lang.Integer} 
+		and student_user_id=#{args[1],javaType=java.lang.Integer} and is_delete=0 
+	</select>
+	
+	<select id="findParentMessByStudentUserId" resultType="platform.education.generalTeachingAffair.vo.ParentMess" useCache="false">
+	SELECT
+	pa.user_id parentUserId,
+	pe.address ,
+	pe.id_card_number
+	idCardNumber,
+	pe.id_card_type idCardType,
+	pe.mobile,
+	pe.`name`,
+	pe.position,
+	pe.race,
+	ps.rank,
+	pe.residence_address residenceAddress,
+	pe.working_place workingPlace,
+	ps.parent_relation parentRelation,
+	ps.relation_remarks relationRemarks
+	FROM
+	pj_parent pa
+	LEFT JOIN pj_person pe ON pa.person_id = pe.id
+	LEFT JOIN pj_parent_student ps ON ps.parent_user_id = pa.user_id
+	WHERE
+	ps.student_user_id = #{args[0],javaType=java.lang.Integer} 
+	</select>
+
+
+	<select id="findIncrementByParentUserId" resultMap="ParentIdResult" useCache="false">
+		SELECT * FROM pj_parent_student ps
+		LEFT JOIN pj_student s ON ps.student_user_id = s.user_id
+		WHERE 1=1
+		AND s.is_delete = 0
+		<if test="args[0] != null">
+			AND s.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND ps.parent_user_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null">
+			AND ps.modify_date > #{args[2],javaType=java.util.Date}
+		</if>
+		<if test="args[3] != null">
+			<choose>
+				<when test="args[3] == true">
+					AND ps.is_delete = 1
+				</when>
+				<otherwise>
+					AND ps.is_delete = 0
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+</mapper>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.literacy.dao.LiteracyStudentDao">
+
+    <resultMap id="LiteracyMap" type="platform.szxyzxx.literacy.pojo.LiteracyStudent">
+        <id column="id" property="id"></id>
+        <result column="code" property="code"></result>
+        <result column="stuid" property="studentId"></result>
+        <result column="stuname" property="stuName"></result>
+        <result column="team_name" property="teamName"></result>
+        <result column="team_id" property="teamId"></result>
+        <result column="subject_id" property="subjectId"></result>
+        <result column="subjectName" property="subName"></result>
+        <result column="literacy_name" property="literacyName"></result>
+        <result column="max_score" property="score"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="literacy_id" property="literacyId"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="fenshu" property="fenshu"></result>
+        <result column="pingyu" property="pingyu"></result>
+    </resultMap>
+    <resultMap id="LiteracyVoMap" type="platform.szxyzxx.literacy.pojo.LiteracyVo">
+        <id column="id" property="id"></id>
+        <result column="xn" property="xn"></result>
+        <result column="xq" property="xq"></result>
+        <result column="grade_id" property="gradeId"></result>
+        <result column="grade_name" property="gradeName"></result>
+        <result column="subject_id" property="subjectId"></result>
+        <result column="subject_name" property="subjectName"></result>
+        <result column="literacy_name" property="literacyName"></result>
+        <result column="max_score" property="score"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="moide_time" property="moideTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+    </resultMap>
+
+
+    <resultMap id="SubjectResult"  type="platform.education.generalTeachingAffair.model.Subject">
+        <result property="id" column="id" />
+        <result property="code" column="code" />
+        <result property="schoolId" column="school_id" />
+        <result property="stageCode" column="stage_code" />
+        <result property="name" column="name" />
+        <result property="listOrder" column="list_order" />
+        <result property="subjectClass" column="subject_class" />
+        <result property="subjectType" column="subject_type" />
+        <result property="subjectProperty" column="subject_property" />
+        <result property="subjectCharacter" column="subject_character" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+
+
+    <select id="findByAll" resultMap="LiteracyMap">
+        select ps.id as stuid, ps.name as stuname,pt.name as team_name,pt.id as team_id ,pg.uni_grade_code as code  from pj_student ps
+        left join pj_team_student pts on pts.student_id=ps.id
+        inner join pj_team pt on pts.team_id=pt.id
+        inner join pj_grade pg on pg.id=pt.grade_id
+        <where>
+        ps.school_id=#{args[0]}  and  pts.is_delete=0 and ps.study_state='01'
+            and   pg.school_year=#{args[1]}
+            <if test="args[2]!=null">
+                and  pts.team_id=#{args[2]}
+            </if>
+        </where>
+         order by ps.emp_code asc
+    </select>
+    <select id="findBySubId" resultMap="SubjectResult">
+            select psb.* from pj_subject psb inner join pj_subject_grade psg on psg.subject_code=psb.code
+            inner join pj_grade pg on pg.uni_grade_code=psg.grade_code
+            <where>
+            pg.school_year=#{args[3]} and
+             psb.school_id=#{args[0]}  and is_delete=0 and psg.grade_code=#{args[2]}
+            <if test="args[1]!=null">
+               and psb.id=#{args[1]}
+            </if>
+            group by psb.id
+
+            </where>
+    </select>
+    <select id="findByStudent" resultMap="LiteracyMap">
+        select pls.id,pls.fenshu,pls.pingyu,ps.team_id,ps.team_name,ps.name as stuname,pb.name as subjectName,pl.literacy_name,pl.max_score  from pj_literacy_student pls
+            inner join pj_student ps on ps.id=pls.student_id
+            inner join pj_literacy pl on pl.id=pls.literacy_id
+            inner join pj_subject pb on pb.id=pl.subject_id
+            where  pls.student_id=#{args[1]} and pl.subject_id=#{args[2]}
+             and pls.is_delete=0 and ps.school_id=#{args[0]} and ps.study_state='01'
+             <if test="args[3]!=null">
+                 and pl.xn=#{args[3]}
+             </if>
+                <if test="args[4]!=null">
+                    and pl.xq=#{args[4]}
+                </if>
+    </select>
+    <select id="findByLiteracyId" resultMap="LiteracyMap">
+        select pls.id,pls.fenshu,pls.pingyu,pl.max_score,pl.grade_id as stuid,pl.subject_id as subject_id,pl.id as literacy_id,pl.xn as stuname ,pl.xq as  subjectName  from pj_literacy_student pls
+        inner join pj_student ps on ps.id=pls.student_id
+        inner join pj_literacy pl on pl.id=pls.literacy_id
+        inner join pj_subject pb on pb.id=pl.subject_id
+        where  pls.id=#{args[1]} and pls.is_delete=0 and ps.school_id=#{args[0]} and ps.study_state='01'
+
+    </select>
+
+    <select id="findByliteracy" resultMap="LiteracyMap">
+       select pls.id, pls.student_id as stuid,pls.fenshu,pls.literacy_id,ps.name as stuname,ps.team_name from pj_literacy_student pls
+       inner join pj_literacy  pl on pls.literacy_id=pl.id
+       inner join pj_student ps  on ps.id=pls.student_id
+       where pl.id=#{args[0]} and pls.is_delete=0 and ps.study_state='01'
+        <if test="args[1]!=null">
+           and   ps.team_id=#{args[1]}
+        </if>
+       and pl.is_delete=0 and ps.is_delete=0
+    </select>
+
+    <select id="getAllSubjectZhibiao" resultMap="LiteracyVoMap">
+        select * from pj_literacy where xn=#{args[0]} and is_delete=0 and xq=#{args[1]} and grade_id=#{args[2]} and subject_id=#{args[3]}
+    </select>
+
+    <select id="findByStudentIdAndLiteracyId" resultMap="LiteracyMap">
+        select sum(pls.fenshu) as fenshu,pl.literacy_name from pj_literacy_student pls inner join pj_literacy pl on pl.id=pls.literacy_id
+        where pls.student_id=#{args[0]} and pls.literacy_id=#{args[1]} and pls.is_delete=0
+    </select>
+    <update id="updatePingyu">
+        update pj_literacy_student set pingyu=#{args[1]} where is_delete=0 and id=#{args[0]}
+    </update>
+    <update id="updatePingFen">
+         update pj_literacy_student set fenshu=#{args[2]} where is_delete=0 and student_id=#{args[0]} and literacy_id=#{args[1]}
+    </update>
+
+</mapper>

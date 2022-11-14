@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.schoolbus.dao.BusStudentSignDao">
+
+  <resultMap id="BaseResultMap" type="platform.szxyzxx.schoolbus.pojo.BusStudentSign">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="stu_card" jdbcType="INTEGER" property="stuCard" />
+    <result column="school_bus_card" jdbcType="VARCHAR" property="schoolBusCard" />
+    <result column="sign_time" jdbcType="VARCHAR" property="signTime" />
+    <result column="sign_date" jdbcType="CHAR" property="signDate" />
+    <result column="direction" jdbcType="INTEGER" property="direction" />
+    <result column="sign_address" jdbcType="VARCHAR" property="signAddress" />
+    <result column="request_ip" jdbcType="VARCHAR" property="requestIp" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+
+  <resultMap id="StuSignResultMap" type="platform.szxyzxx.schoolbus.pojo.StudentSignInfo">
+     <id column="stu_id" jdbcType="INTEGER" property="stuId" />
+     <result column="stu_user_id" jdbcType="INTEGER" property="stuUserId" />
+     <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="mid" jdbcType="INTEGER" property="mId" />
+      <result column="last_by_car_no" jdbcType="VARCHAR" property="lastByCarNo" />
+      <result column="relative_path" jdbcType="VARCHAR" property="headPicture" />
+      <result column="parent_picked" property="parentPicked" />
+      <result column="team_name" jdbcType="VARCHAR" property="teamName" />
+    <collection property="signList" ofType="platform.szxyzxx.schoolbus.pojo.BusStudentSign">
+      <result column="school_bus_card" jdbcType="VARCHAR" property="schoolBusCard" />
+      <result column="sign_time" jdbcType="VARCHAR" property="signTime" />
+      <result column="sign_address" jdbcType="VARCHAR" property="signAddress" />
+        <result column="direction" jdbcType="INTEGER" property="direction" />
+    </collection>
+
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    id, stu_card, school_bus_card, sign_time, sign_date, direction, sign_address, request_ip,
+    create_time
+  </sql>
+  <insert id="create" parameterType="platform.szxyzxx.schoolbus.pojo.BusStudentSign" >
+    insert into bus_student_sign (stu_card, school_bus_card, sign_time,
+      sign_date, direction, sign_address,
+      request_ip, create_time)
+    values (#{args[0].stuCard}, #{args[0].schoolBusCard}, #{args[0].signTime},
+      #{args[0].signDate}, #{args[0].direction}, #{args[0].signAddress},
+      #{args[0].requestIp}, #{args[0].createTime})
+  </insert>
+
+  <insert id="createBatch" >
+    insert into bus_student_sign (stu_card, school_bus_card, sign_time,
+                                  sign_date, direction, sign_address,
+                                  request_ip, create_time)
+    values
+    <foreach collection="args[0].records" item="r" separator =",">
+        (#{r.stuCard,jdbcType=VARCHAR}, #{r.schoolBusCard,jdbcType=VARCHAR}, #{r.signTime,jdbcType=VARCHAR},
+        #{r.signDate,jdbcType=CHAR}, #{r.direction,jdbcType=INTEGER}, #{r.signAddress,jdbcType=VARCHAR},
+        #{r.requestIp,jdbcType=VARCHAR}, #{r.createTime,jdbcType=TIMESTAMP})
+    </foreach>
+
+  </insert>
+
+  <select id="findStudentSignList" resultMap="StuSignResultMap">
+      select s.id stu_id,s.user_id stu_user_id,s.last_by_car_no,s.`name`,m.id mid,ss.school_bus_card,ss.sign_time,ss.sign_address,f.relative_path
+      from pj_student s
+      left join pj_school_bus_manger m on m.student_id=s.id
+      left join bus_student_sign ss on ss.stu_card=s.emp_card and ss.sign_date=#{args[0].date} and ss.direction=#{args[0].direction}
+      left join pj_person p on s.person_id=p.id
+      left join res_entity_file f on f.uuid=p.photo_uuid
+
+      where s.team_id=#{args[0].teamId} and s.is_delete=0
+  </select>
+
+
+
+    <select id="countByBusStu" resultType="int">
+        select count(1)
+        from pj_school_bus_manger m
+        left join pj_student s on m.student_id=s.id
+        LEFT JOIN pj_team_student pts ON s.id = pts.student_id
+        left join pj_team t on t.id=pts.team_id and t.is_delete=0
+        where s.is_delete=0 and pts.is_delete=0
+        <if test="args[0].teamId!=null">
+            and t.id=#{args[0].teamId}
+        </if>
+        <if test="args[0].gradeId!=null">
+            and t.grade_id=#{args[0].gradeId}
+        </if>
+        <if test="args[0].name!=null and args[0].name!=''">
+            and s.name like concat('%', #{args[0].name},'%')
+        </if>
+        <if test="args[0].teamId==null and args[0].gradeId==null">
+            and t.school_year=#{args[0].schoolYear}
+        </if>
+    </select>
+
+
+    <select id="findPaginStudentSignCoreInfoList" resultMap="StuSignResultMap">
+
+        select a.*,ss.school_bus_card,ss.sign_time,ss.sign_address
+        from (
+        select s.id stu_id,s.`name`,s.user_id stu_user_id,t.name team_name,s.emp_card
+        from pj_school_bus_manger m
+        left join pj_student s on m.student_id=s.id
+        LEFT JOIN pj_team_student pts ON s.id = pts.student_id
+        left join pj_team t on t.id=pts.team_id and t.is_delete=0
+        where s.is_delete=0 and pts.is_delete=0
+        <if test="args[0].teamId!=null">
+            and t.id=#{args[0].teamId}
+        </if>
+        <if test="args[0].gradeId!=null">
+            and t.grade_id=#{args[0].gradeId}
+        </if>
+        <if test="args[0].name!=null and args[0].name!=''">
+            and s.name like concat('%', #{args[0].name},'%')
+        </if>
+        <if test="args[0].teamId==null and args[0].gradeId==null">
+            and t.school_year=#{args[0].schoolYear}
+        </if>
+
+            ${args[0].limit}
+
+        ) as a
+            left join bus_student_sign ss on ss.stu_card=a.emp_card and ss.sign_date=#{args[0].date} and ss.direction=#{args[0].direction}
+    </select>
+
+
+    <select id="findStudentSignCoreInfoList" resultMap="StuSignResultMap">
+        select s.id stu_id,s.`name`,s.user_id stu_user_id,t.name team_name,ss.direction
+        from pj_student s
+        LEFT JOIN pj_team_student pts ON s.id = pts.student_id
+        left join pj_team t on t.id=pts.team_id and t.is_delete=0
+        left join bus_student_sign ss on ss.stu_card=s.emp_card and ss.sign_date=#{args[0].date}
+        where s.is_delete=0 and pts.is_delete=0
+        <if test="args[0].teamId!=null">
+            and t.id=#{args[0].teamId}
+        </if>
+        <if test="args[0].gradeId!=null">
+            and t.grade_id=#{args[0].gradeId}
+        </if>
+        <if test="args[0].name!=null and args[0].name!=''">
+            and s.name like concat('%', #{args[0].name},'%')
+        </if>
+
+        <if test="args[0].teamId==null and args[0].gradeId==null">
+            and t.school_year=#{args[0].schoolYear}
+        </if>
+
+    </select>
+
+
+
+
+</mapper>

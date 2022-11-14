@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.character.dao.RecordsDao">
+
+ <resultMap id="RecordsMap" type="com.xunyunedu.character.pojo.Records">
+   <id column="id" property="id"></id>
+   <result column="evaluation_id" property="evaluationId"></result>
+   <result column="picture_id" property="pictureId"></result>
+   <result column="teacher_id" property="teacherId"></result>
+     <result column="score" property="score"></result>
+     <result column="voice" property="voice"></result>
+     <result column="create_time" property="createTime"></result>
+     <result column="message" property="message"></result>
+     <result column="is_delete" property="isDelete"></result>
+   <result column="student_id" property="studentId"></result>
+ </resultMap>
+
+  <insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="com.xunyunedu.character.pojo.Records">
+    insert into pj_records(evaluation_id,teacher_id,picture_id,score,voice,create_time,message,is_delete)
+    values (#{evaluationId},#{teacherId},#{pictureId},#{score},#{voice},#{createTime},#{message},0)
+  </insert>
+
+    <insert id="createee" parameterType="com.xunyunedu.character.pojo.Records" >
+    insert into pj_records_student (student_id,record_id,create_time,is_delete)
+    values (#{studentId},#{id},#{createTime},0)
+  </insert>
+
+</mapper>

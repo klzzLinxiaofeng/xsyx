@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.syllabus.dao.SyllabusLessonDao">
+
+    <resultMap type="com.xunyunedu.syllabus.pojo.SyllabusLessonPojo" id="SyllabusLessonMap">
+        <result property="id" column="id" jdbcType="OTHER"/>
+        <result property="syllabusId" column="syllabus_id" jdbcType="INTEGER"/>
+        <result property="lesson" column="lesson" jdbcType="INTEGER"/>
+        <result property="dayOfWeek" column="day_of_week" jdbcType="VARCHAR"/>
+        <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+        <result property="subjectCode" column="subject_code" jdbcType="VARCHAR"/>
+        <result property="subjectName" column="subject_name" jdbcType="VARCHAR"/>
+        <result property="roomId" column="room_id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="modifyDate" column="modify_date" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+        <result property="startDate" column="start_date" jdbcType="TIMESTAMP"/>
+        <result property="endDate" column="end_date" jdbcType="TIMESTAMP"/>
+        <result property="defaultFlag" column="default_flag" jdbcType="INTEGER"/>
+        <result property="adjustFlag" column="adjust_flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <resultMap type="com.xunyunedu.syllabus.vo.SyllabusLessonVo" id="SyllabusLessonVoMap">
+        <result property="id" column="id" jdbcType="OTHER"/>
+        <result property="syllabusId" column="syllabus_id" jdbcType="INTEGER"/>
+        <result property="lesson" column="lesson" jdbcType="INTEGER"/>
+        <result property="dayOfWeek" column="day_of_week" jdbcType="VARCHAR"/>
+        <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+        <result property="subjectCode" column="subject_code" jdbcType="VARCHAR"/>
+        <result property="subjectName" column="subject_name" jdbcType="VARCHAR"/>
+        <result property="roomId" column="room_id" jdbcType="INTEGER"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="modifyDate" column="modify_date" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+        <result property="teacherName" column="teacher_name" jdbcType="VARCHAR"/>
+        <result property="roomName" column="room_name" jdbcType="VARCHAR"/>
+        <result property="startDate" column="start_date" jdbcType="VARCHAR"/>
+        <result property="endDate" column="end_date" jdbcType="VARCHAR"/>
+        <result property="defaultFlag" column="default_flag" jdbcType="INTEGER"/>
+        <result property="adjustFlag" column="adjust_flag" jdbcType="INTEGER"/>
+        <result property="teamName" column="team_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SyllabusLessonVoMap">
+        SELECT
+            pj_syllabus_lesson.*,
+            pj_teacher.`name` AS teacher_name,
+            bw_room.`name` AS room_name
+        FROM
+        pj_syllabus_lesson
+        LEFT JOIN pj_teacher ON pj_syllabus_lesson.teacher_id = pj_teacher.id
+        LEFT JOIN bw_room ON pj_syllabus_lesson.room_id = bw_room.id
+        WHERE pj_syllabus_lesson.id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SyllabusLessonMap">
+        select
+          id, syllabus_id, lesson, day_of_week, teacher_id, subject_code, subject_name, room_id, create_date, modify_date, is_deleted
+        from pj_syllabus_lesson
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SyllabusLessonMap">
+        select
+        id, syllabus_id, lesson, day_of_week, teacher_id, subject_code, subject_name, room_id, create_date, modify_date,
+        is_deleted
+        from pj_syllabus_lesson
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="syllabusId != null">
+                and syllabus_id = #{syllabusId}
+            </if>
+            <if test="lesson != null">
+                and lesson = #{lesson}
+            </if>
+            <if test="dayOfWeek != null and dayOfWeek != ''">
+                and day_of_week = #{dayOfWeek}
+            </if>
+            <if test="teacherId != null">
+                and teacher_id = #{teacherId}
+            </if>
+            <if test="subjectCode != null and subjectCode != ''">
+                and subject_code = #{subjectCode}
+            </if>
+            <if test="subjectName != null and subjectName != ''">
+                and subject_name = #{subjectName}
+            </if>
+            <if test="roomId != null">
+                and room_id = #{roomId}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="modifyDate != null">
+                and modify_date = #{modifyDate}
+            </if>
+            <if test="isDeleted != null">
+                and is_deleted = #{isDeleted}
+            </if>
+        </where>
+    </select>
+
+    <select id="listBySyllabusLesson" resultMap="SyllabusLessonMap">
+        SELECT *
+        FROM pj_syllabus_lesson
+        WHERE is_deleted = 0
+        <if test="teacherId != null and teacherId != ''">
+            AND teacher_id = #{teacherId}
+        </if>
+        <if test="startDate != null">
+            AND start_date = #{startDate}
+        </if>
+        <if test="effectiveDate != null">
+            AND #{effectiveDate} BETWEEN start_date AND end_date
+        </if>
+        <if test="defaultFlag != null">
+            AND default_flag = #{defaultFlag}
+        </if>
+    </select>
+
+    <select id="listByLesson" resultMap="SyllabusLessonMap">
+        select
+        id, syllabus_id, lesson, day_of_week, teacher_id, subject_code, subject_name, room_id, create_date, modify_date,
+        is_deleted,start_date,end_date,default_flag,adjust_flag
+        from pj_syllabus_lesson
+        WHERE
+        <if test="syllabusId != null">
+            syllabus_id = #{syllabusId}
+        </if>
+        AND pj_syllabus_lesson.is_deleted=0
+        AND pj_syllabus_lesson.lesson=#{lesson}
+        AND pj_syllabus_lesson.day_of_week=#{week}
+        AND pj_syllabus_lesson.start_date &lt; #{startDate}
+        AND pj_syllabus_lesson.end_date &gt; #{startDate}
+        ORDER BY pj_syllabus_lesson.create_date
+        LIMIT 1
+
+    </select>
+    <select id="getByTeacherId" resultMap="SyllabusLessonVoMap">
+        SELECT
+            pj_syllabus_lesson.*,
+            pj_teacher.`name` AS teacher_name,
+            bw_room.`name` AS room_name,
+            pj_team.name AS teamName
+        FROM pj_syllabus_lesson
+        LEFT JOIN bw_room ON pj_syllabus_lesson.room_id=bw_room.id
+        LEFT JOIN pj_teacher ON pj_syllabus_lesson.teacher_id = pj_teacher.id
+        LEFT JOIN pj_syllabus ON pj_syllabus_lesson.syllabus_id =pj_syllabus.id
+        LEFT JOIN pj_team ON pj_syllabus.team_id=pj_team.id
+        WHERE
+        pj_syllabus_lesson.teacher_id=#{teacherId}
+        AND pj_syllabus_lesson.is_deleted=0
+        AND pj_syllabus_lesson.lesson=#{lesson}
+        AND pj_syllabus_lesson.day_of_week=#{week}
+        AND pj_syllabus_lesson.start_date &lt;= #{startDate}
+        AND pj_syllabus_lesson.end_date &gt;= #{startDate}
+	    AND default_flag =0
+        ORDER By pj_syllabus_lesson.create_date DESC
+      LIMIT 1
+    </select>
+    <select id="getLesson" resultMap="SyllabusLessonVoMap">
+         SELECT
+            pj_syllabus_lesson.*,
+            pj_teacher.`name` AS teacher_name
+        FROM pj_syllabus_lesson
+        LEFT JOIN pj_teacher ON pj_syllabus_lesson.teacher_id = pj_teacher.id
+        WHERE
+        pj_syllabus_lesson.syllabus_id=#{syllabusId}
+        AND pj_syllabus_lesson.is_deleted=0
+        AND pj_syllabus_lesson.lesson=#{lesson}
+        AND pj_syllabus_lesson.day_of_week=#{week}
+        AND pj_syllabus_lesson.start_date &lt;= #{setDate}
+        AND pj_syllabus_lesson.end_date &gt;= #{setDate}
+        ORDER By pj_syllabus_lesson.create_date DESC
+      LIMIT 1
+    </select>
+    <select id="getByWeekLesson" resultMap="SyllabusLessonMap">
+        SELECT *
+        FROM pj_syllabus_lesson
+        WHERE is_deleted = 0
+        <if test="applicantId != null and applicantId != ''">
+            AND teacher_id = #{applicantId}
+        </if>
+        <if test="lesson != null and lesson != ''">
+            AND lesson = #{lesson}
+        </if>
+        <if test="week != null">
+            AND day_of_week = #{week}
+        </if>
+        <if test="appDate != null">
+            AND #{appDate} BETWEEN start_date AND end_date
+        </if>
+        ORDER BY create_date DESC
+        LIMIT 1
+    </select>
+    <select id="getByLessonWeek" resultMap="SyllabusLessonMap">
+        SELECT *
+        FROM pj_syllabus_lesson
+        WHERE is_deleted = 0
+        <if test="approverId != null and approverId != ''">
+            AND teacher_id = #{approverId}
+        </if>
+        <if test="lesson != null and lesson != ''">
+            AND lesson = #{lesson}
+        </if>
+        <if test="setWeek != null">
+            AND day_of_week = #{setWeek}
+        </if>
+        <if test="sDate != null">
+            AND #{sDate} BETWEEN start_date AND end_date
+        </if>
+        ORDER BY create_date DESC
+        LIMIT 1
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT
+     	COUNT(*)
+        FROM
+	    pj_syllabus_lesson
+        WHERE
+	    teacher_id = #{teacherId}
+	    AND default_flag =1
+	    AND pj_syllabus_lesson.start_date &lt;= #{startDate}
+        AND pj_syllabus_lesson.end_date &gt;= #{startDate}
+    </select>
+    <select id="getByTeacher" resultMap="SyllabusLessonVoMap">
+         SELECT
+            pj_syllabus_lesson.*,
+            pj_teacher.`name` AS teacher_name,
+            bw_room.`name` AS room_name,
+            pj_team.name AS teamName
+        FROM pj_syllabus_lesson
+        LEFT JOIN bw_room ON pj_syllabus_lesson.room_id=bw_room.id
+        LEFT JOIN pj_teacher ON pj_syllabus_lesson.teacher_id = pj_teacher.id
+        LEFT JOIN pj_syllabus ON pj_syllabus_lesson.syllabus_id =pj_syllabus.id
+        LEFT JOIN pj_team ON pj_syllabus.team_id=pj_team.id
+        WHERE
+        pj_syllabus_lesson.teacher_id=#{teacherId}
+        AND pj_syllabus_lesson.is_deleted=0
+        AND pj_syllabus_lesson.lesson=#{lesson}
+        AND pj_syllabus_lesson.day_of_week=#{week}
+        AND pj_syllabus_lesson.start_date &lt;= #{startDate}
+        AND pj_syllabus_lesson.end_date &gt;= #{startDate}
+	    AND default_flag =1
+        ORDER By pj_syllabus_lesson.create_date DESC
+      LIMIT 1
+    </select>
+    <select id="listByTeacherId" resultMap="SyllabusLessonMap">
+           SELECT
+            pj_syllabus_lesson.*
+           FROM pj_syllabus_lesson
+            WHERE
+                pj_syllabus_lesson.teacher_id=#{teacherId}
+                AND pj_syllabus_lesson.is_deleted=0
+                AND pj_syllabus_lesson.start_date &lt;= #{startDate}
+                AND pj_syllabus_lesson.end_date &gt;= #{startDate}
+	            AND default_flag =#{defaultFlag}
+    </select>
+
+    <delete id="deleteByTeacher">
+		DELETE FROM pj_syllabus_lesson
+		WHERE start_date = #{startDate}
+		AND teacher_id = #{teacherId}
+		AND default_flag = 1
+		AND is_deleted = 0
+	</delete>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into pj_syllabus_lesson(syllabus_id, lesson, day_of_week, teacher_id, subject_code, subject_name, room_id, create_date, modify_date, is_deleted, start_date, end_date, default_flag, adjust_flag)
+        values (#{syllabusId}, #{lesson}, #{dayOfWeek}, #{teacherId}, #{subjectCode}, #{subjectName}, #{roomId}, #{createDate}, #{modifyDate}, #{isDeleted}, #{startDate}, #{endDate}, #{defaultFlag}, #{adjustFlag})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update pj_syllabus_lesson
+        <set>
+            <if test="syllabusId != null">
+                syllabus_id = #{syllabusId},
+            </if>
+            <if test="lesson != null">
+                lesson = #{lesson},
+            </if>
+            <if test="dayOfWeek != null and dayOfWeek != ''">
+                day_of_week = #{dayOfWeek},
+            </if>
+            <if test="teacherId != null">
+                teacher_id = #{teacherId},
+            </if>
+            <if test="subjectCode != null and subjectCode != ''">
+                subject_code = #{subjectCode},
+            </if>
+            <if test="subjectName != null and subjectName != ''">
+                subject_name = #{subjectName},
+            </if>
+            <if test="roomId != null">
+                room_id = #{roomId},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from pj_syllabus_lesson where id = #{id}
+    </delete>
+
+</mapper>

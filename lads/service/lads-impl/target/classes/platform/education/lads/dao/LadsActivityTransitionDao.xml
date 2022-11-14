@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.lads.dao.LadsActivityTransitionDao">
+
+    <resultMap id="LadsActivityTransitionResult" type="platform.education.lads.model.LadsActivityTransition">
+        <result property="id" column="id" />
+        <result property="fromActivity" column="from_activity" />
+        <result property="toActivity" column="to_activity" />
+        <result property="learningdesign" column="learningdesign" />
+        <result property="uuid" column="uuid" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.lads.model.LadsActivityTransition">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO lads_activity_transition (id, from_activity, to_activity, learningdesign, uuid, create_date, modify_date)
+        VALUES (#{id}, #{fromActivity}, #{toActivity}, #{learningdesign}, #{uuid}, #{createDate}, #{modifyDate})
+    </insert>
+
+    <select id="read" resultMap="LadsActivityTransitionResult" useCache="false">
+        SELECT * FROM lads_activity_transition WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>  
+        ORDER BY id DESC
+    </select>
+	
+    <select id="findLadsActivityTransitionByCondition" resultMap="LadsActivityTransitionResult" useCache="false">
+        SELECT * FROM lads_activity_transition 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null and args[0].id != ''">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].fromActivity != null and args[0].fromActivity != ''">
+                AND from_activity = #{args[0].fromActivity,javaType=java.lang.String}
+            </if>
+            <if test="args[0].toActivity != null and args[0].toActivity != ''">
+                AND to_activity = #{args[0].toActivity,javaType=java.lang.String}
+            </if>
+            <if test="args[0].learningdesign != null and args[0].learningdesign != ''">
+                AND learningdesign = #{args[0].learningdesign,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null and args[0].createDate != ''">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+	
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM lads_activity_transition 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null and args[0].id != ''">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].fromActivity != null and args[0].fromActivity != ''">
+                AND from_activity = #{args[0].fromActivity,javaType=java.lang.String}
+            </if>
+            <if test="args[0].toActivity != null and args[0].toActivity != ''">
+                AND to_activity = #{args[0].toActivity,javaType=java.lang.String}
+            </if>
+            <if test="args[0].learningdesign != null and args[0].learningdesign != ''">
+                AND learningdesign = #{args[0].learningdesign,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null and args[0].createDate != ''">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+	
+    <select id="findById" resultMap="LadsActivityTransitionResult" useCache="false">
+        SELECT * FROM lads_activity_transition WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+	
+    <update id="update" parameterType="platform.education.lads.model.LadsActivityTransition">
+        UPDATE lads_activity_transition
+        SET 
+        <if test="fromActivity != null">
+            from_activity=#{fromActivity},
+        </if>
+        <if test="toActivity != null">
+            to_activity=#{toActivity},
+        </if>
+        <if test="learningdesign != null">
+            learningdesign=#{learningdesign},
+        </if>
+        <if test="uuid != null">
+            uuid=#{uuid},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+	
+    <delete id="delete">
+        DELETE FROM lads_activity_transition
+        WHERE id = #{id}
+    </delete>
+	
+    <delete id="deleteByCondition">
+        DELETE FROM lads_activity_transition
+        WHERE 1=1
+        <if test="id != null and id != ''">
+            AND id = #{id,javaType=java.lang.Integer}
+        </if>
+        <if test="fromActivity != null and fromActivity != ''">
+            AND from_activity = #{fromActivity,javaType=java.lang.String}
+        </if>
+        <if test="toActivity != null and toActivity != ''">
+            AND to_activity = #{toActivity,javaType=java.lang.String}
+        </if>
+        <if test="learningdesign != null and learningdesign != ''">
+            AND learningdesign = #{learningdesign,javaType=java.lang.String}
+        </if>
+        <if test="uuid != null and uuid != ''">
+            AND uuid = #{uuid,javaType=java.lang.String}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            AND create_date = #{createDate,javaType=java.util.Date}
+        </if>
+        <if test="modifyDate != null and modifyDate != ''">
+            AND modify_date = #{modifyDate,javaType=java.util.Date}
+        </if>
+    </delete>
+    
+    <!--以下是业务方法-->
+    <select id="findByUuid" resultMap="LadsActivityTransitionResult" useCache="false">
+        SELECT * FROM lads_activity_transition WHERE uuid = #{args[0],javaType=java.lang.String}
+    </select>
+    
+</mapper>

@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ExamStatDao">
+
+	<resultMap id="ExamStatResult" type="platform.education.generalTeachingAffair.model.ExamStat">
+		<result property="id" column="id" />
+		<result property="examId" column="exam_id" />
+		<result property="studentCount" column="student_count" />
+		<result property="questionCount" column="question_count" />
+		<result property="totalScore" column="total_score" />
+		<result property="averageScore" column="average_score" />
+		<result property="sdScore" column="sd_score" />
+		<result property="madValue" column="mad_value" />
+		<result property="movValue" column="mov_value" />
+		<result property="gradeRank" column="grade_rank" />
+		<result property="fullScore" column="full_score" />
+		<result property="highScore" column="high_score" />
+		<result property="lowScore" column="low_score" />
+		<result property="passScore" column="pass_score" />
+		<result property="highCount" column="high_count" />
+		<result property="lowCount" column="low_count" />
+		<result property="passCount" column="pass_count" />
+		<result property="statTime" column="stat_time" />
+		<result property="dataChanged" column="data_changed" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="highestScore" column="highest_score" />
+		<result property="lowestScore" column="lowest_score" />
+	</resultMap>
+
+	<resultMap id="ExamStatResultVo" type="platform.education.generalTeachingAffair.vo.ExamStatVo">
+		<result property="id" column="id" />
+		<result property="examId" column="exam_id" />
+		<result property="studentCount" column="student_count" />
+		<result property="questionCount" column="question_count" />
+		<result property="totalScore" column="total_score" />
+		<result property="averageScore" column="average_score" />
+		<result property="sdScore" column="sd_score" />
+		<result property="madValue" column="mad_value" />
+		<result property="movValue" column="mov_value" />
+		<result property="gradeRank" column="grade_rank" />
+		<result property="fullScore" column="full_score" />
+		<result property="highScore" column="high_score" />
+		<result property="lowScore" column="low_score" />
+		<result property="passScore" column="pass_score" />
+		<result property="highCount" column="high_count" />
+		<result property="lowCount" column="low_count" />
+		<result property="passCount" column="pass_count" />
+		<result property="statTime" column="stat_time" />
+		<result property="dataChanged" column="data_changed" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="highestScore" column="highest_score" />
+		<result property="lowestScore" column="lowest_score" />
+		<result property="teamName" column="teamName" />
+		<result property="rank" column="rank" />
+	</resultMap>
+
+	<resultMap id="ExamStatThreeRatiosResult" type="platform.education.generalTeachingAffair.vo.ThreeRatiosVo">
+		<result property="teamId" column="team_id" />
+		<result property="teamName" column="teamName" />
+		<result property="examId" column="exam_id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="hight" column="hight" />
+		<result property="low" column="low" />
+		<result property="pass" column="pass" />
+		<result property="noPass" column="noPass" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ExamStat">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_exam_stat (
+			id, 
+			exam_id, 
+			student_count, 
+			question_count, 
+			total_score, 
+			average_score, 
+			sd_score, 
+			mad_value, 
+			mov_value, 
+			grade_rank, 
+			full_score, 
+			high_score, 
+			low_score, 
+			pass_score, 
+			high_count, 
+			low_count, 
+			pass_count, 
+			stat_time, 
+			data_changed, 
+			create_date, 
+			modify_date, 
+			highest_score, 
+			lowest_score
+		)
+		VALUES (
+			#{id}, 
+			#{examId}, 
+			#{studentCount}, 
+			#{questionCount}, 
+			#{totalScore}, 
+			#{averageScore}, 
+			#{sdScore}, 
+			#{madValue}, 
+			#{movValue}, 
+			#{gradeRank}, 
+			#{fullScore}, 
+			#{highScore}, 
+			#{lowScore}, 
+			#{passScore}, 
+			#{highCount}, 
+			#{lowCount}, 
+			#{passCount}, 
+			#{statTime}, 
+			<choose>
+				<when test="dataChanged != null">
+					<choose>
+						<when test="dataChanged == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}, 
+			#{highestScore}, 
+			#{lowestScore}
+		)
+	</insert>
+
+	<select id="read" resultMap="ExamStatResult" useCache="false">
+		SELECT * FROM pj_exam_stat WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findExamStatByCondition" resultMap="ExamStatResult" useCache="false">
+		SELECT * FROM pj_exam_stat 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examId != null">
+				AND exam_id = #{args[0].examId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentCount != null">
+				AND student_count = #{args[0].studentCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionCount != null">
+				AND question_count = #{args[0].questionCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].totalScore != null">
+				AND total_score = #{args[0].totalScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].averageScore != null">
+				AND average_score = #{args[0].averageScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].sdScore != null">
+				AND sd_score = #{args[0].sdScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].madValue != null">
+				AND mad_value = #{args[0].madValue,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].movValue != null">
+				AND mov_value = #{args[0].movValue,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].gradeRank != null">
+				AND grade_rank = #{args[0].gradeRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fullScore != null">
+				AND full_score = #{args[0].fullScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].highScore != null">
+				AND high_score = #{args[0].highScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].lowScore != null">
+				AND low_score = #{args[0].lowScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].passScore != null">
+				AND pass_score = #{args[0].passScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].highCount != null">
+				AND high_count = #{args[0].highCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lowCount != null">
+				AND low_count = #{args[0].lowCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].passCount != null">
+				AND pass_count = #{args[0].passCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].statTime != null">
+				AND stat_time = #{args[0].statTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].dataChanged != null">
+				<choose>
+					<when test="args[0].dataChanged == true">
+						AND data_changed  = 1
+					</when>
+					<otherwise>
+						AND data_changed  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].highestScore != null">
+				AND highest_score = #{args[0].highestScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].lowestScore != null">
+				AND lowest_score = #{args[0].lowestScore,javaType=java.lang.Float}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_exam_stat 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examId != null">
+				AND exam_id = #{args[0].examId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentCount != null">
+				AND student_count = #{args[0].studentCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionCount != null">
+				AND question_count = #{args[0].questionCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].totalScore != null">
+				AND total_score = #{args[0].totalScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].averageScore != null">
+				AND average_score = #{args[0].averageScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].sdScore != null">
+				AND sd_score = #{args[0].sdScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].madValue != null">
+				AND mad_value = #{args[0].madValue,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].movValue != null">
+				AND mov_value = #{args[0].movValue,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].gradeRank != null">
+				AND grade_rank = #{args[0].gradeRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fullScore != null">
+				AND full_score = #{args[0].fullScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].highScore != null">
+				AND high_score = #{args[0].highScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].lowScore != null">
+				AND low_score = #{args[0].lowScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].passScore != null">
+				AND pass_score = #{args[0].passScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].highCount != null">
+				AND high_count = #{args[0].highCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lowCount != null">
+				AND low_count = #{args[0].lowCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].passCount != null">
+				AND pass_count = #{args[0].passCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].statTime != null">
+				AND stat_time = #{args[0].statTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].dataChanged != null">
+				<choose>
+					<when test="args[0].dataChanged == true">
+						AND data_changed  = 1
+					</when>
+					<otherwise>
+						AND data_changed  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].highestScore != null">
+				AND highest_score = #{args[0].highestScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].lowestScore != null">
+				AND lowest_score = #{args[0].lowestScore,javaType=java.lang.Float}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ExamStatResult" useCache="false">
+		SELECT * FROM pj_exam_stat WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	
+	<update id="updateExamStatNew" parameterType="platform.education.generalTeachingAffair.model.ExamStat">
+		UPDATE pj_exam_stat
+		SET 
+		<if test="examId != null">
+			exam_id=#{examId},
+		</if>
+		<if test="studentCount != null">
+			student_count=#{studentCount},
+		</if>
+		<if test="questionCount != null">
+			question_count=#{questionCount},
+		</if>
+		<if test="totalScore != null">
+			total_score=#{totalScore},
+		</if>
+		<if test="averageScore != null">
+			average_score=#{averageScore},
+		</if>
+		<if test="sdScore != null">
+			sd_score=#{sdScore},
+		</if>
+		<if test="madValue != null">
+			mad_value=#{madValue},
+		</if>
+		<if test="movValue != null">
+			mov_value=#{movValue},
+		</if>
+		<if test="gradeRank != null">
+			grade_rank=#{gradeRank},
+		</if>
+		<if test="fullScore != null">
+			full_score=#{fullScore},
+		</if>
+		<if test="highScore != null">
+			high_score=#{highScore},
+		</if>
+		<if test="lowScore != null">
+			low_score=#{lowScore},
+		</if>
+		<if test="passScore != null">
+			pass_score=#{passScore},
+		</if>
+		<if test="highCount != null">
+			high_count=#{highCount},
+		</if>
+		<if test="lowCount != null">
+			low_count=#{lowCount},
+		</if>
+		<if test="passCount != null">
+			pass_count=#{passCount},
+		</if>
+		<if test="statTime != null">
+			stat_time=#{statTime},
+		</if>
+		<if test="dataChanged != null">
+			<choose>
+				<when test="dataChanged == true">
+					data_changed  = 1,
+				</when>
+				<otherwise>
+					data_changed  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="highestScore != null">
+			highest_score=#{highestScore},
+		</if>
+		<if test="lowestScore != null">
+			lowest_score=#{lowestScore},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ExamStat">
+		UPDATE pj_exam_stat
+		SET 
+		<if test="examId != null">
+			exam_id=#{examId},
+		</if>
+		<if test="studentCount != null">
+			student_count=#{studentCount},
+		</if>
+		<if test="questionCount != null">
+			question_count=#{questionCount},
+		</if>
+		<if test="totalScore != null">
+			total_score=#{totalScore},
+		</if>
+		<if test="averageScore != null">
+			average_score=#{averageScore},
+		</if>
+		<if test="sdScore != null">
+			sd_score=#{sdScore},
+		</if>
+		<if test="madValue != null">
+			mad_value=#{madValue},
+		</if>
+		<if test="movValue != null">
+			mov_value=#{movValue},
+		</if>
+		<if test="gradeRank != null">
+			grade_rank=#{gradeRank},
+		</if>
+		<if test="fullScore != null">
+			full_score=#{fullScore},
+		</if>
+		<if test="highScore != null">
+			high_score=#{highScore},
+		</if>
+		<if test="lowScore != null">
+			low_score=#{lowScore},
+		</if>
+		<if test="passScore != null">
+			pass_score=#{passScore},
+		</if>
+		<if test="highCount != null">
+			high_count=#{highCount},
+		</if>
+		<if test="lowCount != null">
+			low_count=#{lowCount},
+		</if>
+		<if test="passCount != null">
+			pass_count=#{passCount},
+		</if>
+		<if test="statTime != null">
+			stat_time=#{statTime},
+		</if>
+		<if test="dataChanged != null">
+			<choose>
+				<when test="dataChanged == true">
+					data_changed  = 1,
+				</when>
+				<otherwise>
+					data_changed  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="highestScore != null">
+			highest_score=#{highestScore},
+		</if>
+		<if test="lowestScore != null">
+			lowest_score=#{lowestScore},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_exam_stat
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 功能描述：根据examId查找出唯一记录（与pj_exam是一对一关系）(2016-01-07) -->
+	<select id="findExamStatByExamId" resultMap="ExamStatResult" useCache="false">
+		SELECT * FROM pj_exam_stat WHERE exam_id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<resultMap id="PaperStatisticResult" type="platform.education.generalTeachingAffair.model.PaperStatisticResult">
+		<result property="rank" column="rank" />
+		<result property="averageScore" column="average_score" />
+		<result property="studentCount" column="student_count" />
+		<result property="teamName" column="team_name" />
+		<result property="teamId" column="id" />
+		<result property="examId" column="exam_id" />
+	</resultMap>
+	
+	<select id ="findPaperStatisticByjointExamCode" resultMap="PaperStatisticResult" useCache="false">
+		SELECT
+			t.average_score,
+			t.student_count,
+			t.exam_id,
+			pt.id,
+			pt.name team_name,
+			(
+				SELECT count(s.average_score) + 1
+				FROM
+				(
+					SELECT
+						up.average_score,
+						count(up.average_score)
+					FROM
+						pj_exam_stat up
+						JOIN pj_exam e
+						on e.id = up.exam_id
+						where 1=1
+						<if test="args[0] != null">
+							and e.joint_exam_code = #{args[0]}
+						</if>
+					GROUP BY
+						up.average_score
+					ORDER BY
+						up.average_score DESC
+				) s
+				WHERE s.average_score > t.average_score
+			) rank
+		FROM
+			pj_exam_stat t
+			JOIN pj_exam e
+			JOIN pj_team pt
+			on t.exam_id = e.id
+			and pt.id = e.team_id
+			where 1=1
+			<if test="args[0] != null">
+				and e.joint_exam_code = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+	    	ORDER BY t.average_score desc
+			</if>
+			<if test="args[1] == null">
+	    	ORDER BY pt.id
+			</if>
+	</select>
+
+	<select id="findExamStatByExamIds" resultMap="ExamStatResultVo" useCache="false">
+		SELECT pes.*,t.name AS teamName FROM pj_exam_stat pes
+		LEFT JOIN pj_exam e ON e.id = pes.exam_id
+		LEFT JOIN pj_team t ON t.id = e.team_id
+	  	WHERE exam_id IN (
+		<foreach collection="args[0]" index="index" item="examId" separator=",">
+		#{examId}
+		</foreach>
+		)
+		AND pes.student_count is not null
+		GROUP BY t.team_number
+	</select>
+
+	<select id="findExamStatTreeRatiosByExamIds" resultMap="ExamStatThreeRatiosResult" useCache="false">
+		SELECT
+			pes.exam_id,
+			pes.high_count/pes.student_count as hight,
+		    (pes.low_count-pes.high_count)/pes.student_count as low,
+			(pes.pass_count-pes.low_count)/pes.student_count as pass,
+			(pes.student_count-pes.pass_count)/pes.student_count as noPass,
+			t.name AS teamName
+		FROM
+			pj_exam_stat pes
+		LEFT JOIN
+			pj_exam e
+		ON
+			e.id = pes.exam_id
+		LEFT JOIN
+			pj_team t
+		ON
+			t.id = e.team_id
+		WHERE
+			exam_id IN (
+		<foreach collection="args[0]" index="index" item="examId" separator=",">
+			#{examId}
+		</foreach>
+		)
+		and (pes.high_count is not null or pes.low_count is not null)
+		
+		 GROUP BY t.team_number
+	</select>
+
+	<select id="findExamStatRankByExamIds" resultMap="ExamStatResultVo" useCache="false">
+		SELECT
+		t.name AS teamName,
+		a.exam_id,
+		a.average_score,
+		(
+		SELECT
+			COUNT(*)
+			FROM
+			(
+			SELECT
+				*
+			FROM
+				pj_exam_stat
+			where
+				exam_id
+			IN
+		(
+		<foreach collection="args[0]" index="index" item="examId" separator=",">
+			#{examId}
+		</foreach>
+		)
+				) b
+			WHERE b.average_score &gt; a.average_score
+				) + 1 rank
+		FROM
+			pj_exam_stat a
+		LEFT JOIN pj_exam pe ON a.exam_id = pe.id
+		LEFT JOIN pj_team t ON pe.team_id = t.id
+		WHERE
+			a.exam_id in (
+		<foreach collection="args[0]" index="index" item="examId" separator=",">
+			#{examId}
+		</foreach>
+		)
+		AND
+			a.average_score IS NOT NULL
+		ORDER BY
+			rank
+	</select>
+
+	<select id="countHighAndLowAndPass" resultType="java.lang.Integer" useCache="false">
+		SELECT
+			count(*)
+			FROM
+				pj_exam_student es
+			LEFT JOIN pj_exam_stat et ON es.exam_id = et.exam_id
+			where 1=1
+			<if test="args[0] == 1">
+				and es.score &gt;= et.high_score
+			</if>
+			<if test="args[0] == 2">
+				and es.score &gt;= et.low_score
+			</if>
+			<if test="args[0] == 3">
+				and es.score &gt;= et.pass_score
+			</if> 
+			and es.exam_id = #{args[1]}
+	</select>
+	
+	
+	<update id="batchUpdateExamStat">
+		UPDATE pj_exam_stat
+		SET 
+		 <foreach item="item" collection="args[0]">
+         <if test="item.examId != null">
+			exam_id=#{item.examId},
+		</if>
+		<if test="item.studentCount != null">
+			student_count=#{item.studentCount},
+		</if>
+		<if test="item.questionCount != null">
+			question_count=#{item.questionCount},
+		</if>
+		<if test="item.totalScore != null">
+			total_score=#{item.totalScore},
+		</if>
+		<if test="item.averageScore != null">
+			average_score=#{item.averageScore},
+		</if>
+		<if test="item.sdScore != null">
+			sd_score=#{item.sdScore},
+		</if>
+		<if test="item.madValue != null">
+			mad_value=#{item.madValue},
+		</if>
+		<if test="item.movValue != null">
+			mov_value=#{item.movValue},
+		</if>
+		<if test="item.gradeRank != null">
+			grade_rank=#{item.gradeRank},
+		</if>
+		<if test="item.fullScore != null">
+			full_score=#{item.fullScore},
+		</if>
+		<if test="item.highScore != null">
+			high_score=#{item.highScore},
+		</if>
+		<if test="item.lowScore != null">
+			low_score=#{item.lowScore},
+		</if>
+		<if test="item.passScore != null">
+			pass_score=#{item.passScore},
+		</if>
+		<if test="item.highCount != null">
+			high_count=#{item.highCount},
+		</if>
+		<if test="item.lowCount != null">
+			low_count=#{item.lowCount},
+		</if>
+		<if test="item.passCount != null">
+			pass_count=#{item.passCount},
+		</if>
+		<if test="item.statTime != null">
+			stat_time=#{item.statTime},
+		</if>
+		<if test="item.dataChanged != null">
+			<choose>
+				<when test="item.dataChanged == true">
+					data_changed  = 1,
+				</when>
+				<otherwise>
+					data_changed  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="item.createDate != null">
+			create_date=#{item.createDate},
+		</if>
+		<if test="item.modifyDate != null">
+			modify_date=#{item.modifyDate},
+		</if>
+		<if test="item.highestScore != null">
+			highest_score=#{item.highestScore},
+		</if>
+		<if test="item.lowestScore != null">
+			lowest_score=#{item.lowestScore},
+		</if>
+			id = #{item.id}
+         </foreach>
+		
+		WHERE 1=1 
+		and id in 
+		 <foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+			#{item.id}
+		</foreach>
+	</update>
+	
+	<select id ="findExamStatByExamIdObj" resultMap="ExamStatResult">
+		SELECT * FROM pj_exam_stat WHERE exam_id in 
+		<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+			#{item}
+		</foreach>
+	</select>
+	<insert id="createBatch" >
+		INSERT INTO pj_exam_stat (
+			id, 
+			exam_id, 
+			student_count, 
+			question_count, 
+			total_score, 
+			average_score, 
+			sd_score, 
+			mad_value, 
+			mov_value, 
+			grade_rank, 
+			full_score, 
+			high_score, 
+			low_score, 
+			pass_score, 
+			high_count, 
+			low_count, 
+			pass_count, 
+			stat_time, 
+			data_changed, 
+			create_date, 
+			modify_date, 
+			highest_score, 
+			lowest_score
+		)
+		VALUES 
+		<foreach collection="args[0]" item="item" index="index" separator="," >  
+		(
+			#{item.id}, 
+			#{item.examId}, 
+			#{item.studentCount}, 
+			#{item.questionCount}, 
+			#{item.totalScore}, 
+			#{item.averageScore}, 
+			#{item.sdScore}, 
+			#{item.madValue}, 
+			#{item.movValue}, 
+			#{item.gradeRank}, 
+			#{item.fullScore}, 
+			#{item.highScore}, 
+			#{item.lowScore}, 
+			#{item.passScore}, 
+			#{item.highCount}, 
+			#{item.lowCount}, 
+			#{item.passCount}, 
+			#{item.statTime}, 
+			0, 
+			#{item.createDate}, 
+			#{item.modifyDate}, 
+			#{item.highestScore}, 
+			#{item.lowestScore}
+		)
+		</foreach>
+	</insert>
+	<select id="findSumScoreByExamIds" resultType="java.lang.Float">
+	
+	 SELECT sum(es.total_score) FROM pj_exam_stat es WHERE
+
+	es.exam_id 
+	IN
+	(
+		<foreach collection="args[0]" item="item" index="index" separator="," >  
+		#{item}
+		</foreach>
+	)
+	</select>
+</mapper>

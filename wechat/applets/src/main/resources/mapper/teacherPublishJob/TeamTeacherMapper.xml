@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.PublishAndAcceptJob.dao.TeamTeacherDao">
+    <resultMap id="TeamTeacherResult" type="com.xunyunedu.PublishAndAcceptJob.pojo.TeamTeacherPojo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="tid" javaType="INTEGER" property="tId"/>
+        <result column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <result column="team_id" jdbcType="INTEGER" property="teamId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="subject_name" jdbcType="VARCHAR" property="subjectName"/>
+        <result column="subject_code" jdbcType="CHAR" property="subjectCode"/>
+        <result column="is_deleted" jdbcType="BIT" property="isDelete"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+    </resultMap>
+
+    <resultMap id="TeamTeacherVoResult" type="com.xunyunedu.PublishAndAcceptJob.pojo.TeamTeacherVo">
+        <result property="id" column="id" />
+        <result property="gradeId" column="grade_id" />
+        <result property="teamId" column="team_id" />
+        <result property="teacherId" column="teacher_id" />
+        <result property="subjectCode" column="subject_code" />
+        <result property="name" column="name" />
+        <result property="type" column="type" />
+        <result property="subjectName" column="subject_name" />
+        <result property="schoolYear" column="school_year" />
+        <result property="teamName" column="team_name" />
+        <result property="gradeName" column="grade_name" />
+        <result property="joinDate" column="join_date" />
+        <result property="finishDate" column="finish_date" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="teamName" column="team_name" />
+        <result property="teacherNumberOfSubject" column="teacherNumberOfSubject" />
+        <result property="isDelete" column="is_delete" />
+        <result property="userId" column="user_id" />
+        <!-- 2017-11-14 -->
+        <result property="types" column="types" />
+        <result property="subjectInfo" column="subject_info" />
+        <result property="modifyTimes" column="modifyTimes" />
+        <result property="teamCode" column="team_code" />
+        <result property="gradeCode" column="grade_code" />
+        <result property="teamNumber" column="team_number" />
+    </resultMap>
+
+
+    <select id="findByTeacherId" resultMap="TeamTeacherResult">
+        select * from pj_team_teacher where  teacher_id = #{teacherId}
+        and subject_code is not null and subject_name is not null
+        and is_delete = 0
+        GROUP BY team_id
+    </select>
+
+    <select id="findTeamByTeacherIdAndSubjectId" resultType="com.xunyunedu.PublishAndAcceptJob.pojo.TeamPojo">
+       SELECT t.* FROM pj_team_teacher tt
+        LEFT JOIN pj_team t
+        ON tt.`team_id`  = t.id
+        WHERE tt.`teacher_id` = #{teacherId} AND tt.`subject_code` = #{subjectId} and t.id is not null
+        and tt.is_delete = 0
+</select>
+
+    <select id="findTeacherTeachInfo" resultMap="TeamTeacherVoResult" useCache="false">
+        SELECT
+        pt.`name` AS team_name,
+        ptt.*,
+        pg.`name` AS gradeName
+        FROM
+        pj_team pt
+        JOIN pj_team_teacher ptt
+        ON pt.`id` = ptt.`team_id`
+        JOIN pj_grade pg
+        ON pg.`id` = ptt.`grade_id`
+        WHERE TYPE = 2
+        AND ptt.`is_delete`=0
+        <if test="userId != null">
+            AND ptt.`user_id` = #{userId}
+        </if>
+        <if test="schoolYear != null">
+            AND ptt.`school_year` = #{schoolYear}
+        </if>
+        <if test="teamId == null">
+            group by  ptt.team_id
+        </if>
+        <if test="teamId != null">
+            AND ptt.`team_id`=#{teamId}
+        </if>
+    </select>
+
+
+</mapper>

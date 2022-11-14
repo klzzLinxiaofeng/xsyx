@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PublicClassDao">
+
+	<resultMap id="PublicClassResult" type="platform.education.generalTeachingAffair.model.PublicClass">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="name" column="name" />
+		<result property="beginDate" column="begin_date" />
+		<result property="classNumber" column="class_number" />
+		<result property="maxMember" column="max_member" />
+		<result property="enrollNumber" column="enroll_number" />
+		<result property="expiryDate" column="expiry_date" />
+		<result property="enrollDesc" column="enroll_desc" />
+		<result property="classDesc" column="class_desc" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="coverUuid" column="cover_uuid" />
+		<result property="classType" column="class_type" />
+		<result property="xuefei" column="xuefei" />
+		<result property="cailiaofei" column="cailiaofei" />
+		<result property="isCailiao" column="is_cailiao" />
+		<result property="leixing" column="leibie" />
+		<result property="schoolYear" column="school_year" />
+	</resultMap>
+<!--	新增年级返回结果-->
+	<resultMap id="gradeInfo" type="platform.education.generalTeachingAffair.model.Grade">
+		<result property="schoolId" column="school_id"/>
+		<result property="fullName" column="full_name"/>
+		<result property="gradeNumber" column="grade_number"/>
+	</resultMap>
+
+	<select id="read" resultMap="PublicClassResult" useCache="false">
+		SELECT * FROM pj_public_class WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+
+<!-- 1.findGradeBySchoolId-->
+	<select id="findGradeBySchoolId" resultMap="gradeInfo"  useCache="false">
+		select school_id,full_name,grade_number from pj_grade where  school_id=#{args[0],javaType=java.lang.Integer}  GROUP BY grade_number order by grade_number
+	</select>
+<!--	1.新增年级数字-->
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.PublicClass">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_public_class (
+			id,
+			school_id,
+			name,
+			begin_date,
+			class_number,
+			max_member,
+			enroll_number,
+			expiry_date,
+			enroll_desc,
+			class_desc,
+			is_delete,
+			create_date,
+			modify_date,
+			cover_uuid,
+			class_type,
+			xuefei,
+			cailiaofei,
+			is_cailiao,
+			leibie,
+			school_year
+		)
+		VALUES (
+		    null,
+			#{schoolId},
+			#{name},
+			#{beginDate},
+			#{classNumber},
+			#{maxMember},
+			#{enrollNumber},
+			#{expiryDate},
+			#{enrollDesc},
+			#{classDesc},
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1,
+						</when>
+						<otherwise>
+							0,
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			#{createDate},
+			#{modifyDate},
+			#{coverUuid},
+			#{classType},
+			#{xuefei},
+			#{cailiaofei},
+			#{isCailiao},
+			#{leixing},
+			#{schoolYear}
+		)
+	</insert>
+
+
+
+	<select id="findPublicClassByCondition" resultMap="PublicClassResult" useCache="false">
+		select * from pj_public_class where  school_id=#{args[0].schoolId,javaType=java.lang.Integer}
+
+		<if test="args[0].keyword != null and args[0].keyword != ''">
+		    and name like concat('%',#{args[0].keyword},'%')
+        </if>
+		<if test="args[0].isDelete != null">
+						<choose>
+							<when test="args[0].isDelete == true">
+								AND is_delete  = 1
+							</when>
+							<otherwise>
+								AND is_delete  = 0
+							</otherwise>
+						</choose>
+					</if>
+
+	</select>
+	<select id="findPublicClassByConditionLeixing" resultMap="PublicClassResult" useCache="false">
+		select * from pj_public_class where  school_id=#{args[0].schoolId,javaType=java.lang.Integer}
+		and leibie=#{args[0].leibie}
+		<if test="args[0].keyword != null and args[0].keyword != ''">
+			and name like concat('%',#{args[0].keyword},'%')
+		</if>
+
+		<if test="args[0].isDelete != null">
+			<choose>
+				<when test="args[0].isDelete == true">
+					AND is_delete  = 1
+				</when>
+				<otherwise>
+					AND is_delete  = 0
+				</otherwise>
+			</choose>
+		</if>
+
+	</select>
+
+<!--	<select id="findPublicClassByCondition" resultMap="PublicClassResult" useCache="false">-->
+<!--		SELECT c.* FROM pj_public_class c INNER JOIN pj_teacher t ON t.id=c.teacher_name-->
+<!--		<if test="args[0] != null">-->
+<!--			WHERE 1=1-->
+<!--			&lt;!&ndash; 安远中学临时需要 去掉这个条件 &ndash;&gt;-->
+<!--			&lt;!&ndash; AND (c.begin_date &gt;=(SELECT now() AS systemTime) OR c.expiry_date &gt;=(SELECT now() AS nowTime)) &ndash;&gt;-->
+<!--			<if test="args[0].id != null">-->
+<!--				AND c.id = #{args[0].id,javaType=java.lang.Integer}-->
+<!--			</if>-->
+<!--			<if test="args[0].schoolId != null">-->
+<!--				AND c.school_id = #{args[0].schoolId,javaType=java.lang.Integer}-->
+<!--			</if>-->
+<!--			<if test="args[0].name != null and args[0].name != ''">-->
+<!--				AND c.name = #{args[0].name,javaType=java.lang.String}-->
+<!--			</if>-->
+<!--			<if test="args[0].teacherName != null">-->
+<!--				AND c.teacher_name = #{args[0].teacherName,javaType=java.lang.Integer}-->
+<!--			</if>-->
+<!--			-->
+<!--			&lt;!&ndash; 查询   &ndash;&gt;-->
+<!--			<if test="args[0].keyword != null and args[0].keyword != ''">-->
+<!--				AND CONCAT_WS(",",c.name,t.name) like CONCAT('%',#{args[0].keyword},'%')-->
+<!--			</if>-->
+<!--			<if test="args[0].startDate != null">-->
+<!--				AND c.begin_date &gt;= #{args[0].startDate,javaType=java.util.Date}-->
+<!--			</if>-->
+<!--			<if test="args[0].endDate != null">-->
+<!--				AND c.begin_date &lt;= #{args[0].endDate,javaType=java.util.Date}-->
+<!--			</if>-->
+<!--			-->
+<!--			<if test="args[0].beginDate != null">-->
+<!--				AND c.begin_date = #{args[0].beginDate,javaType=java.util.Date}-->
+<!--			</if>-->
+<!--			<if test="args[0].classNumber != null">-->
+<!--				AND c.class_number = #{args[0].classNumber,javaType=java.lang.Integer}-->
+<!--			</if>-->
+<!--			<if test="args[0].maxMember != null">-->
+<!--				AND c.max_member = #{args[0].maxMember,javaType=java.lang.Integer}-->
+<!--			</if>-->
+<!--			<if test="args[0].enrollNumber != null and args[0].enrollNumber != ''">-->
+<!--				AND c.enroll_number = #{args[0].enrollNumber,javaType=java.lang.String}-->
+<!--			</if>-->
+<!--			<if test="args[0].expiryDate != null">-->
+<!--				AND c.expiry_date = #{args[0].expiryDate,javaType=java.util.Date}-->
+<!--			</if>-->
+<!--			<if test="args[0].enrollDesc != null and args[0].enrollDesc != ''">-->
+<!--				AND c.enroll_desc = #{args[0].enrollDesc,javaType=java.lang.String}-->
+<!--			</if>-->
+<!--			<if test="args[0].classDesc != null and args[0].classDesc != ''">-->
+<!--				AND c.class_desc = #{args[0].classDesc,javaType=java.lang.String}-->
+<!--			</if>-->
+<!--			<if test="args[0].isDelete != null">-->
+<!--				<choose>-->
+<!--					<when test="args[0].isDelete == true">-->
+<!--						AND c.is_delete  = 1-->
+<!--					</when>-->
+<!--					<otherwise>-->
+<!--						AND c.is_delete  = 0-->
+<!--					</otherwise>-->
+<!--				</choose>-->
+<!--			</if>-->
+<!--			<if test="args[0].createDate != null">-->
+<!--				AND c.create_date = #{args[0].createDate,javaType=java.util.Date}-->
+<!--			</if>-->
+<!--			<if test="args[0].modifyDate != null">-->
+<!--				AND c.modify_date = #{args[0].modifyDate,javaType=java.util.Date}-->
+<!--			</if>-->
+<!--			<if test="args[0].grade !=null">-->
+<!--				And c.grade = #{args[0].grade,javaType=java.lang.Integer}-->
+<!--			</if>-->
+<!--		</if>-->
+<!--	</select>-->
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_public_class
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND begin_date = #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].classNumber != null">
+				AND class_number = #{args[0].classNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].maxMember != null">
+				AND max_member = #{args[0].maxMember,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].enrollNumber != null and args[0].enrollNumber != ''">
+				AND enroll_number = #{args[0].enrollNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].expiryDate != null">
+				AND expiry_date = #{args[0].expiryDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].enrollDesc != null and args[0].enrollDesc != ''">
+				AND enroll_desc = #{args[0].enrollDesc,javaType=java.lang.String}
+			</if>
+			<if test="args[0].classDesc != null and args[0].classDesc != ''">
+				AND class_desc = #{args[0].classDesc,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="PublicClassResult" useCache="false">
+		SELECT * FROM pj_public_class WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.PublicClass">
+		UPDATE pj_public_class
+		<set>
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="beginDate != null">
+			begin_date=#{beginDate},
+		</if>
+		<if test="classNumber != null">
+			class_number=#{classNumber},
+		</if>
+		<if test="maxMember != null">
+			max_member=#{maxMember},
+		</if>
+		<if test="enrollNumber != null">
+			enroll_number=#{enrollNumber},
+		</if>
+		<if test="expiryDate != null">
+			expiry_date=#{expiryDate},
+		</if>
+		<if test="enrollDesc != null">
+			enroll_desc=#{enrollDesc},
+		</if>
+		<if test="classDesc != null">
+			class_desc=#{classDesc},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="coverUuid != null and coverUuid != ''">
+		    cover_uuid = #{coverUuid},
+        </if>
+        <if test="classType != null">
+		    class_type = #{classType},
+        </if>
+        <if test="enrollNumberFlg != null and enrollNumberFlg == '1'.toString()">
+            enroll_number = enroll_number + 1,
+        </if>
+        <if test="enrollNumberFlg != null and enrollNumberFlg == '2'.toString()">
+            enroll_number = enroll_number - 1,
+        </if>
+			<if test="xuefei != null">
+				xuefei = #{xuefei},
+			</if>
+			<if test="cailiaofei != null">
+				cailiaofei = #{cailiaofei},
+			</if>
+			<if test="isCailiao != null">
+				is_cailiao = #{isCailiao},
+			</if>
+			<if test="leixing != null">
+				leibie = #{leixing}
+			</if>
+        </set>
+		WHERE id = #{id}
+	</update>
+
+
+	<delete id="delete">
+		DELETE FROM pj_public_class
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findPublicUserByIdAndSchoolId" resultType="java.lang.Integer">
+	    select student_id from yh_public_user where public_class_id = #{args[0],javaType=java.lang.Integer} and school_id = #{args[1],javaType=java.lang.Integer} and is_delete = 0
+    </select>
+    <select id="findCountClass" resultType="platform.education.generalTeachingAffair.vo.CountPublicClassVo">
+        select name className, max_member maxMember ,enroll_number enrollNumber  from pj_public_class
+        where is_delete = 0
+        and school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+        <if test="args[0].beginDate != null"> and begin_date between #{args[0].beginDate,javaType=java.util.Date} and #{args[0].endDate,javaType=java.util.Date} </if>
+        <if test="args[0].endDate != null"> and expiry_date between #{args[0].beginDate,javaType=java.util.Date} and #{args[0].endDate,javaType=java.util.Date} </if>
+
+    </select>
+
+    <select id="findChoseClassStu" resultType="platform.education.generalTeachingAffair.vo.CountPublicClassVo">
+        select ppc.name className, ps.name stuName,pt.name teamName
+        from pj_student ps, pj_public_class ppc,pj_team pt,yh_public_user ypu
+        where ppc.is_delete = 0 and ppc.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+        <if test="args[0].beginDate != null"> and ppc.begin_date between #{args[0].beginDate,javaType=java.util.Date} and #{args[0].endDate,javaType=java.util.Date} </if>
+        <if test="args[0].endDate != null"> and ppc.expiry_date between #{args[0].beginDate,javaType=java.util.Date} and #{args[0].endDate,javaType=java.util.Date} </if>
+        and ppc.id = ypu.public_class_id
+        and ps.school_id = #{args[0].schoolId,javaType=java.lang.Integer} and ps.is_delete = 0 and ps.id = ypu.student_id  and ps.team_id = pt.id
+        and pt.is_delete =0   and pt.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+        and ypu.is_delete = 0 and ypu.school_id = #{args[0].schoolId,javaType=java.lang.Integer} and pt.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+
+     </select>
+
+    <select id="findNoChoseClassStu" resultType="platform.education.generalTeachingAffair.vo.CountPublicClassVo">
+         select ps.name stuName ,pt.name teamName from pj_student ps, pj_team pt where ps.id not in
+            (
+                select  ypu.student_id from yh_public_user ypu,pj_public_class ppc
+                where ypu.is_delete = 0
+                <if test="args[0].beginDate != null"> and ppc.begin_date between #{args[0].beginDate,javaType=java.util.Date} and #{args[0].endDate,javaType=java.util.Date} </if>
+                <if test="args[0].endDate != null"> and ppc.expiry_date between #{args[0].beginDate,javaType=java.util.Date} and #{args[0].endDate,javaType=java.util.Date} </if>
+                and ypu.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+                and ppc.is_delete = 0 and ppc.school_id = #{args[0].schoolId,javaType=java.lang.Integer}  and ppc.id = ypu.public_class_id
+                group by student_id
+            )
+            and ps.school_id = #{args[0].schoolId,javaType=java.lang.Integer} and ps.is_delete = 0
+            and pt.is_delete =0   and pt.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+            and ps.team_id = pt.id
+            and ps.study_state='01'
+    </select>
+</mapper>

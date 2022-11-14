@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.ApplayIndiaDao">
+
+	<resultMap id="ApplayIndiaResult" type="platform.education.oa.model.ApplayIndia">
+		<result property="id" column="id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="ownerType" column="owner_type" />
+		<result property="proposerId" column="proposer_id" />
+		<result property="proposerName" column="proposer_name" />
+		<result property="mobile" column="mobile" />
+		<result property="departmentId" column="department_id" />
+		<result property="indiaStatus" column="india_status" />
+		<result property="title" column="title" />
+		<result property="publishDate" column="publish_date" />
+		<result property="startDate" column="start_date" />
+		<result property="endDate" column="end_date" />
+		<result property="remark" column="remark" />
+		<result property="uploadId" column="upload_id" />
+		<result property="deliveryMethod" column="delivery_method" />
+		<result property="treatDate" column="treat_date" />
+		<result property="nonTreatmentCause" column="non_treatment_cause" />
+		<result property="expectedCompletionTime" column="expected_completion_time" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="approverId" column="approver_id"/>
+	</resultMap>
+	
+	 <resultMap id="ApplayIndiaResult1" type="platform.education.oa.vo.ApplayIndiaVo">
+		<result property="id" column="id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="ownerType" column="owner_type" />
+		<result property="proposerId" column="proposer_id" />
+		<result property="proposerName" column="proposer_name" />
+		<result property="mobile" column="mobile" />
+		<result property="departmentId" column="department_id" />
+		<result property="indiaStatus" column="india_status" />
+		<result property="title" column="title" />
+		<result property="publishDate" column="publish_date" />
+		<result property="remark" column="remark" />
+		<result property="uploadId" column="upload_id" />
+		<result property="deliveryMethod" column="delivery_method" />
+		<result property="treatDate" column="treat_date" />
+		<result property="nonTreatmentCause" column="non_treatment_cause" />
+		<result property="expectedCompletionTime" column="expected_completion_time" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="departmentName" column="department_name" />
+		<result property="realFileName" column="realFile_name" />
+	</resultMap> 
+	
+
+	<insert id="create" parameterType="platform.education.oa.model.ApplayIndia">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_applay_india (
+			id, 
+			owner_id,
+			owner_type,
+			proposer_id, 
+			proposer_name,
+			mobile, 
+			department_id, 
+			india_status, 
+			title, 
+			publish_date,
+			start_date,
+			end_date,
+			remark, 
+			upload_id, 
+			delivery_method, 
+			treat_date,
+			non_treatment_cause, 
+			expected_completion_time, 
+			is_deleted, 
+			create_date, 
+			modify_date,
+			approver_id
+		)
+		VALUES (
+			#{id}, 
+			#{ownerId},
+			#{ownerType},
+			#{proposerId}, 
+			#{proposerName}, 
+			#{mobile},
+			#{departmentId}, 
+			#{indiaStatus}, 
+			#{title}, 
+			#{publishDate},
+			#{startDate},
+		    #{endDate},
+			#{remark}, 
+			#{uploadId}, 
+			#{deliveryMethod},
+			#{treatDate}, 
+			#{nonTreatmentCause}, 
+			#{expectedCompletionTime}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate},
+			#{approverId}
+		)
+	</insert>
+
+	<select id="read" resultMap="ApplayIndiaResult" useCache="false">
+		SELECT * FROM oa_applay_india WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApplayIndiaByCondition" resultMap="ApplayIndiaResult" useCache="false">
+		SELECT * FROM oa_applay_india 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].proposerId != null">
+				AND proposer_id = #{args[0].proposerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].proposerName != null and args[0].proposerName != ''">
+				AND proposer_name = #{args[0].proposerName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].indiaStatus != null and args[0].indiaStatus != ''">
+				AND india_status = #{args[0].indiaStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publishDate != null">
+				AND publish_date = #{args[0].publishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].uploadId != null and args[0].uploadId != ''">
+				AND upload_id = #{args[0].uploadId,javaType=java.lang.String}
+			</if>
+			
+			<if test="args[0].deliveryMethod != null and args[0].deliveryMethod != ''">
+				AND delivery_method = #{args[0].deliveryMethod,javaType=java.lang.String}
+			</if>
+			
+			<if test="args[0].treatDate != null ">
+				AND treat_date = #{args[0].treatDate,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].nonTreatmentCause != null and args[0].nonTreatmentCause != ''">
+				AND non_treatment_cause = #{args[0].nonTreatmentCause,javaType=java.lang.String}
+			</if>
+			<if test="args[0].expectedCompletionTime != null">
+				AND expected_completion_time = #{args[0].expectedCompletionTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].approverId != null">
+				AND approver_id = #{args[0].approverId,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findApplayIndiaByCondition1" resultMap="ApplayIndiaResult1" useCache="false">
+		SELECT * FROM oa_applay_india 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].proposerId != null">
+				AND proposer_id = #{args[0].proposerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].proposerName != null and args[0].proposerName != ''">
+				AND proposer_name = #{args[0].proposerName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND department_id in (select department_id from pj_department_teacher where teacher_id = #{args[0].teacherId})
+			</if>
+			
+			<if test="args[0].indiaStatus != null and args[0].indiaStatus != ''">
+				AND india_status = #{args[0].indiaStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publishDate != null">
+				AND publish_date = #{args[0].publishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND publish_date &gt;= #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].lastDate != null">
+				AND publish_date &lt;= #{args[0].lastDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].uploadId != null and args[0].uploadId != ''">
+				AND upload_id = #{args[0].uploadId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].deliveryMethod != null and args[0].deliveryMethod != ''">
+				AND delivery_method = #{args[0].deliveryMethod,javaType=java.lang.String}
+			</if>
+			<if test="args[0].treatDate != null ">
+				AND treat_date = #{args[0].treatDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].nonTreatmentCause != null and args[0].nonTreatmentCause != ''">
+				AND non_treatment_cause = #{args[0].nonTreatmentCause,javaType=java.lang.String}
+			</if>
+			<if test="args[0].expectedCompletionTime != null">
+				AND expected_completion_time = #{args[0].expectedCompletionTime,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].searchWord != null and args[0].searchWord!=''">
+				AND CONCAT_WS(",",title,proposer_name) LIKE CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].approverId != null">
+				AND approver_id = #{args[0].approverId}
+			</if>
+			
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_applay_india 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].proposerId != null">
+				AND proposer_id = #{args[0].proposerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].proposerName != null and args[0].proposerName != ''">
+				AND proposer_name = #{args[0].proposerName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND department_id in (select department_id from pj_department_teacher where teacher_id = #{args[0].teacherId})
+			</if>
+			
+			<if test="args[0].indiaStatus != null and args[0].indiaStatus != ''">
+				AND india_status = #{args[0].indiaStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].publishDate != null">
+				AND publish_date = #{args[0].publishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND publish_date &gt;= #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].lastDate != null">
+				AND publish_date &lt;= #{args[0].lastDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].uploadId != null and args[0].uploadId != ''">
+				AND upload_id = #{args[0].uploadId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].deliveryMethod != null and args[0].deliveryMethod != ''">
+				AND delivery_method = #{args[0].deliveryMethod,javaType=java.lang.String}
+			</if>
+			<if test="args[0].treatDate != null ">
+				AND treat_date = #{args[0].treatDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].nonTreatmentCause != null and args[0].nonTreatmentCause != ''">
+				AND non_treatment_cause = #{args[0].nonTreatmentCause,javaType=java.lang.String}
+			</if>
+			<if test="args[0].expectedCompletionTime != null">
+				AND expected_completion_time = #{args[0].expectedCompletionTime,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].searchWord != null and args[0].searchWord!=''">
+				AND CONCAT_WS(",",title,proposer_name) LIKE CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].approverId != null">
+				AND approver_id = #{args[0].approverId}
+			</if>
+			
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApplayIndiaResult" useCache="false">
+		SELECT * FROM oa_applay_india WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<select id="findById1" resultMap="ApplayIndiaResult1" useCache="false">
+		SELECT * FROM oa_applay_india WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.ApplayIndia">
+		UPDATE oa_applay_india
+		SET 
+		<if test="ownerId != null">
+			owner_id=#{ownerId},
+		</if>
+		<if test="ownerType != null">
+			owner_type=#{ownerType},
+		</if>
+		<if test="proposerId != null">
+			proposer_id=#{proposerId},
+		</if>
+		<if test="proposerName != null">
+			proposer_name=#{proposerName},
+		</if>
+		<if test="mobile !=null"> 
+		    mobile = #{mobile},
+		</if>
+		<if test="departmentId != null">
+			department_id=#{departmentId},
+		</if>
+		<if test="indiaStatus != null">
+			india_status=#{indiaStatus},
+		</if>
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="publishDate != null">
+			publish_date=#{publishDate},
+		</if>
+		<if test="startDate != null">
+			start_date=#{startDate},
+		</if>
+		<if test="endDate != null">
+			end_date=#{endDate},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="uploadId != null">
+			upload_id=#{uploadId},
+		</if>
+		<if test="deliveryMethod != null">
+			delivery_method=#{deliveryMethod},
+		</if>
+		<if test="treatDate != null">
+			treat_date=#{treatDate},
+		</if>
+		<if test="nonTreatmentCause != null">
+			non_treatment_cause=#{nonTreatmentCause},
+		</if>
+		<if test="expectedCompletionTime != null">
+			expected_completion_time=#{expectedCompletionTime},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_applay_india
+		WHERE id = #{id}
+	</delete>
+</mapper>

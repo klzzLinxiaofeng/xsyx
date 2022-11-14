@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.XwHqCanteenCuisineDao">
+
+    <resultMap id="XwHqCanteenCuisineResult" type="platform.education.generalTeachingAffair.model.XwHqCanteenCuisine">
+        <result property="id" column="id" />
+        <result property="cuisineName" column="cuisine_name"/>
+        <result property="uuid" column="uuid"/>
+        <result property="picUrl" column="pic_url"/>
+        <result property="isDelete" column="is_delete" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+    <select id="read" resultMap="XwHqCanteenCuisineResult" useCache="false">
+        SELECT * FROM xw_hq_canteen_cuisin WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+
+
+
+
+    <insert id="create" parameterType="platform.education.generalTeachingAffair.model.XwHqCanteenCuisine">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO xw_hq_canteen_cuisin (
+        id,  cuisine_name,uuid,create_date,modify_date,is_delete
+        )
+        VALUES (
+        null,
+        #{cuisineName},
+        #{uuid},
+        #{createDate},
+        #{modifyDate},
+        #{isDelete}
+        )
+
+    </insert>
+
+
+    <select id="findxwHqCanteenCuisineByCondition" resultMap="XwHqCanteenCuisineResult" parameterType="platform.education.generalTeachingAffair.model.XwHqCanteenCuisine">
+        select * from xw_hq_canteen_cuisin
+        where is_delete = 0
+    </select>
+
+    <update id="update" parameterType="platform.education.generalTeachingAffair.model.XwHqCanteenCuisine">
+        update xw_hq_canteen_cuisin
+        <set>
+            <if test="cuisineName != null">
+                cuisine_name = #{cuisineName},
+            </if>
+            <if test="uuid != null">
+                uuid = #{uuid},
+            </if>
+            <if test="picUrl != null">
+                pic_url = #{picUrl},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="findByCuisineId" resultMap="XwHqCanteenCuisineResult">
+        select * from xw_hq_canteen_cuisin where id = #{id}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.resource.dao.ResResourceLibraryDao">
+  <resultMap id="ResultMap" type="com.xunyunedu.resource.pojo.ResResourceLibrary">
+    <id property="id" column="id"/>
+    <result property="uuid" column="uuid"/>
+    <result property="appId" column="app_id"/>
+    <result property="owerId" column="ower_id"/>
+    <result property="regionCode" column="region_code"/>
+    <result property="name" column="name"/>
+    <result property="createDate" column="create_date"/>
+    <result property="modifyDate" column="modify_date"/>
+    <result property="ownerUid" column="owner_uid"/>
+    <result property="libType" column="lib_type"/>
+    <result property="allowShareIn" column="allow_share_in"/>
+    <result property="allowShareOut" column="allow_share_out"/>
+    <result property="noAuditing" column="no_auditing"/>
+    <result property="allowSelfAuditing" column="allow_self_auditing"/>
+    <result property="allowAutoAuditing" column="allow_auto_auditing"/>
+  </resultMap>
+
+  <select id="selectByCondition" resultMap="ResultMap">
+    select * from res_resource_library
+    <where>
+      <if test="appId != null">
+        and app_id = #{appId}
+      </if>
+      <if test="owerId != null">
+        and ower_id = #{owerId}
+      </if>
+    </where>
+  </select>
+
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into res_resource_library
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null and uuid != ''">
+        uuid,
+      </if>
+      <if test="appId != null">
+        app_id,
+      </if>
+      <if test="owerId != null">
+        ower_id,
+      </if>
+      <if test="regionCode != null and regionCode != ''">
+        region_code,
+      </if>
+      <if test="name != null and name != ''">
+        `name`,
+      </if>
+      <if test="ownerUid != null and ownerUid != ''">
+        owner_uid,
+      </if>
+      <if test="libType != null and libType != ''">
+        lib_type,
+      </if>
+      <if test="allowShareIn != null">
+        allow_share_in,
+      </if>
+      <if test="allowShareOut != null">
+        allow_share_out,
+      </if>
+      <if test="noAuditing != null">
+        no_auditing,
+      </if>
+      <if test="allowSelfAuditing != null">
+        allow_self_auditing,
+      </if>
+      <if test="allowAutoAuditing != null">
+        allow_auto_auditing,
+      </if>
+      create_date
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null and uuid != ''">
+        #{uuid},
+      </if>
+      <if test="appId != null">
+        #{appId},
+      </if>
+      <if test="owerId != null">
+        #{owerId},
+      </if>
+      <if test="regionCode != null and regionCode != ''">
+        #{regionCode},
+      </if>
+      <if test="name != null and name != ''">
+        #{name},
+      </if>
+      <if test="ownerUid != null and ownerUid != ''">
+        #{ownerUid},
+      </if>
+      <if test="libType != null and libType != ''">
+        #{libType},
+      </if>
+      <if test="allowShareIn != null">
+        #{allowShareIn},
+      </if>
+      <if test="allowShareOut != null">
+        #{allowShareOut},
+      </if>
+      <if test="noAuditing != null">
+        #{noAuditing},
+      </if>
+      <if test="allowSelfAuditing != null">
+        #{allowSelfAuditing},
+      </if>
+      <if test="allowAutoAuditing != null">
+        #{allowAutoAuditing},
+      </if>
+      NOW()
+    </trim>
+  </insert>
+</mapper>

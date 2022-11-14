@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SchoolTermCurrentDao">
+
+	<resultMap id="SchoolTermCurrentResult" type="platform.education.generalTeachingAffair.model.SchoolTermCurrent">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="schoolYearId" column="school_year_id" />
+		<result property="schoolYearName" column="school_year_name" />
+		<result property="schoolYear" column="school_year" />
+		<result property="schoolTermCode" column="school_term_code" />
+		<result property="schoolTermName" column="school_term_name" />
+		<result property="beginDate" column="begin_date" />
+		<result property="finishDate" column="finish_date" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.SchoolTermCurrent">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_school_term_current (id, school_id, school_year_id, school_year_name, school_year, school_term_code, school_term_name, begin_date, finish_date, create_date, modify_date)
+		VALUES (#{id}, #{schoolId}, #{schoolYearId}, #{schoolYearName}, #{schoolYear}, #{schoolTermCode}, #{schoolTermName}, #{beginDate}, #{finishDate}, #{createDate}, #{modifyDate})
+	</insert>
+
+	<select id="read" resultMap="SchoolTermCurrentResult" useCache="false">
+		SELECT * FROM pj_school_term_current WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+	
+	
+	<select id="findCurrentSchoolYearById" resultMap="SchoolTermCurrentResult" useCache="false">
+		select * from pj_school_term_current  where 1=1
+		<if test="args!=null and args[0]!=null">
+			AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+	</select>
+	
+	<select id="findSchoolTermCurrentBySchoolIdAndSchoolYearId" resultMap="SchoolTermCurrentResult" useCache="false">
+		select * from pj_school_term_current  where 1=1
+		<if test="args!=null and args[0]!=null">
+			AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args!=null and args[1]!=null">
+			AND school_year_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+	</select>
+	
+	<select id="findSchoolTermCurrentBySchoolId" resultMap="SchoolTermCurrentResult" useCache="false">
+		SELECT * FROM pj_school_term_current WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findSchoolTermCurrentByCondition" resultMap="SchoolTermCurrentResult" useCache="false">
+		SELECT * FROM pj_school_term_current 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYearId != null and args[0].schoolYearId != ''">
+			AND school_year_id = #{args[0].schoolYearId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYearName != null and args[0].schoolYearName != ''">
+			AND school_year_name = #{args[0].schoolYearName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+			AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolTermCode != null and args[0].schoolTermCode != ''">
+			AND school_term_code = #{args[0].schoolTermCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolTermName != null and args[0].schoolTermName != ''">
+			AND school_term_name = #{args[0].schoolTermName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null and args[0].beginDate != ''">
+			AND begin_date = #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finishDate != null and args[0].finishDate != ''">
+			AND finish_date = #{args[0].finishDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="SchoolTermCurrentResult" useCache="false">
+		SELECT * FROM pj_school_term_current WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.SchoolTermCurrent">
+		UPDATE pj_school_term_current
+		SET 
+				<if test="schoolId != null">
+					school_id=#{schoolId},
+				</if>
+				<if test="schoolYearId != null">
+					school_year_id=#{schoolYearId},
+				</if>
+				<if test="schoolYearName != null">
+					school_year_name=#{schoolYearName},
+				</if>
+				<if test="schoolYear != null">
+					school_year=#{schoolYear},
+				</if>
+				<if test="schoolTermCode != null">
+					school_term_code=#{schoolTermCode},
+				</if>
+				<if test="schoolTermName != null">
+					school_term_name=#{schoolTermName},
+				</if>
+				<if test="beginDate != null">
+					begin_date=#{beginDate},
+				</if>
+				<if test="finishDate != null">
+					finish_date=#{finishDate},
+				</if>
+				<if test="createDate != null">
+					create_date=#{createDate},
+				</if>
+				<if test="modifyDate != null">
+					modify_date=#{modifyDate},
+				</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_school_term_current
+		WHERE id = #{id}
+	</delete>
+
+</mapper>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.UsecardDao">
+
+	<resultMap id="UsecardResult" type="platform.education.oa.model.Usecard">
+		<result property="id" column="id" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="cardUser" column="card_user" />
+		<result property="application" column="application" />
+		<result property="useDate" column="use_date" />
+		<result property="proposer" column="proposer" />
+		<result property="approval" column="approval" />
+		<result property="status" column="status" />
+		<result property="remark" column="remark" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="schoolId" column="school_id" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.Usecard">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_usecard (
+			id, 
+			plate_number, 
+			card_user, 
+			application, 
+			use_date, 
+			proposer, 
+			approval, 
+			status, 
+			remark, 
+			create_date, 
+			modify_date, 
+			school_id,
+			is_delete
+		)
+		VALUES (
+			#{id}, 
+			#{plateNumber}, 
+			#{cardUser}, 
+			#{application}, 
+			#{useDate}, 
+			#{proposer}, 
+			#{approval}, 
+			#{status}, 
+			#{remark}, 
+			#{createDate}, 
+			#{modifyDate},
+			#{schoolId}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+			
+		)
+	</insert>
+
+	<select id="read" resultMap="UsecardResult" useCache="false">
+		SELECT * FROM oa_usecard WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findUsecardByCondition" resultMap="UsecardResult" useCache="false">
+		SELECT useq.* FROM oa_usecard useq LEFT JOIN oa_vehicle veh ON useq.plate_number = veh.id
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].plateNumber != null">
+				AND veh.plate_number LIKE CONCAT(CONCAT('%',#{args[0].plateNumber}),'%')
+			</if>
+			<if test="args[0].id != null">
+				AND useq.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].cardUser != null and args[0].cardUser != ''">
+				AND useq.card_user = #{args[0].cardUser,javaType=java.lang.String}
+			</if>
+			<if test="args[0].application != null and args[0].application != ''">
+				AND useq.application = #{args[0].application,javaType=java.lang.String}
+			</if>
+			<if test="args[0].useDate != null">
+				AND useq.use_date = #{args[0].useDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].proposer != null and args[0].proposer != ''">
+				AND useq.proposer = #{args[0].proposer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approval != null and args[0].approval != ''">
+				AND useq.approval = #{args[0].approval,javaType=java.lang.String}
+			</if>
+			<if test="args[0].status != null and args[0].status != ''">
+				AND useq.status = #{args[0].status,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND useq.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND useq.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND useq.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND useq.school_id = #{args[0].schoolId}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND useq.is_delete  = 1
+					</when>
+					<otherwise>
+						AND useq.is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_usecard 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].plateNumber != null and args[0].plateNumber != ''">
+				AND plate_number = #{args[0].plateNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].cardUser != null and args[0].cardUser != ''">
+				AND card_user = #{args[0].cardUser,javaType=java.lang.String}
+			</if>
+			<if test="args[0].application != null and args[0].application != ''">
+				AND application = #{args[0].application,javaType=java.lang.String}
+			</if>
+			<if test="args[0].useDate != null">
+				AND use_date = #{args[0].useDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].proposer != null and args[0].proposer != ''">
+				AND proposer = #{args[0].proposer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].approval != null and args[0].approval != ''">
+				AND approval = #{args[0].approval,javaType=java.lang.String}
+			</if>
+			<if test="args[0].status != null and args[0].status != ''">
+				AND status = #{args[0].status,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND useq.school_id = #{args[0].schoolId}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="UsecardResult" useCache="false">
+		SELECT * FROM oa_usecard WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.Usecard">
+		UPDATE oa_usecard
+		SET 
+		<if test="plateNumber != null">
+			plate_number=#{plateNumber},
+		</if>
+		<if test="cardUser != null">
+			card_user=#{cardUser},
+		</if>
+		<if test="application != null">
+			application=#{application},
+		</if>
+		<if test="useDate != null">
+			use_date=#{useDate},
+		</if>
+		<if test="proposer != null">
+			proposer=#{proposer},
+		</if>
+		<if test="approval != null">
+			approval=#{approval},
+		</if>
+		<if test="status != null">
+			status=#{status},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="schoolId != null">
+			school_id = #{schoolId}
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_usecard
+		WHERE id = #{id}
+	</delete>
+</mapper>

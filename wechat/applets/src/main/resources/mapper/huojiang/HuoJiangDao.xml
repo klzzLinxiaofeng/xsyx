@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.huojiang.dao.HuoJiangDao">
+    <resultMap id="JiXiaoMap2" type="com.xunyunedu.huojiang.vo.ClassLunwen">
+        <id column="id" property="id"></id>
+        <result column="theme" property="theme"></result>
+        <result column="winning_time" property="winningTime"></result>
+        <result column="name_woke" property="nameWoke"></result>
+        <result column="allocated" property="allocated"></result>
+        <result column="student_ids" property="studentIds"></result>
+        <result column="teacher_ids" property="teacherIds"></result>
+        <result column="winning_level" property="winningLevel"></result>
+        <result column="dengci" property="dengci"></result>
+        <result column="pictureId" property="pictureId"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="is_Auit" property="isAuit"></result>
+        <result column="shenqingren" property="shenqingren"></result>
+        <result column="shenqing_name" property="shenqingName"></result>
+        <result column="student_names" property="studentNames"></result>
+        <result column="teacher_names" property="teacherNames"></result>
+        <result column="dengciName" property="dengciName"></result>
+        <result column="winningLevelName" property="winningLevelName"></result>
+        <result column="school_year" property="schoolYear"></result>
+        <result column="school_trem" property="schoolTrem"></result>
+        <result column="shuxing" property="shuXing"></result>
+        <result column="type" property="type"></result>
+        <result column="score" property="score"></result>
+        <result column="jiXiaoDeFen" property="jiXiaoDeFen"></result>
+    </resultMap>
+    <resultMap id="JiXiaoMap" type="com.xunyunedu.huojiang.vo.HuoJiang">
+        <id column="id" property="id"></id>
+        <result column="theme" property="theme"></result>
+        <result column="winning_time" property="winningTime"></result>
+        <result column="name_woke" property="nameWoke"></result>
+        <result column="allocated" property="allocated"></result>
+        <result column="student_ids" property="studentIds"></result>
+        <result column="teacher_ids" property="teacherIds"></result>
+        <result column="winning_level" property="winningLevel"></result>
+        <result column="dengci" property="dengci"></result>
+        <result column="pictureId" property="pictureId"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="is_Auit" property="isAuit"></result>
+        <result column="shenqingren" property="shenqingren"></result>
+        <result column="shenqing_name" property="shenqingName"></result>
+        <result column="student_names" property="studentNames"></result>
+        <result column="teacher_names" property="teacherNames"></result>
+        <result column="dengciName" property="dengciName"></result>
+        <result column="winningLevelName" property="winningLevelName"></result>
+        <result column="school_year" property="schoolYear"></result>
+        <result column="school_trem" property="schoolTrem"></result>
+        <result column="shuxing" property="shuXing"></result>
+        <result column="type" property="type"></result>
+    </resultMap>
+
+    <resultMap id="TeacherResult" type="com.xunyunedu.teacher.pojo.TeacherPojo">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="persionId" column="persion_id" />
+        <result property="userId" column="user_id" />
+        <result property="userName" column="user_name" />
+        <result property="name" column="name" />
+        <result property="alias" column="alias" />
+        <result property="sex" column="sex" />
+        <result property="jobNumber" column="job_number" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="workBeginDate" column="work_begin_date" />
+        <result property="qualification" column="qualification" />
+        <result property="occupationCode" column="occupation_code" />
+        <result property="position" column="position" />
+        <result property="mobile" column="mobile" />
+        <result property="telephone" column="telephone" />
+        <result property="postStaffing" column="post_staffing" />
+        <result property="jobState" column="job_state" />
+        <result property="isExternal" column="is_external" />
+        <result property="isDelete" column="is_delete" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+    </resultMap>
+
+
+    <select id="findByAll" resultMap="JiXiaoMap">
+        select zh.*,zj.name as dengciName,zx.name as winningLevelName from zy_huojiang  zh
+        inner join zy_jixiaoscore zj on  zj.id=zh.dengci
+        inner join zy_jixiaoscore  zx on zx.id=zh.winning_level
+        where zh.is_delete= 0  and zh.is_Auit =1
+        <if test="teacherId!=null">
+            and zh.teacher_ids like concat ('%',#{teacherId},'%')
+        </if>
+        <if test="type!=null">
+            and zh.type like concat ('%',#{type},'%')
+        </if>
+        order by zh.create_time desc
+    </select>
+
+    <select id="findById" resultMap="JiXiaoMap">
+      select zh.*,zj.name as dengciName,zx.name as winningLevelName from zy_huojiang  zh
+      inner join zy_jixiaoscore zj on  zj.id=zh.dengci
+      inner join zy_jixiaoscore  zx on zx.id=zh.winning_level
+      where zh.is_delete=0 and zh.id=#{id}
+    </select>
+
+    <select id="findTeacherByLikeNameAndSchool" resultMap="TeacherResult" useCache="false">
+    SELECT * FROM pj_teacher WHERE 1=1
+    <if test="name!=null">
+        AND name like CONCAT('%', #{name,javaType=java.lang.String}, '%')
+    </if>
+    <if test="schoolId!=null">
+        AND school_id=#{schoolId,javaType=java.lang.Integer}
+    </if>
+    AND is_delete = 0
+</select>
+    <select id="findByTongJi" resultMap="JiXiaoMap2">
+         select sum(zj.putongscore+zx.putongscore) as score,
+         sum(zj.jixiao_score+zx.jixiao_score) as jiXiaoDeFen from zy_huojiang  zh
+        inner join zy_jixiaoscore zj on  zj.id=zh.dengci
+        inner join zy_jixiaoscore  zx on zx.id=zh.winning_level
+        where zh.is_delete= 0  and zh.is_Auit =1 and  zh.teacher_ids like concat ('%',#{id},'%')
+    </select>
+</mapper>
+
+
+
+

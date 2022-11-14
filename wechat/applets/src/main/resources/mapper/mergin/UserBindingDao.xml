@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.UserBindingDao">
+
+    <resultMap id="UserBindingResult" type="com.xunyunedu.mergin.vo.UserBinding">
+        <result property="id" column="id" />
+        <result property="userId" column="user_id" />
+        <result property="bindingName" column="binding_name" />
+        <result property="bindingType" column="binding_type" />
+        <result property="enabled" column="enabled" />
+        <result property="isDeleted" column="is_deleted" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+    <select id="findUserBindingByCondition" resultMap="UserBindingResult"
+            useCache="false">
+        SELECT * FROM yh_user_binding
+        <if test="var1 != null">
+            WHERE 1=1
+            <if test="var1.id != null">
+                AND id = #{var1.id,javaType=java.lang.Integer}
+            </if>
+            <if test="var1.userId != null">
+                AND user_id = #{var1.userId,javaType=java.lang.Integer}
+            </if>
+            <if test="var1.bindingName != null and var1.bindingName != ''">
+                AND binding_name = #{var1.bindingName,javaType=java.lang.String}
+            </if>
+            <if test="var1.bindingType != null">
+                AND binding_type = #{var1.bindingType,javaType=java.lang.Integer}
+            </if>
+            <if test="var1.enabled != null">
+                <choose>
+                    <when test="var1.enabled == true">
+                        AND enabled = 1
+                    </when>
+                    <otherwise>
+                        AND enabled = 0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="var1.isDeleted != null">
+                <choose>
+                    <when test="var1.isDeleted == true">
+                        AND is_deleted = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted = 0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="var1.createDate != null">
+                AND create_date = #{var1.createDate,javaType=java.util.Date}
+            </if>
+            <if test="var1.modifyDate != null">
+                AND modify_date = #{var1.modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+    <select id="findByBindingName" resultMap="UserBindingResult" useCache="false">
+		SELECT * FROM yh_user_binding
+			WHERE
+		binding_name = #{var1, javaType=java.lang.String}
+			AND
+		is_deleted = 0
+		ORDER BY create_date
+		limit 1
+	</select>
+</mapper>

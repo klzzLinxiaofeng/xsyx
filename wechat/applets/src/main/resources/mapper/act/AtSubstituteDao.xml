@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.act.dao.AtSubstituteDao">
+  <resultMap id="BaseResultMap" type="com.xunyunedu.act.pojo.AtSubstitute">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="school_id" jdbcType="INTEGER" property="schoolId" />
+    <result column="receiver" jdbcType="INTEGER" property="receiver" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="accessory" jdbcType="VARCHAR" property="accessory" />
+    <result column="feedback" jdbcType="VARCHAR" property="feedback" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="accessory_name" jdbcType="VARCHAR" property="accessoryName" />
+    <result column="daike_id" jdbcType="INTEGER" property="daikeId" />
+    <result column="daike_name" jdbcType="INTEGER" property="daikeName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, school_id, receiver, `status`, start_time, end_time, description, account, 
+    `password`, accessory, feedback, create_date, modify_date,user_name,receiver_name,accessory_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select ats.*,pj.name as daike_name
+    from at_substitute ats
+    left join pj_teacher pj on pj.user_id=ats.daike_id
+    where ats.id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from at_substitute
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.act.pojo.AtSubstitute" useGeneratedKeys="true">
+    insert into at_substitute (user_id, school_id, receiver, 
+      `status`, start_time, end_time, 
+      description, account, `password`, 
+      accessory, feedback, create_date, 
+      modify_date,user_name,receiver_name,accessory_name,daike_id)
+    values (#{userId,jdbcType=INTEGER}, #{schoolId,jdbcType=INTEGER}, #{receiver,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{description,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{accessory,jdbcType=VARCHAR}, #{feedback,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{modifyDate,jdbcType=TIMESTAMP},#{userName,jdbcType=VARCHAR},#{receiverName,jdbcType=VARCHAR},#{accessoryName,jdbcType=VARCHAR},
+      #{daikeId})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.act.pojo.AtSubstitute" useGeneratedKeys="true">
+    insert into at_substitute
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="schoolId != null">
+        school_id,
+      </if>
+      <if test="receiver != null">
+        receiver,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="accessory != null">
+        accessory,
+      </if>
+      <if test="feedback != null">
+        feedback,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="modifyDate != null">
+        modify_date,
+      </if>
+      <if test="accessoryName != null">
+        accessory_name,
+      </if>
+      daike_id
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null">
+        #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="receiver != null">
+        #{receiver,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="accessory != null">
+        #{accessory,jdbcType=VARCHAR},
+      </if>
+      <if test="feedback != null">
+        #{feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accessoryName != null">
+        #{accessoryName,jdbcType=VARCHAR},
+      </if>
+      #{daikeId}
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunyunedu.act.pojo.AtSubstitute">
+    update at_substitute
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="schoolId != null">
+        school_id = #{schoolId,jdbcType=INTEGER},
+      </if>
+      <if test="receiver != null">
+        receiver = #{receiver,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        `password` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="accessory != null">
+        accessory = #{accessory,jdbcType=VARCHAR},
+      </if>
+      <if test="feedback != null">
+        feedback = #{feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="daikeId != null">
+        daike_id= #{daikeId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xunyunedu.act.pojo.AtSubstitute">
+    update at_substitute
+    set user_id = #{userId,jdbcType=INTEGER},
+      school_id = #{schoolId,jdbcType=INTEGER},
+      receiver = #{receiver,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      accessory = #{accessory,jdbcType=VARCHAR},
+      feedback = #{feedback,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectBy" parameterType="com.xunyunedu.act.pojo.AtSubstitute" resultMap="BaseResultMap">
+    select * from at_substitute
+    <where>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER}
+      </if>
+      <if test="schoolId != null">
+        school_id = #{schoolId,jdbcType=INTEGER}
+      </if>
+      <if test="receiver != null">
+        receiver = #{receiver,jdbcType=INTEGER}
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR}
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null">
+        `password` = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="accessory != null">
+        accessory = #{accessory,jdbcType=VARCHAR}
+      </if>
+      <if test="feedback != null">
+        feedback = #{feedback,jdbcType=VARCHAR}
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP}
+      </if>
+
+    </where>
+    order by create_date desc
+  </select>
+
+</mapper>

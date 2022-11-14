@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.studentworks.dao.StudentZuoPinDao">
+
+    <resultMap id="StudentZuoPinResult" type="platform.szxyzxx.studentworks.vo.StudentZuoPin">
+        <result property="id" column="id" />
+        <result property="studentId" column="student_id" />
+        <result property="studentName" column="studentName" />
+        <result property="teamName" column="teamName" />
+        <result property="createTime" column="create_time" />
+        <result property="modiyTime" column="modiy_time" />
+        <result property="isDelete" column="is_delete" />
+        <result property="schoolYear" column="school_year" />
+        <result property="schoolTrem" column="school_trem" />
+        <result property="gradeName" column="grade_name" />
+        <result property="gradeId" column="grade_id" />
+        <result property="zuopingUuid" column="zuopingUuid" />
+        <result property="jiangzhuangUuid" column="jiangzhuangUuid" />
+        <result property="teamId" column="team_id" />
+    </resultMap>
+
+    <select id="findByAll" resultMap="StudentZuoPinResult">
+        select * from zy_student_zuoping
+        <where>
+            <if test="args[0]!=null">
+                school_year=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                school_trem=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                grade_id=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+                team_id=#{args[3]}
+            </if>
+            <if test="args[4]!=null">
+                student_name like concat('%',#{args[4]},'%')
+            </if>
+
+        </where>
+    </select>
+    
+    <select id="findById" resultMap="StudentZuoPinResult">
+        select * from zy_student_zuoping
+        <where>
+            is_delete=0 and id#{args[0]}
+        </where>
+    </select>
+
+
+</mapper>

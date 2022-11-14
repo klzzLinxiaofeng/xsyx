@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.TaskUserDao">
+
+    <resultMap id="TaskUserResult" type="platform.education.paper.model.TaskUser">
+        <result property="id" column="id"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="taskId" column="task_id"/>
+        <result property="finishedFlag" column="finished_flag"/>
+        <result property="userId" column="user_id"/>
+        <result property="name" column="name"/>
+        <result property="finishedDate" column="finished_date"/>
+        <result property="studentId" column="student_id"/>
+        <result property="teamId" column="team_id"/>
+        <result property="isDelete" column="is_deleted"/>
+    </resultMap>
+
+    <resultMap id="TaskUserVoResult" type="platform.education.paper.vo.TaskUserVo" extends="TaskUserResult">
+        <result property="personRate" column="person_rate"/>
+        <result property="studentName" column="student_name"/>
+        <result property="finishStatus" column="finish_status"/>
+        <result property="finishTime" column="finish_time"/>
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.paper.model.TaskUser">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO pa_task_user (
+        id,
+        create_date,
+        modify_date,
+        task_id,
+        finished_flag,
+        user_id,
+        name,
+        finished_date,
+        student_id,
+        team_id,
+        is_deleted
+        )
+        VALUES (
+        #{id},
+        #{createDate},
+        #{modifyDate},
+        #{taskId},
+        #{finishedFlag},
+        #{userId},
+        #{name},
+        #{finishedDate},
+        #{studentId},
+        #{teamId},
+        <choose>
+            <when test="isDelete != null">
+                <choose>
+                    <when test="isDelete == true">
+                        1
+                    </when>
+                    <otherwise>
+                        0
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                0
+            </otherwise>
+        </choose>
+        )
+    </insert>
+
+    <select id="read" resultMap="TaskUserResult" useCache="false">
+        SELECT * FROM pa_task_user WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findTaskUserByCondition" resultMap="TaskUserResult" useCache="false">
+        SELECT * FROM pa_task_user
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].taskId != null">
+                AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].finishedFlag != null">
+                AND finished_flag = #{args[0].finishedFlag,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].userId != null">
+                AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND name = #{args[0].name,javaType=java.lang.String}
+            </if>
+            <if test="args[0].finishedDate != null">
+                AND finished_date = #{args[0].finishedDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].studentId != null ">
+                AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].teamId != null">
+                AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].isDelete != null">
+                <choose>
+                    <when test="args[0].isDelete == true">
+                        AND is_deleted = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted = 0
+                    </otherwise>
+                </choose>
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM pa_task_user
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].taskId != null">
+                AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].finishedFlag != null">
+                AND finished_flag = #{args[0].finishedFlag,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].userId != null">
+                AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND name = #{args[0].name,javaType=java.lang.String}
+            </if>
+            <if test="args[0].finishedDate != null">
+                AND finished_date = #{args[0].finishedDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].studentId != null">
+                AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].teamId != null">
+                AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].isDelete != null">
+                <choose>
+                    <when test="args[0].isDelete == true">
+                        AND is_deleted = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted = 0
+                    </otherwise>
+                </choose>
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="TaskUserResult" useCache="false">
+		SELECT * FROM pa_task_user WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+    <update id="update" parameterType="platform.education.paper.model.TaskUser">
+        UPDATE pa_task_user
+        SET
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        <if test="taskId != null">
+            task_id=#{taskId},
+        </if>
+        <if test="finishedFlag != null">
+            finished_flag=#{finishedFlag},
+        </if>
+        <if test="userId != null">
+            user_id=#{userId},
+        </if>
+        <if test="name != null">
+            name=#{name},
+        </if>
+        <if test="finishedDate != null">
+            finished_date=#{finishedDate},
+        </if>
+        <if test="studentId != null">
+            student_id=#{studentId},
+        </if>
+        <if test="teamId != null">
+            team_id=#{teamId},
+        </if>
+        <if test="isDelete != null">
+            <choose>
+                <when test="isDelete == true">
+                    is_deleted = 1,
+                </when>
+                <otherwise>
+                    is_deleted = 0,
+                </otherwise>
+            </choose>
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM pa_task_user
+		WHERE id = #{id}
+	</delete>
+
+    <insert id="createBatch">
+        INSERT INTO pa_task_user (
+        id,
+        create_date,
+        modify_date,
+        task_id,
+        finished_flag,
+        user_id,
+        name,
+        finished_date,
+        student_id,
+        team_id,
+        is_deleted
+        )
+        VALUES
+        <foreach collection="args[0]" item="item" index="index"
+                 separator=",">
+            (
+            #{item.id},
+            #{item.createDate},
+            #{item.modifyDate},
+            #{item.taskId},
+            #{item.finishedFlag},
+            #{item.userId},
+            #{item.name},
+            #{item.finishedDate},
+            #{item.studentId},
+            #{item.teamId},
+            <choose>
+                <when test="item.isDelete != null">
+                    <choose>
+                        <when test="item.isDelete == true">
+                            1
+                        </when>
+                        <otherwise>
+                            0
+                        </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+                    0
+                </otherwise>
+            </choose>
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByTaskIdAndTeamId">
+        UPDATE pa_task_user
+        SET is_deleted = 1
+        WHERE task_id = #{args[0]}
+        <if test="args[1]!=null">
+            AND team_id = #{args[1]}
+        </if>
+    </update>
+
+    <!-- TaskTeam 外键 -->
+    <select id="findTaskUserVoByIds" resultMap="TaskUserVoResult">
+        SELECT
+        IF(ptu.finished_flag = 1, '100%', '0%') AS person_rate,
+        ptu.finished_flag AS finish_status,
+        DATE_FORMAT(ptu.modify_date,'%Y-%m-%d %H:%i:%s') AS finish_time,
+        ptu.user_id,
+        ps.name AS student_name
+        FROM `pa_task_user` ptu LEFT JOIN `pj_student` ps ON ptu.user_id = ps.user_id
+        WHERE ptu.task_id = #{taskId} AND ptu.team_id = #{teamId} AND ptu.is_deleted = 0
+    </select>
+
+    <select id="findTotalOfCompletedByTaskIdAndTeamId" resultType="java.lang.String">
+        SELECT CONCAT(COUNT(IF(ptu.finished_flag = 1, true, null)), '/', COUNT(*))
+        FROM `pa_task_user` ptu
+        WHERE ptu.task_id = #{taskId} AND ptu.team_id = #{teamId} AND ptu.is_deleted = 0
+    </select>
+</mapper>

@@ -1,0 +1,5 @@
+数据库更新说明：
+1.已经重新修改了，oa_notice与oa_notice_user，因为修改的字段比较多，所以直接导入新生成的数据表
+2.增加了 oa_notice_img表
+
+3.增加了日程的：oa_schedule，oa_schedule_remind，oa_schedule_user表

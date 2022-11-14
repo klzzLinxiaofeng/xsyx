@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.PaperUserDao">
+
+	<resultMap id="PaperUserResult" type="platform.education.oa.model.PaperUser">
+		<result property="id" column="id" />
+		<result property="ownerId" column="owner_id" />
+		<result property="ownerType" column="owner_type" />
+		<result property="paperId" column="paper_id" />
+		<result property="receiverId" column="receiver_id" />
+		<result property="receiverName" column="receiver_name" />
+		<result property="departmentId" column="department_id" />
+		<result property="readStatus" column="read_status" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.PaperUser">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_paper_user (
+			id, 
+			owner_id,
+			owner_type,
+			paper_id, 
+			receiver_id, 
+			receiver_name, 
+			department_id,
+			read_status, 
+			create_date, 
+			modify_date,
+			is_deleted
+		)
+		VALUES (
+			#{id}, 
+			#{ownerId},
+			#{ownerType},
+			#{paperId}, 
+			#{receiverId}, 
+			#{receiverName}, 
+			#{departmentId},
+			<choose>
+				<when test="readStatus != null">
+					<choose>
+						<when test="readStatus == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate},
+			<choose>
+			<when test="isDeleted != null">
+				<choose>
+					<when test="isDeleted == true">
+						1
+					</when>
+					<otherwise>
+						0
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				0
+			</otherwise>
+		</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="PaperUserResult" useCache="false">
+		SELECT * FROM oa_paper_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPaperUserByCondition" resultMap="PaperUserResult" useCache="false">
+		SELECT * FROM oa_paper_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperId != null">
+				AND paper_id = #{args[0].paperId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].receiverId != null">
+				AND receiver_id = #{args[0].receiverId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].receiverName != null and args[0].receiverName != ''">
+				AND receiver_name = #{args[0].receiverName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			
+			<if test="args[0].readStatus != null">
+				<choose>
+					<when test="args[0].readStatus == true">
+						AND read_status  = 1
+					</when>
+					<otherwise>
+						AND read_status  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_paper_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id =
+				#{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].ownerType != null and args[0].ownerType != ''">
+				AND owner_type =
+				#{args[0].ownerType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperId != null">
+				AND paper_id = #{args[0].paperId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].receiverId != null">
+				AND receiver_id = #{args[0].receiverId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].receiverName != null and args[0].receiverName != ''">
+				AND receiver_name = #{args[0].receiverName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].readStatus != null">
+				<choose>
+					<when test="args[0].readStatus == true">
+						AND read_status  = 1
+					</when>
+					<otherwise>
+						AND read_status  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PaperUserResult" useCache="false">
+		SELECT * FROM oa_paper_user WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+		<select id="findPaperUserByPaperidAndUserid" resultMap="PaperUserResult" useCache="false">
+		SELECT * FROM oa_paper_user WHERE 1=1
+		 
+				AND paper_id = #{args[0],javaType=java.lang.Integer} 
+				AND receiver_id = #{args[1],javaType=java.lang.Integer}
+		 
+	</select>
+	
+	
+	<update id="update" parameterType="platform.education.oa.model.PaperUser">
+		UPDATE oa_paper_user
+		SET 
+		<if test="ownerId != null">
+			owner_id=#{ownerId},
+		</if>
+		<if test="ownerType != null">
+			owner_type=#{ownerType},
+		</if>
+		<if test="paperId != null">
+			paper_id=#{paperId},
+		</if>
+		<if test="receiverId != null">
+			receiver_id=#{receiverId},
+		</if>
+		<if test="receiverName != null">
+			receiver_name=#{receiverName},
+		</if>
+		<if test="departmentId != null">
+		   department_id = #{departmentId}
+		</if>
+		<if test="readStatus != null">
+			<choose>
+				<when test="readStatus == true">
+					read_status  = 1,
+				</when>
+				<otherwise>
+					read_status  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted = 1,
+				</when>
+				<otherwise>
+					is_deleted = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_paper_user
+		WHERE id = #{id}
+	</delete>
+</mapper>

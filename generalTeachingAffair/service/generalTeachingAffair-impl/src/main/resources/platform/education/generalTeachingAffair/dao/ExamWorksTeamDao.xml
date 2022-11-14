@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ExamWorksTeamDao">
+
+	<resultMap id="ExamWorksTeamResult" type="platform.education.generalTeachingAffair.model.ExamWorksTeam">
+		<result property="id" column="id" />
+		<result property="examWorksId" column="exam_works_id" />
+		<result property="examWorksGradeId" column="exam_works_grade_id" />
+		<result property="schoolId" column="school_id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="statSubjectCount" column="stat_subject_count" />
+		<result property="finishedSubjectCount" column="finished_subject_count" />
+		<result property="publishTeacherId" column="publish_teacher_id" />
+		<result property="publishTime" column="publish_time" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ExamWorksTeam">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_exam_works_team (
+			id, 
+			exam_works_id, 
+			exam_works_grade_id, 
+			school_id, 
+			grade_id, 
+			team_id, 
+			stat_subject_count, 
+			finished_subject_count, 
+			publish_teacher_id, 
+			publish_time, 
+			create_date, 
+			modify_date, 
+			is_deleted
+		)
+		VALUES (
+			#{id}, 
+			#{examWorksId}, 
+			#{examWorksGradeId}, 
+			#{schoolId}, 
+			#{gradeId}, 
+			#{teamId}, 
+			#{statSubjectCount}, 
+			#{finishedSubjectCount}, 
+			#{publishTeacherId}, 
+			#{publishTime}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="ExamWorksTeamResult" useCache="false">
+		SELECT * FROM pj_exam_works_team WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findExamWorksTeamByCondition" resultMap="ExamWorksTeamResult" useCache="false">
+		SELECT * FROM pj_exam_works_team 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examWorksId != null">
+				AND exam_works_id = #{args[0].examWorksId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examWorksGradeId != null">
+				AND exam_works_grade_id = #{args[0].examWorksGradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].statSubjectCount != null">
+				AND stat_subject_count = #{args[0].statSubjectCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].finishedSubjectCount != null">
+				AND finished_subject_count = #{args[0].finishedSubjectCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].publishTeacherId != null">
+				AND publish_teacher_id = #{args[0].publishTeacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].publishTime != null">
+				AND publish_time = #{args[0].publishTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_exam_works_team 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examWorksId != null">
+				AND exam_works_id = #{args[0].examWorksId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examWorksGradeId != null">
+				AND exam_works_grade_id = #{args[0].examWorksGradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].statSubjectCount != null">
+				AND stat_subject_count = #{args[0].statSubjectCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].finishedSubjectCount != null">
+				AND finished_subject_count = #{args[0].finishedSubjectCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].publishTeacherId != null">
+				AND publish_teacher_id = #{args[0].publishTeacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].publishTime != null">
+				AND publish_time = #{args[0].publishTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ExamWorksTeamResult" useCache="false">
+		SELECT * FROM pj_exam_works_team WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ExamWorksTeam">
+		UPDATE pj_exam_works_team
+		SET 
+		<if test="examWorksId != null">
+			exam_works_id=#{examWorksId},
+		</if>
+		<if test="examWorksGradeId != null">
+			exam_works_grade_id=#{examWorksGradeId},
+		</if>
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="gradeId != null">
+			grade_id=#{gradeId},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="statSubjectCount != null">
+			stat_subject_count=#{statSubjectCount},
+		</if>
+		<if test="finishedSubjectCount != null">
+			finished_subject_count=#{finishedSubjectCount},
+		</if>
+		<if test="publishTeacherId != null">
+			publish_teacher_id=#{publishTeacherId},
+		</if>
+		<if test="publishTime != null">
+			publish_time=#{publishTime},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_exam_works_team
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findOfExamWorks" resultMap="ExamWorksTeamResult" useCache="false">
+		SELECT * FROM pj_exam_works_team
+		WHERE is_deleted = 0
+		AND exam_works_id = #{args[0],javaType=java.lang.Integer}
+		AND grade_id = #{args[1],javaType=java.lang.Integer}
+	</select>
+
+	<select id="findUnique" resultMap="ExamWorksTeamResult" useCache="false">
+		SELECT * FROM pj_exam_works_team
+		WHERE is_deleted = 0
+		AND exam_works_id = #{args[0],javaType=java.lang.Integer}
+		AND team_id = #{args[1],javaType=java.lang.Integer}
+	</select>
+
+	<!-- 把每科导入记为1，goal为导入总数，actual为实际导入科目数，result为比较结果 0=未导入 1=部分导入 2=全部导入 -->
+	<select id="findOfExamWorksWithScore" resultType="java.util.Map" useCache="false">
+		SELECT
+		ewt.id,
+		ewt.exam_works_id examWorksId,
+		ewt.grade_id gradeId,
+		ewt.team_id teamId,
+		SUM(ews.full_score) totalScore,
+		t.`name` teamName,
+		IF(SUM(IF(ewts.post_teacher_id,1,0))=0,0, IF(SUM(IF(ewts.post_teacher_id,1,0))=SUM(1),2,1)) result
+		FROM pj_exam_works_team ewt
+		LEFT JOIN pj_exam_works_subject ews ON ewt.exam_works_id = ews.exam_works_id AND ewt.grade_id = ews.grade_id
+		LEFT JOIN pj_team t ON ewt.team_id = t.id
+		LEFT JOIN pj_exam_works_team_subject ewts ON ewts.exam_works_id = ewt.exam_works_id
+			AND ewts.team_id = ewt.team_id AND ewts.subject_code = ews.subject_code
+		WHERE 1=1
+		AND ewt.is_deleted = 0
+		AND ews.is_delteted = 0
+		AND ews.stat_needed = 1
+		AND t.is_delete = 0
+		<if test="args[0] != null">
+			AND ewt.exam_works_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND ewt.grade_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null">
+			AND ewt.team_id = #{args[2],javaType=java.lang.Integer}
+		</if>
+		GROUP BY ewt.id
+		ORDER BY t.team_number
+	</select>
+
+	<select id="countPublishTeam" resultType="java.lang.Long" useCache="false">
+		SELECT COUNT(*) FROM pj_exam_works_team
+		WHERE is_deleted = 0
+		<if test="args[0] != null">
+			AND exam_works_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND grade_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		AND (publish_teacher_id IS NOT NULL OR publish_time IS NOT NULL)
+	</select>
+
+	<select id="countPublishStudent" resultType="java.lang.Long" useCache="false">
+		SELECT IFNULL(MAX(num), 0) from (
+			SELECT COUNT(es.score) num
+			FROM pj_exam_student es
+			LEFT JOIN pj_exam_works_team_subject ewts ON es.exam_id = ewts.exam_id
+			LEFT JOIN pj_exam_works_team ewt ON ewts.exam_works_id = ewt.exam_works_id AND ewts.team_id = ewt.team_id
+			LEFT JOIN pj_exam_works_subject ews ON ewts.exam_works_id = ews.exam_works_id
+			AND ewts.grade_id = ews.grade_id AND ewts.subject_code = ews.subject_code
+			WHERE ewts.is_deleted = 0
+			AND ews.is_delteted = 0
+			AND ews.stat_needed = 1
+			<if test="args[0] != null">
+				AND ewts.exam_works_id = #{args[0],javaType=java.lang.Integer}
+			</if>
+			<if test="args[1] != null">
+				AND ewts.grade_id = #{args[1],javaType=java.lang.Integer}
+			</if>
+			AND es.score != -1
+			AND (ewt.publish_teacher_id IS NOT NULL OR ewt.publish_time IS NOT NULL)
+			GROUP BY ewts.subject_code
+		) t;
+	</select>
+</mapper>

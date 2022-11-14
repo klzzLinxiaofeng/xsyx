@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <import resource="classpath*:oauth2-services.xml" />
+    <bean id="oauth2CacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean class="framework.generic.cache.redis.core.SystemRedisCache">
+                    <property name="redisTemplate" ref="redisTemplate" />
+                    <property name="name" value="oauth2_cache"/>
+                    <property name="timeout" value="360000"/>
+                </bean>
+            </set>
+        </property>
+    </bean>
+
+</beans>

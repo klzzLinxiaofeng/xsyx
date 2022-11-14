@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.UserWrongDao">
+
+	<resultMap id="UserWrongResult" type="platform.education.paper.model.UserWrong">
+		<result property="id" column="id" />
+		<result property="createDate" column="create_date" />
+		<result property="userId" column="user_id" />
+		<result property="paperUuid" column="paper_uuid" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="paperQuestionId" column="paper_question_id" />
+		<result property="questionUuid" column="question_uuid" />
+		<result property="answer" column="answer" />
+		<result property="isCorrect" column="is_correct" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="isOffline" column="is_offline" />
+		<result property="userQuestionId" column="user_question_id" />
+		<result property="lastTime" column="last_time" />
+		<result property="lastAnswer" column="last_answer" />
+		<result property="rightCount" column="right_count" />
+		<result property="wrongCount" column="wrong_count" />
+		<result property="fileId" column="file_id" />
+	</resultMap>
+
+	<insert id="batchUserWrong" parameterType="platform.education.paper.model.UserWrong">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_user_wrong (
+			id, 
+			create_date, 
+			user_id, 
+			paper_uuid, 
+			modify_date, 
+			paper_question_id, 
+			question_uuid, 
+			answer, 
+			is_correct, 
+			is_deleted, 
+			is_offline, 
+			user_question_id, 
+			last_time, 
+			last_answer, 
+			right_count, 
+			wrong_count, 
+			file_id
+		)
+		VALUES
+		<foreach collection ="args[0]" item="item" index= "index" separator =",">
+		 (
+			#{item.id}, 
+			#{item.createDate}, 
+			#{item.userId}, 
+			#{item.paperUuid}, 
+			#{item.modifyDate}, 
+			#{item.paperQuestionId}, 
+			#{item.questionUuid}, 
+			#{item.answer}, 
+			0,
+			0,
+			0,
+			#{item.userQuestionId}, 
+			#{item.lastTime}, 
+			#{item.lastAnswer}, 
+			#{item.rightCount}, 
+			#{item.wrongCount}, 
+			#{item.fileId}
+		)
+		</foreach>
+	</insert>
+	
+	
+	<insert id="create" parameterType="platform.education.paper.model.UserWrong">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_user_wrong (
+			id, 
+			create_date, 
+			user_id, 
+			paper_uuid, 
+			modify_date, 
+			paper_question_id, 
+			question_uuid, 
+			answer, 
+			is_correct, 
+			is_deleted, 
+			is_offline, 
+			user_question_id, 
+			last_time, 
+			last_answer, 
+			right_count, 
+			wrong_count, 
+			file_id
+		)
+		VALUES (
+			#{id}, 
+			#{createDate}, 
+			#{userId}, 
+			#{paperUuid}, 
+			#{modifyDate}, 
+			#{paperQuestionId}, 
+			#{questionUuid}, 
+			#{answer}, 
+			<choose>
+				<when test="isCorrect != null">
+					<choose>
+						<when test="isCorrect == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="isOffline != null">
+					<choose>
+						<when test="isOffline == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{userQuestionId}, 
+			#{lastTime}, 
+			#{lastAnswer}, 
+			#{rightCount}, 
+			#{wrongCount}, 
+			#{fileId}
+		)
+	</insert>
+	
+
+	<select id="read" resultMap="UserWrongResult" useCache="false">
+		SELECT * FROM pa_user_wrong WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findUserWrongByCondition" resultMap="UserWrongResult" useCache="false">
+		SELECT * FROM pa_user_wrong 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid = #{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].paperQuestionId != null">
+				AND paper_question_id = #{args[0].paperQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid = #{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answer != null and args[0].answer != ''">
+				AND answer = #{args[0].answer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isCorrect != null">
+				<choose>
+					<when test="args[0].isCorrect == true">
+						AND is_correct  = 1
+					</when>
+					<otherwise>
+						AND is_correct  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isOffline != null">
+				<choose>
+					<when test="args[0].isOffline == true">
+						AND is_offline  = 1
+					</when>
+					<otherwise>
+						AND is_offline  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].userQuestionId != null">
+				AND user_question_id = #{args[0].userQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lastTime != null">
+				AND last_time = #{args[0].lastTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].lastAnswer != null and args[0].lastAnswer != ''">
+				AND last_answer = #{args[0].lastAnswer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rightCount != null">
+				AND right_count = #{args[0].rightCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].wrongCount != null">
+				AND wrong_count = #{args[0].wrongCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fileId != null and args[0].fileId != ''">
+				AND file_id = #{args[0].fileId,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_user_wrong 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid = #{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].paperQuestionId != null">
+				AND paper_question_id = #{args[0].paperQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid = #{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answer != null and args[0].answer != ''">
+				AND answer = #{args[0].answer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isCorrect != null">
+				<choose>
+					<when test="args[0].isCorrect == true">
+						AND is_correct  = 1
+					</when>
+					<otherwise>
+						AND is_correct  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isOffline != null">
+				<choose>
+					<when test="args[0].isOffline == true">
+						AND is_offline  = 1
+					</when>
+					<otherwise>
+						AND is_offline  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].userQuestionId != null">
+				AND user_question_id = #{args[0].userQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lastTime != null">
+				AND last_time = #{args[0].lastTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].lastAnswer != null and args[0].lastAnswer != ''">
+				AND last_answer = #{args[0].lastAnswer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rightCount != null">
+				AND right_count = #{args[0].rightCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].wrongCount != null">
+				AND wrong_count = #{args[0].wrongCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fileId != null and args[0].fileId != ''">
+				AND file_id = #{args[0].fileId,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="UserWrongResult" useCache="false">
+		SELECT * FROM pa_user_wrong WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.paper.model.UserWrong">
+		UPDATE pa_user_wrong
+		SET 
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="paperUuid != null">
+			paper_uuid=#{paperUuid},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="paperQuestionId != null">
+			paper_question_id=#{paperQuestionId},
+		</if>
+		<if test="questionUuid != null">
+			question_uuid=#{questionUuid},
+		</if>
+		<if test="answer != null">
+			answer=#{answer},
+		</if>
+		<if test="isCorrect != null">
+			<choose>
+				<when test="isCorrect == true">
+					is_correct  = 1,
+				</when>
+				<otherwise>
+					is_correct  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="isOffline != null">
+			<choose>
+				<when test="isOffline == true">
+					is_offline  = 1,
+				</when>
+				<otherwise>
+					is_offline  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="userQuestionId != null">
+			user_question_id=#{userQuestionId},
+		</if>
+		<if test="lastTime != null">
+			last_time=#{lastTime},
+		</if>
+		<if test="lastAnswer != null">
+			last_answer=#{lastAnswer},
+		</if>
+		<if test="rightCount != null">
+			right_count=#{rightCount},
+		</if>
+		<if test="wrongCount != null">
+			wrong_count=#{wrongCount},
+		</if>
+		<if test="fileId != null">
+			file_id=#{fileId},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pa_user_wrong
+		WHERE id = #{id}
+	</delete>
+	
+	<resultMap id="wrongPaperResult" type="platform.education.paper.model.WrongPaper">
+		<result property="createDate" column="create_date" />
+		<result property="groupId" column="group_id" />
+		<result property="paperUuId" column="paper_uuid" />
+		<result property="paperTitle" column="title" />
+		<result property="complexTitle" column="extra_content" />
+		<result property="questionUuId" column="question_uuid" />
+		<result property="questionType" column="question_type" />
+		<result property="userWrongId" column="userWrongId" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="content" column="content" />
+		<result property="dbCorrectAnswer" column="correct_answer" />
+		<result property="explanation" column="explanation" />
+		<result property="rightCount" column="right_count" />
+		<result property="wrongCount" column="wrong_count" />
+		<result property="dbPaperAnser" column="paperAnser" />
+		<result property="dbUserAnswer" column="userAnswer" />
+		<result property="isCorrect" column="is_correct" />
+	</resultMap>
+	
+	<select id="findUserWrongListByUserId" resultMap="wrongPaperResult" useCache="false">
+		 SELECT
+			uw.create_date,
+			q.group_id,
+			p.paper_uuid,
+			p.title,
+			q.extra_content,
+			q.question_uuid,
+			q.question_type,
+			uw.id userWrongId,
+			q.subject_code,
+			q.content,
+			q.correct_answer,
+			q.explanation,
+			uw.right_count,
+			uw.wrong_count,
+			q.answer paperAnser,
+			uw.answer userAnswer,
+			uq.is_correct
+		FROM
+			pa_user_wrong uw
+		LEFT JOIN pa_question q
+		ON uw.question_uuid = q.question_uuid 
+		LEFT JOIN pa_paper p on p.paper_uuid = uw.paper_uuid
+		LEFT JOIN pa_user_question uq on uq.id = uw.paper_question_id
+		where 1=1
+		<if test="args[0] != null">
+		and uw.user_id = #{userId}
+		</if>
+		<if test="args[1] != null">
+		and q.subject_code = #{args[1]}
+		</if>
+		<!--  and timestampdiff(MINUTE,uw.create_date,#{args[2]}) &lt;= 120 -->
+		 and uw.is_deleted = 0
+		 and q.content is not null
+		 and q.content !=''
+		ORDER BY uw.create_date desc 
+	</select>
+	
+	<select id="findUserWrongCreateGroup" resultType="java.lang.String" useCache="false">
+		SELECT DATE_FORMAT(create_date,'%Y-%m-%d') createDate from pa_user_wrong GROUP BY DATE_FORMAT(create_date,'%Y-%m-%d') ORDER BY create_date DESC;
+	</select>
+	
+	<select id="findUserWrongCreateDateByUserId" resultType="java.lang.String" useCache="false">
+		SELECT puw.create_date from pa_user_wrong puw where puw.user_id=#{args[0]} ORDER BY puw.create_date desc LIMIT 1
+	</select>
+	<delete id="deleteNotInPaperUuid">
+	DELETE FROM pa_user_wrong WHERE paper_uuid 
+
+NOT IN 
+        (
+        <foreach collection="args[0]" item="item" index="index" separator="," >  
+			#{item}
+   	 	</foreach>
+        )
+	</delete>
+</mapper>

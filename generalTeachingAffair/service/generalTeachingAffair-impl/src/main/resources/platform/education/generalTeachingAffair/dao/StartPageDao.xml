@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StartPageDao">
+
+	<resultMap id="startPageResult" type="platform.education.generalTeachingAffair.model.StartPagePojo">
+		<result column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status"/>
+        <result column="resource_type" property="resourceType"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="uuid" property="uuid"/>
+	</resultMap>
+
+	<select id="findStartPageVoByCondition" resultMap="startPageResult" useCache="false">
+		select * from pj_start_page
+		where is_delete = 0
+		<if test="args[0] != null">
+            <if test="args[0].name != null and args[0].name != ''" >
+                and name like concat('%',#{args[0].name,javaType=java.lang.String},'%')
+            </if>
+            <if test="args[0].schoolId != null">
+                AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="startPageResult" useCache="false">
+		SELECT * FROM pj_start_page WHERE id = #{args[0],javaType=java.lang.Integer} and is_delete = 0
+	</select>
+
+    <update id="modify" parameterType="platform.education.generalTeachingAffair.model.StartPagePojo">
+		UPDATE pj_start_page
+		<set>
+			<if test="modifyDate != null">
+				modify_date=#{modifyDate},
+			</if>
+			<if test="status != null">
+				status=#{status},
+			</if>
+		</set>
+	</update>
+
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.StartPagePojo">
+		UPDATE pj_start_page
+		<set>
+			<if test="schoolId != null">
+				school_id=#{schoolId},
+			</if>
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="createDate != null">
+				create_date=#{createDate},
+			</if>
+			<if test="modifyDate != null">
+				modify_date=#{modifyDate},
+			</if>
+			<if test="status != null">
+				status=#{status},
+			</if>
+			<if test="resourceType != null and resourceType != ''">
+				resource_type=#{resourceType},
+			</if>
+			<if test="isDelete != null">
+				is_delete=#{isDelete},
+			</if>
+			<if test="uuid != null and uuid != ''">
+			    uuid = #{uuid},
+            </if>
+		</set>
+		<where>
+		    <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+	</update>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.Questionnaire">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		insert into pj_start_page(id, school_id, name, status, resource_type, uuid, create_date, modify_date)
+		values (#{id},#{schoolId},#{name},#{status},#{resourceType},#{uuid},#{createDate},#{modifyDate})
+	</insert>
+
+
+	<select id="read" resultMap="startPageResult" useCache="false">
+		SELECT * FROM pj_start_page WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+</mapper>

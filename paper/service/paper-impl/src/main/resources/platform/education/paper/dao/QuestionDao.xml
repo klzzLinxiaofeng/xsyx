@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.QuestionDao">
+
+	<resultMap id="QuestionResult" type="platform.education.paper.model.Question">
+		<result property="id" column="id" />
+		<result property="createDate" column="create_date" />
+		<result property="content" column="content" />
+		<result property="extraContent" column="extra_content" />
+		<result property="answer" column="answer" />
+		<result property="correctAnswer" column="correct_answer" />
+		<result property="questionType" column="question_type" />
+		<result property="difficulity" column="difficulity" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="versionCode" column="version_code" />
+		<result property="gradeCode" column="grade_code" />
+		<result property="volumeCode" column="volume_code" />
+		<result property="categoryCode" column="category_code" />
+		<result property="explanation" column="explanation" />
+		<result property="userId" column="user_id" />
+		<result property="parentQuestion" column="parent_question" />
+		<result property="score" column="score" />
+		<result property="source" column="source" />
+		<result property="pos" column="pos" />
+		<result property="groupId" column="group_id" />
+		<result property="groupTitle" column="group_title" />
+		<result property="knowledge" column="knowledge" />
+		<result property="extraContentMediaUrl" column="extra_content_media_url" />
+		<result property="contentMediaUrl" column="content_media_url" />
+		<result property="answerMediaUrl" column="answer_media_url" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="questionUuid" column="question_uuid" />
+		<result property="sourceType" column="source_type" />
+		<result property="usedCount" column="used_count" />
+		<result property="cognition" column="cognition" />
+		<result property="knowledgeId" column="knowledge_id" />
+		<result property="answerCount" column="answer_count" />
+		<result property="rightAnswerCount" column="right_answer_count" />
+		<result property="totalTime" column="total_time" />
+		<result property="totalTimeCount" column="total_time_count" />
+		<result property="averageTime" column="average_time" />
+		<result property="paperId" column="paper_id" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.paper.model.Question">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_question (
+			id, 
+			create_date, 
+			content, 
+			extra_content, 
+			answer, 
+			correct_answer, 
+			question_type, 
+			difficulity, 
+			subject_code, 
+			version_code, 
+			grade_code, 
+			volume_code, 
+			category_code, 
+			explanation, 
+			user_id, 
+			parent_question, 
+			score, 
+			source, 
+			pos, 
+			group_id, 
+			group_title, 
+			knowledge, 
+			extra_content_media_url, 
+			content_media_url, 
+			answer_media_url, 
+			modify_date, 
+			question_uuid, 
+			source_type, 
+			used_count, 
+			cognition, 
+			knowledge_id, 
+			answer_count, 
+			right_answer_count, 
+			total_time, 
+			total_time_count, 
+			average_time
+		)
+		VALUES (
+			#{id}, 
+			#{createDate}, 
+			#{content}, 
+			#{extraContent}, 
+			#{answer}, 
+			#{correctAnswer}, 
+			#{questionType}, 
+			#{difficulity}, 
+			#{subjectCode}, 
+			#{versionCode}, 
+			#{gradeCode}, 
+			#{volumeCode}, 
+			#{categoryCode}, 
+			#{explanation}, 
+			#{userId}, 
+			#{parentQuestion}, 
+			#{score}, 
+			#{source}, 
+			#{pos}, 
+			#{groupId}, 
+			#{groupTitle}, 
+			#{knowledge}, 
+			#{extraContentMediaUrl}, 
+			#{contentMediaUrl}, 
+			#{answerMediaUrl}, 
+			#{modifyDate}, 
+			#{questionUuid}, 
+			#{sourceType}, 
+			#{usedCount}, 
+			#{cognition}, 
+			#{knowledgeId}, 
+			#{answerCount}, 
+			#{rightAnswerCount}, 
+			#{totalTime}, 
+			#{totalTimeCount}, 
+			#{averageTime}
+		)
+	</insert>
+
+	<select id="read" resultMap="QuestionResult" useCache="false">
+		SELECT * FROM pa_question WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findQuestionByCondition" resultMap="QuestionResult" useCache="false">
+		SELECT * FROM pa_question 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+				AND content = #{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].extraContent != null and args[0].extraContent != ''">
+				AND extra_content = #{args[0].extraContent,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answer != null and args[0].answer != ''">
+				AND answer = #{args[0].answer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].correctAnswer != null and args[0].correctAnswer != ''">
+				AND correct_answer = #{args[0].correctAnswer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].questionType != null and args[0].questionType != ''">
+				AND question_type = #{args[0].questionType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].difficulity != null">
+				AND difficulity = #{args[0].difficulity,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].versionCode != null and args[0].versionCode != ''">
+				AND version_code = #{args[0].versionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].volumeCode != null and args[0].volumeCode != ''">
+				AND volume_code = #{args[0].volumeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].categoryCode != null and args[0].categoryCode != ''">
+				AND category_code = #{args[0].categoryCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].explanation != null and args[0].explanation != ''">
+				AND explanation = #{args[0].explanation,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND user_id = #{args[0].userId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].parentQuestion != null and args[0].parentQuestion != ''">
+				AND parent_question = #{args[0].parentQuestion,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].source != null and args[0].source != ''">
+				AND source = #{args[0].source,javaType=java.lang.String}
+			</if>
+			<if test="args[0].pos != null">
+				AND pos = #{args[0].pos,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupId != null and args[0].groupId != ''">
+				AND group_id = #{args[0].groupId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].groupTitle != null and args[0].groupTitle != ''">
+				AND group_title = #{args[0].groupTitle,javaType=java.lang.String}
+			</if>
+			<if test="args[0].knowledge != null and args[0].knowledge != ''">
+				AND knowledge = #{args[0].knowledge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].extraContentMediaUrl != null and args[0].extraContentMediaUrl != ''">
+				AND extra_content_media_url = #{args[0].extraContentMediaUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].contentMediaUrl != null and args[0].contentMediaUrl != ''">
+				AND content_media_url = #{args[0].contentMediaUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answerMediaUrl != null and args[0].answerMediaUrl != ''">
+				AND answer_media_url = #{args[0].answerMediaUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid = #{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].sourceType != null">
+				AND source_type = #{args[0].sourceType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].usedCount != null">
+				AND used_count = #{args[0].usedCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].cognition != null and args[0].cognition != ''">
+				AND cognition = #{args[0].cognition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].knowledgeId != null">
+				AND knowledge_id = #{args[0].knowledgeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].answerCount != null">
+				AND answer_count = #{args[0].answerCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].rightAnswerCount != null">
+				AND right_answer_count = #{args[0].rightAnswerCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].totalTime != null">
+				AND total_time = #{args[0].totalTime,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].totalTimeCount != null">
+				AND total_time_count = #{args[0].totalTimeCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].averageTime != null">
+				AND average_time = #{args[0].averageTime,javaType=java.lang.Float}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_question 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+				AND content = #{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].extraContent != null and args[0].extraContent != ''">
+				AND extra_content = #{args[0].extraContent,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answer != null and args[0].answer != ''">
+				AND answer = #{args[0].answer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].correctAnswer != null and args[0].correctAnswer != ''">
+				AND correct_answer = #{args[0].correctAnswer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].questionType != null and args[0].questionType != ''">
+				AND question_type = #{args[0].questionType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].difficulity != null">
+				AND difficulity = #{args[0].difficulity,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].versionCode != null and args[0].versionCode != ''">
+				AND version_code = #{args[0].versionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].volumeCode != null and args[0].volumeCode != ''">
+				AND volume_code = #{args[0].volumeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].categoryCode != null and args[0].categoryCode != ''">
+				AND category_code = #{args[0].categoryCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].explanation != null and args[0].explanation != ''">
+				AND explanation = #{args[0].explanation,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND user_id = #{args[0].userId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].parentQuestion != null and args[0].parentQuestion != ''">
+				AND parent_question = #{args[0].parentQuestion,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].source != null and args[0].source != ''">
+				AND source = #{args[0].source,javaType=java.lang.String}
+			</if>
+			<if test="args[0].pos != null">
+				AND pos = #{args[0].pos,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].groupId != null and args[0].groupId != ''">
+				AND group_id = #{args[0].groupId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].groupTitle != null and args[0].groupTitle != ''">
+				AND group_title = #{args[0].groupTitle,javaType=java.lang.String}
+			</if>
+			<if test="args[0].knowledge != null and args[0].knowledge != ''">
+				AND knowledge = #{args[0].knowledge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].extraContentMediaUrl != null and args[0].extraContentMediaUrl != ''">
+				AND extra_content_media_url = #{args[0].extraContentMediaUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].contentMediaUrl != null and args[0].contentMediaUrl != ''">
+				AND content_media_url = #{args[0].contentMediaUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answerMediaUrl != null and args[0].answerMediaUrl != ''">
+				AND answer_media_url = #{args[0].answerMediaUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid = #{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].sourceType != null">
+				AND source_type = #{args[0].sourceType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].usedCount != null">
+				AND used_count = #{args[0].usedCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].cognition != null and args[0].cognition != ''">
+				AND cognition = #{args[0].cognition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].knowledgeId != null">
+				AND knowledge_id = #{args[0].knowledgeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].answerCount != null">
+				AND answer_count = #{args[0].answerCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].rightAnswerCount != null">
+				AND right_answer_count = #{args[0].rightAnswerCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].totalTime != null">
+				AND total_time = #{args[0].totalTime,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].totalTimeCount != null">
+				AND total_time_count = #{args[0].totalTimeCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].averageTime != null">
+				AND average_time = #{args[0].averageTime,javaType=java.lang.Float}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="QuestionResult" useCache="false">
+		SELECT * FROM pa_question WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.paper.model.Question">
+		UPDATE pa_question
+		SET 
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="content != null">
+			content=#{content},
+		</if>
+		<if test="extraContent != null">
+			extra_content=#{extraContent},
+		</if>
+		<if test="answer != null">
+			answer=#{answer},
+		</if>
+		<if test="correctAnswer != null">
+			correct_answer=#{correctAnswer},
+		</if>
+		<if test="questionType != null">
+			question_type=#{questionType},
+		</if>
+		<if test="difficulity != null">
+			difficulity=#{difficulity},
+		</if>
+		<if test="subjectCode != null">
+			subject_code=#{subjectCode},
+		</if>
+		<if test="versionCode != null">
+			version_code=#{versionCode},
+		</if>
+		<if test="gradeCode != null">
+			grade_code=#{gradeCode},
+		</if>
+		<if test="volumeCode != null">
+			volume_code=#{volumeCode},
+		</if>
+		<if test="categoryCode != null">
+			category_code=#{categoryCode},
+		</if>
+		<if test="explanation != null">
+			explanation=#{explanation},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="parentQuestion != null">
+			parent_question=#{parentQuestion},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="source != null">
+			source=#{source},
+		</if>
+		<if test="pos != null">
+			pos=#{pos},
+		</if>
+		<if test="groupId != null">
+			group_id=#{groupId},
+		</if>
+		<if test="groupTitle != null">
+			group_title=#{groupTitle},
+		</if>
+		<if test="knowledge != null">
+			knowledge=#{knowledge},
+		</if>
+		<if test="extraContentMediaUrl != null">
+			extra_content_media_url=#{extraContentMediaUrl},
+		</if>
+		<if test="contentMediaUrl != null">
+			content_media_url=#{contentMediaUrl},
+		</if>
+		<if test="answerMediaUrl != null">
+			answer_media_url=#{answerMediaUrl},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="questionUuid != null">
+			question_uuid=#{questionUuid},
+		</if>
+		<if test="sourceType != null">
+			source_type=#{sourceType},
+		</if>
+		<if test="usedCount != null">
+			used_count=#{usedCount},
+		</if>
+		<if test="cognition != null">
+			cognition=#{cognition},
+		</if>
+		<if test="knowledgeId != null">
+			knowledge_id=#{knowledgeId},
+		</if>
+		<if test="answerCount != null">
+			answer_count=#{answerCount},
+		</if>
+		<if test="rightAnswerCount != null">
+			right_answer_count=#{rightAnswerCount},
+		</if>
+		<if test="totalTime != null">
+			total_time=#{totalTime},
+		</if>
+		<if test="totalTimeCount != null">
+			total_time_count=#{totalTimeCount},
+		</if>
+		<if test="averageTime != null">
+			average_time=#{averageTime},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pa_question
+		WHERE id = #{id}
+	</delete>
+	
+	 <!--以下是业务方法-->
+    <select id="findQuestionByUuid" resultMap="QuestionResult" useCache="false">
+        SELECT * FROM pa_question WHERE uuid = #{args[0],javaType=java.lang.String}
+    </select>
+    
+    <select id="findQuestionByKnowledgeId" resultMap="QuestionResult" useCache="false">
+        SELECT * FROM pa_question WHERE knowledge_id = #{args[0],javaType=java.lang.Integer}
+    </select>
+    
+    <select id="findQuestionListByQuestionUuids" resultMap="QuestionResult">
+    	SELECT * FROM pa_question WHERE uuid in 
+    	<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">  
+  		#{item}  
+ 		</foreach>
+    </select>
+    
+    <select id="findPaperQuestionByPaperIds" resultMap="QuestionResult" useCache="false">
+		SELECT 
+		  (
+		    CASE
+		      pq.question_type 
+		      WHEN 'radio' 
+		      THEN '单选题' 
+		      WHEN 'checkbox' 
+		      THEN '多选题' 
+		      WHEN 'blank' 
+		      THEN '填空题' 
+		      WHEN 'word' 
+		      THEN '简答题' 
+		      WHEN 'complex' 
+		      THEN '复合题' 
+		      WHEN 'trueOrFalse' 
+		      THEN '判断题' 
+		      WHEN 'blank' 
+		      THEN '填空题' 
+		      ELSE '未知题型' 
+		    END
+		  ) `question_type`,
+		  pq.`pos`,
+		  pq.`uuid`,
+		  pp.`id` as paper_id
+		FROM
+		  `pa_paper` pp 
+		  JOIN `pa_paper_question` ppq 
+		    ON pp.`paper_uuid` = ppq.`paper_uuid` 
+		  JOIN `pa_question` pq 
+		    ON ppq.`question_uuid` = pq.`question_uuid` 
+		WHERE pp.`id` IN 
+		<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		ORDER BY pq.`pos`
+	</select>
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="generalTeachingAffairCache" updateCheck="false">
+
+<!--     <diskStore path="java.io.tmpdir"/> -->
+
+
+<!-- maxElementsInMemory="" 缓存最大个数 -->
+<!-- eternal 对象是否永久有效，一旦设置了，timeout讲不起作用 -->
+<!-- timeToIdleSeconds 设置对象在失效前的允许闲置时间（单位：秒）。仅当eternal=false对象不是永久有效时使用，可选属性，默认值是0，也就是可闲置时间无穷大 -->
+<!-- timeToLiveSeconds 设置对象在失效前允许存货时间（单位：秒）。最大时间介于创建时间和失效时间之间，仅当eternal=false对象不是永久有效时使用，默认是0，也就是对象创建粗活时间无穷大 -->
+<!-- overflowToDisk 当内存中对象数量达到maxElementsInMemory时,Ehcache 将会将对象写到磁盘中 -->
+<!-- diskSpoolBufferSizeMB 这个参数设置DiskStore(磁盘缓存)的缓存区大小。默认是30MB。每个Cache都应该有自己的一个缓冲区 -->
+<!-- maxElementsOnDisk 硬盘最大缓存个数 -->
+<!-- diskPersistent 是否缓存虚拟机重启期数据 Whether the disk store persists between restarts of the Virtual Machine. The default value is false. -->
+<!-- diskExpiryThreadIntervalSeconds 磁盘失效线程运行时间间隔，默认为120秒 -->
+<!-- memoryStoreEvictionPolicy 当达到maxElementsInMemory限制时，Ehcache将会根据制定的策略去清理内存。默认策略是LRU（最近最少使用）.你可以设置FIFO（先进先出） 或是LFU（较少使用） -->
+<!-- clearOnFlush 内存数量最大时清楚 -->
+
+<!-- name:Cache的唯一标识名称 -->
+<!-- Sets the name of the cache. This is used to identify the cache. It must be unique. -->
+
+<!-- maxEntriesLocalHeap 堆内存中最大缓存对象数，0没有限制 -->
+<!-- Sets the maximum number of objects that will be held on heap memory.  0 = no limit. -->
+
+<!-- maxEntriesLocalDisk 磁盘中最大对象数，默认为0不限制 -->
+<!-- Sets the maximum number of objects that will be maintained in the DiskStore The default value is zero, meaning unlimited. -->
+
+<!-- enteral elements是否永久有效，如果为true，timeouts讲被忽略，element将永不过期 -->
+<!-- Sets whether elements are eternal. If eternal,  timeouts are ignored and the element is never expired. -->
+
+<!-- maxEntriesinCache 只能用于Terracotta distributed caches. -->
+<!-- This feature is applicable only to Terracotta distributed caches -->
+<!-- Sets the maximum number of entries that can be stored in the cluster 0 = no limit. -->
+<!-- Note that clustered cahce will still perform eviction if resource usage requires it. -->
+<!-- This property can be modified dynamically while the cache is operating. -->
+
+<!-- overflowToOffHeap 只能用于企业版中 -->
+<!-- (boolean) This feature is available only in enterprise versions of Ehcache. -->
+<!-- When set to ture, enables the cache to utilze off-heap memory storage to  -->
+<!-- improve performance. Off-heap memory is not subject to JAVA GC. The default -->
+<!-- value is false.2 -->
+
+<!-- maxByteslocalHeap:如果设置了这个属性，maxEntriesLocalHeap讲不能被利用 -->
+<!-- Defines how many bytes the cache may use from the VM's heap. If a CacheManager maxBytesLocalHeap has been defined, -->
+<!-- this Cache's specified amount will be subtracted from the CacheManager. Other caches will share the remainder. This -->
+<!-- attibutes's values are given as <number>k|K|m|M|g|G for kilobytes (k|K), megabytes (m|M), or gigabytes (g|G). -->
+<!-- For example.maxByteLocalHeap="2g" allots 2 gigabytes of heap memory. if you specify a maxBytesLocalHeap, you can't -->
+<!-- use the maxEntiresLocalHeap attribute. maxEntriesLocalHeap cant't be used if a CacheManager maxBytesLocalHeap is set. -->
+
+<!--         maxElementsInMemory="1" -->
+	<!-- 登录记录缓存 锁定10分钟 -->
+    <cache name="affair_grade_cache"
+        maxEntriesLocalHeap="500"
+        eternal="false"
+        timeToIdleSeconds="3600"
+        timeToLiveSeconds="0"
+        overflowToDisk="false"
+        statistics="true">
+    </cache>
+    
+    <cache name="affair_team_cache"
+        maxEntriesLocalHeap="500"
+        eternal="false"
+        timeToIdleSeconds="3600"
+        timeToLiveSeconds="0"
+        overflowToDisk="false"
+        statistics="true">
+    </cache>
+</ehcache>

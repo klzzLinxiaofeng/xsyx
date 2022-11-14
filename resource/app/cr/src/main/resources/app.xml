@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+       default-autowire="byName">
+
+    <!-- 加载整个应用的配置文件,请注意次序. -->
+<!--     <import resource="classpath*:/generic-dao.xml" /> -->
+
+	<import resource="classpath*:/config/core/app-dao.xml" />
+    <import resource="classpath*:/config/core/app-disconf.xml" />
+    <import resource="classpath*:/config/core/app-datasources.xml" />
+    <import resource="classpath*:/config/core/app-transaction.xml" />
+    <import resource="classpath*:/config/core/app-beans.xml" />
+    <import resource="classpath*:/config/core/app-cache.xml" />
+    <import resource="classpath:/generic-cache.xml" />
+    <!--<import resource="classpath:/generic-cache-redis-cluster.xml" />-->
+    <import resource="classpath*:/config/shiro/shiro-core.xml" />
+    <import resource="classpath*:/user-services.xml" />
+    <import resource="classpath*:/generalCode-services.xml" />
+    <!--<import resource="classpath*:/generalCode-cache-services.xml" />-->
+    <import resource="classpath*:/generalTeachingAffair-services.xml" />
+
+	    <!--试题库模块 -->
+    <import resource="classpath*:/paper-services.xml" />
+     <import resource="classpath*:/paper-new-services.xml" />
+      <!--试题库模块 -->
+    <!--资源库模块-->
+    <import resource="classpath*:/resource-services.xml" />
+
+    <!-- 全文检索 -->
+    <import resource="classpath*:/es-beans.xml" />
+
+    <import resource="classpath*:/micro-services.xml" />
+    <import resource="classpath*:/exam-services.xml" />
+    <import resource="classpath*:/learningDesign-services.xml" />
+    <import resource="classpath*:/teachingPlan-services.xml" />
+    <import resource="classpath*:/material-services.xml" />
+    <import resource="classpath*:/homework-services.xml" />
+    <import resource="classpath*:/message-services.xml" />
+    <import resource="classpath*:/config/service/statistic-services.xml" />
+    <!--资源库模块-->	
+	<!-- 文档转换服务 -->
+    <import resource="classpath*:/dctClient-beans.xml" />
+    <!-- 文档转换服务 -->
+    
+    <!-- 视频转换服务 -->
+    <import resource="classpath*:/javeClient-beans.xml" />
+    <!-- 视频转换服务 -->
+    
+    <!--lads-->    
+    <import resource="classpath*:/ladswar-services.xml" />
+    
+</beans>

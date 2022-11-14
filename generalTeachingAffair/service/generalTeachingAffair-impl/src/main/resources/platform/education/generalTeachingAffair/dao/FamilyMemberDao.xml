@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.FamilyMemberDao">
+
+	<resultMap id="FamilyMemberResult" type="platform.education.generalTeachingAffair.model.FamilyMember">
+		<result property="id" column="id" />
+		<result property="studentId" column="student_id" />
+		<result property="name" column="name" />
+		<result property="mobile" column="mobile" />
+		<result property="relation" column="relation" />
+		<result property="relationRemarks" column="relation_remarks" />
+		<result property="race" column="race" />
+		<result property="workingPlace" column="working_place" />
+		<result property="position" column="position" />
+		<result property="address" column="address" />
+		<result property="residenceAddress" column="residence_address" />
+		<result property="rank" column="rank" />
+		<result property="idCardType" column="id_card_type" />
+		<result property="idCardNumber" column="id_card_number" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.FamilyMember">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_family_member (
+			id, 
+			student_id, 
+			name, 
+			mobile, 
+			relation, 
+			relation_remarks, 
+			race, 
+			working_place, 
+			position, 
+			address, 
+			residence_address, 
+			rank, 
+			id_card_type, 
+			id_card_number, 
+			is_deleted, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{studentId}, 
+			#{name}, 
+			#{mobile}, 
+			#{relation}, 
+			#{relationRemarks}, 
+			#{race}, 
+			#{workingPlace}, 
+			#{position}, 
+			#{address}, 
+			#{residenceAddress}, 
+			#{rank}, 
+			#{idCardType}, 
+			#{idCardNumber}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="FamilyMemberResult" useCache="false">
+		SELECT * FROM pj_family_member WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findFamilyMemberByCondition" resultMap="FamilyMemberResult" useCache="false">
+		SELECT * FROM pj_family_member 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].mobile != null and args[0].mobile != ''">
+				AND mobile = #{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].relation != null and args[0].relation != ''">
+				AND relation = #{args[0].relation,javaType=java.lang.String}
+			</if>
+			<if test="args[0].relationRemarks != null and args[0].relationRemarks != ''">
+				AND relation_remarks = #{args[0].relationRemarks,javaType=java.lang.String}
+			</if>
+			<if test="args[0].race != null and args[0].race != ''">
+				AND race = #{args[0].race,javaType=java.lang.String}
+			</if>
+			<if test="args[0].workingPlace != null and args[0].workingPlace != ''">
+				AND working_place = #{args[0].workingPlace,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].address != null and args[0].address != ''">
+				AND address = #{args[0].address,javaType=java.lang.String}
+			</if>
+			<if test="args[0].residenceAddress != null and args[0].residenceAddress != ''">
+				AND residence_address = #{args[0].residenceAddress,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rank != null and args[0].rank != ''">
+				AND rank = #{args[0].rank,javaType=java.lang.String}
+			</if>
+			<if test="args[0].idCardType != null and args[0].idCardType != ''">
+				AND id_card_type = #{args[0].idCardType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].idCardNumber != null and args[0].idCardNumber != ''">
+				AND id_card_number = #{args[0].idCardNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_family_member 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].mobile != null and args[0].mobile != ''">
+				AND mobile = #{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].relation != null and args[0].relation != ''">
+				AND relation = #{args[0].relation,javaType=java.lang.String}
+			</if>
+			<if test="args[0].relationRemarks != null and args[0].relationRemarks != ''">
+				AND relation_remarks = #{args[0].relationRemarks,javaType=java.lang.String}
+			</if>
+			<if test="args[0].race != null and args[0].race != ''">
+				AND race = #{args[0].race,javaType=java.lang.String}
+			</if>
+			<if test="args[0].workingPlace != null and args[0].workingPlace != ''">
+				AND working_place = #{args[0].workingPlace,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].address != null and args[0].address != ''">
+				AND address = #{args[0].address,javaType=java.lang.String}
+			</if>
+			<if test="args[0].residenceAddress != null and args[0].residenceAddress != ''">
+				AND residence_address = #{args[0].residenceAddress,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rank != null and args[0].rank != ''">
+				AND rank = #{args[0].rank,javaType=java.lang.String}
+			</if>
+			<if test="args[0].idCardType != null and args[0].idCardType != ''">
+				AND id_card_type = #{args[0].idCardType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].idCardNumber != null and args[0].idCardNumber != ''">
+				AND id_card_number = #{args[0].idCardNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="FamilyMemberResult" useCache="false">
+		SELECT * FROM pj_family_member WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.FamilyMember">
+		UPDATE pj_family_member
+		SET 
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="mobile != null">
+			mobile=#{mobile},
+		</if>
+		<if test="relation != null">
+			relation=#{relation},
+		</if>
+		<if test="relationRemarks != null">
+			relation_remarks=#{relationRemarks},
+		</if>
+		<if test="race != null">
+			race=#{race},
+		</if>
+		<if test="workingPlace != null">
+			working_place=#{workingPlace},
+		</if>
+		<if test="position != null">
+			position=#{position},
+		</if>
+		<if test="address != null">
+			address=#{address},
+		</if>
+		<if test="residenceAddress != null">
+			residence_address=#{residenceAddress},
+		</if>
+		<if test="rank != null">
+			rank=#{rank},
+		</if>
+		<if test="idCardType != null">
+			id_card_type=#{idCardType},
+		</if>
+		<if test="idCardNumber != null">
+			id_card_number=#{idCardNumber},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_family_member
+		WHERE id = #{id}
+	</delete>
+	
+	
+	<select id="findByStudentId" resultMap="FamilyMemberResult" useCache="false">
+		SELECT * FROM pj_family_member 
+		WHERE is_deleted = 0 
+		AND student_id = #{args[0],javaType=java.lang.Integer}
+		ORDER BY id ASC
+		LIMIT 2
+	</select>
+	
+</mapper>

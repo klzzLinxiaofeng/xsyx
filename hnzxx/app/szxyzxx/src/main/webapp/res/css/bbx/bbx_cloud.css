@@ -1,0 +1,470 @@
+/*网盘文件*/
+.cloud_coping{
+    height: 35px;margin: 20px 0 15px 0;
+}
+.cloud_option{
+    float: left;
+}
+.cloud_option button{
+    border:0px;background: #fff;font-size: 12px;height: 35px;
+}
+button.upload_file{
+    min-width: 65px;background-color: #0d7ad5;color: #fff;
+}
+.cloud_new{
+    min-width:110px;
+}
+.cloud_download{
+    min-width:65px;
+}
+.cloud_move{
+    min-width: 65px;
+}
+.cloud_delete{
+    min-width: 65px;
+}
+.cloud_rename{
+    min-width: 80px;
+}
+.cloud_search{
+    float: right;
+}
+.cloud_search input{
+    height: 21px;width: 110px;
+}
+.cloud_search img{
+    float: right;margin: 1px 0 0 1px;width:36px;height: 33px;
+}
+.upload{
+    background: url(images/upload_wj.png) no-repeat;float: left;height: 20px;width: 20px;margin: 3px 0 0 2px;
+}
+.newwj{
+    background: url(images/newwj.png) no-repeat;float: left;height: 20px;width: 20px;margin: 2px 0 0 2px;
+}
+.wj_download{
+    background: url(images/wj_download.png) no-repeat;float: left;height: 20px;width: 20px;margin: 3px 0 0 2px;
+}
+.wj_sc{
+    background: url(images/wj_sc.png) no-repeat;float: left;height: 20px;width: 20px;margin: 3px 0 0 2px;
+}
+.wj_yd{
+    background: url(images/wj_yd.png) no-repeat;float: left;height: 20px;width: 20px;margin: 3px 0 0 2px;
+}
+.wj_cmm{
+    background: url(images/wj_cmm.png) no-repeat;float: left;height: 20px;width: 20px;margin: 4px 0 0 2px;
+}
+.tb_choose{
+    height: 40px;line-height: 40px;
+}
+.a_zuo{
+    float: left;width: 500px;margin-left: 10px;
+}
+.choose_revert{
+    float: left;color:#1e78c4;font-size: 12px;
+}
+.i_xian{
+    width: 1px;height: 20px;background: #b3b3b3;float: left;margin:10px;
+}
+.choose_own{
+    color: #323232;font-size: 12px;
+}
+.a_you{
+    float: right;
+}
+.cd_gn{
+    background: url(images/cd_gn.png) no-repeat;float: left;width: 18px;height: 18px;margin:10px 12px 0 0;
+}
+.cd_xx{
+    background: url(images/cd_xx.png) no-repeat;float: left;width: 18px;height: 18px;margin:13px 20px 0 0;
+}
+.own_include{
+    margin: 0 10px;
+}
+.choose_file{
+    float: left;height:130px;width: 100px;margin:0 0 10px 10px;border:1px #fff solid;
+}
+.choose_file p{
+    text-align: center;
+     width: 100px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wj_dir{
+    height:75px;width: 80px;background: url(images/forma_icon/dir.png) no-repeat;display: block;margin: 0px auto 8px;
+}
+.xls_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/xls.png) no-repeat;
+}
+.fla_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/fla.png) no-repeat;
+}
+.docx_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/doc.png) no-repeat;
+}
+.ppt_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/ppt.png) no-repeat;
+}
+.rar_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/rar.png) no-repeat;
+}
+.mp4_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/mp4.png) no-repeat;
+}
+.mp3_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/mp3.png) no-repeat;
+}
+.iso_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/iso.png) no-repeat;
+}
+.z_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/7z.png) no-repeat;
+}
+.apk_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/apk.png) no-repeat;
+}
+.ai_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/ai.png) no-repeat;
+}
+.ape_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/ape.png) no-repeat;
+}
+.avi_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/avi.png) no-repeat;
+}
+.bmp_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/bmp.png) no-repeat;
+}
+.book_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/book.png) no-repeat;
+}
+.flv_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/flv.png) no-repeat;
+}
+.gif_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/gif.png) no-repeat;
+}
+.html_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/html.png) no-repeat;
+}
+.ico_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/ico.png) no-repeat;
+}
+.jpg_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/jpg.png) no-repeat;
+}
+.mkv_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/mkv.png) no-repeat;
+}
+.mov_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/mov.png) no-repeat;
+}
+.movie_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/movie.png) no-repeat;
+}
+.php_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/php.png) no-repeat;
+}
+.png_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/png.png) no-repeat;
+}
+.mpg_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/mpg.png) no-repeat;
+}
+.music_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/music.png) no-repeat;
+}
+.pdf_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/pdf.png) no-repeat;
+}
+.psd_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/psd.png) no-repeat;
+}
+.rmvb_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/rmvb.png) no-repeat;
+}
+.swf_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/swf.png) no-repeat;
+}
+.test_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/test.png) no-repeat;
+}
+.txt_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/txt.png) no-repeat;
+}
+.video_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/video.png) no-repeat;
+}
+.wav_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/wav.png) no-repeat;
+}
+.wma_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/wma.png) no-repeat;
+}
+.wmv_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/wmv.png) no-repeat;
+}
+.work_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/work.png) no-repeat;
+}
+.zip_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/zip.png) no-repeat;
+}
+.unknown_wj{
+    height: 78px;width: 80px;display: block;margin: 0px auto 8px;background: url(images/forma_icon/unknown.png) no-repeat;
+}
+.file_conceal{
+    background: url(images/checkbox_wei.png)no-repeat 7px 6px;background-color:#eff3f9;height:130px;
+filter:alpha(opacity=50);
+-moz-opacity:1;
+opacity:1;
+border: 1px solid #bcccde;
+}
+.file_reveal{
+     background: url(images/checkbox_gou.png)no-repeat 7px 6px;background-color:#eff3f9;height:130px;
+filter:alpha(opacity=50);
+-moz-opacity:1;
+opacity:1;
+border: 1px solid #bcccde;
+}
+/*.checkbox_gou{
+    background: url(images/checkbox_gou.png)no-repeat ;display:none;cursor:pointer;float: left;height: 15px;width: 15px;display: block;
+}*/
+
+/*文件处理*/
+.file_editor thead tr td,.file_editor tbody tr td{
+    padding-left: 10px;
+}
+.file_editor thead tr td input{
+    width: 15px;height: 15px;margin:3px 10px 0 0;float: left;
+}
+.file_editor thead tr{
+    border-bottom: 1px #d6d6d6 solid;height: 40px;color: #808080;font-size: 12px;background: #f3f6fc;
+}
+.file_editor tbody tr{
+    height: 45px;border-bottom: 1px #d6d6d6 solid;color:#808080;font-size: 12px;
+}
+.wj_mc{
+    margin:5px 0 0 0;
+}
+.zt_yans{
+    color:#323232;
+}
+.file_editor table{
+    margin-bottom: 20px;
+}
+.file_editor tbody tr td input{
+      margin: 8px 10px 0 0;float: left;width: 15px;height: 15px;
+}
+.dir_32{
+    background: url(images/forma_icon/dir-32.png) no-repeat;float: left;width: 33px;height: 30px;margin-right: 10px;
+}
+.xls_32{
+    background: url(images/forma_icon/xls-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.fla_32{
+    background: url(images/forma_icon/fla-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.doc_32{
+    background: url(images/forma_icon/doc-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.ppt_32{
+    background: url(images/forma_icon/ppt-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.rar_32{
+    background: url(images/forma_icon/rar-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.mp4_32{
+    background: url(images/forma_icon/mp4-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.mp3_32{
+    background: url(images/forma_icon/mp3-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.iso_32{
+    background: url(images/forma_icon/mp3-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.z_32{
+    background: url(images/forma_icon/7z-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.ai_32{
+    background: url(images/forma_icon/ai-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.ape_32{
+    background: url(images/forma_icon/ape-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.apk_32{
+    background: url(images/forma_icon/apk-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.avi_32{
+    background: url(images/forma_icon/avi-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.bmp_32{
+    background: url(images/forma_icon/bmp-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.book_32{
+    background: url(images/forma_icon/book-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.flv_32{
+    background: url(images/forma_icon/flv-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.gif_32{
+    background: url(images/forma_icon/gif-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.html_32{
+    background: url(images/forma_icon/html-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.ico_32{
+    background: url(images/forma_icon/ico-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.iso_32{
+    background: url(images/forma_icon/iso-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.jpg_32{
+    background: url(images/forma_icon/jpg-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.mkv_32{
+    background: url(images/forma_icon/mkv-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.mov_32{
+    background: url(images/forma_icon/mov-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.movie_32{
+    background: url(images/forma_icon/movie-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.mpg_32{
+    background: url(images/forma_icon/mpg-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.music_32{
+    background: url(images/forma_icon/music-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.pdf_32{
+    background: url(images/forma_icon/pdf-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.php_32{
+    background: url(images/forma_icon/php-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.png_32{
+    background: url(images/forma_icon/png-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.psd_32{
+    background: url(images/forma_icon/psd-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.rmvb_32{
+    background: url(images/forma_icon/rmvb-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.swf_32{
+    background: url(images/forma_icon/swf-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.test_32{
+    background: url(images/forma_icon/test-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.txt_32{
+    background: url(images/forma_icon/txt-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.video_32{
+    background: url(images/forma_icon/video-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.wav_32{
+    background: url(images/forma_icon/wav-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.wma_32{
+    background: url(images/forma_icon/wma-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.wmv_32{
+    background: url(images/forma_icon/wmv-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.work_32{
+    background: url(images/forma_icon/work-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.zip_32{
+    background: url(images/forma_icon/zip-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.unknown_32{
+    background: url(images/forma_icon/unknown-32.png) no-repeat;float: left;width: 33px;height: 31px;margin-right: 10px;
+}
+.checkbox_bx{
+    background: url(images/checkbox_wei.png) no-repeat;float: left;height: 15px;width: 15px;margin: 10px 10px 0 10px;
+}
+.checkbox_xz{
+    background: url(images/checkbox_wei.png) no-repeat;float: left;height: 15px;width: 15px;margin: 10px 10px 0 10px;
+}
+.wj_xz{
+    background: url(images/checkbox_gou.png) no-repeat ;
+}
+.bj_ys{
+    background: #f3f6fc;
+}
+
+/*移动到*/
+.file_move{
+    height:335px;width: 745px;background: #f3f3f3;margin: 0 auto;
+
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);ie
+    -moz-box-shadow: 0px 0px 8px 0px #909090;
+    -webkit-box-shadow: 0px 0px 8px 0px #909090;
+    box-shadow:0px 0px 8px 0px #909090;
+}
+.move_position{
+    color: #808080;font-size: 12px;padding: 15px 0 10px 25px;
+}
+.choice_position{
+    height:215px;width: 700px;border:1px #d4d4d4 solid;background: #fff;margin: 0 auto 12px;overflow-x:hidden;
+}
+.btn-link{
+    color:#666;border:0;
+}
+.btn-warning{
+    margin-left: 20px;
+}
+
+/*上传*/
+.file_upload{
+    height:335px;width: 745px;background: #fff;margin: 0 auto;overflow-x: hidden;
+
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);ie
+    -moz-box-shadow: 0px 0px 8px 0px #909090;
+    -webkit-box-shadow: 0px 0px 8px 0px #909090;
+    box-shadow:0px 0px 8px 0px #909090;
+}
+.file_upload thead tr{
+    height: 35px;border:1px #eaeaea solid;
+}
+.file_upload thead tr td{
+    padding-left:25px;color:#999;
+}
+.file_upload tbody tr td{
+    padding-left:25px;color: #666;
+}
+.file_upload tbody tr{
+    height: 50px;border:1px #eaeaea solid;
+}
+.file_upload tbody tr td i{
+    margin: 10px 10px 0 0;
+}
+.file_upload tbody tr td p{
+    line-height: 50px;margin:0;color: #323232;display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.file_upload tbody tr td p.zt_lse{
+    color:#0d7ad5;
+}
+.file_cd{
+    width: 34%;
+}
+.cancel_upload{
+    color:#666;
+}
+.file_editor tbody tr td .input_name{
+    margin: 6px 0;
+    _margin: 6px 0;
+    padding: 2px 3px;
+    width: 200px;
+    height: 18px;
+    vertical-align: middle;
+    border: 1px solid #D2D2D2;
+    background: #fff;
+}
+.choose_file input[type="text"].input_name{width: 88px;margin:0;height: 12px;padding: 5px;}

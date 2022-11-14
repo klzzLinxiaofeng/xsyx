@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.student.dao.JcGcItemDao">
+
+    <!--    <resultMap id="baseMap" type="com.xunyunedu.student.pojo.JcGcItemPojo">
+            <id column="id" property="id"></id>
+            <result column="table_id" property="tableId"></result>
+            <result column="table_code" property="tableCode"></result>
+            <result column="name" property="name"></result>
+            <result column="value" property="tableId"></result>
+            <result column="table_id" property="tableId"></result>
+            <result column="table_id" property="tableId"></result>
+            <result column="table_id" property="tableId"></result>
+            <result column="table_id" property="tableId"></result>
+        </resultMap>-->
+    <select id="selectByIds" resultType="com.xunyunedu.student.pojo.JcGcItemPojo">
+        select id , name from jc_gc_item where id in
+        <foreach collection="ids" open="(" separator="," item="id" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="getAllHealthType" resultType="com.xunyunedu.student.pojo.JcGcItemPojo">
+        select * from jc_gc_item
+        where table_code = 'GB-JKZK3'
+    </select>
+</mapper>

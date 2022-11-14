@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PracticeDao">
+
+	<resultMap id="PracticeResult" type="platform.education.generalTeachingAffair.model.Practice">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="schoolYear" column="school_year" />
+		<result property="termCode" column="term_code" />
+		<result property="name" column="name" />
+		<result property="practiceDate" column="practice_date" />
+		<result property="position" column="position" />
+		<result property="masterName" column="master_name" />
+		<result property="masterId" column="master_id" />
+		<result property="teachName" column="teach_name" />
+		<result property="teachId" column="teach_id" />
+		<result property="studentName" column="student_name" />
+		<result property="studentId" column="student_id" />
+		<result property="fileUuid" column="file_uuid" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.Practice">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_practice (
+			id, 
+			school_id, 
+			school_year, 
+			term_code, 
+			name, 
+			practice_date, 
+			position, 
+			master_name, 
+			master_id, 
+			teach_name, 
+			teach_id, 
+			student_name, 
+			student_id, 
+			file_uuid, 
+			is_delete, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{schoolYear}, 
+			#{termCode}, 
+			#{name}, 
+			#{practiceDate}, 
+			#{position}, 
+			#{masterName}, 
+			#{masterId}, 
+			#{teachName}, 
+			#{teachId}, 
+			#{studentName}, 
+			#{studentId}, 
+			#{fileUuid}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="PracticeResult" useCache="false">
+		SELECT * FROM pj_practice WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPracticeByCondition" resultMap="PracticeResult" useCache="false">
+		SELECT * FROM pj_practice 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].termCode != null and args[0].termCode != ''">
+				AND term_code = #{args[0].termCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].startDate != null and args[0].endDate != null">
+				AND  practice_date &gt;= #{args[0].startDate} AND practice_date &lt;= #{args[0].endDate} 
+			</if>
+			<if test="args[0].startDate == null and args[0].endDate != null">
+				AND practice_date &lt;= #{args[0].endDate} 
+			</if>
+			<if test="args[0].startDate != null and args[0].endDate == null">
+				AND  practice_date &gt;= #{args[0].startDate} 
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].masterName != null and args[0].masterName != ''">
+				AND master_name = #{args[0].masterName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].masterId != null and args[0].masterId != ''">
+				AND master_id = #{args[0].masterId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teachName != null and args[0].teachName != ''">
+				AND teach_name = #{args[0].teachName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teachId != null and args[0].teachId != ''">
+				AND teach_id = #{args[0].teachId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+				AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentId != null and args[0].studentId != ''">
+				AND student_id = #{args[0].studentId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_practice 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].termCode != null and args[0].termCode != ''">
+				AND term_code = #{args[0].termCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].practiceDate != null">
+				AND practice_date = #{args[0].practiceDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].position != null and args[0].position != ''">
+				AND position = #{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].masterName != null and args[0].masterName != ''">
+				AND master_name = #{args[0].masterName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].masterId != null and args[0].masterId != ''">
+				AND master_id = #{args[0].masterId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teachName != null and args[0].teachName != ''">
+				AND teach_name = #{args[0].teachName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teachId != null and args[0].teachId != ''">
+				AND teach_id = #{args[0].teachId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+				AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentId != null and args[0].studentId != ''">
+				AND student_id = #{args[0].studentId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PracticeResult" useCache="false">
+		SELECT * FROM pj_practice WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.Practice">
+		UPDATE pj_practice
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="schoolYear != null">
+			school_year=#{schoolYear},
+		</if>
+		<if test="termCode != null">
+			term_code=#{termCode},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="practiceDate != null">
+			practice_date=#{practiceDate},
+		</if>
+		<if test="position != null">
+			position=#{position},
+		</if>
+		<if test="masterName != null">
+			master_name=#{masterName},
+		</if>
+		<if test="masterId != null">
+			master_id=#{masterId},
+		</if>
+		<if test="teachName != null">
+			teach_name=#{teachName},
+		</if>
+		<if test="teachId != null">
+			teach_id=#{teachId},
+		</if>
+		<if test="studentName != null">
+			student_name=#{studentName},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="fileUuid != null">
+			file_uuid=#{fileUuid},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_practice
+		WHERE id = #{id}
+	</delete>
+</mapper>

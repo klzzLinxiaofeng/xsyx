@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.accommodation.dao.AccommodationDao">
+
+    <resultMap id="AccommdationMap" type="com.xunyunedu.accommodation.pojo.Accommodation">
+        <result property="id" column="id"/>
+        <result property="teacherUserId" column="teacherUserId"/>
+        <result property="teacherName" column="teacherName"/>
+        <result property="fangshiHao" column="fanshihao"/>
+        <result property="area" column="area"/>
+        <result property="coldWater" column="coldWater"/>
+        <result property="hotWater" column="hotWater"/>
+        <result property="electricity" column="electricity"/>
+        <result property="coldPictureUUid" column="coldPictureUUid"/>
+        <result property="hotPictureUUid" column="hotPictureUUid"/>
+        <result property="electricityUUid" column="electricityUUid"/>
+        <result property="shangBaoTime2" column="shangBao_time"/>
+        <result property="fujianUUID" column="fujian_uuid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modiyTime" column="modiy_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="tontent" column="leirong"/>
+        <result property="zhufangJine" column="zhufang_jine"/>
+        <result property="lenShuiJine" column="lenShuiJine"/>
+        <result property="hotShuiJine" column="hotShuiJine"/>
+        <result property="dianJine" column="dianJine"/>
+    </resultMap>
+
+    <select id="findByAll" resultMap="AccommdationMap">
+        select  * from zy_accontion
+        where is_delete=0 and teacherUserId=#{userId}
+        order by create_time desc
+    </select>
+
+    <select id="findById" resultMap="AccommdationMap">
+    select  za.*,zaa.zhufang_jine,zaa.hotShuiJine,zaa.lenShuiJine,zaa.dianJine  from zy_accontion za
+    inner join zy_accontion_amount zaa on zaa.zy_accontion_id=za.id
+    where za.id=#{id} and za.is_delete=0
+    </select>
+
+    <insert id="create" parameterType="com.xunyunedu.accommodation.pojo.Accommodation"
+            useGeneratedKeys="true" keyProperty="accommodation.id" keyColumn="id">
+        insert  into zy_accontion(
+        teacherUserId,
+        teacherName,
+        fanshihao,
+        area,
+        coldWater,
+        hotWater,
+        electricity,
+        coldPictureUUid,
+        hotPictureUUid,
+        electricityUUid,
+        shangBao_time,
+        fujian_uuid,
+        create_time,
+        modiy_time,
+        is_delete,
+        leirong
+        )value(
+        #{accommodation.teacherUserId},
+        #{accommodation.teacherName},
+        #{accommodation.fangshiHao},
+        #{accommodation.area},
+        #{accommodation.coldWater},
+        #{accommodation.hotWater},
+        #{accommodation.electricity},
+        #{accommodation.coldPictureUUid},
+        #{accommodation.hotPictureUUid},
+        #{accommodation.electricityUUid},
+        #{accommodation.shangBaoTime},
+        #{accommodation.fujianUUID},
+        NOW(),
+        NOW(),
+        0,
+        #{accommodation.tontent});
+    </insert>
+
+
+</mapper>

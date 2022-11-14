@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.screening.dao.ScreeningDao">
+
+    <resultMap id="ScreeningMap" type="platform.szxyzxx.screening.vo.Screening">
+        <id column="id" property="id"></id>
+        <result column="paicha_user_id" property="paichaUserId"></result>
+        <result column="paicha_name" property="paichaUserName"></result>
+        <result column="paicha_time" property="paichaTime2"></result>
+        <result column="screening_area" property="screeningArea"></result>
+        <result column="trouble" property="trouble"></result>
+        <result column="water_electricity" property="waterElectricity"></result>
+        <result column="construction" property="construction"></result>
+        <result column="facilities" property="facilities"></result>
+        <result column="qita" property="qita"></result>
+        <result column="qita_name" property="qitaName"></result>
+        <result column="beizhu" property="beizhu"></result>
+        <result column="fujian_uuid" property="fujianUuid"></result>
+        <result column="fujian_url" property="fujianUrl"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+    </resultMap>
+    <select id="findByAll" resultMap="ScreeningMap">
+        select  * from zy_screening
+        <where>
+            is_delete=0
+            <if test="args[0]!=null">
+                and paicha_name like concat ('%',#{args[0]},'%')
+            </if>
+            <if test="args[1]!=null">
+                and screening_area like concat ('%',#{args[1]},'%')
+            </if>
+            <if test="args[2]!=null and args[3]!=null">
+                and create_time between #{args[2]}  and #{args[3]}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+    <select id="findByDaoAll" resultMap="ScreeningMap">
+        select  * from zy_screening
+        <where>
+            is_delete=0
+            <if test="args[0]!=null">
+                and paicha_name like concat ('%',#{args[0]},'%')
+            </if>
+            <if test="args[1]!=null">
+                and screening_area like concat ('%',#{args[1]},'%')
+            </if>
+            <if test="args[2]!=null and args[3]!=null">
+                and create_time between #{args[2]}  and #{args[3]}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+    <insert id="create" parameterType="platform.szxyzxx.screening.vo.Screening" useGeneratedKeys="true" keyProperty="args[0].id" keyColumn="id">
+        insert  into zy_screening(
+        paicha_user_id,
+        paicha_name,
+        paicha_time,
+        screening_area,
+        trouble,
+        water_electricity,
+        construction,
+        facilities,
+        qita,
+        qita_name,
+        beizhu,
+        fujian_uuid,
+        fujian_url,
+        create_time,
+        modiy_time,
+        is_delete)
+        value(
+        #{args[0].paichaUserId},
+        #{args[0].paichaUserName},
+        #{args[0].paichaTime},
+        #{args[0].screeningArea},
+        #{args[0].trouble},
+        #{args[0].waterElectricity},
+        #{args[0].construction},
+        #{args[0].facilities},
+        #{args[0].qita},
+        #{args[0].qitaName},
+        #{args[0].beizhu},
+        #{args[0].fujianUuid},
+        #{args[0].fujianUrl},
+       NOW(),
+       NOW(),
+       0)
+    </insert>
+    <update id="update">
+        update zy_screening  set modiy_time=NOW()
+        <if test="args[0]!=null">
+            <if test="args[0].paichaUserId!=null">
+                ,paicha_user_id=#{args[0].paichaUserId}
+            </if>
+            <if test="args[0].paichaUserName!=null">
+                ,paicha_name=#{args[0].paichaUserName}
+            </if>
+            <if test="args[0].paichaTime!=null">
+                ,paicha_time=#{args[0].paichaTime}
+            </if>
+            <if test="args[0].screeningArea!=null">
+                ,screening_area=#{args[0].screeningArea}
+            </if>
+            <if test="args[0].trouble!=null">
+                ,trouble=#{args[0].trouble}
+            </if>
+            <if test="args[0].waterElectricity!=null">
+                ,water_electricity=#{args[0].waterElectricity}
+            </if>
+            <if test="args[0].construction!=null">
+                ,construction=#{args[0].construction}
+            </if>
+            <if test="args[0].facilities!=null">
+                ,facilities=#{args[0].facilities}
+            </if>
+            <if test="args[0].qita!=null">
+                ,qita=#{args[0].qita}
+            </if>
+            <if test="args[0].qitaName!=null">
+                ,qita_name=#{args[0].qitaName}
+            </if>
+            <if test="args[0].beizhu!=null">
+                ,beizhu=#{args[0].beizhu}
+            </if>
+            <if test="args[0].fujianUuid!=null">
+                ,fujian_uuid=#{args[0].fujianUuid}
+            </if>
+            <if test="args[0].fujianUrl!=null">
+                ,fujian_url=#{args[0].fujianUrl}
+            </if>
+            <if test="args[0].isDelete!=null">
+                ,is_delete=#{args[0].isDelete}
+            </if>
+
+        </if>
+        where id=#{args[0].id} and is_delete=0
+    </update>
+    <select id="findById" resultMap="ScreeningMap">
+        select  * from zy_screening where id=#{args[0]} and is_delete=0
+    </select>
+</mapper>

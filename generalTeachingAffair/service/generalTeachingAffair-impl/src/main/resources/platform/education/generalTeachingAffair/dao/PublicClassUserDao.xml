@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PublicClassUserDao">
+    <resultMap id="publicUserResult" type="platform.education.generalTeachingAffair.model.PublicUserVo">
+        <id column="id" property="id"/>
+        <result column="student_id" property="studentId"/>
+        <result column="public_class_id" property="publicClassId"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="is_delete" property="isDelete"/>
+    </resultMap>
+
+
+    <select id="read" resultMap="publicUserResult" useCache="false">
+
+
+		SELECT * FROM yh_public_user WHERE 1=1
+
+
+        <if test="args != null and args[0] != null">
+
+
+		AND id = #{args[0],javaType=java.lang.Integer}
+
+
+        </if>
+
+
+		ORDER BY id DESC
+
+
+    </select>
+
+
+    <insert id="create" parameterType="platform.education.generalTeachingAffair.model.PublicUserVo">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+
+			SELECT LAST_INSERT_ID() AS id
+
+        </selectKey>
+
+
+        insert into yh_public_user(id, student_id, public_class_id,created_at,school_id,is_delete)
+        values(null, #{studentId}, #{publicClassId}, now(),#{schoolId},0)
+
+
+    </insert>
+
+    <delete id="delete" parameterType="platform.education.generalTeachingAffair.model.PublicUserVo">
+
+        delete from yh_public_user where
+
+        <if test="studentId != null">
+            student_id = #{studentId} and
+        </if>
+
+         public_class_id = #{publicClassId}
+        and school_id = #{schoolId} and is_delete = 0
+
+    </delete>
+    <select id="findByClassId" resultMap="publicUserResult">
+
+        select * from yh_public_user
+        where is_delete = 0
+        <if test="args[0] != null">
+            and public_class_id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        <if test="args[1] != null">
+            and student_id = #{args[1],javaType=java.lang.Integer}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.TeamUserDao">
+
+	<resultMap id="TeamUserResult" type="platform.education.generalTeachingAffair.model.TeamUser">
+		<result property="id" column="id" />
+		<result property="teamId" column="team_id" />
+		<result property="userId" column="user_id" />
+		<result property="isMaster" column="is_master" />
+		<result property="isTeacher" column="is_teacher" />
+		<result property="isStudent" column="is_student" />
+		<result property="isParent" column="is_parent" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.TeamUser">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_team_user (
+			id, 
+			team_id, 
+			user_id, 
+			is_master, 
+			is_teacher, 
+			is_student, 
+			is_parent, 
+			name, 
+			sex, 
+			create_date,
+			is_deleted,
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{teamId}, 
+			#{userId}, 
+			<choose>
+				<when test="isMaster != null">
+					<choose>
+						<when test="isMaster == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="isTeacher != null">
+					<choose>
+						<when test="isTeacher == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="isStudent != null">
+					<choose>
+						<when test="isStudent == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="isParent != null">
+					<choose>
+						<when test="isParent == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{name}, 
+			#{sex}, 
+			#{createDate}, 
+			<choose>
+				<when test="isDeleted != null">
+					#{isDeleted},
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="TeamUserResult" useCache="false">
+		SELECT * FROM pj_team_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findTeamUserByCondition" resultMap="TeamUserResult" useCache="false">
+		SELECT * FROM pj_team_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isMaster != null">
+				<choose>
+					<when test="args[0].isMaster == true">
+						AND is_master  = 1
+					</when>
+					<otherwise>
+						AND is_master  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isTeacher != null">
+				<choose>
+					<when test="args[0].isTeacher == true">
+						AND is_teacher  = 1
+					</when>
+					<otherwise>
+						AND is_teacher  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isStudent != null">
+				<choose>
+					<when test="args[0].isStudent == true">
+						AND is_student  = 1
+					</when>
+					<otherwise>
+						AND is_student  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isParent != null">
+				<choose>
+					<when test="args[0].isParent == true">
+						AND is_parent  = 1
+					</when>
+					<otherwise>
+						AND is_parent  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].sex != null and args[0].sex != ''">
+				AND sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_team_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isMaster != null">
+				<choose>
+					<when test="args[0].isMaster == true">
+						AND is_master  = 1
+					</when>
+					<otherwise>
+						AND is_master  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isTeacher != null">
+				<choose>
+					<when test="args[0].isTeacher == true">
+						AND is_teacher  = 1
+					</when>
+					<otherwise>
+						AND is_teacher  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isStudent != null">
+				<choose>
+					<when test="args[0].isStudent == true">
+						AND is_student  = 1
+					</when>
+					<otherwise>
+						AND is_student  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isParent != null">
+				<choose>
+					<when test="args[0].isParent == true">
+						AND is_parent  = 1
+					</when>
+					<otherwise>
+						AND is_parent  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].sex != null and args[0].sex != ''">
+				AND sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				AND is_deleted = #{args[0].isDeleted}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="TeamUserResult" useCache="false">
+		SELECT * FROM pj_team_user WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.TeamUser">
+		UPDATE pj_team_user
+		SET 
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="isMaster != null">
+			<choose>
+				<when test="isMaster == true">
+					is_master  = 1,
+				</when>
+				<otherwise>
+					is_master  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="isTeacher != null">
+			<choose>
+				<when test="isTeacher == true">
+					is_teacher  = 1,
+				</when>
+				<otherwise>
+					is_teacher  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="isStudent != null">
+			<choose>
+				<when test="isStudent == true">
+					is_student  = 1,
+				</when>
+				<otherwise>
+					is_student  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="isParent != null">
+			<choose>
+				<when test="isParent == true">
+					is_parent  = 1,
+				</when>
+				<otherwise>
+					is_parent  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="sex != null">
+			sex=#{sex},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			is_deleted=#{isDeleted},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_team_user
+		WHERE id = #{id}
+	</delete>
+	
+	<!-- 获取一个班的所有班级成员 -->
+	<select id="findTeamUserOfAll" resultMap="TeamUserResult" useCache="false">
+		SELECT * FROM pj_team_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND team_id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<!-- 获取一个班的所有教师(包括班主任在内) -->
+	<select id="findTeamUserOfTeachers" resultMap="TeamUserResult" useCache="false">
+		SELECT * FROM pj_team_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+	
+	<!-- 获取一个班的所有学生 -->
+	<select id="findTeamUserOfStudents" resultMap="TeamUserResult" useCache="false">
+		SELECT * FROM pj_team_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		AND is_student = 1
+		ORDER BY id DESC
+	</select>
+	
+	<!-- 获取一个班的所有家长 -->
+	<select id="findTeamUserOfParents" resultMap="TeamUserResult" useCache="false">
+		SELECT * FROM pj_team_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		AND is_parent = 1
+		ORDER BY id DESC
+	</select>
+	
+	<!-- 根据班级ID、用户ID获取唯一记录 -->
+	<select id="findUnique" resultMap="TeamUserResult" useCache="false">
+		SELECT * FROM pj_team_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args!=null and args[1]!=null">
+		AND user_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+	</select>
+	
+	<update id="deleteByTeamId">
+		UPDATE 
+		  pj_team_user 
+		SET
+		  is_deleted = 1,
+		  modify_date = NOW()
+		WHERE team_id = #{args[0]}
+		  AND is_deleted = 0 
+	</update>
+
+	<select id="findByUserIdAndIsMaster" resultMap="TeamUserResult">
+		select * from pj_team_user where user_id = #{args[0]} and is_master = #{args[1]} and is_deleted=0
+    </select>
+</mapper>

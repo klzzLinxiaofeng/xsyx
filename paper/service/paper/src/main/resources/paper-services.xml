@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+       default-autowire="byName">
+
+    <bean id="paCollectDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.PaCollectDao" />
+    </bean>
+    <bean id="paCollectService" class="platform.education.paper.service.impl.PaCollectServiceImpl" />
+    <!--  generator-insert-location -->
+    <bean id="paWrongDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.PaWrongDao" />
+    </bean>
+    <bean id="paWrongService" class="platform.education.paper.service.impl.PaWrongServiceImpl" />
+    <!--  generator-insert-location -->
+    <bean id="paUserPaperDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.PaUserPaperDao" />
+    </bean>
+    <bean id="paUserPaperService" class="platform.education.paper.service.impl.PaUserPaperServiceImpl" />
+    <!--  generator-insert-location -->
+    <bean id="paUserAnswerDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.PaUserAnswerDao" />
+    </bean>
+    <bean id="paUserAnswerService" class="platform.education.paper.service.impl.PaUserAnswerServiceImpl" />
+    <!--  generator-insert-location -->
+    <bean id="paQuestionDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.PaQuestionDao" />
+    </bean>
+    <bean id="paQuestionService" class="platform.education.paper.service.impl.PaQuestionServiceImpl" />
+    <!--  generator-insert-location -->
+    <bean id="paPaperQuestionDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.PaPaperQuestionDao" />
+    </bean>
+    <bean id="paPaperQuestionService" class="platform.education.paper.service.impl.PaPaperQuestionServiceImpl" />
+    <!--  generator-insert-location -->
+    <bean id="paPaperDao" parent="baseDao">
+        <property name="target" value="platform.education.paper.dao.PaPaperDao" />
+    </bean>
+    <bean id="paPaperService" class="platform.education.paper.service.impl.PaPaperServiceImpl" />
+    <!--  generator-insert-location -->
+    <!--业务service-->
+    <bean id="paperService" class="platform.education.paper.service.impl.PaperServiceImpl" />
+
+</beans>

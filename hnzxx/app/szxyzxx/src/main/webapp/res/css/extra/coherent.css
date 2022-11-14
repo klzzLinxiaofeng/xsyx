@@ -1,0 +1,194 @@
+    body{
+    background: #e7eaeb;margin: 0 auto;font-family: '宋体';
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;display: block;
+}
+.whole{
+    height: 1200px;margin: 30px;background: #fff;
+}
+.coping{
+    height: 55px;width: 100%;border-bottom: 1px #e7e7eb solid;
+}
+.coping ul{
+    float: left;margin-left: -20px;
+}
+.coping ul li{
+    float: left;
+}
+.coping ul li a{
+    color: #7c7c7c;font-family: '微软雅黑';font-size: 18px;margin-right: 35px;height: 38px;width: 88px;text-align: center;
+}
+a.wire{
+    border-bottom: 2px #3babfa solid;
+}
+.coping ul li a:hover{
+    border-bottom: 2px #3babfa solid;
+}
+.middle{
+   margin:13px 15px 15px 15px;
+}
+.middle ul li{
+    background: #f5f5f5;height: 320px;margin-bottom: 3px;padding:0 15px 20px;
+}
+h3{
+    color: #0c63d9;font-size:30px;width: 100%;font-family: '微软雅黑';margin: 15px 0 10px 15px;
+}
+.table{
+    width: 100%;margin:0;
+}
+.table tr td{
+    color: #999;font-size: 14px;font-family: '微软雅黑';height: 38px;
+}
+.table tr td b{
+    color:#fe7200;font-size:24px;font-family: '微软雅黑';font-weight: normal;
+}
+tr td.term{
+    color:#5d5d5d;
+}
+
+
+.bill{
+    margin: 30px;background: #fff;height: 924px;
+}
+.query{
+    height: 65px;margin:0 20px 0 20px;border-bottom: 1px #e7e7eb solid;padding-top: 1px;
+}
+.query button{
+    float: right;margin-top:25px;font-size: 14px;
+}
+.query p{
+    color: #7c7c7c;float: left;font-size:18px;font-family: '微软雅黑';margin: 35px 0 0 0;
+}
+.while{
+    margin:0 20px 0 20px;position: relative;
+}
+.while span{
+    float: left;width: 100%;color: #8e8e8e;font-size: 12px;margin: 20px 0 5px 0;
+}
+.table-bordered{
+    width: 100%;border:1px #d4d4d4 solid;
+}
+.table-bordered tr{
+    height: 37px;
+}
+tr td.smock{
+    padding-left: 10px;
+}
+tr td.broad{
+    width:112px;
+}
+.odd{
+  background-color: #f9f9f9;
+}
+.table-bordered tr td{
+    color: #535353;font-size: 12px;border-left:none;border-bottom: 1px #d4d4d4 solid;
+}
+.table-bordered tr td a{
+    float: left;font-size: 12px;color: #1b91e5;margin-right: 20px;
+}
+.print{
+    width: 100%;border-top: 1px #e7e7eb solid;margin-top:20px;
+}
+.btn-warning{
+    height: 30px;width:100px;margin-left: 41%;float: left;
+}
+.circle{
+    text-align:center;margin: 10px 0;
+}
+.btn-success{
+    width: 106px;font-size: 14px;margin-right: 18px;
+}
+.btn-link{
+    width: 106px;font-size: 14px;color: #333; border:1px #d4d4d4 solid;
+}
+tr td.orange_1{
+    color: #ff7010;
+}
+tr td.blove_1{
+    color: #268fda;
+}
+tr td.bice_1{
+    color: #48b400;
+}
+
+
+
+.substance{
+    height: 1000px;margin: 30px;background: #fff;
+}
+.cop{
+    width: 100%;height: 55px;border-bottom: 1px #e7e7eb solid;
+}
+.cop ul{
+    float: left;margin: 15px 0 0 17px;
+}
+.cop ul li{
+    float: left;
+}
+.cop ul li a{
+    color: #7c7c7c;font-family: '微软雅黑';font-size: 18px;margin-right: 35px;height: 38px;width: 88px;text-align: center;
+}
+.part{
+    border:1px #d8d8d8 solid;height: 262px;width: 650px;margin: 0 auto;margin-bottom: 10px;
+}
+.choice{
+    width: 100%;margin-top: 20px;
+}
+.choice input{
+    margin-left: 10%;
+}
+.choice input.edge{
+    margin:-2px 3px 0 19%;
+}
+.choice input.range{
+    margin:-2px 3px 0 15%;
+}
+.left-align{
+    padding-top: 5px;
+}
+.control-group{
+    width: 100%;float: left;
+}
+.control-label{
+    float: left;font-size:12px;color: #444;line-height: 35px;width: 19%;text-align: right;
+}
+.chzn-container{
+    width: 31.5%;float: left;margin-right: 15px;
+}
+.row-fluid .span2{
+    height: 33px;width: 91%;
+}
+.controls input.span12{
+    width: 29%;float: left;
+}
+.controls p{
+    font-size: 12px;color: #999;float: left;margin: 6px 10px 0 -5px;
+}
+.span12{
+    width: 35%;float: left;margin-right: 15px;
+}
+.btn-toolbar{
+   width: 100%;float: left;
+}
+#frame{
+    height: 138px;width: 238px;background: #fff;position: absolute;right: 0px;background: url(images/kuang.png) no-repeat;
+}
+#frame button.btn-warning{
+    border: 0 none;margin: 5px 0 0 10px;width: 80px;
+}
+#frame button.btn-link{
+    margin:5px 0 0 5px;border:0 none;width: 65px;color: #c5c5c5;
+}
+#frame button.btn-link:hover{
+    color: #333;
+}
+.words{
+    height: 80px;width:215px;float: left;margin: 15px 0 0 10px;
+}
+.words textarea{
+    height:66px;width: 201px;resize:none;
+}

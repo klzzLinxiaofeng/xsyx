@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName">
+	<bean id="baseDao" abstract="true"
+		class="framework.generic.dao.mybatis.MapperFactoryBean">
+		<property name="executor" ref="genericDao" />
+	</bean>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="maxTotal" value="${jdbc.maxTotal}" />
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<property name="minIdle" value="${jdbc.minIdle}" />
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<property name="maxWaitMillis" value="${jdbc.maxWaitMillis}" />
+	</bean>
+
+	<bean id="carSqlServerDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.car.driverClassName}"/>
+		<property name="url" value="${jdbc.car.url}"/>
+		<property name="username" value="${jdbc.car.username}"/>
+		<property name="password" value="${jdbc.car.password}"/>
+		<property name="initialSize" value="${jdbc.car.initialSize}"/>
+		<property name="minIdle" value="${jdbc.car.minIdle}"/>
+		<property name="maxWait" value="${jdbc.car.maxWait}"/>
+	</bean>
+
+	<!--图书馆数据库连接-->
+	<bean id="librarydDtaSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.library.driverClassName}" />
+		<property name="url" value="${jdbc.library.url}" />
+		<property name="username" value="${jdbc.library.username}" />
+		<property name="password" value="${jdbc.library.password}" />
+		<property name="maxTotal" value="${jdbc.library.maxTotal}" />
+		<property name="maxIdle" value="${jdbc.library.maxIdle}" />
+		<property name="minIdle" value="${jdbc.library.minIdle}" />
+		<property name="initialSize" value="${jdbc.library.initialSize}" />
+		<property name="maxWaitMillis" value="${jdbc.library.maxWaitMillis}" />
+	</bean>
+
+	<!-- audit jdbc模板  + 命名参数模板 -->
+	<bean id="carJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="carSqlServerDataSource" />
+	</bean>
+	<bean id="carNamedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="carSqlServerDataSource" />
+	</bean>
+
+	<!-- audit jdbc模板  + 命名参数模板 -->
+	<bean id="libraryJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="librarydDtaSource" />
+	</bean>
+	<bean id="libraryJdbcNameTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="librarydDtaSource" />
+	</bean>
+</beans>

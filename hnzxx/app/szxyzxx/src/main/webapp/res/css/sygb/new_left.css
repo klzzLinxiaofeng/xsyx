@@ -1,0 +1,145 @@
+body{
+
+}
+.left_mu {
+    position: absolute;
+    width: 0px;
+    border-right:1px solid #d9d9db;
+    background-color: #f5f5f8;
+}
+.left_mu.padding_left{
+    padding:21px 10px 21px 26px;
+    width: 216px;
+}
+.left_mu .main_modele{
+    border-bottom:1px solid #e3e8ec;
+    width:180px;
+    height:120px;
+    margin:0 auto;
+    padding-top:16px;
+    margin-bottom:20px;
+}
+.left_mu .main_modele .p_icon{
+    background:url('images/ps_icon.png') no-repeat;
+    width:60px;
+    height:60px;
+    margin:0px auto 16px;
+}
+.left_mu .main_modele .p1{
+    height: 24px;
+    font-size: 24px;
+    line-height: 24px;
+    color: #666666;
+    text-align:center;
+}
+.left_mu .first_ul > li{
+    position:relative;
+    width: 176px;
+    padding-left:14px;
+    margin-bottom:25px;
+}
+.left_mu .first_ul > li.active{
+    width: 190px;
+    background-color: #2299ee;
+    box-shadow: 0px 3px 9px 0px
+    rgba(34, 153, 238, 0.45);
+    border-radius: 6px;
+    border: solid 1px #2299ee;
+}
+.left_mu .first_ul > li>a{
+    color:#9f9c9d;
+    display:block;
+    font-size:14px;
+    line-height:38px;
+    font-weight:bold;
+}
+.left_mu .first_ul  li a:hover{
+    text-decoration: none;
+    color:#fff;
+}
+.left_mu .first_ul  li:hover{
+    background-color: #2299ee;
+    box-shadow: 0px 3px 9px 0px
+    rgba(34, 153, 238, 0.45);
+    border-radius: 6px;
+}
+.left_mu .first_ul > li.active>a{
+    color:#fff;
+}
+.left_mu .first_ul > li ul{
+    position:relative;
+}
+.left_mu .first_ul > li>ul>li.line,.left_mu .first_ul > li>ul li.line{
+    content:"";
+    position:absolute;
+    top:0;
+    left:3px;
+    height: 14px;
+    border-radius: 1px;
+    border: solid 1px rgba(255, 255, 255, 0.5);
+    transition: all 0.2s ease-out 0s;
+}
+.left_mu .first_ul > li >ul >li>ul{
+    margin-left: 28px;
+}
+.left_mu .first_ul > li >ul >li a{
+    color:#91ccf7;
+    line-height:36px;
+    display:block;
+    padding-left:28px;
+    height:36px;
+}
+.left_mu .first_ul > li >ul >li>a.blue_1,.left_mu .first_ul > li >ul >li>ul>a.blue_1,.left_mu .first_ul > li >ul >li a.blue_1{
+    color:#fff;
+    background:url('images/click_left.png') no-repeat left 50%;
+}
+.left_mu .first_ul  a{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    word-wrap:normal;
+}
+.left_mu .zg_btn{
+    position:absolute;
+    right:-17px;
+    top: 30%;
+}
+.left_mu .zg_btn .left_close, .left_mu .zg_btn .right_close {
+
+    z-index: 10;
+    overflow: hidden;
+    cursor: pointer;
+    width: 15px;
+    height: 270px;
+    display: block;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+.left_mu .zg_btn .left_close:hover, .left_mu .zg_btn .right_close:hover{
+    background-color:#dddada;
+}
+.left_close span, .right_close span, .right_open span {
+    display: inline-block;
+    width: 10px;
+    height: 13px;
+    top: 50%;
+    left: 2px;
+    position: absolute;
+    background: url(images/glyphicon.png) no-repeat;
+}
+.left_close.left_open span {
+    background-position: 0 -108px;
+    left: 3px;
+    position: absolute;
+}
+/*.left_close.left_open:hover span {*/
+    /*background-position: -26px -108px;*/
+/*}*/
+
+.left_close span {
+    background-position: 0 -80px;
+}
+/*.left_close:hover span {*/
+    /*background-position: -26px -80px;*/
+/*}*/

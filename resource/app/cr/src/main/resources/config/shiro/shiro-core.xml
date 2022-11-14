@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+    <description>此文件用于shiro的整体配置</description>
+    <context:property-placeholder location="classpath:shiro.properties" ignore-unresolvable="true"/>
+
+    <import resource="classpath*:/config/shiro/shiro-default.xml"/>
+
+    <!--<import resource="classpath*:/config/shiro/shiro-redis.xml" />-->
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realms">
+            <list>
+                <ref bean="casRealm"/>
+            </list>
+        </property>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>
+        <property name="subjectFactory" ref="casSubjectFactory"/>
+    </bean>
+
+    <bean id="casSubjectFactory" class="org.apache.shiro.cas.CasSubjectFactory"/>
+
+    <bean id="casRealm" class="platform.education.commonResource.web.common.shiro.realm.ResourceCasRealm">
+        <property name="casServerUrlPrefix" value="${cas.server.url.prefix}"/>
+        <property name="casService" value="${cas.service}"/>
+    </bean>
+
+    <!-- 存放sessionuId的cookie模板 -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg name="name" value="resource.clouds"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="-1"/>
+    </bean>
+
+    <!-- 会话验证 验证当前是否存在过期的会话 并清除 -->
+    <bean id="sessionValidationScheduler"
+          class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
+        <property name="interval" value="-1000"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <!-- 	会话管理器 -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="globalSessionTimeout" value="-1000"/>
+        <property name="deleteInvalidSessions" value="true"/>
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <property name="sessionIdCookieEnabled" value="true"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+        <!-- 		<property name="sessionListeners"> -->
+        <!-- 			<list> -->
+        <!-- 				<bean class="platform.education.commonResource.web.common.shiro.listener.ShiroSessionListener"></bean> -->
+        <!-- 			</list> -->
+        <!-- 		</property> -->
+    </bean>
+
+    <!-- 实现记住我功能的cookie模板 -->
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="resource.rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="2592000"/><!--30 天  -->
+    </bean>
+
+    <!-- rememberMe管理器 -->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==' )}"/>
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+
+    <!-- Shiro生命周期处理器-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 设置安全管理器 -->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>
+        <property name="arguments" ref="securityManager"/>
+    </bean>
+
+    <!-- the lifecycleBeanProcessor has run: -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <bean id="casFilter" class="platform.education.commonResource.web.common.shiro.filter.CrCasFilter">
+        <property name="failureUrl" value="error/403.jsp"/>
+    </bean>
+
+
+    <bean id="crAuthFilter"
+          class="platform.education.commonResource.web.common.shiro.filter.CrFormAuthenticationFilter"/>
+
+    <!-- shiro控制器 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="${login.url}"/>
+        <property name="successUrl" value="/paper/assembly/basket/index"/>
+        <property name="unauthorizedUrl" value="/views/error/403.jsp"/>
+        <property name="filters">
+            <map>
+                <entry key="cas" value-ref="casFilter"/>
+                <entry key="authc" value-ref="crAuthFilter"/>
+            </map>
+        </property>
+        <property name="filterChainDefinitions">
+            <!-- 注意顺序  先者先拦截 作用域广的建议移至最后-->
+            <value>
+                /sso = cas
+                /mesosphere/** = anon
+                /demo/** = anon
+                /login = anon
+                /**/login = anon
+                /login/** = anon
+                /**/login/** = anon
+                /logout = anon
+                /res/** = anon
+                /views/** = anon
+                /uploader/** = anon
+                /statistics/**=anon
+                /** = authc
+            </value>
+        </property>
+    </bean>
+
+</beans>

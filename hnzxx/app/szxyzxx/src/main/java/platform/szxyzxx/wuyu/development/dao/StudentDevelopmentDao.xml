@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.wuyu.development.dao.StudentDevelopmentDao">
+
+  <resultMap id="DevelopmentIndicatorsMap" type="platform.szxyzxx.wuyu.development.vo.StudentDevelopment">
+        <id column="id"  property="id" />
+        <result column="development_id"  property="developmentId" />
+        <result column="dpName"  property="developmentName" />
+        <result column="score"  property="score" />
+        <result column="create_time"  property="createTime" />
+        <result column="modiy_time"  property="modiyTime" />
+        <result column="is_delete" property="isDelete"/>
+      <result column="school_year"  property="schoolYear" />
+        <result column="school_trem" property="schoolTrem"/>
+      <result column="student_id" property="studentId"/>
+      <result column="stuName" property="studentName"/>
+      <result column="grade_id" property="gradeId"/>
+      <result column="gradeName" property="gradeName"/>
+      <result column="team_id" property="teamId"/>
+      <result column="pingjia_id" property="pingjiaId"/>
+      <result column="pingjia_name" property="pingjiaName"/>
+      <result column="team_name" property="teamName"/>
+
+  </resultMap>
+
+    <select id="findByAll" resultMap="DevelopmentIndicatorsMap">
+        select zds.*,ps.name as stuName,pt.name as team_name,pg.name as gradeName,
+         zdi.name as dpName from zy_development_student zds
+         inner join pj_team_student pts on pts.student_id=zds.student_id
+         inner join zy_development_indicators zdi on zdi.id=zds.development_id
+         inner join pj_student ps on ps.id=pts.student_id
+         inner join pj_team pt on pt.id=pts.team_id
+         inner join pj_grade pg on pg.id=pt.grade_id
+         where zds.is_delete=0 and ps.is_delete=0 and ps.study_state='01'
+        <if test="args[0]!=null">
+           and  zds.school_year=#{args[0]} and pg.school_year=#{args[0]}
+        </if>
+        <if test="args[1]!=null">
+            and  zds.school_trem=#{args[1]}
+        </if>
+        <if test="args[2]!=null">
+            and  pg.id=#{args[2]}
+        </if>
+        <if test="args[3]!=null">
+            and  pt.id=#{args[3]}
+        </if>
+        <if test="args[4]!=null">
+            and zds.developmentId=#{args[1]}
+        </if>
+        <if test="args[5]!=null">
+            and ps.name like concat('%',#{args[5]},'%')
+        </if>
+    </select>
+
+
+</mapper>

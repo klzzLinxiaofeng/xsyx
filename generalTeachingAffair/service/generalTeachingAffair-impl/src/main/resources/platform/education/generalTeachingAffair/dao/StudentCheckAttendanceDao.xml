@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentCheckAttendanceDao">
+
+	<resultMap id="StudentCheckAttendanceResult" type="platform.education.generalTeachingAffair.model.StudentCheckAttendance">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="schoolYearId" column="school_year_id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamNumber" column="team_number" />
+		<result property="studentId" column="student_id" />
+		<result property="studentName" column="student_name" />
+		<result property="attendanceType" column="attendance_type" />
+		<result property="beginDate" column="begin_date" />
+		<result property="endDate" column="end_date" />
+		<result property="dayNumber" column="dayNumber" />
+		<result property="nodeNumber" column="nodeNumber" />
+		<result property="orderNumber" column="orderNumber" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+    	<resultMap id="StudentCheckAttendanceResult1" type="platform.education.generalTeachingAffair.vo.StudentCheckAttendanceVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="schoolYearId" column="school_year_id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamNumber" column="team_number" />
+		<result property="teamName" column="tn" />
+		<result property="count0" column="count0" />
+		<result property="count1" column="count1" />
+		<result property="count2" column="count2" />
+		<result property="count3" column="count3" />
+		<result property="count4" column="count4" />
+		<result property="count5" column="count5" />
+		<result property="sum0" column="sum0" />
+		<result property="sum1" column="sum1" />
+		<result property="sum2" column="sum2" />
+		<result property="studentId" column="student_id" />
+		<result property="studentName" column="student_name" />
+		<result property="attendanceType" column="attendance_type" />
+		<result property="beginDate" column="begin_date" />
+		<result property="endDate" column="end_date" />
+		<result property="dayNumber" column="dayNumber" />
+		<result property="nodeNumber" column="nodeNumber" />
+		<result property="orderNumber" column="orderNumber" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="schoolYearName" column="yearName"/>
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.StudentCheckAttendance">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_student_check_attendance (id, school_id, school_year_id,grade_id, team_number, student_id, student_name, attendance_type,begin_date,end_date,dayNumber,nodeNumber,orderNumber,remark, is_deleted,  modify_date)
+		VALUES (#{id}, #{schoolId},#{schoolYearId}, #{gradeId}, #{teamNumber}, #{studentId}, #{studentName}, #{attendanceType}, #{beginDate},#{endDate},#{dayNumber},#{nodeNumber},#{orderNumber},#{remark},#{isDeleted},  #{modifyDate})
+	</insert>
+
+	<select id="read" resultMap="StudentCheckAttendanceResult" useCache="false">
+		SELECT * FROM pj_student_check_attendance WHERE 1=1 AND is_deleted=0
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findUnique" resultMap="StudentCheckAttendanceResult" useCache="false">
+	      SELECT * FROM pj_student_check_attendance  WHERE 1=1 AND is_deleted=0
+		    AND school_id = #{args[0],javaType=java.lang.Integer}
+		    AND student_id  = #{args[1],javaType=java.lang.Integer}
+		    AND attendance_type = #{args[2],javaType=java.lang.String}
+	</select>
+	
+	<select id="findStudentCheckAttendanceByCondition" resultMap="StudentCheckAttendanceResult" useCache="false">
+		SELECT * FROM pj_student_check_attendance 
+		<if test="args[0] != null">
+			WHERE 1=1 AND is_deleted=0
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYearId != null and args[0].schoolYearId != ''">
+			AND school_year_id = #{args[0].schoolYearId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null and args[0].gradeId != ''">
+			AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamNumber != null and args[0].teamNumber != ''">
+			AND team_number = #{args[0].teamNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null and args[0].studentId != ''">
+			AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+			AND student_name LIKE CONCAT('%', #{args[0].studentName,javaType=java.lang.String},'%') 
+			</if>
+			<if test="args[0].attendanceType != null and args[0].attendanceType != ''">
+			AND attendance_type = #{args[0].attendanceType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null and args[0].beginDate != ''">
+			AND begin_date = #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null and args[0].endDate != ''">
+			AND end_date = #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].dayNumber != null and args[0].dayNumber != ''">
+			AND dayNumber = #{args[0].dayNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].nodeNumber != null and args[0].nodeNumber != ''">
+			AND nodeNumber = #{args[0].nodeNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].orderNumber != null and args[0].orderNumber != ''">
+			AND orderNumber = #{args[0].orderNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+			AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null and args[0].isDeleted != ''">
+			AND is_deleted = #{args[0].isDeleted,javaType=java.lang.Integer}
+			</if>
+			
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findGroupVoByStudentId" resultMap="StudentCheckAttendanceResult1" useCache="false">
+		SELECT sca.*, 
+			  year.name yearName,
+		      t.name teamName,
+		      sum(sca.dayNumber)sum0,
+		      sum(sca.nodeNumber)sum1,
+		      sum(sca.orderNumber)sum2,
+		      sum(case when sca.attendance_type=0 then 1 else 0 end) count0,
+		      sum(case when sca.attendance_type=1 then 1 else 0 end) count1,
+		      sum(case when sca.attendance_type=2 then 1 else 0 end) count2,
+		      sum(case when sca.attendance_type=3 then 1 else 0 end) count3,
+		      sum(case when sca.attendance_type=4 then 1 else 0 end) count4,
+		      sum(case when sca.attendance_type=5 then 1 else 0 end) count5
+		      FROM pj_student_check_attendance sca   LEFT
+  			  JOIN  pj_team t ON sca.team_number=t.id
+  			  LEFT JOIN pj_school_year year ON year.id=sca.school_year_id
+		<if test="args[0] != null">
+			WHERE 1=1 AND sca.is_deleted=0 AND year.is_delete=0
+			<if test="args[0].id != null and args[0].id != ''">
+			AND sca.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND sca.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYearId != null and args[0].schoolYearId != ''">
+			AND sca.school_year_id = #{args[0].schoolYearId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null and args[0].gradeId != ''">
+			AND sca.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamNumber != null and args[0].teamNumber != ''">
+			AND sca.team_number = #{args[0].teamNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null and args[0].studentId != ''">
+			AND sca.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+			AND sca.student_name LIKE CONCAT('%', #{args[0].studentName,javaType=java.lang.String},'%') 
+			</if>
+			<if test="args[0].attendanceType != null and args[0].attendanceType != ''">
+			AND sca.attendance_type = #{args[0].attendanceType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null and args[0].beginDate != ''">
+			AND sca.begin_date = #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null and args[0].endDate != ''">
+			AND sca.end_date = #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			
+			<if test="args[0].remark != null and args[0].remark != ''">
+			AND sca.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null and args[0].isDeleted != ''">
+			AND sca.is_deleted = #{args[0].isDeleted,javaType=java.lang.Integer}
+			</if>
+			
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND sca.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+		GROUP BY sca.student_id,sca.school_year_id
+		ORDER BY sca.id 
+		
+	</select>
+	
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_student_check_attendance 
+		<if test="args[0] != null">
+			WHERE 1=1   AND is_deleted=0
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYearId != null and args[0].schoolYearId != ''">
+			AND school_year_id = #{args[0].schoolYearId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null and args[0].gradeId != ''">
+			AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamNumber != null and args[0].teamNumber != ''">
+			AND team_number = #{args[0].teamNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null and args[0].studentId != ''">
+			AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null and args[0].studentName != ''">
+			AND student_name = #{args[0].studentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attendanceType != null and args[0].attendanceType != ''">
+			AND attendance_type = #{args[0].attendanceType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null and args[0].beginDate != ''">
+			AND begin_date = #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null and args[0].endDate != ''">
+			AND end_date = #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].dayNumber != null and args[0].dayNumber != ''">
+			AND dayNumber = #{args[0].dayNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].nodeNumber != null and args[0].nodeNumber != ''">
+			AND nodeNumber = #{args[0].nodeNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].orderNumber != null and args[0].orderNumber != ''">
+			AND orderNumber = #{args[0].orderNumber,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+			AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null and args[0].isDeleted != ''">
+			AND is_deleted = #{args[0].isDeleted,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="StudentCheckAttendanceResult" useCache="false">
+		SELECT * FROM pj_student_check_attendance WHERE id = #{args[0],javaType=java.lang.Integer}  AND is_deleted=0
+	</select>
+	
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.StudentCheckAttendance">
+		UPDATE pj_student_check_attendance
+		SET 
+				<if test="schoolId != null">
+					school_id=#{schoolId},
+				</if>
+				
+				<if test="schoolYearId != null">
+			     school_year_id = #{schoolYearId}
+			   </if>
+				<if test="gradeId != null">
+					grade_id=#{gradeId},
+				</if>
+				<if test="teamNumber != null">
+					team_number=#{teamNumber},
+				</if>
+				<if test="studentId != null">
+					student_id=#{studentId},
+				</if>
+				<if test="studentName != null">
+					student_name=#{studentName},
+				</if>
+				<if test="attendanceType != null">
+					attendance_type=#{attendanceType},
+				</if>
+				<if test="beginDate != null">
+					begin_date=#{beginDate},
+				</if>
+				<if test="endDate != null">
+					end_date=#{endDate},
+				</if>
+				<if test="dayNumber != null">
+					dayNumber=#{dayNumber},
+				</if>
+				<if test="nodeNumber != null">
+					nodeNumber=#{nodeNumber},
+				</if>
+				<if test="orderNumber != null">
+					orderNumber=#{orderNumber},
+				</if>
+				<if test="remark != null">
+					remark=#{remark},
+				</if>
+				<if test="isDeleted != null">
+					is_deleted=#{isDeleted},
+				</if>
+				<if test="modifyDate != null">
+					modify_date=#{modifyDate},
+				</if>
+		id = #{id}
+		WHERE id = #{id} 
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_student_check_attendance
+		WHERE id = #{id}
+	</delete>
+	
+	<delete id="deleteByCondition">
+		DELETE FROM pj_student_check_attendance
+		WHERE 1=1
+		<if test="id != null and id != ''">
+		AND id = #{id,javaType=java.lang.Integer}
+		</if>
+		<if test="schoolId != null and schoolId != ''">
+		AND school_id = #{schoolId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].schoolYearId != null and args[0].schoolYearId != ''">
+		AND school_year_id = #{args[0].schoolYearId,javaType=java.lang.Integer}
+		</if>
+		<if test="gradeId != null and gradeId != ''">
+		AND grade_id = #{gradeId,javaType=java.lang.Integer}
+		</if>
+		<if test="teamNumber != null and teamNumber != ''">
+		AND team_number = #{teamNumber,javaType=java.lang.Integer}
+		</if>
+		<if test="studentId != null and studentId != ''">
+		AND student_id = #{studentId,javaType=java.lang.Integer}
+		</if>
+		<if test="studentName != null and studentName != ''">
+		AND student_name = #{studentName,javaType=java.lang.String}
+		</if>
+		<if test="attendanceType != null and attendanceType != ''">
+		AND attendance_type = #{attendanceType,javaType=java.lang.String}
+		</if>
+		<if test="args[0].beginDate != null and args[0].beginDate != ''">
+		AND begin_date = #{args[0].beginDate,javaType=java.util.Date}
+		</if>
+		<if test="args[0].endDate != null and args[0].endDate != ''">
+		AND end_date = #{args[0].endDate,javaType=java.util.Date}
+		</if>
+		<if test="args[0].dayNumber != null and args[0].dayNumber != ''">
+		AND dayNumber = #{args[0].dayNumber,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].nodeNumber != null and args[0].nodeNumber != ''">
+		AND nodeNumber = #{args[0].nodeNumber,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].orderNumber != null and args[0].orderNumber != ''">
+		AND orderNumber = #{args[0].orderNumber,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].remark != null and args[0].remark != ''">
+		AND remark = #{args[0].remark,javaType=java.lang.String}
+		</if>	
+		<if test="isDeleted != null and isDeleted != ''">
+		AND is_deleted = #{isDeleted,javaType=java.lang.Integer}
+		</if>
+		
+		<if test="modifyDate != null and modifyDate != ''">
+		AND modify_date = #{modifyDate,javaType=java.util.Date}
+		</if>
+	</delete>
+
+</mapper>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.service.dao.OutSchoolActivitySummaryDao">
+
+    <resultMap id="OutSchoolActivitySummaryResult" type="platform.education.service.model.OutSchoolActivitySummary">
+        <result property="id" column="id"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="content" column="content"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+    </resultMap>
+
+    <resultMap id="OutSchoolActivitySummaryVoResult" type="platform.education.service.vo.OutSchoolActivitySummaryVo">
+        <result property="id" column="id"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="content" column="content"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <collection property="pictureVoList" column="{activityId=activity_id}" ofType="platform.education.service.vo.PictureVo" select="platform.education.service.dao.OutSchoolActivitySummaryPicDao.findPictureVoByActivityId"/>
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.service.model.OutSchoolActivitySummary">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO at_out_school_activity_summary (
+        id,
+        activity_id,
+        content,
+        create_date,
+        modify_date
+        )
+        VALUES (
+        #{id},
+        #{activityId},
+        #{content},
+        #{createDate},
+        #{modifyDate}
+        )
+    </insert>
+
+    <select id="read" resultMap="OutSchoolActivitySummaryResult" useCache="false">
+        SELECT * FROM at_out_school_activity_summary WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findOutSchoolActivitySummaryByCondition" resultMap="OutSchoolActivitySummaryResult" useCache="false">
+        SELECT * FROM at_out_school_activity_summary
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].activityId != null">
+                AND activity_id = #{args[0].activityId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].content != null and args[0].content != ''">
+                AND content = #{args[0].content,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM at_out_school_activity_summary
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].activityId != null">
+                AND activity_id = #{args[0].activityId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].content != null and args[0].content != ''">
+                AND content = #{args[0].content,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="OutSchoolActivitySummaryResult" useCache="false">
+        SELECT *
+        FROM at_out_school_activity_summary
+        WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+
+    <update id="update" parameterType="platform.education.service.model.OutSchoolActivitySummary">
+        UPDATE at_out_school_activity_summary
+        SET
+        <if test="activityId != null">
+            activity_id=#{activityId},
+        </if>
+        <if test="content != null">
+            content=#{content},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM at_out_school_activity_summary
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findOutSchoolActivitySummaryVoByActivityId" resultMap="OutSchoolActivitySummaryVoResult" useCache="false">
+        SELECT *
+        FROM at_out_school_activity_summary
+        WHERE activity_id = #{args[0],javaType=java.lang.Integer}
+    </select>
+</mapper>

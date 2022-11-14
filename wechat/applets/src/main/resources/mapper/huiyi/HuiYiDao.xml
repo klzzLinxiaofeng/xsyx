@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.huiyi.dao.HuiYiDao">
+
+    <resultMap id="HuiYiMap" type="com.xunyunedu.huiyi.pojo.HuiYi">
+        <id column="id" property="id"></id>
+        <result column="theme" property="theme"></result>
+        <result column="department_id" property="departmentId"></result>
+        <result column="department_name" property="departmentName"></result>
+        <result column="applicant" property="applicant"></result>
+        <result column="applicant_name" property="applicantName"></result>
+        <result column="eventManager" property="eventManager"></result>
+        <result column="reviewer" property="reviewer"></result>
+        <result column="kaishi_time" property="kaishiTime"></result>
+        <result column="changdi_id" property="changdiId"></result>
+        <result column="changdi_name" property="changdiName"></result>
+        <result column="leadership" property="leadership"></result>
+        <result column="activity_supplies" property="activitySupplies"></result>
+        <result column="equipment" property="equipment"></result>
+        <result column="meeting" property="meeting"></result>
+        <result column="fujianId" property="fujianId"></result>
+        <result column="staff" property="staff"></result>
+        <result column="attendanceNumber" property="attendanceNumber"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="is_audit" property="isAudit"></result>
+        <result column="liyou" property="liyou"></result>
+        <result column="huiwufuzeren" property="huiwufuzeId"></result>
+        <result column="huiwufu_name" property="huiwufuzeName"></result>
+        <result column="reviewer_name" property="reviewerName"></result>
+        <result column="eventManager_name" property="eventManagerName"></result>
+        <result column="qitaRenYuan" property="qitaRenYuan"></result>
+        <result column="school_year" property="schoolYear"></result>
+        <result column="school_trem" property="schoolTrem"></result>
+    </resultMap>
+
+    <insert id="create" parameterType="com.xunyunedu.huiyi.pojo.HuiYi" useGeneratedKeys="true" keyProperty="huiYi.id" keyColumn="id">
+         insert  into zy_huiyi(theme,
+        department_id,
+        applicant,eventManager,
+        reviewer,kaishi_time,
+        changdi_id,leadership,
+        activity_supplies,
+        equipment,meeting,
+        fujianId,staff,
+        attendanceNumber,
+        create_time,
+        modiy_time,
+        is_delete,
+        is_audit,
+        liyou,
+        huiwufuzeren,
+        huiwufu_name,
+        reviewer_name,
+        eventManager_name,
+        applicant_name,
+        qitaRenYuan,school_year,school_trem)
+        value(#{huiYi.theme},
+        #{huiYi.departmentId},
+        #{huiYi.applicant},
+        #{huiYi.eventManager},
+        #{huiYi.reviewer},
+        #{huiYi.kaishiTime},
+        #{huiYi.changdiId},
+        #{huiYi.leadership},
+        #{huiYi.activitySupplies},
+        #{huiYi.equipment},
+        #{huiYi.meeting},
+        #{huiYi.fujianId},
+        #{huiYi.staff},
+        #{huiYi.attendanceNumber},
+        NOW(),
+        null,
+        0,
+        0,
+        null,
+        #{huiYi.huiwufuzeId},
+        #{huiYi.huiwufuzeName},
+        #{huiYi.reviewerName},
+        #{huiYi.eventManagerName},
+        #{huiYi.applicantName},
+        #{huiYi.qitaRenYuan},
+        #{huiYi.schoolYear},
+        #{huiYi.schoolTrem})
+    </insert>
+
+
+    <insert id="createshenhe">
+          insert into oa_apply_notice(title,receiver_id,applicant_name,apply_explain,apply_result,data_id_type,data_id,create_date,handle_date)
+        value(#{huiYi.schoolYear},#{huiYi.reviewer},
+                #{huiYi.applicantName},#{huiYi.theme},0,'hwxq',#{huiYi.id},NOW(),null)
+    </insert>
+    <select id="findByAll" resultMap="HuiYiMap">
+        select zh.*,pd.name as department_name,zc.changdi_name from zy_huiyi zh
+        inner join pj_department pd on zh.department_id=pd.id
+        inner join zy_changdi  zc on zh.changdi_id=zc.id
+        <where>
+            <if test="id!=null">
+
+            </if>
+            <if test="name!=null">
+            </if>
+        </where>
+        order by zh.create_time desc
+    </select>
+
+    <select id="findById" resultMap="HuiYiMap">
+          select zh.*,pd.name as department_name,zc.changdi_name from zy_huiyi zh
+            inner join pj_department pd on zh.department_id=pd.id
+        inner join zy_changdi  zc on zh.changdi_id=zc.id
+         where zh.is_delete=0 and zh.id=#{id}
+    </select>
+
+    <update id="updateShenHe" >
+        update zy_huiyi set
+        is_audit=#{zhuangtai}
+        <if test="text!=null">
+            ,liyou=#{text}
+        </if>
+        where id=#{id} and is_delete=0
+    </update>
+    <select id="findByTime" resultMap="HuiYiMap">
+        select * from zy_huiyi where
+        kaishi_time like concat ('%',#{time},'%') and is_delete=0
+    </select>
+
+</mapper>

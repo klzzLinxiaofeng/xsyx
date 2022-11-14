@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentApsDao">
+
+    <resultMap id="StarEvaluateDataResult" type="platform.education.generalTeachingAffair.vo.StarEvaluateData">
+        <result property="studentId" column="studentId" />
+        <result property="studentName" column="studentName" />
+        <result property="teamId" column="teamId" />
+        <result property="teamName" column="teamName" />
+        <result property="addScore" column="addScore" />
+        <result property="normalScore" column="normalScore" />
+        <result property="totalScore" column="totalScore" />
+        <result property="rank" column="rank" />
+        <result property="teamCode" column="teamCode" />
+    </resultMap>
+
+    <select id="findPersonalStarScore" resultMap="StarEvaluateDataResult" useCache="false">
+        SELECT
+            ats.object_id studentId,
+            ats.parent_object_id teamId,
+            SUM(IF(ats.check_type = '01', score, 0)) normalScore,
+            SUM(IF(ats.check_type = '02', score, 0)) addScore,
+            SUM(ats.score) totalScore,
+            s.`name` studentName,
+            t.`name` teamName,
+            t.`code` teamCode
+        FROM
+        pj_aps_task_score ats
+        LEFT JOIN pj_student s ON ats.object_id = s.id
+        LEFT JOIN pj_team t ON ats.parent_object_id = t.id
+        WHERE 1=1
+        AND ats.is_deleted = 0
+        AND s.is_delete = 0
+        AND t.is_delete = 0
+        <if test="args[0] != null">
+            AND ats.task_id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        <if test="args[1] != null">
+            AND t.school_id = #{args[1],javaType=java.lang.Integer}
+        </if>
+        <if test="args[2] != null and args[2] != ''">
+            AND t.school_year = #{args[2],javaType=java.lang.String}
+        </if>
+        <if test="args[3] != null">
+            AND t.grade_id = #{args[3],javaType=java.lang.Integer}
+        </if>
+        <if test="args[4] != null">
+            AND t.id = #{args[4],javaType=java.lang.Integer}
+        </if>
+        <if test="args[5] != null">
+            AND ats.object_id = #{args[5],javaType=java.lang.Integer}
+        </if>
+        AND ats.check_type IN ('01', '02')
+        <if test="args[6] != null and args[7] != null">
+        AND DATE_FORMAT(`check_date`,'%Y-%m-%d')
+            BETWEEN DATE_FORMAT(#{args[6],javaType=java.util.Date} ,'%Y-%m-%d')
+		    AND DATE_FORMAT(#{args[7],javaType=java.util.Date} ,'%Y-%m-%d')
+        </if>
+        GROUP BY ats.object_id
+        ORDER BY totalScore desc
+    </select>
+
+</mapper>

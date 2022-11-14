@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="byName">
+	
+	<import resource="classpath*:generic-dao.xml" />
+	<bean id="baseDao" abstract="true"
+		class="framework.generic.dao.mybatis.MapperFactoryBean">
+		<property name="executor" ref="genericDao" />
+	</bean>
+	<!-- 此配置实际生产环境需要去掉 由web项目统一配置管理 -->
+	<import resource="classpath*:generalTeachingAffair-services.xml" />
+	<import resource="classpath*:learningDesign-services.xml" />
+	<import resource="classpath*:resource-services.xml" />
+	<import resource="classpath*:generalCode-services.xml" />
+	<import resource="classpath*:storage-services.xml" />
+	<import resource="classpath*:paper-new-services.xml" />
+</beans>

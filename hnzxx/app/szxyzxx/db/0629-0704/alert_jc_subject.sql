@@ -1,0 +1,1 @@
+ALTER TABLE `jc_subject` CHANGE COLUMN `code` `code` int(10) NOT NULL COMMENT '国标代码，唯一';

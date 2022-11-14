@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.QuestionnaireDao">
+
+	<resultMap id="QuestionnaireResult" type="platform.education.generalTeachingAffair.model.Questionnaire">
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="uuid" property="uuid"/>
+		<result column="object" property="object"/>
+		<result column="url" property="url"/>
+		<result column="expiry_date" property="expiryDate"/>
+		<result column="school_id" property="schoolId"/>
+		<result column="create_date" property="createDate"/>
+		<result column="modify_date" property="modifyDate"/>
+		<result column="is_delete" property="isDelete"/>
+	</resultMap>
+
+	<select id="findQuestionnaireVoByCondition" resultMap="QuestionnaireResult" useCache="false">
+		select * from pj_questionnaire
+		where is_delete = 0
+		<if test="args[0] != null">
+				<if test="args[0].name != null and args[0].name != ''" >
+					AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+				</if>
+				<if test="args[0].schoolId != null">
+					AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+				</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="QuestionnaireResult" useCache="false">
+		SELECT * FROM pj_questionnaire WHERE id = #{args[0],javaType=java.lang.Integer} and is_delete = 0
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.Questionnaire">
+		UPDATE pj_questionnaire
+		<set>
+			<if test="schoolId != null">
+				school_id=#{schoolId},
+			</if>
+			<if test="name != null">
+				name=#{name},
+			</if>
+			<if test="createDate != null">
+				create_date=#{createDate},
+			</if>
+			<if test="modifyDate != null">
+				modify_date=#{modifyDate},
+			</if>
+			<if test="expiryDate != null">
+				expiry_date=#{expiryDate},
+			</if>
+			<if test="url != null">
+				url=#{url},
+			</if>
+			<if test="uuid != null">
+				uuid=#{uuid},
+			</if>
+			<if test="object != null">
+				object=#{object},
+			</if>
+			<if test="isDelete != null">
+				is_delete=#{isDelete},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_questionnaire
+		WHERE id = #{id}
+	</delete>
+
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.Questionnaire">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_questionnaire(
+			id,
+			name,
+			`uuid`,
+			`object`,
+			url,
+			expiry_date,
+			school_id,
+			create_date,
+			modify_date
+		)
+		values(
+			#{id},
+			#{name},
+			#{uuid},
+			#{object},
+			#{url},
+			#{expiryDate},
+			#{schoolId},
+			#{createDate},
+			#{modifyDate}
+		)
+	</insert>
+
+
+	<select id="read" resultMap="QuestionnaireResult" useCache="false">
+		SELECT * FROM pj_questionnaire WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+</mapper>

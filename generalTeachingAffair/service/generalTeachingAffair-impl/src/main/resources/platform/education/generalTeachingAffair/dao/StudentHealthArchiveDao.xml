@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentHealthArchiveDao">
+
+	<resultMap id="StudentHealthArchiveResult" type="platform.education.generalTeachingAffair.model.StudentHealthArchive">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="teamId" column="team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="type" column="type" />
+		<result property="remark" column="remark" />
+		<result property="accessory" column="accessory" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="uuid" column="uuid" />
+		<result property="picUrl" column="pic_url"/>
+		<result property="types" column="types"/>
+		<result property="stuName" column="stuName"/>
+		<result property="typeId" column="typeId"/>
+	</resultMap>
+
+	<resultMap id="StudentHealthArchiveTypeResult" type="platform.education.generalTeachingAffair.model.StudentHealthArchiveType">
+		<result property="id" column="id"/>
+		<result property="studentHealthId" column="student_health_id"/>
+		<result property="healthType" column="health_type"/>
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.StudentHealthArchive">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_student_health_archive (
+		id, 
+		school_id,
+		team_id,
+		student_id,
+		type, 
+		remark, 
+		accessory,
+		is_delete, 
+		create_date, 
+		modify_date
+		)
+		VALUES (
+		#{id}, 
+		#{schoolId}, 
+		#{teamId}, 
+		#{studentId}, 
+		#{type}, 
+		#{remark}, 
+		#{accessory}, 
+		<choose>
+			<when test="isDelete != null">
+				#{isDelete},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose> 
+		#{createDate}, 
+		#{modifyDate})
+	</insert>
+
+	<select id="read" resultMap="StudentHealthArchiveResult" useCache="false">
+		SELECT * FROM pj_student_health_archive WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findStudentHealthArchiveByCondition" resultMap="StudentHealthArchiveResult" useCache="false">
+		SELECT psha.*,group_concat( pshat.health_type ) he,group_concat( jgi.NAME ) types,CONCAT( pt.`name` ) team_name,CONCAT( ps.`name` ) stuName
+		FROM pj_student_health_archive psha LEFT JOIN pj_team pt ON pt.id=psha.team_id
+		LEFT JOIN pj_student_health_archive_type pshat ON psha.id = pshat.student_health_id
+		LEFT JOIN jc_gc_item jgi ON jgi.id = pshat.health_type
+		LEFT JOIN pj_student ps ON ps.id = psha.student_id
+
+		<if test="args[0] != null">
+			WHERE 1=1 AND psha.is_delete=0 AND pt.is_delete=0 AND jgi.table_code = 'GB-JKZK3'
+			<if test="args[0].id != null and args[0].id != ''">
+			AND psha.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND psha.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null and args[0].teamId != ''">
+			AND psha.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null and args[0].studentId != ''">
+			AND psha.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+			AND psha.type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+			AND psha.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].accessory != null and args[0].accessory != ''">
+			AND psha.accessory = #{args[0].accessory,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null and args[0].isDelete != ''">
+			AND psha.is_delete = #{args[0].isDelete,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+			AND psha.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND psha.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			
+			<!-- 查询条件 -->
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND pt.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''" >
+			AND pt.school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null and args[0].gradeId != ''">
+			AND pt.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND pt.uuid = #{args[0].uuid,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].typeId != null and args[0].typeId != ''">
+				AND jgi.value = #{args[0].typeId,javaType=java.lang.Integer}
+			</if>
+			
+		</if>
+		GROUP BY
+		psha.id
+
+
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_student_health_archive
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null and args[0].schoolId != ''">
+			AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null and args[0].teamId != ''">
+			AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null and args[0].studentId != ''">
+			AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+			AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+			AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].accessory != null and args[0].accessory != ''">
+			AND accessory = #{args[0].accessory,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null and args[0].isDelete != ''">
+			AND is_delete = #{args[0].isDelete,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null and args[0].createDate != ''">
+			AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+			AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND t.uuid = #{args[0].uuid,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<!--<select id="findById" resultMap="StudentHealthArchiveResult" useCache="false">
+		SELECT * FROM pj_student_health_archive WHERE id = #{args[0],javaType=java.lang.Integer} AND is_delete = 0
+	</select>-->
+
+	<select id="findById" resultMap="StudentHealthArchiveResult" useCache="false">
+
+		SELECT pj_student_health_archive.*,group_concat(pj_student_health_archive_type.health_type) he,group_concat(jgi.name) types,CONCAT( ps.`name` ) stuName
+		FROM pj_student_health_archive
+		LEFT JOIN pj_student_health_archive_type
+		on pj_student_health_archive.id = pj_student_health_archive_type.student_health_id
+		left join jc_gc_item jgi on jgi.id = pj_student_health_archive_type.health_type
+		LEFT JOIN pj_student ps ON ps.id = pj_student_health_archive.student_id
+
+		and jgi.table_code = 'GB-JKZK3'
+
+		WHERE
+		pj_student_health_archive.id = #{args[0],javaType=java.lang.Integer}
+		and
+		pj_student_health_archive.is_delete = 0
+
+		group by pj_student_health_archive.id
+
+
+
+	</select>
+
+
+	<select id="findStudentHealthArchive" resultMap="StudentHealthArchiveResult" useCache="false">
+
+			SELECT
+				psha.*,
+				group_concat( pshat.health_type ) he,
+				group_concat( jgi.NAME ) types,
+				CONCAT( pt.`name` ) team_name
+			FROM
+				pj_student_health_archive psha
+			 LEFT JOIN pj_team pt ON pt.id = psha.team_id
+			LEFT JOIN pj_student_health_archive_type pshat ON psha.id = pshat.student_health_id
+				LEFT JOIN jc_gc_item jgi ON jgi.id = pshat.health_type
+			WHERE jgi.table_code = 'GB-JKZK3'
+			and psha.is_delete = 0
+			GROUP BY
+				psha.id
+
+	</select>
+	
+	<select id="findUnique" resultMap="StudentHealthArchiveResult" useCache="false">
+		SELECT * FROM pj_student_health_archive 
+		WHERE team_id = #{args[0],javaType=java.lang.Integer} 
+		AND student_id = #{args[1],javaType=java.lang.Integer}
+		AND is_delete = 0
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.StudentHealthArchive">
+		UPDATE pj_student_health_archive
+		SET 
+				<if test="schoolId != null">
+					school_id=#{schoolId},
+				</if>
+				<if test="teamId != null">
+					team_id=#{teamId},
+				</if>
+				<if test="studentId != null">
+					student_id=#{studentId},
+				</if>
+				<if test="type != null">
+					type=#{type},
+				</if>
+				<if test="remark != null">
+					remark=#{remark},
+				</if>
+				<if test="accessory != null">
+					accessory=#{accessory},
+				</if>
+				<if test="isDelete != null">
+					is_delete=#{isDelete},
+				</if>
+				<if test="createDate != null">
+					create_date=#{createDate},
+				</if>
+				<if test="modifyDate != null">
+					modify_date=#{modifyDate},
+				</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_student_health_archive
+		WHERE id = #{id}
+	</delete>
+	
+	<delete id="deleteByCondition">
+		DELETE FROM pj_student_health_archive
+		WHERE 1=1
+		<if test="id != null and id != ''">
+		AND id = #{id,javaType=java.lang.Integer}
+		</if>
+		<if test="schoolId != null and schoolId != ''">
+		AND school_id = #{schoolId,javaType=java.lang.Integer}
+		</if>
+		<if test="teamId != null and teamId != ''">
+		AND team_id = #{teamId,javaType=java.lang.Integer}
+		</if>
+		<if test="studentId != null and studentId != ''">
+		AND student_id = #{studentId,javaType=java.lang.Integer}
+		</if>
+		<if test="type != null and type != ''">
+		AND type = #{type,javaType=java.lang.String}
+		</if>
+		<if test="remark != null and remark != ''">
+		AND remark = #{remark,javaType=java.lang.String}
+		</if>
+		<if test="accessory != null and accessory != ''">
+		AND accessory = #{accessory,javaType=java.lang.String}
+		</if>
+		<if test="isDelete != null and isDelete != ''">
+		AND is_delete = #{isDelete,javaType=java.lang.Integer}
+		</if>
+		<if test="createDate != null and createDate != ''">
+		AND create_date = #{createDate,javaType=java.util.Date}
+		</if>
+		<if test="modifyDate != null and modifyDate != ''">
+		AND modify_date = #{modifyDate,javaType=java.util.Date}
+		</if>
+	</delete>
+</mapper>

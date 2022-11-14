@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.XwHqCanteenRecipesDao">
+
+  <resultMap id="XwHqCanteenRecipesResult" type="platform.education.generalTeachingAffair.model.XwHqCanteenRecipes">
+    <result property="id" column="id" />
+    <result property="schoolId" column="school_id" />
+    <result property="description" column="description"/>
+    <result property="isDelete" column="is_delete" />
+    <result property="createDate" column="create_date" />
+    <result property="modifyDate" column="modify_date" />
+    <result property="ids" column="ids"/>
+    <result property="cxList" column="cxList"/>
+    <result property="date" column="date"/>
+    <result property="cuisineName" column="cuisineName"/>
+    <result property="cuisineIds" column="cuisineIds"/>
+  </resultMap>
+
+  <select id="findXwHqCanteenRecipesByCondition" resultMap="XwHqCanteenRecipesResult" useCache="false">
+    SELECT * FROM xw_hq_canteen_recipes
+    <if test="args[0] != null">
+      WHERE 1=1 and is_delete  = 0
+      <if test="args[0].id != null">
+        AND id = #{args[0].id,javaType=java.lang.Integer}
+      </if>
+      <if test="args[0].schoolId != null">
+        AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+      </if>
+      <if test="args[0].description != null and args[0].description != ''">
+        AND description = #{args[0].description,javaType=java.lang.String}
+      </if>
+<!--      <if test="args[0].isDelete != null">-->
+<!--        <choose>-->
+<!--          <when test="args[0].isDelete == true">-->
+<!--            AND is_delete  = 1-->
+<!--          </when>-->
+<!--          <otherwise>-->
+      AND is_delete  = 0
+<!--          </otherwise>-->
+<!--        </choose>-->
+<!--      </if>-->
+      <if test="args[0].date != null">
+        AND datediff(create_date,#{args[0].date,javaType=java.lang.String})=0
+
+      </if>
+      <if test="args[0].modifyDate != null">
+        AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+      </if>
+    </if>
+  </select>
+
+  <select id="findXwHqCanteenRecipesNameByCondition" resultMap="XwHqCanteenRecipesResult" useCache="false">
+    SELECT * FROM xw_hq_canteen_recipes
+    <if test="args[0] != null">
+      WHERE 1=1
+      <if test="args[0].id != null">
+        AND id = #{args[0].id,javaType=java.lang.Integer}
+      </if>
+      <if test="args[0].schoolId != null">
+        AND school_id = #{args[0].schoolId}
+      </if>
+      <if test="args[0].isDelete != null">
+        <choose>
+          <when test="args[0].isDelete == true">
+            AND is_delete  = 1
+          </when>
+          <otherwise>
+            AND is_delete  = 0
+          </otherwise>
+        </choose>
+      </if>
+      <if test="args[0].createDate != null">
+        AND create_date = #{args[0].createDate,javaType=java.util.Date}
+      </if>
+      <if test="args[0].modifyDate != null">
+        AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+      </if>
+    </if>
+  </select>
+
+  <select id="count" resultType="java.lang.Long" useCache="false">
+    SELECT count(*) FROM xw_hq_canteen_recipes
+    <if test="args[0] != null">
+      WHERE 1=1
+      <if test="args[0].id != null">
+        AND id = #{args[0].id,javaType=java.lang.Integer}
+      </if>
+      <if test="args[0].schoolId != null">
+        AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+      </if>
+      <if test="args[0].isDelete != null">
+        <choose>
+          <when test="args[0].isDelete == true">
+            AND is_delete  = 1
+          </when>
+          <otherwise>
+            AND is_delete  = 0
+          </otherwise>
+        </choose>
+      </if>
+      <if test="args[0].createDate != null">
+        AND create_date = #{args[0].createDate,javaType=java.util.Date}
+      </if>
+      <if test="args[0].modifyDate != null">
+        AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+      </if>
+    </if>
+  </select>
+
+  <select id="findById" resultMap="XwHqCanteenRecipesResult" useCache="false">
+		SELECT * FROM xw_hq_canteen_recipes WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+<select id="findAllBySchoolId" resultMap="XwHqCanteenRecipesResult" useCache="false">
+  select modify_date  from xw_hq_canteen_recipes where school_id=#{args[0],javaType=java.lang.Integer} order by modify_date desc
+</select>
+<select id="findAllBydate" resultMap="XwHqCanteenRecipesResult" useCache="false">
+  select * from xw_hq_canteen_recipes where datediff(create_date,#{args[0].date,javaType=java.lang.String})=0
+  and school_id=#{args[0].schoolId,javaType=java.lang.Integer}
+  and is_delete=0 order by create_date desc
+</select>
+  <select id="findByGoodsId" resultMap="XwHqCanteenRecipesResult" useCache="false">
+		SELECT * FROM xw_hq_canteen_recipes WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+  <update id="update" parameterType="platform.education.generalTeachingAffair.model.XwHqCanteenRecipes">
+    UPDATE xw_hq_canteen_recipes
+    SET
+    <if test="schoolId != null">
+      school_id=#{schoolId},
+    </if>
+    <if test="description != null">
+      description=#{description},
+    </if>
+    <if test="isDelete != null">
+      <choose>
+        <when test="isDelete == 1">
+          is_delete  = 1,
+        </when>
+        <otherwise>
+          is_delete  = 0,
+        </otherwise>
+      </choose>
+    </if>
+    <if test="createDate != null">
+      create_date=#{createDate},
+    </if>
+    <if test="modifyDate != null">
+      modify_date=#{modifyDate},
+    </if>
+    id = #{id}
+    WHERE id = #{id}
+  </update>
+
+  <delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM xw_hq_canteen_recipes
+		WHERE id = #{id}
+	</delete>
+
+  <select id="read" resultMap="XwHqCanteenRecipesResult" useCache="false">
+    SELECT * FROM xw_hq_canteen_recipes WHERE 1=1
+    <if test="args!=null and args[0]!=null">
+      AND id = #{args[0],javaType=java.lang.Integer}
+    </if>
+    ORDER BY id DESC
+  </select>
+
+  <insert id="create" parameterType="platform.education.generalTeachingAffair.model.XwHqCanteenRecipes">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO xw_hq_canteen_recipes (
+    id,
+    school_id,
+    description,
+    is_delete,
+    create_date,
+    modify_date
+    )
+    VALUES (
+    null,
+    #{schoolId},
+    #{description},
+    0,
+    #{createDate},
+    #{modifyDate})
+  </insert>
+
+
+  <update id="dropItemById" parameterType="platform.education.generalTeachingAffair.model.XwHqCanteenRecipes">
+    UPDATE xw_hq_canteen_recipes
+    SET is_delete  = 1
+    where id = #{id}
+  </update>
+
+  <select id="findCxAndRecipesById" resultMap="XwHqCanteenRecipesResult">
+
+  		SELECT xhcr.*,
+		GROUP_CONCAT( xhcc.cuisine_name ) cuisineName,
+		GROUP_CONCAT( xhcc.id ) cuisineIds
+
+		FROM xw_hq_canteen_recipes xhcr
+		LEFT JOIN xw_hq_canteen_recipes_to_cuisin xhcrtc ON xhcr.id = xhcrtc.recipes_id
+		LEFT JOIN xw_hq_canteen_cuisin xhcc ON xhcc.id = xhcrtc.cuisin_id
+		WHERE xhcr.id = #{args[0],javaType=java.lang.Integer} AND xhcr.is_delete = 0 AND xhcc.is_delete = 0
+		GROUP BY xhcr.id
+
+
+  </select>
+
+</mapper>

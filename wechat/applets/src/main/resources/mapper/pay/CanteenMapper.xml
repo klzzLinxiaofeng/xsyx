@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.pay.dao.CanteenDao">
+
+    <resultMap id="canteenCardResult" type="com.xunyunedu.pay.pojo.CanteenCardPojo">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="mesg" property="mesg"/>
+        <result column="name" property="name"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="old_ic_number" property="oldIcNumber"/>
+        <result column="new_ic_number" property="newIcNumber"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="is_send" property="isSend"/>
+        <result column="user_type" property="userType"/>
+    </resultMap>
+
+    <insert id="createReplace">
+        insert into pj_canteen_card
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="schoolId != null">school_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="mesg != null and mesg != ''">mesg,</if>
+            <if test="userType != null">user_type,</if>
+            <if test="isSend != null">is_send,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="oldIcNumber != null and oldIcNumber != ''">old_ic_number,</if>
+            <if test="newIcNumber != null and newIcNumber != ''">new_ic_number,</if>
+            <if test="createdAt != null"> created_at,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="schoolId != null">#{schoolId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="mesg != null and mesg != ''">#{mesg},</if>
+            <if test="userType != null">#{userType},</if>
+            <if test="isSend != null">#{isSend},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="oldIcNumber != null and oldIcNumber != ''">#{oldIcNumber},</if>
+            <if test="newIcNumber != null and newIcNumber != ''">#{newIcNumber},</if>
+            <if test="createdAt != null"> #{createdAt},</if>
+        </trim>
+    </insert>
+
+    <select id="findHistoryByUserId" resultMap="canteenCardResult">
+        select * from pj_canteen_card
+        <where>
+            <if test="schoolId != null"> school_id = #{schoolId}</if>
+            <if test="userId != null"> and user_id= #{userId}</if>
+            <if test="isSend != null"> and is_send = #{isSend}</if>
+            <if test="userType != null"> and user_type = #{userType}</if>
+            <if test="isDeleted != null"> and is_deleted = #{isDeleted}</if>
+        </where>
+    </select>
+
+
+
+</mapper>

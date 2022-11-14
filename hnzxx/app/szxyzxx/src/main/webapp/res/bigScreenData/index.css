@@ -1,0 +1,615 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#consumption {
+    width: 100%;
+    height: 100vh;
+    background-image: url(images/bg.png);
+    background-size: 100% 100%;
+    background-color: rgba(0, 0, 0, 1);
+    scrollbar-width: none;
+    /* firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+    /* Chrome Safari */
+}
+
+.headers {
+    width: 100%;
+    height: 1.21rem;
+    /* background-image: url(images/header_icon1.png); */
+    background-image: url(images/header_icon2.png);
+    background-size: 100% 100%;
+    position: relative;
+}
+
+.headerIcon {
+    width: .44rem;
+    height: .44rem;
+}
+#approved,#teacherTitle,#education,#approveOption,#campusOption,#appDayNumOption,
+#studentGrade,#gradeHealthy,#courseOption,#campusHealth,
+#attendanceToday{
+    width: 4.8rem;
+    height: 2.26rem;
+    margin: auto;
+}
+#healthyToday {
+	width: 4.8rem;
+	height: 2.26rem;
+	margin: auto;
+}
+
+/* 修改的头部 */
+
+.headersTitleTxt {
+    width: 29%;
+    text-align: center;
+    text-indent: .3rem;
+    line-height: .8rem;
+    font-size: .4rem;
+    font-weight: bolder;
+    float: left;
+}
+
+.gradient-text-one {
+    background-image: -webkit-linear-gradient(bottom, #00F2FE, #FFFFFF, #FFFFFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.titleBox {
+    width: 71%;
+    float: left;
+}
+
+.titleBox .headersTitleTxt {
+    width: 20%;
+    height: 1.21rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.itemTxt {
+    width: 85%;
+    height: 0.75rem;
+    /* background-image: url(images/header_icon4.png); */
+    background-size: 100% 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0.17rem;
+    font-size: .3rem;
+    font-family: Adobe Heiti Std;
+    /* font-weight: normal; */
+    color: #FFFFFF;
+    float: left;
+    text-indent: .3rem;
+    line-height: .8rem;
+    background: rgba(20, 54, 109, 1);
+    text-decoration: none;
+    transform: skewX(-45deg);
+}
+
+.itemTxt1 {
+    transform: skewX(45deg);
+}
+
+.itemTxt2 {
+    /* width: 81%; */
+    height: 0.75rem;
+    border-bottom: 3px solid #57E9F8;
+}
+
+.itemTxt_One {
+    background-image: -webkit-linear-gradient(bottom, #00F2FE, #FFFFFF, #FFFFFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+/* 修改的头部 */
+
+.main {
+    width: 100%;
+    display: flex;
+    padding-bottom: .50rem;
+    padding: 0 0.2rem;
+    box-sizing: border-box;
+    padding-top: 0.2rem;
+}
+
+
+/* 左边区域 */
+
+.mainLeft {
+    width: 32%;
+}
+
+.consumeBox {
+	position: relative;
+    width: 5.05rem;
+    height: 2.86rem;
+    background-image: url(images/box_bg.png);
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 .26rem .26rem .26rem;
+    box-sizing: border-box;
+    margin-bottom: .3rem;
+}
+.teacher_class {
+	position: absolute;
+	font-size: 0.5rem;
+	color: #ee7070;
+	right: 1rem;
+	top: 0.6rem;
+	
+}
+.student_class {
+	position: absolute;
+	font-size: 0.5rem;
+	color: #2ba2f1;
+	left: 1rem;
+	bottom: 0.5rem;
+}
+
+.totleConsume {
+    width: 100%;
+    height: 0.76rem;
+    background: rgba(1, 5, 33, 0.3);
+    display: flex;
+    margin-bottom: .1rem;
+    align-items: center;
+}
+
+.totleConsume img {
+    width: 1.37rem;
+    height: 1.06rem;
+}
+
+.totleConsumeNum {
+    padding-left: 1rem;
+}
+
+.totleConsumeNum p:nth-child(1) {
+    font-size: .18rem;
+    font-family: Segoe UI;
+    font-weight: 400;
+    line-height: .24rem;
+    color: #FFFFFF;
+}
+
+.totleConsumeNum p:nth-child(2) {
+    font-size: .26rem;
+    font-family: Segoe UI;
+    font-weight: 400;
+    line-height: .35rem;
+    color: #96F9FE;
+}
+
+.trend {
+    width: 5.05rem;
+    height: 2.86rem;
+    background-image: url(images/box_bg.png);
+    background-size: 100% 100%;
+    margin-bottom: .26rem;
+    box-sizing: border-box;
+}
+
+#trend {
+    width: 4.8rem;
+    height: 2.26rem;
+    margin: auto;
+}
+
+.recharge {
+    width: 5.05rem;
+    /* height: 2.86rem; */
+    height: 2.66rem;
+    background-image: url(images/box_bg.png);
+    background-size: 100% 100%;
+}
+
+#recharge {
+    width: 4.80rem;
+    /* height: 2.26rem; */
+    height: 2.16rem;
+    margin: auto;
+}
+
+
+/* 中间区域 */
+
+.mainCenter {
+    width: 56%;
+}
+
+.dataBox {
+    padding-top: .50rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 .10rem .10rem .10rem;
+}
+
+.statistics {
+    width: 100%;
+    display: flex;
+}
+
+.statisticsItem {
+	position: relative;
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.statisticsTop {
+    /* width: 214px; */
+    width: 90%;
+    height: .51rem;
+    background: #28FFED;
+    opacity: 1;
+    border-radius: 2px;
+    font-size: .25rem;
+    font-family: Segoe UI;
+    font-weight: 400;
+    line-height: .33rem;
+    color: #01093E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.statisticsIcon {
+    width: .33rem;
+    height: .26rem;
+    margin-right: .10rem;
+}
+
+.statisticsNum {
+    font-size: .65rem;
+    font-family: LCD BQ;
+    font-weight: 400;
+    line-height: .73rem;
+    color: #28FFED;
+    text-shadow: 0px 3px 3px #040610;
+    letter-spacing: .2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home_bg {
+    /* width: 6.26rem;
+	height: 6.26rem; */
+    width: 6rem;
+    height: 5.8rem;
+    margin-top: -0.78rem;
+    margin-bottom: 0.2rem;
+}
+
+.home_bg img {
+    width: 6.26rem;
+    height: 6.26rem;
+}
+
+.repairwrap {
+    width: 100%;
+    /* height: 2.84rem; */
+    height: 2.8rem;
+    background-image: url(images/box_bg.png);
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: -0.33rem;
+}
+
+#repair {
+    width: 8.84rem;
+    height: 2.44rem;
+}
+
+.repairItem {
+    flex: 1;
+    /* padding-top: 100px; */
+}
+
+.repairItem p:nth-child(1) {
+    font-size: 20px;
+    font-family: Segoe UI;
+    font-weight: 400;
+    line-height: 27px;
+    color: #FFFFFF;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.repairItem p:nth-child(2) {
+    text-align: center;
+    /* font-size: 78px; */
+    font-size: 0.7rem;
+    font-family: DIN;
+    font-weight: 400;
+    line-height: 29px;
+    color: #02A6F3;
+}
+
+
+/* 右边区域 */
+
+.mainRight {
+    width: 32%;
+    /* background: yellowgreen; */
+}
+
+.mainRight .katong {
+    width: 4.89rem;
+    height: 2.2rem;
+    background-image: url(images/box_bg.png);
+    background-size: 100% 100%;
+    margin-bottom: 0.25rem;
+}
+
+.mainRight .feedback {
+    width: 4.89rem;
+    height: 2.86rem;
+    background-image: url(images/box_bg.png);
+    background-size: 100% 100%;
+    margin-bottom: 0.25rem;
+}
+
+#feedback {
+    width: 4.2rem;
+    height: 2.16rem;
+    margin: auto;
+}
+
+.mainRight .daily {
+    width: 4.91rem;
+    /* height: 3.77rem; */
+    height: 3.37rem;
+    background-image: url(images/box_bg.png);
+    background-size: 100% 100%;
+}
+
+#daily {
+    width: 4.7rem;
+    height: 2.94rem;
+    margin: auto;
+}
+
+.boxTitle {
+    width: 100%;
+    /* height: 0.6rem; */
+    height: 0.5rem;
+    font-size: 0.21rem;
+    font-family: Segoe UI;
+    font-weight: bold;
+    line-height: 0.6rem;
+    color: #FFFFFF;
+    opacity: 1;
+    text-align: center;
+}
+
+.boxTitle2 {
+    width: 100%;
+    height: 0.5rem;
+    font-size: 0.21rem;
+    font-family: Segoe UI;
+    font-weight: bold;
+    line-height: 0.5rem;
+    color: #FFFFFF;
+    opacity: 1;
+    text-align: center;
+    position: relative;
+}
+
+.select {
+    position: absolute;
+    right: 0.2rem;
+    top: 0;
+}
+
+.katonginner {
+    width: 100%;
+    height: 1.35rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.katonginner .katongitem {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.katonginner .katongitem .title {
+    font-size: 0.15rem;
+    font-family: Segoe UI;
+    font-weight: 400;
+    line-height: 0.15rem;
+    color: #FFFFFF;
+}
+
+.katonginner .katongitem .num {
+    font-size: 0.16rem;
+    font-family: DIN;
+    font-weight: 400;
+    line-height: 0.16rem;
+    color: #02A6F3;
+    margin-top: 0.3rem;
+}
+
+.katonginner .katongitem .num .cardnum {
+    font-size: 0.52rem;
+    margin-right: 0.17rem;
+}
+
+@media screen and (max-width: 1900px) {
+    #consumption {
+        width: 100%;
+        height: 100vh;
+    }
+    .consumeBox {
+        height: 2.7rem;
+        margin-bottom: .20rem;
+    }
+    .trend,
+    .recharge {
+        height: 3.5rem;
+        margin-bottom: .26rem;
+    }
+    #trend {
+        height: 3.26rem;
+    }
+    #recharge {
+        height: 3.26rem;
+    }
+    .home_bg {
+        height: 6.8rem;
+        padding-top: 32px;
+        box-sizing: border-box;
+    }
+    .repairwrap {
+        height: 3.2rem;
+    }
+    .mainRight .katong {
+        height: 2.2rem;
+        margin-bottom: 0.15rem;
+    }
+    .mainRight .feedback {
+        height: 3.7rem;
+        margin-bottom: 0.15rem;
+    }
+    #feedback {
+        height: 3.26rem;
+    }
+    .mainRight .daily {
+        height: 4rem;
+    }
+    #daily {
+        height: 3.3rem;
+    }
+    .boxTitle {
+        height: 0.6rem;
+        line-height: 0.6rem;
+    }
+}
+
+
+.attendance_num {
+	position: absolute;
+	color: #FFF;
+	font-size: 0.5rem;
+	left: 38%;
+	top: 12%;
+}
+.attendance_text {
+	position: absolute;
+	color: #FFF;
+	font-size: 0.22rem;
+	left: 38%;
+	top: 56%;
+}
+.healthy_num {
+	position: absolute;
+	font-size: 0.5rem;
+	color: #fdcf34;
+	left: 38%;
+	top: 12%;
+}
+.healthy_text {
+	position: absolute;
+	color: #FFF;
+	font-size: 0.22rem;
+	left: 38%;
+	top: 56%;
+}
+
+
+.content_list {
+	margin-top: 20px;
+	height: 7.5rem;
+	overflow: hidden;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+	align-content :center
+}
+.list_title {
+	line-height: 68px;
+	height: 68px;
+	color: #FFF;
+	width: 100%;
+	font-size: 0.21rem;
+    font-family: Segoe UI;
+    font-weight: bold;
+    color: #FFFFFF;
+    opacity: 1;
+    text-align: center;
+}
+.list_item {
+	position: relative;
+	color: #FFFFFF;
+	font-size: 0.21rem;
+	font-family: Segoe UI;
+	font-weight: bold;
+	line-height: 0.4rem;
+	height:  0.4rem;
+	display: flex;
+	margin-bottom: 0.2rem;
+}
+.left,.right {
+	width: 47%;
+	height: 100%;
+	/* background-color: #00FF00; */
+	background-repeat: no-repeat;
+	/* width: 5.05rem; */
+	/* height: 2.86rem; */
+	background-image: url(images/rank.png);
+	background-size: 100% 100%;
+	/* margin-bottom: .26rem; */
+	/* box-sizing: border-box; */
+}
+.list_num {
+	position: absolute;
+	/* font-weight: 500; */
+	left: 1rem;
+	top: 4px;
+	color: #666;
+}
+.list_img1 {
+	width: 0.4rem;
+	height: 0.4rem;
+	margin: 0 0.4rem 0 0.9rem;
+}
+.list_img2 {
+	width: 0.4rem;
+	height: 0.4rem;
+	border-radius: 50%;
+}
+.span1 {
+	margin-left: 0.4rem;
+	font-size: 0.2rem;
+}

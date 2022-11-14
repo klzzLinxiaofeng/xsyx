@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.logger.dao.LoggerDao">
+
+    <resultMap id="LoggerResult" type="com.xunyunedu.logger.vo.Loggers">
+        <result property="id" column="id" />
+        <result property="caozuoId" column="caozuo_id" />
+        <result property="name" column="name" />
+        <result property="username" column="username" />
+        <result property="mobile" column="mobile" />
+        <result property="createTime" column="create_time" />
+        <result property="modiyTme" column="modiy_time" />
+        <result property="mokuaiName" column="mokuai_name" />
+        <result property="isDelete" column="is_delete" />
+        <result property="type" column="type" />
+        <result property="message" column="message" />
+        <result property="schoolYear" column="school_year" />
+        <result property="schoolTrem" column="school_Trem" />
+    </resultMap>
+
+
+    <insert id="create">
+       <!-- <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>-->
+        INSERT INTO zy_logger (
+        caozuo_id,
+        name,
+        username,
+        mobile,
+        create_time,
+        modiy_time,
+        mokuai_name,
+        is_delete,
+        type,
+        message,
+        school_year,
+        school_trem
+        )
+        VALUES (
+        #{logger.caozuoId},
+        #{logger.name},
+        #{logger.username},
+        #{logger.mobile},
+        NOW(),
+        NOW(),
+        #{logger.mokuaiName},
+        0,
+        #{logger.type},
+        #{logger.message},
+        #{logger.schoolYear},
+        #{logger.schoolTrem}
+        )
+    </insert>
+</mapper>

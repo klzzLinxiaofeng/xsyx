@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.TaskDao">
+
+    <resultMap id="TaskResult" type="platform.education.paper.model.Task">
+        <result property="id" column="id"/>
+        <result property="paperId" column="paper_id"/>
+        <result property="publisherId" column="publisher_id"/>
+        <result property="publisherName" column="publisher_name"/>
+        <result property="uuid" column="uuid"/>
+        <result property="title" column="title"/>
+        <result property="finishTime" column="finish_time"/>
+        <result property="startTime" column="start_time"/>
+        <result property="userCount" column="user_count"/>
+        <result property="finishedCount" column="finished_count"/>
+        <result property="isCheck" column="is_check"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+    <resultMap id="TaskVoResult" type="platform.education.paper.vo.TaskVo">
+        <result property="id" column="id"/>
+        <result property="paperId" column="paper_id"/>
+        <result property="publisherId" column="publisher_id"/>
+        <result property="publisherName" column="publisher_name"/>
+        <result property="uuid" column="uuid"/>
+        <result property="title" column="title"/>
+        <result property="finishTime" column="finish_time"/>
+        <result property="startTime" column="start_time"/>
+        <result property="userCount" column="user_count"/>
+        <result property="finishedCount" column="finished_count"/>
+        <result property="isCheck" column="is_check"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="examId" column="pj_exam_id"/>
+        <result property="subjectCode" column="subject_code"/>
+        <result property="subjectName" column="subject_name"/>
+        <result property="xepFileId" column="xep_file_id"/>
+        <result property="difficultyString" column="difficultyString"/>
+        <result property="score" column="score"/>
+        <result property="publishFlag" column="finished_flag"/>
+        <result property="finishedDate" column="finished_date"/>
+    </resultMap>
+    <insert id="create" parameterType="platform.education.paper.model.Task">
+        <selectKey resultType="java.lang.Integer" order="AFTER"
+                   keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO pa_task (
+        id,
+        paper_id,
+        publisher_id,
+        publisher_name,
+        uuid,
+        title,
+        finish_time,
+        start_time,
+        user_count,
+        finished_count,
+        is_check,
+        create_date,
+        modify_date,
+        is_deleted
+        )
+        VALUES (
+        #{id},
+        #{paperId},
+        #{publisherId},
+        #{publisherName},
+        #{uuid},
+        #{title},
+        #{finishTime},
+        #{startTime},
+        #{userCount},
+        #{finishedCount},
+        #{isCheck},
+        #{createDate},
+        #{modifyDate},
+        <choose>
+            <when test="isDeleted != null">
+                <choose>
+                    <when test="isDeleted == true">
+                        1
+                    </when>
+                    <otherwise>
+                        0
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                0
+            </otherwise>
+        </choose>
+        )
+    </insert>
+
+    <select id="read" resultMap="TaskResult" useCache="false">
+        SELECT * FROM pa_task WHERE 1=1
+        <if test="args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findTaskByCondition" resultMap="TaskResult"
+            useCache="false">
+        SELECT * FROM pa_task
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].paperId != null">
+                AND paper_id =
+                #{args[0].paperId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].publisherId != null">
+                AND publisher_id =
+                #{args[0].publisherId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].publisherName != null and args[0].publisherName != ''">
+                AND publisher_name =
+                #{args[0].publisherName,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].title != null and args[0].title != ''">
+                AND title = #{args[0].title,javaType=java.lang.String}
+            </if>
+            <if test="args[0].finishTime != null">
+                AND finish_time =
+                #{args[0].finishTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].startTime != null">
+                AND start_time =
+                #{args[0].startTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].userCount != null">
+                AND user_count =
+                #{args[0].userCount,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].finishedCount != null">
+                AND finished_count =
+                #{args[0].finishedCount,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].isCheck != null">
+                AND is_check =
+                #{args[0].isCheck,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date =
+                #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date =
+                #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].isDeleted != null">
+                <choose>
+                    <when test="args[0].isDeleted == true">
+                        AND is_deleted = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted = 0
+                    </otherwise>
+                </choose>
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM pa_task
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].paperId != null">
+                AND paper_id =
+                #{args[0].paperId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].publisherId != null">
+                AND publisher_id =
+                #{args[0].publisherId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].publisherName != null and args[0].publisherName != ''">
+                AND publisher_name =
+                #{args[0].publisherName,javaType=java.lang.String}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].title != null and args[0].title != ''">
+                AND title = #{args[0].title,javaType=java.lang.String}
+            </if>
+            <if test="args[0].finishTime != null">
+                AND finish_time =
+                #{args[0].finishTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].startTime != null">
+                AND start_time =
+                #{args[0].startTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].userCount != null">
+                AND user_count =
+                #{args[0].userCount,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].finishedCount != null">
+                AND finished_count =
+                #{args[0].finishedCount,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].isCheck != null">
+                AND is_check =
+                #{args[0].isCheck,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date =
+                #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date =
+                #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].isDeleted != null">
+                <choose>
+                    <when test="args[0].isDeleted == true">
+                        AND is_deleted = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted = 0
+                    </otherwise>
+                </choose>
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="TaskResult" useCache="false">
+		SELECT *
+		FROM pa_task WHERE id = #{args[0],javaType=java.lang.Integer}
+				AND
+	is_deleted=0
+	</select>
+
+    <update id="update" parameterType="platform.education.paper.model.Task">
+        UPDATE pa_task
+        SET
+        <if test="paperId != null">
+            paper_id=#{paperId},
+        </if>
+        <if test="publisherId != null">
+            publisher_id=#{publisherId},
+        </if>
+        <if test="publisherName != null">
+            publisher_name=#{publisherName},
+        </if>
+        <if test="uuid != null">
+            uuid=#{uuid},
+        </if>
+        <if test="title != null">
+            title=#{title},
+        </if>
+        <if test="finishTime != null">
+            finish_time=#{finishTime},
+        </if>
+        <if test="startTime != null">
+            start_time=#{startTime},
+        </if>
+        <if test="userCount != null">
+            user_count=#{userCount},
+        </if>
+        <if test="finishedCount != null">
+            finished_count=#{finishedCount},
+        </if>
+        <if test="isCheck != null">
+            is_check=#{isCheck},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        <if test="isDeleted != null">
+            <choose>
+                <when test="isDeleted == true">
+                    is_deleted = 1,
+                </when>
+                <otherwise>
+                    is_deleted = 0,
+                </otherwise>
+            </choose>
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM pa_task
+		WHERE id = #{id}
+	</delete>
+
+    <select id="findPaperStatus" resultType="java.lang.Integer">
+		SELECT ptt.team_id FROM
+		pa_task pt INNER JOIN pa_task_team ptt ON
+		pt.id=ptt.task_id
+
+		WHERE
+
+		pt.paper_id =#{args[0]}
+		
+		AND
+		pt.is_deleted=0
+
+		GROUP BY ptt.team_id
+
+	</select>
+
+    <select id="findTaskVoByPaperVo" resultMap="TaskVoResult"
+            useCache="false">
+        SELECT pt.* FROM pa_task pt
+
+        INNER JOIN pa_paper pp ON
+
+        pt.paper_id=pp.id
+
+        INNER JOIN pa_paper_catalog ppc ON pt.paper_id=ppc.paper_id
+
+        <if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+            AND ppc.subject_code=#{args[0].subjectCode}
+        </if>
+        <if test="args[0].stageCode != null and args[0].stageCode != ''">
+            AND ppc.stage_code=#{args[0].stageCode}
+        </if>
+
+        WHERE
+
+        pt.publisher_id=#{args[1]}
+
+        <if test="args[0].title != null and args[0].title != ''">
+
+            AND pt.title like CONCAT(CONCAT('%',
+            #{args[0].title,javaType=java.lang.String}),'%')
+
+        </if>
+        AND
+        pt.is_deleted=0
+    </select>
+
+    <select id="findTaskVoByTeamId" resultMap="TaskVoResult"
+            useCache="false">
+        SELECT
+        pt.*, ptt.pj_exam_id,
+        IF(COUNT(ppc.subject_code)=1,ppc.subject_code,'0') AS subject_code,
+        ptt.team_id,
+        pp.xep_file_id,
+        pp.score,
+        pp.title AS paperTitle,
+        (
+        CASE
+        WHEN pp.difficulity IS NULL THEN
+        '未知难度'
+        WHEN pp.difficulity &gt;= 0
+        AND pp.difficulity &lt;= 0.2 THEN
+        '困难'
+        WHEN pp.difficulity &gt;= 0.3
+        AND pp.difficulity &lt;= 0.5 THEN
+        '中等'
+        WHEN pp.difficulity &gt;= 0.6
+        AND pp.difficulity &lt;= 1.0 THEN
+        '简单'
+        ELSE
+        '未知难度'
+        END
+        ) AS difficultyString
+
+        FROM pa_task pt
+
+        INNER JOIN pa_paper pp ON pt.paper_id=pp.id
+
+        INNER JOIN
+        pa_task_team ptt ON pt.id=ptt.task_id AND ptt.team_id=#{args[1]} and ptt.is_deleted=0
+
+        INNER
+        JOIN pa_paper_catalog ppc ON pt.paper_id=ppc.paper_id
+        <if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+            AND ppc.subject_code=#{args[0].subjectCode}
+        </if>
+        <if test="args[0].stageCode != null and args[0].stageCode != ''">
+            AND ppc.stage_code=#{args[0].stageCode}
+        </if>
+        WHERE
+
+        1=1
+
+        <if test="args[0].title != null and args[0].title != ''">
+
+            AND pt.title like CONCAT(CONCAT('%',
+            #{args[0].title,javaType=java.lang.String}),'%')
+
+        </if>
+        AND pt.is_deleted=0
+
+        GROUP BY ptt.id
+
+        ORDER BY pt.start_time DESC
+    </select>
+    <select id="findTaskVoOfReceiveByPaperVo" resultMap="TaskVoResult"
+            useCache="false">
+        SELECT pt.*,ptu.team_id,pp.xep_file_id,ptu.finished_flag,
+        pp.score,
+        pp.title AS paperTitle,
+        (
+        CASE
+        WHEN pp.difficulity IS NULL THEN
+        '未知难度'
+        WHEN pp.difficulity &gt;= 0
+        AND pp.difficulity &lt;= 0.2 THEN
+        '困难'
+        WHEN pp.difficulity &gt;= 0.3
+        AND pp.difficulity &lt;= 0.5 THEN
+        '中等'
+        WHEN pp.difficulity &gt;= 0.6
+        AND pp.difficulity &lt;= 1.0 THEN
+        '简单'
+        ELSE
+        '未知难度'
+        END
+        ) AS difficultyString,
+        ptu.finished_date,
+        IF(COUNT(ppc.subject_code)=1,ppc.subject_code,'0') AS subject_code
+
+        FROM
+        pa_task_user ptu
+
+        INNER JOIN pa_task pt ON ptu.task_id=pt.id AND pt.is_deleted=0
+
+        INNER JOIN pa_paper pp ON pt.paper_id=pp.id
+
+        INNER JOIN pa_paper_catalog ppc ON pp.id=ppc.paper_id
+        <if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+            AND ppc.subject_code=#{args[0].subjectCode}
+        </if>
+        <if test="args[0].stageCode != null and args[0].stageCode != ''">
+            AND ppc.stage_code=#{args[0].stageCode}
+        </if>
+
+        WHERE
+
+        ptu.user_id=#{args[1]}
+        AND
+        ptu.is_deleted=0
+        GROUP BY pt.id
+        ORDER BY pt.start_time DESC
+    </select>
+    <update id="updateFinishedCount">
+	 UPDATE pa_task SET finished_count=finished_count+1 WHERE
+	 id=#{args[0]}
+	</update>
+    <select id="findTaskVoByExamId" resultMap="TaskVoResult">
+	SELECT pt.* FROM pa_task_team ptt 
+
+    INNER JOIN pa_task pt ON pt.id=ptt.task_id
+
+    WHERE ptt.pj_exam_id=#{args[0]}
+	
+	</select>
+
+    <update id="updateBatchTaskPjExamId">
+    UPDATE  pa_task_team  
+    SET pj_exam_id=#{args[1]}
+    where id = #{args[0]}
+ </update>
+    <select id="findTaskByUuid" resultMap="TaskResult">
+	
+	SELECT * FROM pa_task WHERE uuid =#{args[0]}
+	
+	</select>
+
+
+    <select id="findTaskVo" resultMap="TaskVoResult" useCache="false">
+        SELECT
+        pt.id,
+        pt.publisher_name,
+        pt.create_date,
+        SUM( pt.user_count ) AS user_count,
+        SUM( pt.finished_count ) AS finished_count,
+        js.`name` AS subjectName,
+        pp.title
+        FROM pa_task pt
+        INNER JOIN pa_paper pp ON pt.paper_id = pp.id
+        INNER JOIN pa_task_team ptt ON pt.id = ptt.task_id
+        INNER JOIN pa_paper_catalog ppc ON pt.paper_id = ppc.paper_id
+        LEFT JOIN jc_subject js ON ppc.subject_code = js.`code`
+        LEFT JOIN pj_team pjt ON ptt.team_id = pjt.id
+        WHERE
+        1=1
+        <if test="args[0] != null">
+            AND pjt.id = #{args[0]}
+        </if>
+        <if test="args[1] != null">
+            AND ppc.subject_code = #{args[1]}
+        </if>
+        <if test="args[2] != null">
+            AND pt.title like CONCAT('%',#{args[2]},'%')
+        </if>
+        <if test="args[3] != null">
+            AND pjt.school_id = #{args[3]}
+        </if>
+        <if test="args[4] != null and args[4] != 0">
+            AND pjt.grade_id =#{args[4]}
+        </if>
+        AND pt.is_deleted = 0
+        AND ptt.is_deleted = 0
+        AND pp.is_deleted = 0
+        AND pjt.is_delete = 0
+        GROUP BY pt.paper_id
+        ORDER BY pt.start_time DESC
+    </select>
+
+</mapper>

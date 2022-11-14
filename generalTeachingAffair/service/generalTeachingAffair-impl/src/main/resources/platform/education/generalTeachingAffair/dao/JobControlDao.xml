@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.JobControlDao">
+
+	<resultMap id="JobControlResult" type="platform.education.generalTeachingAffair.model.JobControl">
+		<result property="id" column="id" />
+		<result property="appKey" column="app_key" />
+		<result property="name" column="name" />
+		<result property="objectId" column="object_id" />
+		<result property="interrupteur" column="Interrupteur" />
+		<result property="state" column="state" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.JobControl">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_job_control (
+			id, 
+			app_key, 
+			name, 
+			object_id, 
+			Interrupteur, 
+			state, 
+			is_deleted, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{appKey}, 
+			#{name}, 
+			#{objectId}, 
+			<choose>
+				<when test="interrupteur != null">
+					<choose>
+						<when test="interrupteur == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{state}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="JobControlResult" useCache="false">
+		SELECT * FROM pj_job_control WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findJobControlByCondition" resultMap="JobControlResult" useCache="false">
+		SELECT * FROM pj_job_control 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].appKey != null and args[0].appKey != ''">
+				AND app_key = #{args[0].appKey,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].objectId != null">
+				AND object_id = #{args[0].objectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].interrupteur != null">
+				<choose>
+					<when test="args[0].interrupteur == true">
+						AND Interrupteur  = 1
+					</when>
+					<otherwise>
+						AND Interrupteur  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].state != null and args[0].state != ''">
+				AND state = #{args[0].state,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_job_control 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].appKey != null and args[0].appKey != ''">
+				AND app_key = #{args[0].appKey,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].objectId != null">
+				AND object_id = #{args[0].objectId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].interrupteur != null">
+				<choose>
+					<when test="args[0].interrupteur == true">
+						AND Interrupteur  = 1
+					</when>
+					<otherwise>
+						AND Interrupteur  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].state != null and args[0].state != ''">
+				AND state = #{args[0].state,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="JobControlResult" useCache="false">
+		SELECT * FROM pj_job_control WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.JobControl">
+		UPDATE pj_job_control
+		SET 
+		<if test="appKey != null">
+			app_key=#{appKey},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="objectId != null">
+			object_id=#{objectId},
+		</if>
+		<if test="interrupteur != null">
+			<choose>
+				<when test="interrupteur == true">
+					Interrupteur  = 1,
+				</when>
+				<otherwise>
+					Interrupteur  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="state != null">
+			state=#{state},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_job_control
+		WHERE id = #{id}
+	</delete>
+	
+	
+	<select id="findByObjectId" resultMap="JobControlResult" useCache="false">
+		SELECT * FROM pj_job_control WHERE is_deleted = 0 AND object_id = #{args[0],javaType=java.lang.Integer} AND name = #{args[1],javaType=java.lang.String}
+	</select>
+
+	<select id="findByName" resultMap="JobControlResult">
+	    SELECT * FROM pj_job_control WHERE is_deleted = 0 AND name = #{args[0],javaType=java.lang.String}
+    </select>
+	
+	
+</mapper>

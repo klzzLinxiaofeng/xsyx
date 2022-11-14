@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ScoreAnalysisDao">
+	
+	<!-- 根据学校ID和用户ID查找该学校该用户的相关学年学期信息 -->
+	<select id="findSchoolTermByUserId" resultType="map">
+		SELECT
+			ts.team_id,
+			IF (
+				st.gb_code = 1,
+				CONCAT(g.`name`, '上学期'),
+				CONCAT(g.`name`, '下学期')
+			) NAME,
+			 CONCAT(st.school_year, '学年') schoolName,
+			 st.school_year schoolYear,
+			 st.`code` termCode,
+			
+			IF (
+				st.`code` = stc.school_term_code,
+				'本学期',
+				CONCAT(st.school_year, '学年')
+			) schoolYearName,
+			 if(st.`code`=stc.school_term_code, 1, 0) is_current
+			FROM
+				pj_team_student ts
+			LEFT JOIN pj_grade g ON ts.grade_id = g.id
+			LEFT JOIN pj_school_term st ON g.school_year = st.school_year
+			AND g.school_id = st.school_id
+			LEFT JOIN pj_school_term_current stc ON stc.school_id = st.school_id
+			WHERE
+				ts.is_delete = 0
+			AND ts.in_state = 1
+			AND g.is_deleted = 0
+			AND st.is_delete = 0
+			<if test="args[0] != null">
+			AND g.school_id = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+			AND ts.user_id = #{args[1]}
+			</if>
+			ORDER BY st.`code`;
+	</select>
+	
+	<!-- 根据班级ID、学年、学期查找相应的考务信息(已发布成绩C端才能显示) -->
+	<select id="findAllExamWorksByTeam" resultType="java.util.Map" useCache="false">
+		SELECT
+			ew.id,
+			ew.`name`,
+			ew.is_joint_exam isJointExam,
+			ewts.publish_time publishTime,
+			ewts.subject_code subjectCode
+		FROM
+			pj_exam_works ew
+		LEFT JOIN pj_exam_works_team_subject ewts ON ew.id = ewts.exam_works_id
+		LEFT JOIN pj_exam_works_subject ews on ews.exam_works_id = ewts.exam_works_id and ewts.subject_code = ews.subject_code and ews.grade_id = ewts.grade_id
+		WHERE 1=1
+			and ews.stat_needed=1
+			and ewts.publish_teacher_id is not null
+			<if test="args[0] != null">
+				and ewts.team_id = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+				and ew.school_year = #{args[1]}
+			</if>
+			<if test="args[2] != null">
+				and ew.term_code = #{args[2]}
+			</if>
+			<if test="args[3] != null">
+				and ew.is_joint_exam = #{args[3]}
+			</if>
+			<if test="args[3] != null">
+				and ew.school_id = #{args[4]}
+			</if>
+			and ew.is_deleted = 0
+			and ewts.is_deleted = 0
+			GROUP BY ew.id
+			ORDER BY ew.exam_date_begin desc
+	</select>
+	<!-- 根据考务ID、学校ID、用户ID查找某个学生的成绩（班级测试FREE界面） -->
+	<select id="findTeamExamWorksByUserId" resultType="map" useCache="false">
+		SELECT
+			ew.id,
+			ew.`name`,
+			ewts.publish_time publishTime,
+			ewts.subject_code subjectCode,
+			es.`name` studentName,
+			es.number,
+			e.exam_date,
+			s.`name` subjectName,
+			est.full_score,
+			es.score,
+			est.average_score,
+			es.team_rank,
+			est.highest_score
+		FROM
+			pj_exam_works ew
+		LEFT JOIN pj_exam_works_team_subject ewts ON ew.id = ewts.exam_works_id
+		LEFT JOIN pj_exam_student es ON es.exam_id = ewts.exam_id
+		LEFT JOIN pj_exam e ON e.id = es.exam_id
+		LEFT JOIN pj_exam_stat est ON est.exam_id = e.id
+		LEFT JOIN pj_subject s ON s.`code` = ew.subject_code
+		WHERE 1 = 1
+		AND ew.is_deleted = 0
+		AND ewts.is_deleted = 0
+		AND e.is_delete = 0
+		and s.is_delete = 0
+		<if test="args[0] != null">
+		AND ew.id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+		AND s.school_id = #{args[1]}
+		</if>
+		<if test="args[2] != null">
+		AND es.user_id =  #{args[2]}
+		</if>
+	</select>
+	<!-- 查找班级、年级参与考试学生数 -->
+	<select id="findExamStudentCount" resultType="java.lang.Integer" useCache="false">
+		SELECT
+			count(*)
+		FROM
+			pj_exam_student es
+		WHERE
+		es.exam_id in (
+			SELECT e.id from pj_exam e
+			where 1=1
+				<if test="args[0] != null">
+				and e.id = #{args[0]}
+				</if>
+				<if test="args[1] != null">
+				and e.joint_exam_code = #{args[1]}
+				</if>
+		)
+		and es.score != -1
+	</select>
+	<!-- 查找个人分数趋势已经个人班内排名 -->
+	<select id="findFractionalTrendByUserId" resultType="java.util.Map" useCache="false">
+		SELECT
+			ew.name,
+			es.score,
+			pes.average_score,
+			es.team_rank
+		FROM
+			pj_exam_works_team_subject ewt
+		LEFT JOIN pj_exam_works ew ON ew.id = ewt.exam_works_id
+		LEFT JOIN pj_exam_student es ON es.exam_id = ewt.exam_id
+		LEFT JOIN pj_exam_stat pes on pes.exam_id = es.exam_id
+		WHERE 1=1
+		AND ew.is_deleted=0
+		and ewt.is_deleted = 0
+		and ew.is_joint_exam = 0
+		<if test="args[0] != null">
+		and es.user_id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND ewt.team_id = #{args[1]}
+		</if>
+		and ewt.publish_teacher_id is not null
+		ORDER BY ew.exam_date_begin
+		LIMIT 10
+	</select>
+	
+	<select id="findTeamRanksByExamId" resultType="map" useCache="false">
+		SELECT
+			es.user_id,es.team_rank teamRank,es.score
+		FROM
+			pj_exam_student es
+		WHERE
+		es.score != - 1
+		<if test="args[0] != null">
+		AND es.exam_id = #{args[0]}
+		order by es.team_rank desc
+		</if>
+	</select>
+	
+	<!-- 年级统考 -->
+	<select id="findExamWorksByUserId" resultType="java.util.Map" useCache="false">
+		SELECT
+			ew.id,
+			ew.exam_type examType,
+			ew.`name`,
+			e.publish_time,
+			ex.exam_date,
+			es.`name` studentName,
+			es.number,
+			s.`name` subjectName,
+			es.team_rank,
+			es.grade_rank,
+			es.score,
+			pes.average_score,
+			pes.full_score,
+			pes.student_count,
+			pes.exam_id,
+			e.team_id,
+			e.subject_code
+		FROM
+			pj_exam_works_team_subject e
+		LEFT JOIN pj_exam_works ew ON ew.id = e.exam_works_id
+		LEFT JOIN pj_exam ex on ex.id = e.exam_id
+		LEFT JOIN pj_exam_student es ON es.exam_id = e.exam_id
+		LEFT JOIN pj_exam_stat pes on pes.exam_id = e.exam_id
+		LEFT JOIN jc_subject s on s.`code` = e.subject_code
+		LEFT JOIN pj_exam_works_subject ews on ews.exam_works_id = e.exam_works_id and e.subject_code = ews.subject_code and ews.grade_id = e.grade_id
+		WHERE 1=1
+			and e.is_deleted = 0
+			and ew.is_deleted = 0
+			and ex.is_delete = 0
+			and ews.is_delteted = 0
+		<if test="args[3] != null">
+			and e.publish_teacher_id is not null
+		</if>
+		<if test="args[0] != null">
+			AND ew.id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND es.user_id = #{args[1]}
+		</if>
+		<if test="args[2] != null">
+			AND e.subject_code = #{args[2]}
+		</if>
+	</select>
+	
+	<select id="findUserExamTeamSubjectScore" resultType="map" useCache="false">
+		SELECT
+			s.`name` subjectName,
+			ws.score,
+			ws.team_rank,
+			ws.grade_rank,
+			ews.full_score,
+			es.average_score,
+			s.code subjectCode,
+			ws.team_rank_change,
+			ws.grade_rank_change,
+			ew.exam_id
+		FROM
+			pj_exam_works_team_subject ew
+		LEFT JOIN pj_exam_student ws
+		on ew.exam_id = ws.exam_id
+		LEFT JOIN pj_exam_works_subject ews
+		on ews.exam_works_id = ew.exam_works_id and ew.subject_code = ews.subject_code and ew.grade_id = ews.grade_id
+		LEFT JOIN pj_subject s
+		on s.`code` = ew.subject_code
+		and s.school_id = ew.school_id
+		LEFT JOIN pj_exam_stat es
+		on es.exam_id = ws.exam_id
+		where 1=1 
+		and ew.is_deleted = 0
+		and ews.is_delteted = 0
+		and s.is_delete = 0
+		and ews.stat_needed = 1
+		and ew.post_teacher_id is not null
+		<if test="args[0] != null">
+			and ew.exam_works_id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			and ws.user_id = #{args[1]}
+		</if>
+		
+		ORDER BY s.`code`
+	
+	</select>
+	<select id="findGradeTotalScore" resultType="java.lang.Float" useCache="false">
+		SELECT
+			IFNULL(sum(if(es.total_score > 0, es.total_score, 0)),0) gradeTotalScore
+		FROM
+			pj_exam_stat es
+		WHERE
+			es.exam_id IN (
+		SELECT
+			id
+		FROM
+			pj_exam
+		WHERE 1=1
+		<if test="args[0] != null">
+			and joint_exam_code = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND subject_code = #{args[1]}
+		</if>	
+		and is_delete = 0
+	)
+	</select>
+	
+	<select id="findUserExamWorksBySubjectCodeAndUserId" resultType="map" useCache="false">
+		SELECT
+			ew.`name`,
+			es.score,
+			pes.average_score,
+			es.team_rank,
+			ewts.exam_works_id,
+			es.grade_rank
+		FROM
+		pj_exam_works ew
+		LEFT JOIN pj_exam_works_team_subject ewts
+		on ew.id = ewts.exam_works_id
+		LEFT JOIN pj_exam_student es
+		on es.exam_id = ewts.exam_id
+		LEFT JOIN pj_exam_stat pes
+		on pes.exam_id = es.exam_id
+		where ew.is_deleted = 0
+		and ewts.is_deleted = 0
+		<if test="args[4] != null">
+			and ewts.publish_teacher_id is not null
+		</if>
+		<if test="args[0] != null">
+			and ew.is_joint_exam = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			and ewts.subject_code = #{args[1]}
+		</if>
+		<if test="args[2] != null">
+			and ewts.team_id = #{args[2]}
+		</if>
+		<if test="args[3] != null">
+			and es.user_id = #{args[3]}
+		</if>
+		ORDER BY ew.exam_date_begin desc, ew.id desc
+		LIMIT 10
+	</select>
+	
+	<!-- 根据考务ID、班级ID查找某个班级所有学生需要参与统计的全科总分  -->
+	<select id="findAllSubjectTotalScoreByExamWorksId" resultType="map" useCache="false">
+		SELECT
+			es.student_id,es.user_id,es.`name`,SUM(es.score) totalScore
+		FROM
+			pj_exam_works ew
+			LEFT JOIN pj_exam_works_team_subject ewts
+			on ewts.exam_works_id = ew.id
+			LEFT JOIN pj_exam_works_subject ews
+			on ews.exam_works_id = ewts.exam_works_id and ewts.grade_id = ews.grade_id and ews.subject_code = ewts.subject_code
+			LEFT JOIN pj_exam_student es
+			on es.exam_id = ewts.exam_id
+		WHERE
+			ew.is_deleted = 0
+			and ewts.is_deleted =0
+			and ews.is_delteted = 0
+			and ews.stat_needed = 1
+			<if test="args[0] != null">
+			and ew.id = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+			and ewts.team_id = #{args[1]}
+			</if>
+			and es.score !=-1
+			GROUP BY es.user_id;
+	</select>
+</mapper>

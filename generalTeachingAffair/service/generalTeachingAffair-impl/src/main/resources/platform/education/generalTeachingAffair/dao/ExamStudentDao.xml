@@ -1,0 +1,977 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ExamStudentDao">
+	<resultMap id="ExamStudentResult" type="platform.education.generalTeachingAffair.model.ExamStudent">
+		<result property="id" column="id" />
+		<result property="examId" column="exam_id" />
+		<result property="studentId" column="student_id" />
+		<result property="userId" column="user_id" />
+		<result property="number" column="number" />
+		<result property="name" column="name" />
+		<result property="examCardNum" column="exam_card_num" />
+		<result property="testType" column="test_type" />
+		<result property="score" column="score" />
+		<result property="degree" column="degree" />
+		<result property="teamRank" column="team_rank" />
+		<result property="gradeRank" column="grade_rank" />
+		<result property="sourceScore" column="source_score" />
+		<result property="averageScore" column="average_score" />
+		<result property="answerCount" column="answer_count" />
+		<result property="rightAnswerCount" column="right_answer_count" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="warningFactor" column="warning_factor" />
+		<result property="schoolNumber" column="school_number" />
+		<result property="sumTime" column="sum_time" />
+		<result property="teamRankChange" column="team_rank_change" />
+		<result property="gradeRankChange" column="grade_rank_change" />
+	</resultMap>
+
+	<resultMap id="ExamStudentVoResult" type="platform.education.generalTeachingAffair.vo.ExamStudentVo" extends="ExamStudentResult">
+		<result property="isFinished" column="is_finished" />
+		<result property="sumScore" column="sum_score" />
+		<result property="totalTime" column="total_time" />
+		<result property="rightPercent" column="right_percent" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ExamStudent">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_exam_student (
+			id, 
+			exam_id, 
+			student_id, 
+			user_id, 
+			school_number, 
+			number, 
+			name, 
+			exam_card_num, 
+			test_type, 
+			score, 
+			degree, 
+			team_rank, 
+			grade_rank, 
+			source_score, 
+			average_score, 
+			answer_count, 
+			right_answer_count, 
+			create_date, 
+			modify_date, 
+			warning_factor, 
+			team_rank_change, 
+			grade_rank_change, 
+			sum_time
+		)
+		VALUES (
+			#{id}, 
+			#{examId}, 
+			#{studentId}, 
+			#{userId}, 
+			#{schoolNumber}, 
+			#{number}, 
+			#{name}, 
+			#{examCardNum}, 
+			#{testType}, 
+			#{score}, 
+			#{degree}, 
+			#{teamRank}, 
+			#{gradeRank}, 
+			#{sourceScore}, 
+			#{averageScore}, 
+			#{answerCount}, 
+			#{rightAnswerCount}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			#{warningFactor}, 
+			#{teamRankChange}, 
+			#{gradeRankChange}, 
+			#{sumTime}
+		)
+	</insert>
+
+	<select id="read" resultMap="ExamStudentResult" useCache="false">
+		SELECT * FROM pj_exam_student WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findExamStudentByCondition" resultMap="ExamStudentResult" useCache="false">
+		SELECT * FROM pj_exam_student 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examId != null">
+				AND exam_id = #{args[0].examId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolNumber != null and args[0].schoolNumber != ''">
+				AND school_number = #{args[0].schoolNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].examCardNum != null and args[0].examCardNum != ''">
+				AND exam_card_num = #{args[0].examCardNum,javaType=java.lang.String}
+			</if>
+			<if test="args[0].testType != null and args[0].testType != ''">
+				AND test_type = #{args[0].testType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].degree != null and args[0].degree != ''">
+				AND degree = #{args[0].degree,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamRank != null">
+				AND team_rank = #{args[0].teamRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeRank != null">
+				AND grade_rank = #{args[0].gradeRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].sourceScore != null and args[0].sourceScore != ''">
+				AND source_score = #{args[0].sourceScore,javaType=java.lang.String}
+			</if>
+			<if test="args[0].averageScore != null">
+				AND average_score = #{args[0].averageScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].answerCount != null">
+				AND answer_count = #{args[0].answerCount,javaType=Integer}
+			</if>
+			<if test="args[0].rightAnswerCount != null">
+				AND right_answer_count = #{args[0].rightAnswerCount,javaType=Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].warningFactor != null">
+				AND warning_factor = #{args[0].warningFactor,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].teamRankChange != null">
+				AND team_rank_change = #{args[0].teamRankChange,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeRankChange != null">
+				AND grade_rank_change = #{args[0].gradeRankChange,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].sumTime != null">
+				AND sum_time = #{args[0].sumTime,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_exam_student 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examId != null">
+				AND exam_id = #{args[0].examId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolNumber != null and args[0].schoolNumber != ''">
+				AND school_number = #{args[0].schoolNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].examCardNum != null and args[0].examCardNum != ''">
+				AND exam_card_num = #{args[0].examCardNum,javaType=java.lang.String}
+			</if>
+			<if test="args[0].testType != null and args[0].testType != ''">
+				AND test_type = #{args[0].testType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].degree != null and args[0].degree != ''">
+				AND degree = #{args[0].degree,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamRank != null">
+				AND team_rank = #{args[0].teamRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeRank != null">
+				AND grade_rank = #{args[0].gradeRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].sourceScore != null and args[0].sourceScore != ''">
+				AND source_score = #{args[0].sourceScore,javaType=java.lang.String}
+			</if>
+			<if test="args[0].averageScore != null">
+				AND average_score = #{args[0].averageScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].answerCount != null">
+				AND answer_count = #{args[0].answerCount,javaType=Integer}
+			</if>
+			<if test="args[0].rightAnswerCount != null">
+				AND right_answer_count = #{args[0].rightAnswerCount,javaType=Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].warningFactor != null">
+				AND warning_factor = #{args[0].warningFactor,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].teamRankChange != null">
+				AND team_rank_change = #{args[0].teamRankChange,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeRankChange != null">
+				AND grade_rank_change = #{args[0].gradeRankChange,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].sumTime != null">
+				AND sum_time = #{args[0].sumTime,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ExamStudentResult" useCache="false">
+		SELECT * FROM pj_exam_student WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ExamStudent">
+		UPDATE pj_exam_student
+		SET 
+		<if test="examId != null">
+			exam_id=#{examId},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="schoolNumber != null">
+			school_number=#{schoolNumber},
+		</if>
+		<if test="number != null">
+			number=#{number},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="examCardNum != null">
+			exam_card_num=#{examCardNum},
+		</if>
+		<if test="testType != null">
+			test_type=#{testType},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="degree != null">
+			degree=#{degree},
+		</if>
+		<if test="teamRank != null">
+			team_rank=#{teamRank},
+		</if>
+		<if test="gradeRank != null">
+			grade_rank=#{gradeRank},
+		</if>
+		<if test="sourceScore != null">
+			source_score=#{sourceScore},
+		</if>
+		<if test="averageScore != null">
+			average_score=#{averageScore},
+		</if>
+		<if test="answerCount != null">
+			answer_count=#{answerCount},
+		</if>
+		<if test="rightAnswerCount != null">
+			right_answer_count=#{rightAnswerCount},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="warningFactor != null">
+			warning_factor=#{warningFactor},
+		</if>
+		<if test="teamRankChange != null">
+			team_rank_change=#{teamRankChange},
+		</if>
+		<if test="gradeRankChange != null">
+			grade_rank_change=#{gradeRankChange},
+		</if>
+		<if test="sumTime != null">
+			sum_time=#{sumTime},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_exam_student
+		WHERE id = #{id}
+	</delete>
+	<!-- 功能描述：根据examId查询出与其相关的所有学生成绩名单 (2016-01-07) -->
+	<select id="findExamStudentsByExamId" resultMap="ExamStudentResult" useCache="false">
+		SELECT * FROM pj_exam_student  WHERE exam_id = #{args[0],javaType=java.lang.Integer}  ORDER BY score
+	</select>
+	
+	<!-- 功能描述：查询某个学期、某个班级和某个科目的考试学生成绩名单(2016-01-07) -->
+	<select id="findExamStudents" resultMap="ExamStudentResult" useCache="false">
+		SELECT ex.* FROM pj_exam_student ex, pj_exam e WHERE ex.exam_id = e.id
+		<if test="args[0]!=null and args[0]!=''">
+			AND school_year = #{args[0],javaType=java.lang.String}
+		</if>
+		<if test="args[1]!=null and args[1]!=''">
+			AND term_value = #{args[1],javaType=java.lang.String}
+		</if>
+		<if test="args[2]!=null and args[2]!=''">
+			AND team_id = #{args[2],javaType=java.lang.Integer}
+		</if>
+		<if test="args[3]!=null and args[3]!=''">
+			AND subject_code = #{args[3],javaType=java.lang.String}
+		</if>
+	</select>
+	
+	<!-- 功能描述：根据examId计算出与其相关的所有学生成绩总分 (2016-01-15) -->
+	<select id="countTeamTotalScore" resultType="java.lang.Long" useCache="false">
+		SELECT SUM(score) FROM pj_exam_student WHERE exam_id = #{args[0],javaType=java.lang.Integer}
+		AND score &gt;= 0
+	</select>
+	
+	<!-- Function : 查询某次考试人数    date : 2016年1月26日 -->
+	<select id="countTotalStudent" resultType="java.lang.Long" useCache="false">
+		SELECT COUNT(id) FROM pj_exam_student WHERE exam_id = #{args[0],javaType=java.lang.Integer}
+		AND (test_type='01' or test_type='11' or test_type ='12')
+	</select>
+	
+	
+	<resultMap id="ScoreRankResultVo" type="platform.education.generalTeachingAffair.vo.CommonScoreRank">
+		<result property="level1" column="level1" />
+		<result property="level2" column="level2" />
+		<result property="level3" column="level3" />
+		<result property="level4" column="level4" />
+	</resultMap>
+	
+	<!-- Function : 查询成绩的三率 date : 2016年1月26日  arg[1]-->
+	<select id="countScoreRate" resultMap="ScoreRankResultVo" useCache="false">
+		SELECT  
+			<if test="args[1]!=null and args[2]!=null">
+			sum(CASE when score &gt;=#{args[2],javaType=java.lang.Float} and score &lt;=#{args[1],javaType=java.lang.Float} then 1 else 0 end)   AS level1, 
+			</if>
+			<if test="args[2]!=null and args[3]!=null">
+			sum(CASE when score &gt;=#{args[3],javaType=java.lang.Float} and score &lt;#{args[2],javaType=java.lang.Float} then 1 else 0 end)   AS level2, 
+			</if>
+			<if test="args[3]!=null and args[4]!=null">
+			sum(CASE when score &gt;=#{args[4],javaType=java.lang.Float} and score &lt;#{args[3],javaType=java.lang.Float} then 1 else 0 end)   AS level3, 
+			</if>
+			<if test="args[4]!=null">
+  			sum(CASE when score &lt;#{args[4],javaType=java.lang.Float} then 1 else 0 end)   AS level4  
+  			</if>
+			from pj_exam_student WHERE exam_id=#{args[0],javaType=java.lang.Integer}
+			AND score &gt;= 0; 
+	</select>
+	
+	<!-- Function : 更新某次考试排名 date : 2016年1月27日 -->
+	<update id="updateTeamRank" parameterType="java.lang.Integer">
+		UPDATE pj_exam_student t1,
+		(select c.id,c.score,
+		(select count(id)+1 from pj_exam_student 
+		where score>c.score and exam_id=#{args[0],javaType=java.lang.Integer} ) as rank 
+		from pj_exam_student c  where c.exam_id=#{args[0],javaType=java.lang.Integer} )AS t2
+		SET t1.team_rank = t2.rank
+		WHERE t1.id = t2.id
+	</update>
+	
+	<update id="updateGradeRank">
+		UPDATE pj_exam_student t1,
+		(select c.id,c.score,
+		(select count(id)+1 from pj_exam_student 
+		where score>c.score and (
+		<foreach collection="args[0]" item="item" open="" close="" separator="OR">  
+			exam_id = #{item} 
+		</foreach> 
+		) ) as rank 
+		from pj_exam_student c  where 
+		<foreach collection="args[0]" item="item" open="" close="" separator="OR">  
+			exam_id = #{item} 
+		</foreach> 
+		)as t2
+		SET t1.grade_rank = t2.rank
+		WHERE t1.id=t2.id 
+	</update>
+	
+	
+	<select id="findExamStudentByExamIdAndUserId" resultMap="ExamStudentResult" useCache="false">
+		SELECT * FROM pj_exam_student WHERE 1=1 
+		<if test="args[0] != null">
+			and exam_id=#{args[0]}
+		</if>
+		<if test="args[1] != null">
+		  AND user_id = #{args[1]}
+		</if>
+	</select>
+	
+	<update id="updateExamStudents">
+		UPDATE pj_exam_student es,
+		 (
+			SELECT
+				up.score,
+				up.user_id
+			FROM
+				pa_user_paper up
+			WHERE 1=1
+				<if test="args[0] != null">
+		  			AND up.paper_uuid =#{args[0]}
+				</if>
+				<if test="args[1] != null">
+		  			AND up.owner_id =#{args[1]}
+				</if>
+				<if test="args[2] != null">
+		  			AND up.type =#{args[2]}
+				</if>
+				group by up.user_id
+		) a
+		SET es.score = a.score
+		WHERE 1=1
+			<if test="args[3] != null">
+		  		AND es.exam_id =#{args[3]}
+			</if>
+			and es.user_id = a.user_id
+	</update>
+	
+	<!-- 批量更新得分 -->
+	
+	<update id="batchUpdateExamStudents">
+	<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">
+		UPDATE pj_exam_student es,
+		 (
+			SELECT
+				up.score,
+				up.user_id
+			FROM
+				pa_user_paper up
+			WHERE 1=1
+			  			AND up.paper_uuid =#{item.paperUuid}
+			  			AND up.owner_id =#{item.ownerId}
+			  			AND up.type =#{item.paperType}
+				group by up.user_id
+		) a
+		SET es.score = a.score
+		WHERE 1=1
+		  		AND es.exam_id =#{item.examId}
+			and es.user_id = a.user_id
+     </foreach>
+    </update>
+    
+    
+    <update id="batchUpdateExamStudentAnswerCount">
+	<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">
+		UPDATE pj_exam_student es,
+		 (
+			SELECT
+				count(*) answerCount,
+				up.user_id
+			FROM
+				pa_user_question up
+			WHERE 1=1
+				
+			  			AND up.paper_uuid =#{item.paperUuid}
+			  			AND up.owner_id =#{item.ownerId}
+			  			AND up.type =#{item.paperType}
+				
+				GROUP BY up.user_id
+		) a
+		SET 
+			es.answer_count = a.answerCount
+		WHERE 1=1
+			  		   AND es.exam_id =#{item.examId}
+			and es.user_id = a.user_id
+                </foreach>
+	</update>
+    
+    
+    <update id="batchUpdateExamStudentCorrectAnswerCount">
+	<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">
+		UPDATE pj_exam_student es,
+		 (
+			SELECT
+				count(*) answerCount,
+				up.user_id
+			FROM
+				pa_user_question up
+			WHERE 1=1
+				
+			  			AND up.paper_uuid =#{item.paperUuid}
+			  			AND up.owner_id =#{item.ownerId}
+			  			AND up.type =#{item.paperType}
+			  			AND up.is_correct = 1
+				
+				GROUP BY up.user_id
+		) a
+		SET 
+			es.answer_count = a.answerCount
+		WHERE 1=1
+			  			AND es.exam_id =#{item.examId}
+			and es.user_id = a.user_id
+        </foreach>
+	</update>
+	
+	
+    <update id="batchUpdateTeamRank">
+		<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">
+		UPDATE pj_exam_student t1,
+ 	(
+	SELECT
+		c.id,
+		c.score,
+		(
+			SELECT
+				count(id) + 1
+			FROM
+				pj_exam_student
+			WHERE
+				score > c.score
+			  			AND es.exam_id =#{item.examId}
+			
+			) as rank 
+			FROM
+				pj_exam_student c
+			WHERE 
+			 1=1
+			  			AND c.exam_id =#{item.examId}
+				
+				)AS t2
+			SET t1.team_rank = t2.rank
+			WHERE
+				t1.id = t2.id
+         </foreach>
+	</update>
+    
+	<update id="updateExamStudentAnswerCount">
+		UPDATE pj_exam_student es,
+		 (
+			SELECT
+				count(*) answerCount,
+				up.user_id
+			FROM
+				pa_user_question up
+			WHERE 1=1
+				
+				<if test="args[0] != null">
+		  			AND up.paper_uuid =#{args[0]}
+				</if>
+				<if test="args[1] != null">
+		  			AND up.owner_id =#{args[1]}
+				</if>
+				<if test="args[2] != null">
+		  			AND up.type =#{args[2]}
+				</if>
+				<if test="args[3] != null">
+		  			AND up.is_correct =#{args[3]}
+				</if>
+				GROUP BY up.user_id
+		) a
+		SET 
+		<if test="args[3] != null">
+			es.right_answer_count = a.answerCount
+		</if>
+		<if test="args[3] == null">
+			es.answer_count = a.answerCount
+		</if>
+		
+		WHERE 1=1
+			<if test="args[4] != null">
+		  		AND es.exam_id =#{args[4]}
+			</if>
+			and es.user_id = a.user_id
+	</update>
+	<select id="findExamStudentHighestScoreByExamId" resultType="java.lang.Float">
+		SELECT max(es.score) from pj_exam_student es where exam_id = #{args[0]}
+	
+	</select>
+				
+	<select id="findExamStudentLowestScoreByExamId" resultType="java.lang.Float">
+		SELECT min(es.score) from pj_exam_student es where exam_id = #{args[0]}  and es.score != -1
+	</select>
+	
+	<!-- 20170522 杆。 -->
+	<select id="findExamStudentTeamRank" resultType="map">
+		SELECT
+		c.id,
+		c.score,
+		c.user_id userId,
+		(
+			SELECT
+				count(id) + 1
+			FROM
+				pj_exam_student
+			WHERE
+				score > c.score
+			  	AND exam_id =#{args[0]}
+			
+			) as rank 
+			FROM
+				pj_exam_student c
+			WHERE 
+			 1=1
+			 AND c.exam_id =#{args[0]}
+	</select>
+	
+		
+<update id="batchUpdateExamStudentScore" parameterType="java.util.List">
+		UPDATE pj_exam_student SET
+		score =
+		<foreach collection="args[0]" item="item" index="index" separator=" " open="CASE id" close="END">
+		WHEN #{item.id} THEN #{item.score}
+		</foreach>
+		,team_rank =
+		<foreach collection="args[0]" item="item" index="index" separator=" " open="CASE id" close="END">
+		WHEN #{item.id} THEN #{item.teamRank}
+		</foreach>
+		WHERE id in
+		<foreach collection="args[0]" index="index" item="item" separator="," open="(" close=")">
+			#{item.id}
+		</foreach>
+	</update>
+	
+	
+	<update id="batchUpdateExamStudentGradeRankByScore" parameterType="java.util.List">
+		UPDATE pj_exam_student SET
+		grade_rank =
+		<foreach collection="args[0]" item="item" index="index" separator=" " open="CASE id" close="END">
+		WHEN #{item.id} THEN #{item.teamRank}
+		</foreach>
+		WHERE id in
+		<foreach collection="args[0]" index="index" item="item" separator="," open="(" close=")">
+			#{item.id}
+		</foreach>
+	</update>
+	
+	<update id="batchUpdateExamStudentTeamRank">
+		UPDATE pj_exam_student t1,
+ 		(
+			SELECT
+			c.id,
+			c.score,
+			(
+				SELECT
+					count(id) + 1
+				FROM
+					pj_exam_student
+				WHERE
+					score > c.score
+				AND exam_id in
+				<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+					#{item}
+				</foreach>
+				  ) as rank 
+				FROM
+					pj_exam_student c
+				WHERE
+					c.exam_id in
+					<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+					#{item}
+					</foreach>
+					 
+					 )AS t2
+				SET t1.team_rank = t2.rank
+			WHERE
+				t1.id = t2.id
+	</update>
+	<update id="batchUpdateExamStudentCorrectAnswerCountNew">
+		UPDATE pj_exam_student es,
+		 (
+			SELECT
+				count(*) answerCount,
+				up.user_id
+			FROM
+				pa_user_question up
+			WHERE 1=1
+				
+				<if test="args[1] != null">
+		  			AND up.paper_uuid =#{args[1]}
+				</if>
+				<if test="args[2] != null">
+		  			AND up.owner_id =#{args[2]}
+				</if>
+				<if test="args[3] != null">
+		  			AND up.type =#{args[3]}
+				</if>
+		  			AND up.is_correct = 1 
+				
+				GROUP BY up.user_id
+		) a
+		SET 
+		
+			es.right_answer_count = a.answerCount
+		
+		WHERE 
+		  		 es.exam_id in 
+		  		 <foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+			#{item}
+		</foreach>
+			
+			and es.user_id = a.user_id
+	</update>
+	
+	<update id="batchUpdateExamStudentAnswerCountNew">
+		UPDATE pj_exam_student es,
+		 (
+			SELECT
+				count(*) answerCount,
+				up.user_id
+			FROM
+				pa_user_question up
+			WHERE 1=1
+				
+				<if test="args[1] != null">
+		  			AND up.paper_uuid =#{args[1]}
+				</if>
+				<if test="args[2] != null">
+		  			AND up.owner_id =#{args[2]}
+				</if>
+				<if test="args[3] != null">
+		  			AND up.type =#{args[3]}
+				</if>
+				
+				GROUP BY up.user_id
+		) a
+		SET 
+		
+			es.answer_count = a.answerCount
+		
+		WHERE 
+		  		 es.exam_id in 
+		  		<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+			#{item}
+		</foreach>
+			
+			and es.user_id = a.user_id
+	</update>
+	
+	<update id="batchUpdateExamStudentGradeRank">
+		UPDATE pj_exam_student t1,
+		(select c.id,c.score,
+		(select count(id)+1 from pj_exam_student 
+		where score>c.score and (
+		exam_id in 
+		<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+			#{item}
+		</foreach>
+		
+		) ) as rank 
+		from pj_exam_student c  where 
+		exam_id in 
+		<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+			#{item}
+		</foreach>
+		)as t2
+		SET t1.grade_rank = t2.rank
+		WHERE t1.id=t2.id 
+	</update>
+	
+	<select id="countTotalStudentByExamIds" resultType="map" useCache="false">
+		SELECT exam_id,COUNT(id) FROM pj_exam_student WHERE 
+ 			exam_id in  
+		<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+			#{item}
+		</foreach>
+		AND (test_type='01' or test_type='11')
+	</select>
+	
+	<select id="findExamStudentHighestScoreByExamIdObj" resultType="map">
+		SELECT exam_id,max(es.score) from pj_exam_student es where exam_id in
+		<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+			#{item}
+		</foreach>
+		
+	
+	</select>
+	<select id="findExamStudentLowestScoreByExamIdObj" resultType="map">
+		SELECT exam_id,min(es.score) from pj_exam_student es where exam_id in
+		
+		<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+			#{item}
+		</foreach>
+	</select>
+	
+	<delete id="deleteByExamId">
+	
+	DELETE FROM pj_exam_student            WHERE exam_id=#{args[0]}	
+	
+	</delete>
+	<insert id="createBatch">
+		INSERT INTO pj_exam_student (
+			id, 
+			exam_id, 
+			student_id, 
+			user_id, 
+			number, 
+			name, 
+			exam_card_num, 
+			test_type, 
+			score, 
+			degree, 
+			team_rank, 
+			grade_rank, 
+			source_score, 
+			average_score, 
+			answer_count, 
+			right_answer_count, 
+			create_date, 
+			modify_date, 
+			warning_factor,
+			school_number,
+			team_rank_change,
+			grade_rank_change,
+			sum_time
+		)
+		VALUES 
+		<foreach collection="args[0]" item="item" index="index" separator="," >  
+		(
+			#{item.id}, 
+			#{item.examId}, 
+			#{item.studentId}, 
+			#{item.userId}, 
+			#{item.number}, 
+			#{item.name}, 
+			#{item.examCardNum}, 
+			#{item.testType}, 
+			#{item.score}, 
+			#{item.degree}, 
+			#{item.teamRank}, 
+			#{item.gradeRank}, 
+			#{item.sourceScore}, 
+			#{item.averageScore}, 
+			#{item.answerCount}, 
+			#{item.rightAnswerCount}, 
+			#{item.createDate}, 
+			#{item.modifyDate}, 
+			#{item.warningFactor},
+			#{item.schoolNumber},
+			#{item.teamRankChange},
+			#{item.gradeRankChange},
+			#{item.sumTime}
+			
+		)
+		</foreach>
+	</insert>
+<select id="findExamStudentFinishByExamIds"  resultMap="ExamStudentResult">
+		SELECT ps.* from pj_exam_student ps 
+
+
+		WHERE  ps.score!=-1
+
+
+AND ps.exam_id IN
+(
+<foreach collection="args[0]" item="item" index="index" separator="," >  
+#{item}
+</foreach>
+)
+GROUP BY ps.user_id
+	
+	</select>	<select id="findExamStudentByJointExamCode" resultMap="ExamStudentResult" useCache="false">
+		SELECT
+			s.*
+		FROM
+			pj_exam_student s
+		LEFT JOIN pj_exam e
+		on s.exam_id = e.id 
+		where 1=1
+		<if test="args[0] != null">
+			AND e.joint_exam_code = #{args[0]}
+		</if> 
+		<if test="args[1] != null">
+			AND e.subject_code = #{args[1]}
+		</if> 
+		AND s.score != -1
+	</select>
+	<select id="findGradeRankByScoreJointCode" resultMap="ExamStudentResult" useCache="false">
+		SELECT
+			*
+		FROM
+			pj_exam_student es
+		WHERE
+			es.exam_id IN (
+		SELECT
+			id
+		FROM
+			pj_exam
+		WHERE
+			is_delete = 0
+			<if test="args[1] != null">
+				AND joint_exam_code = #{args[1]}
+			</if>
+			<if test="args[2] != null">
+				AND subject_code = #{args[2]}
+			</if>
+		)
+			<if test="args[0] != null">
+				AND es.score = #{args[0]}
+			</if>
+	</select>
+
+	<select id="findExamStudentVoByExamIds" resultMap="ExamStudentVoResult">
+		SELECT
+		    id,
+			IF( COUNT( score ) > SUM( IF ( score = - 1, 0, 1 )), 0, 1 ) AS is_finished,
+			user_id ,
+			name ,
+			SUM(score) AS sum_score ,
+			SUM(sum_time) AS total_time
+		FROM
+			`pj_exam_student`
+		WHERE
+			`exam_id` IN
+			<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+				#{item}
+			</foreach>
+		GROUP BY
+			user_id
+	</select>
+
+
+	<select id="findExamStudentVoByExamIdsWithType" resultMap="ExamStudentVoResult">
+		SELECT id, exam_id, student_id, user_id, `number`, `name`,
+		score, team_rank, grade_rank, answer_count, right_answer_count, sum_time,
+		IFNULL((right_answer_count/answer_count * 100), 0) AS right_percent,
+		SUM(IF(score != -1, score, 0)) AS sum_score,
+		SUM(IF(sum_time != -1, sum_time, 0)) AS total_time
+		FROM pj_exam_student
+		WHERE exam_id IN
+		<foreach collection="args[0]" item="item" open="(" close=")"  separator=",">
+			#{item}
+		</foreach>
+		<choose>
+			<when test="args[1] != null and args[1] == 1">
+				GROUP BY user_id
+				ORDER BY sum_score DESC
+			</when>
+			<otherwise>
+				GROUP BY id
+			</otherwise>
+		</choose>
+	</select>
+</mapper>

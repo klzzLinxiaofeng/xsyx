@@ -1,0 +1,442 @@
+@charset "utf-8";
+body{
+    margin: 0;
+    padding: 0;
+    font-family: '微软雅黑';
+}
+a{
+    text-decoration: none;
+}
+p{
+    margin: 0;
+}
+ul{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style-type: none;
+}
+.clear{
+    clear: both;
+}
+.manage{
+    padding: 15px;
+    background: #e6eaeb;
+}
+.count{
+    height: 40px;
+    line-height: 40px;
+    background: #fff;
+    color: #3f3e3e;
+    font-family: '微软雅黑';
+    font-size: 14px;
+    padding-left: 15px;
+    margin-bottom:10px;
+}
+.count a{
+    float: right;
+    width: 60px;
+    height: 25px;
+    line-height: 25px;
+    background: #efad4d;
+    color: #fff;
+    text-align: center;
+    margin: 8px 15px;
+}
+.covariance{
+    border-bottom:1px #cfd0d0 solid;
+    background: #fff;
+    color: #3f3e3e;
+    font-family: '微软雅黑';
+    font-size: 16px;
+    width: 100%;
+    height: 45px;
+    margin-bottom: 10px;
+}
+.covariance a{
+    height: 45px;
+    padding: 0 20px;
+    float: left;
+    line-height: 45px;
+    color: #5d5d5d;
+}
+.covariance a:hover{
+    background:#91c7ae;
+    color: #fff;
+}
+.project{
+    margin-left:90px;
+    padding-top: 20px;
+}
+.project select{
+    width: 100px;
+    height: 27px;
+    float: left;
+    margin-right: 15px;
+}
+.project a{
+    padding: 0 10px;
+    height: 28px;
+    line-height: 28px;
+    background: #2196F3;
+    float: left;
+    border-radius: 5px;
+    color: #fff;
+}
+.term{
+    margin: 0px 25px 20px 0;
+    float: left;
+    font-family: '微软雅黑';
+    font-size: 14px;
+    color: #3f3e3e;
+}
+.term input{
+    float: left;
+    margin: 4px;
+}
+.cartogram{
+    background: #f9f9f9;
+    padding-bottom: 20px;
+}
+
+.statistics1,.statistics2{
+    /* width: 590px; */
+    height: 466px;
+    width:45%;
+    border:1px #e9e9e9 solid;
+    border-radius: 0 0 5px 5px;
+    margin-top: 35px;
+    background: #fff;
+    position: relative;
+}
+.statistics1{
+    float: left;
+    margin-left: 4%;
+}
+
+.statistics2{
+    float: right;
+    margin-right: 4%;
+}
+.zw_ts{
+    position:absolute;
+    width: 100%;
+    height: 416px;
+    line-height: 416px;
+    text-align: center;
+    font-size: 30px;
+    color:#444;
+    font-family: "微软雅黑";
+    z-index: 0;
+    left: 0;
+    top: 50px;
+}
+svg,canvas{
+    z-index: 1;
+    position: relative;
+    background-color: #fff;
+}
+.statistics1 h3,.statistics2 h3,.statistics h3{
+    height: 50px;
+    margin: 0;
+    padding-left:15px;
+    background: #91c7ae;
+    font-family: '微软雅黑';
+    font-size: 16px;
+    color: #fff;
+    line-height: 50px;
+}
+.total{
+    height:35px;
+    border-left: 2px #efad4d solid;
+    margin: 18px 0 0 13px;
+}
+.total p{
+    color: #145c97;
+    font-size: 13px;
+    font-family: '微软雅黑';
+    margin-left: 5px;
+}
+#yuan,#main,#age,#classes{
+    width:375px;
+    height:247px;
+}
+#column,#distribution,#cake,#contrast,#accumulate,#fraction,#answer1,#answer2,#position{
+    /* width: 590px; */
+    width:100%;
+    height: 415px;
+}
+#radar2,#comprehensive,#height_contrast,#folding{
+    height:415px;
+    width: 930px;
+}
+.cartogram h1{
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    margin:0;
+    background: #91c7ae;
+    color: #fff;
+    font-size: 24px;
+}
+a.switch{
+    background: #91c7ae;
+    color: #fff;
+}
+.basic{
+    margin:15px 0;
+    float: left;
+}
+.basic ul li{
+    border:1px #ccc solid;
+    margin:0 0 15px 30px;
+    width: 110px;
+    float: left;
+    height: 50px;
+}
+.basic ul li p{
+    font-size: 12px;
+    color: #666;
+    padding-left:10px;
+    margin:0;
+}
+.basic ul li span{
+    text-align: center;
+    display: block;
+    font-size: 16px;
+    color: #2196f3;
+    line-height: 32px;
+    height: 32px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  	word-wrap:normal;
+}
+.circle{
+    float: left;
+    margin:0 30px;
+}
+.circle ul li{
+    width: 95px;
+    height: 95px;
+    border:8px solid #d4ab6a;
+    border-radius: 50%;
+    text-align: center;
+    color: #5d5d5d;
+    float: left;
+    margin:0 0 15px 15px;
+}
+.circle ul li p{
+    line-height: 28px;
+    font-size: 14px;
+    padding-top: 10px;
+    font-weight: bold;
+}
+.circle ul li span{
+    font-size: 20px;
+    font-weight: bold;
+}
+.knowledge{
+    margin: 35px 150px;
+    position: relative;
+}
+.knowledge2{
+    margin: 35px 321px;
+    position: relative;
+}
+.knowledge ul li,.grade ul li,.cognition ul li,.number ul li,.knowledge2 ul li{
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    position: absolute;
+}
+li.temperature{
+    width: 75px;
+    height: 75px;
+    background: #9cd7c4;
+    right: 0;
+    top: 32px;
+}
+li.temperature p{
+    padding-top: 13px;
+}
+li.molecule{
+    width: 100px;
+    height: 100px;
+    background: #b7db92;
+    top: 70px;
+    right: 83px;
+}
+li.molecule p,li.quality p{
+    padding-top: 30px;
+}
+li.quality{
+    width: 95px;
+    height: 95px;
+    background:#ffcc99;
+    right: -20px;
+    top: 118px;
+}
+li.crystal{
+    width: 80px;
+    height: 80px;
+    background:#d7d7d7;
+    top: 160px;
+}
+li.crystal p{
+    padding-top: 20px;
+}
+li.change{
+    width: 130px;
+    height: 130px;
+    background: #ff6a8f;
+    left: 88px;
+    top: 180px;
+}
+li.change p{
+    padding-top: 48px;
+}
+.grade{
+    position: relative;
+    margin: 130px 130px 0 105px;
+}
+li.easily,li.remember{
+    width: 115px;
+    height: 115px;
+    background: #d7d7d7;
+    left: 0;
+}
+li.easily p,li.remember p{
+    padding-top: 35px;
+}
+li.secondary,li.understand{
+    width: 100px;
+    height: 100px;
+    background: #b7db92;
+    left: 135px;
+    top: 10px;
+}
+li.secondary p,li.understand p,li.analysis p{
+    padding-top: 30px;
+}
+li.difficult,li.application{
+    width: 75px;
+    height: 75px;
+    background: #9cd7c4;
+    top: 25px;
+    right: 15px;
+}
+li.difficult p,li.application p{
+    padding-top: 12px;
+}
+.cognition{
+    margin: 130px 32px 0;
+    position: relative;
+}
+li.application{
+    width: 75px;
+    height: 75px;
+    background: #9cd7c4;
+    top: 25px;
+    left: 255px;
+}
+li.analysis{
+    width: 95px;
+    height: 95px;
+    background: #ffcc99;
+    right: 83px;
+    top: 10px;
+}
+li.synthetical{
+    width: 65px;
+    height: 65px;
+    background: #ff6a8f;
+    right: 0;
+    top: 23px;
+}
+li.synthetical p{
+    padding-top: 15px;
+}
+.error{
+    margin:30px;
+}
+.error table{
+    width: 100%;
+    border-top: 1px #ccc solid;
+    border-left: 1px #ccc solid;
+}
+.error table tbody tr td,.error table thead tr td{
+    border-right: 1px #ccc solid;
+    border-bottom: 1px #ccc solid;
+    text-align: center;
+    font-size: 16px;
+    height: 35px;
+}
+.error table thead tr{
+    font-weight: bold;
+    background: #99d6c2;
+}
+.number{
+    margin-top: 130px;
+}
+.number ul li{
+    background: #b7db92;
+    width: 85px;
+    height: 85px;
+    float: left;
+    margin-left: 40px;
+    position: inherit;
+}
+.number ul li p{
+    padding-top: 23px;
+}
+.grade-statistics ul li{
+    float: left;
+    width: 165px;
+    height: 165px;
+    border: 13px #d4ab6a solid;
+    border-radius: 50%;
+    font-weight: bold;
+    text-align: center;
+    margin: 50px 0 20px 32px;
+    color: #333;
+}
+.class-statistics ul li,.ranking ul li{
+    float: left;
+    width: 165px;
+    height: 165px;
+    border:13px #6da398 solid;
+    border-radius: 50%;
+    font-weight: bold;
+    text-align: center;
+    margin: 50px 0 20px 32px;
+    color: #333;
+}
+.grade-statistics ul li p,.class-statistics ul li p{
+    padding-top: 40px;
+    font-size: 26px;
+    line-height: 38px;
+}
+.grade-statistics ul li span,.class-statistics ul li span{
+    font-size: 34px;
+}
+.ranking ul li p{
+    padding-top: 26px;
+    color: #c27452;
+    font-size: 42px;
+    margin: 20px 0;
+}
+.ranking ul li span{
+    color: #175548;
+    font-size: 24px;
+}
+.statistics{
+    width: 930px;
+    min-height:466px;
+    border:1px #e9e9e9 solid;
+    border-radius: 0 0 5px 5px;
+    margin: 35px auto 0;
+    background: #fff;
+}

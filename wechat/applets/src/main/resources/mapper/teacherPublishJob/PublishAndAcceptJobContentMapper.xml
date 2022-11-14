@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.PublishAndAcceptJob.dao.PublishAndAcceptJobContentDao">
+    <resultMap id="PublishJobContentResult" type="com.xunyunedu.PublishAndAcceptJob.pojo.PublishAndAcceptJobContentPojo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="tid" jdbcType="INTEGER" property="tId"/>
+        <result column="subject_id" jdbcType="INTEGER" property="subjectId"/>
+        <result column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <result column="student_id" jdbcType="INTEGER" property="studentId"/>
+        <result column="team_id" jdbcType="INTEGER" property="teamId"/>
+        <result column="school_id" jdbcType="INTEGER" property="schoolId"/>
+        <result column="picture_uuid" jdbcType="INTEGER" property="pictureUUID"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="is_delete" property="isDelete" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="team_name" property="teamName"/>
+        <result column="subject_name" property="subjectName"/>
+        <result column="teacher_name" property="teacherName"/>
+        <result column="is_stats" property="isStats"/>
+        <result column="is_home" property="isHome"/>
+        <result column="grade_id" property="gradeId"/>
+        <result column="school_year" property="schoolYear"/>
+        <result column="school_trem" property="schoolTrem"/>
+    </resultMap>
+
+    <resultMap id="TeamTeacherResult" type="com.xunyunedu.PublishAndAcceptJob.pojo.TeamTeacherPojo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="tid" javaType="INTEGER" property="tId"/>
+        <result column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <result column="team_id" jdbcType="INTEGER" property="teamId"/>
+        <result column="name" jdbcType="VARCHAR" property="teacherName"/>
+        <result column="subject_name" jdbcType="VARCHAR" property="subjectName"/>
+        <result column="subject_code" jdbcType="CHAR" property="subjectCode"/>
+        <result column="is_deleted" jdbcType="BIT" property="isDelete"/>
+        <result column="create_date"  property="createDate"/>
+        <result column="modify_date"  property="modifyDate"/>
+    </resultMap>
+
+    <resultMap id="selectSubject" type="com.xunyunedu.PublishAndAcceptJob.pojo.SubjectPojo">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+    </resultMap>
+
+    <select id="findPublishJobContent" resultMap="PublishJobContentResult">
+        SELECT p.*,pt.name as team_name,ptc.name as teacher_name,ps.name as subject_name
+        FROM pj_publish_job_content p
+        inner join pj_team pt on pt.id=p.team_id
+        inner join pj_teacher ptc on ptc.id=p.teacher_id
+        inner join pj_subject ps on ps.id=p.subject_id
+        WHERE
+        <if test="teacherId != null">p.teacher_id = #{teacherId}</if>
+        <if test="id != null">p.id = #{id}</if>
+        ORDER BY
+        p.create_date desc
+
+
+    </select>
+
+    <insert id="addPublishJobContent" useGeneratedKeys="true" keyProperty="id">
+ insert into pj_publish_job_content(teacher_id,subject_id,school_id,picture_uuid,content,team_id,create_date,modify_date,student_id,is_delete,is_stats,is_home,grade_id,school_trem,school_year)
+         values(#{teacherId},#{subjectId},#{schoolId},#{pictureUUID},#{content},#{teamId},#{createDate},#{modifyDate},null,0,0,#{isHome},#{gradeId},#{schoolTrem},#{schoolYear})
+    </insert>
+
+    <insert id="createStudent">
+  insert into zy_publish_job_content_student(pj_job_id,student_id,is_delete,create_time,modiy_time,zhuangtai,fenshu,dengji,pingyu)
+         value(#{jobId},#{studentId},0,NOW(),NOW(),0,null,null,null)
+    </insert>
+
+    <update id="deleteByPrimaryKey" >
+          update  pj_publish_job_content set is_delete=1 where id=#{id}
+    </update>
+    <delete id="deleteByStudent">
+         update  zy_publish_job_content_student set is_delete=1 where pj_job_id=#{id}
+    </delete>
+
+    <update id="updatePublishJobContent">
+        UPDATE pj_publish_job_content
+        <set>
+            <if test="subjectId != null">
+                subject_id=#{subjectId},
+            </if>
+            <if test="teamId != null and teamId != ''">
+                team_id=#{teamId},
+            </if>
+            <if test="teacherId != null">
+                teacher_id=#{teacherId},
+            </if>
+            <if test="schoolId != null">
+                school_id=#{schoolId},
+            </if>
+            <if test="pictureUUID != null and pictureUUID != ''">
+                picture_uuid=#{pictureUUID},
+            </if>
+            <if test="content != null and content != ''">
+                content=#{content},
+            </if>
+            <if test="createDate != null">
+                create_date=#{createDate},
+            </if>
+            <if test="modifyDate != null">
+                modify_date=#{modifyDate},
+            </if>
+            <if test="gradeId != null">
+                grade_id=#{gradeId},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="findAcceptJobContentAll" resultMap="PublishJobContentResult">
+        select * from pj_publish_job_content where FIND_IN_SET(#{teamId},team_id)>0
+        <if test="subjectId != null"> and subject_id = #{subjectId}</if>
+        order by create_date desc
+    </select>
+
+    <select id="findAcceptJobContent" resultMap="PublishJobContentResult">
+        SELECT
+            pc.content,
+            pc.create_date,
+            ps.NAME teacher_name,
+            ps.subject_name,
+            pc.id,
+            ps.school_year
+        FROM
+            pj_publish_job_content pc
+            LEFT JOIN pj_team_teacher ps ON pc.team_id = ps.team_id
+            LEFT JOIN pj_team_student pss ON pc.team_id = pss.team_id
+        WHERE
+            pss.student_id = #{studentId}
+            AND pc.teacher_id = ps.teacher_id
+            AND ps.is_delete = 0
+            AND pss.is_delete = 0
+            AND pc.subject_id = ps.subject_code and pc.subject_id = #{subjectId}
+    </select>
+
+    <select id="findContentDetailsById" resultMap="PublishJobContentResult">
+
+
+        SELECT  pt.name team_name,t.name teacher_name,p.id,p.team_id,
+
+        p.subject_id,p.create_date,ptt.mobile,
+
+        p.picture_uuid,t.subject_name,p.content,t.school_year
+
+        from pj_team_teacher t,pj_publish_job_content p,pj_team pt,pj_teacher ptt
+
+        where p.id = #{id,jdbcType=INTEGER} and p.subject_id = t.subject_code
+
+        and pt.id = t.team_id and t.teacher_id = ptt.id
+
+				and t.is_delete = 0  and pt.is_delete =0 and ptt.is_delete = 0
+
+				and p.team_id = pt.id
+
+				GROUP BY p.id
+    </select>
+
+    <select id="findSubject" resultMap="selectSubject">
+
+        select ps.name,ps.`code` from pj_subject ps
+        where is_delete = 0
+        <if test="schoolId != null">
+            and  school_id = #{schoolId}
+        </if>
+        <if test="id != null">
+            and  id = #{id}
+        </if>
+        <if test="code != null"> and code = #{code} </if>
+
+    </select>
+
+    <select id="findTeamSubject" resultMap="PublishJobContentResult">
+        SELECT
+         t.NAME teacher_name, t.subject_name,pt.NAME team_name
+        FROM pj_team_teacher t
+             JOIN pj_team pt ON pt.id = t.team_id
+        WHERE t.teacher_id = #{teacherId}  AND t.is_delete = 0  and pt.is_delete=0
+        AND t.subject_code = #{subjectId}
+        and pt.id in
+        <foreach collection="team" index="index" item="item" open="(" separator="," close=")">
+             #{item}
+        </foreach>
+    </select>
+
+    <select id="getTeacherStatusCount" resultType="java.lang.Integer">
+        SELECT count(pt.id) FROM pj_teacher pt
+        join pj_team_teacher ptt on pt.id = ptt.teacher_id
+        join pj_subject ps on ps.code = ptt.subject_code
+        where pt.school_id = #{schoolId} and pt.is_delete =0
+        and ptt.is_delete = 0  and ps.school_id = #{schoolId} and ps.is_delete = 0
+        and pt.id = #{teacherId}
+    </select>
+
+
+</mapper>

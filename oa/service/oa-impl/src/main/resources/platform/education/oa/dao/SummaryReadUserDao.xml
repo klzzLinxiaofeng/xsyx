@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.SummaryReadUserDao">
+
+	<resultMap id="SummaryReadUserResult" type="platform.education.oa.model.SummaryReadUser">
+		<result property="id" column="id" />
+		<result property="summaryId" column="summary_id" />
+		<result property="userId" column="user_id" />
+		<result property="userImage" column="user_image" />
+		<result property="userName" column="user_name" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.SummaryReadUser">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_summary_read_user (
+			id, 
+			summary_id, 
+			user_id, 
+			user_image, 
+			user_name, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{summaryId}, 
+			#{userId}, 
+			#{userImage}, 
+			#{userName}, 
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="SummaryReadUserResult" useCache="false">
+		SELECT * FROM oa_summary_read_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findSummaryReadUserByCondition" resultMap="SummaryReadUserResult" useCache="false">
+		SELECT * FROM oa_summary_read_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].summaryId != null">
+				AND summary_id = #{args[0].summaryId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userImage != null and args[0].userImage != ''">
+				AND user_image = #{args[0].userImage,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userName != null and args[0].userName != ''">
+				AND user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_summary_read_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].summaryId != null">
+				AND summary_id = #{args[0].summaryId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userImage != null and args[0].userImage != ''">
+				AND user_image = #{args[0].userImage,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userName != null and args[0].userName != ''">
+				AND user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="SummaryReadUserResult" useCache="false">
+		SELECT * FROM oa_summary_read_user WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+		<select id="findBySummaryAndUserId" resultMap="SummaryReadUserResult" useCache="false">
+		SELECT * FROM oa_summary_read_user WHERE  1=1
+		AND summary_id = #{args[0],javaType=java.lang.Integer}
+		AND user_id = #{args[1],javaType=java.lang.Integer}
+	</select>
+	<update id="update" parameterType="platform.education.oa.model.SummaryReadUser">
+		UPDATE oa_summary_read_user
+		SET 
+		<if test="summaryId != null">
+			summary_id=#{summaryId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="userImage != null">
+			user_image=#{userImage},
+		</if>
+		<if test="userName != null">
+			user_name=#{userName},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_summary_read_user
+		WHERE id = #{id}
+	</delete>
+</mapper>

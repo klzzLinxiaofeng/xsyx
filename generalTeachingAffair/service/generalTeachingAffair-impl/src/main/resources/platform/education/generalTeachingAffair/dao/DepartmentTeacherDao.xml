@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+		namespace="platform.education.generalTeachingAffair.dao.DepartmentTeacherDao">
+
+	<resultMap id="departmentTeacherResult"
+			   type="platform.education.generalTeachingAffair.model.DepartmentTeacher">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="departmentId" column="department_id" />
+		<result property="departmentName" column="department_name" />
+		<result property="teacherId" column="teacher_id" />
+		<result property="teacherName" column="teacher_name" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="orderNumber" column="order_number" />
+	</resultMap>
+
+	<resultMap id="departmentTeacherVoResult" type="platform.education.generalTeachingAffair.vo.DepartmentTeacherVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="departmentId" column="department_id" />
+		<result property="departmentName" column="department_name" />
+		<result property="teacherId" column="teacher_id" />
+		<result property="teacherName" column="teacher_name" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="orderNumber" column="order_number" />
+		<result property="persionId" column="persion_id" />
+		<result property="photoUuid" column="photo_uuid" />
+		<result property="departmentIds" column="departmentIds" />
+		<result property="departmentNames" column="departmentNames" />
+		<result property="teacherUserId" column="teacherUserId" />
+	</resultMap>
+
+	<resultMap id="TeacherVoResult" type="platform.education.generalTeachingAffair.vo.TeacherVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="persionId" column="persion_id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="name" column="name" />
+		<result property="alias" column="alias" />
+		<result property="sex" column="sex" />
+		<result property="jobNumber" column="job_number" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="workBeginDate" column="work_begin_date" />
+		<result property="qualification" column="qualification" />
+		<result property="occupationCode" column="occupation_code" />
+		<result property="position" column="position" />
+		<result property="mobile" column="mobile" />
+		<result property="telephone" column="telephone" />
+		<result property="idCardNumber" column="id_card_number" />
+		<result property="postStaffing" column="post_staffing" />
+		<result property="jobState" column="job_state" />
+		<result property="isExternal" column="is_external" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="departmentId" column="deptId" />
+		<result property="departmentName" column="deptName" />
+		<result property="email" column="email" />
+		<result property="listOrder" column="listOrder" />
+	</resultMap>
+
+	<insert id="create"
+			parameterType="platform.education.generalTeachingAffair.model.DepartmentTeacher">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+				   keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_department_teacher (
+		id,
+		school_id,
+		department_id,
+		department_name,
+		teacher_id,
+		teacher_name,
+		is_deleted,
+		create_date,
+		modify_date,
+		order_number
+		)
+		VALUES (
+		#{id},
+		#{schoolId},
+		#{departmentId},
+		#{departmentName},
+		#{teacherId},
+		#{teacherName},
+		<choose>
+			<when test="isDeleted != null and  isDeleted == true">
+				1,
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{createDate},
+		#{modifyDate},
+		#{orderNumber}
+		)
+	</insert>
+
+	<select id="read" resultMap="departmentTeacherResult" useCache="false">
+		SELECT * FROM pj_department_teacher WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findDepartmentTeacherByCondition" resultMap="departmentTeacherResult"
+			useCache="false">
+		SELECT * FROM pj_department_teacher
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentName != null and args[0].departmentName != ''">
+				AND department_name = #{args[0].departmentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teacherName != null and args[0].teacherName != ''">
+				AND teacher_name = #{args[0].teacherName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				AND is_deleted =
+				<choose>
+					<when test="args[0].isDeleted == true">
+						1
+					</when>
+					<otherwise>
+						0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+	<select id="findByDeptId" resultMap="departmentTeacherResult"
+			useCache="false">
+		SELECT * FROM pj_department_teacher WHERE
+		department_id = #{args[0]}
+		AND is_deleted=0
+	</select>
+
+	<select id="findByDepartmentId" resultMap="departmentTeacherResult"
+			useCache="false">
+		SELECT * FROM pj_department_teacher WHERE is_deleted=0
+		AND department_id = #{args[0]} order by order_number ASC
+	</select>
+
+
+
+	<select id="findByTeacherId" resultMap="departmentTeacherResult"
+			useCache="false">
+		SELECT * FROM pj_department_teacher WHERE teacher_id = #{args[0]}
+	</select>
+
+	<select id="findDepartmentTeacherByConditionMore" resultMap="departmentTeacherResult"
+			useCache="false">
+		SELECT  dt.* FROM pj_department_teacher dt
+		LEFT JOIN pj_department d  ON d.id=dt.department_id
+		<if test="args[0] != null">
+			WHERE 1=1 AND dt.is_deleted=0
+			<if test="args[0].id != null">
+				AND dt.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND dt.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND dt.department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentName != null and args[0].departmentName != ''">
+				AND dt.department_name = #{args[0].departmentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND dt.teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teacherName != null and args[0].teacherName != ''">
+				AND dt.teacher_name = #{args[0].teacherName,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+
+	<select id="findDepartmentTeacherByCondition1" resultMap="departmentTeacherResult"
+			useCache="false">
+		SELECT  dt.* FROM pj_department_teacher dt
+		LEFT JOIN pj_teacher t  ON t.id=dt.teacher_id
+		<if test="args[0] != null">
+			WHERE 1=1 AND dt.is_deleted=0 AND t.is_delete=0
+			<if test="args[0].id != null">
+				AND dt.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND dt.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND dt.department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departmentName != null and args[0].departmentName != ''">
+				AND dt.department_name = #{args[0].departmentName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND dt.teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teacherName != null and args[0].teacherName != ''">
+				AND dt.teacher_name LIKE CONCAT('%', #{args[0].teacherName,javaType=java.lang.String},'%')
+			</if>
+		</if>
+	</select>
+
+
+
+
+
+	<select id="findById" resultMap="departmentTeacherResult" useCache="false">
+		SELECT * FROM pj_department_teacher WHERE 1=1 and id = #{args[0],javaType=java.lang.Integer} AND is_deleted = 0
+	</select>
+
+	<select id="findUnique" resultMap="departmentTeacherResult" useCache="false">
+		SELECT * FROM pj_department_teacher WHERE teacher_id = #{args[0]} AND department_id = #{args[1]} AND is_deleted = 0
+	</select>
+
+	<update id="update"
+			parameterType="platform.education.generalTeachingAffair.model.DepartmentTeacher">
+		UPDATE pj_department_teacher
+		SET
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="departmentId != null">
+			department_id=#{departmentId},
+		</if>
+		<if test="departmentName != null">
+			department_name=#{departmentName},
+		</if>
+		<if test="teacherId != null">
+			teacher_id=#{teacherId},
+		</if>
+		<if test="teacherName != null">
+			teacher_name=#{teacherName},
+		</if>
+		<if test="isDeleted != null">
+			is_deleted =
+			<choose>
+				<when test="isDeleted == true">
+					1,
+				</when>
+				<otherwise>
+					0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date = #{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date = #{modifyDate},
+		</if>
+		<if test="orderNumber != null">
+			order_number = #{orderNumber},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_department_teacher
+		WHERE id = #{id}
+	</delete>
+
+	<!-- 	根据教师ID和学校ID查找教师所在的所有部门  2016-1-27 -->
+	<select id="findDepartmentTeacherByTeacherIdAndSchoolId" resultMap="departmentTeacherResult" useCache="false">
+		SELECT * FROM pj_department_teacher WHERE teacher_id = #{args[0],javaType=java.lang.Integer} and school_id = #{args[1],javaType=java.lang.Integer} AND is_deleted = 0
+	</select>
+
+	<!--
+		@function 用于图片管理模块，查询pj_person表内照片
+		@date 2016年03月03日
+	 -->
+	<select id="findDepartmentTeacherVoByDepartmentId" resultMap="departmentTeacherVoResult" useCache="false">
+		select a.* ,pp.photo_uuid from (select pdt.* ,pt.`persion_id` from `pj_department_teacher` pdt left join pj_teacher pt
+		on pdt.`teacher_id` = pt.`id` where pdt.`is_deleted`= 0) a left join `pj_person` pp on a.persion_id = pp.`id`
+		where a.`department_id`=#{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<!--
+		@function 统计某个部门的教师没有图片
+		@date 2016年03月04日
+	 -->
+	<select id="countNoPhotoDepartmentId" resultType="java.lang.Long" useCache="false">
+		select count(*) from (select pdt.* ,pt.`persion_id` from `pj_department_teacher` pdt left join pj_teacher pt
+		on pdt.`teacher_id` = pt.`id` where pdt.`is_deleted`= 0) a left join `pj_person` pp on a.persion_id = pp.`id`
+		where a.`department_id`=#{args[0],javaType=java.lang.Integer} and (pp.`photo_uuid` is null or pp.`photo_uuid`='')
+	</select>
+
+	<!--
+		@function 统计一个部门所有教师的人数
+		@date 2016年03月04日
+	 -->
+	<select id="countByDepartmentId" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_department_teacher WHERE 1=1
+		AND is_deleted=0
+		AND department_id = #{args[0]}
+	</select>
+
+	<!--
+		@function 照片统计模块 查询出一个部门没有照片的人的姓名
+		@date 2016年03月04日
+	 -->
+	<select id="findNoPhotoName" resultType="java.lang.String" useCache="false">
+		select group_concat(a.teacher_name) from (select pdt.* ,pt.`persion_id` from `pj_department_teacher` pdt left join pj_teacher pt
+		on pdt.`teacher_id` = pt.`id` where pdt.`is_deleted`= 0) a left join `pj_person` pp on a.persion_id = pp.`id`
+		where a.`department_id`=#{args[0]} and (pp.`photo_uuid` is null or pp.`photo_uuid`='')
+	</select>
+
+	<!--
+		@function 照片统计模块 查询出一个部门有照片的人的姓名
+		@date 2016年03月04日
+	 -->
+	<select id="findHasPhotoName" resultType="java.lang.String" useCache="false">
+		select group_concat(a.teacher_name) from (select pdt.* ,pt.`persion_id` from `pj_department_teacher` pdt left join pj_teacher pt
+		on pdt.`teacher_id` = pt.`id` where pdt.`is_deleted`= 0) a left join `pj_person` pp on a.persion_id = pp.`id`
+		where a.`department_id`=#{args[0]} and pp.`photo_uuid` is not null and  pp.`photo_uuid` !=''
+	</select>
+
+	<select id="findIncrementByTeacherId" resultMap="departmentTeacherResult" useCache="false">
+		SELECT * FROM pj_department_teacher
+		WHERE 1=1
+		<if test="args[0] != null">
+			AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND teacher_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null">
+			AND modify_date > #{args[2],javaType=java.util.Date}
+		</if>
+		<if test="args[3] != null">
+			<choose>
+				<when test="args[3] == true">
+					AND is_deleted = 1
+				</when>
+				<otherwise>
+					AND is_deleted = 0
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+
+	<select id="findTeacherInfoByDepartmentId" resultMap="TeacherVoResult" useCache="false">
+		select pdt.order_number listOrder,pdt.modify_date,pt.* from pj_department_teacher pdt left join pj_department pd on pdt.department_id = pd.id
+		left join pj_teacher pt on pdt.teacher_id = pt.id
+		where 1 = 1
+		and pdt.is_deleted = 0
+		and pd.is_delete = 0
+		and pt.is_delete = 0
+		<if test="args[0] != null">
+			AND pdt.department_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+	</select>
+
+	<select id="findDepartmentTeacherBySchool" resultMap="departmentTeacherVoResult" useCache="false">
+		SELECT t.id teacher_id, t.user_id teacherUserId, t.`name` teacher_name,
+			GROUP_CONCAT(dt.department_name) departmentNames, GROUP_CONCAT(dt.department_id) departmentIds
+		FROM pj_teacher t
+		LEFT JOIN pj_department_teacher dt ON t.id = dt.teacher_id
+		WHERE t.is_delete = 0
+		AND (dt.is_deleted = 0 OR dt.is_deleted IS NULL)
+		AND t.school_id = #{args[0],javaType=java.lang.Integer}
+		GROUP BY t.id
+	</select>
+
+</mapper>

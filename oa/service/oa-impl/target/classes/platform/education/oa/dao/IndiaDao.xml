@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.IndiaDao">
+
+	<resultMap id="IndiaResult" type="platform.education.oa.model.India">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="departmentId" column="department_id" />
+		<result property="title" column="title" />
+		<result property="uploadFile" column="upload_file" />
+		<result property="indiaStatus" column="india_status" />
+		<result property="remark" column="remark" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.India">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_india (
+			id, 
+			school_id, 
+			user_id, 
+			user_name, 
+			department_id, 
+			title, 
+			upload_file, 
+			india_status, 
+			remark, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{userId}, 
+			#{userName}, 
+			#{departmentId}, 
+			#{title}, 
+			#{uploadFile}, 
+			#{indiaStatus}, 
+			#{remark}, 
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="IndiaResult" useCache="false">
+		SELECT * FROM oa_india WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findIndiaByCondition" resultMap="IndiaResult" useCache="false">
+		SELECT * FROM oa_india 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null and args[0].userName != ''">
+				AND user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].uploadFile != null and args[0].uploadFile != ''">
+				AND upload_file = #{args[0].uploadFile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].indiaStatus != null and args[0].indiaStatus != ''">
+				AND india_status = #{args[0].indiaStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_india 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null and args[0].userName != ''">
+				AND user_name = #{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].uploadFile != null and args[0].uploadFile != ''">
+				AND upload_file = #{args[0].uploadFile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].indiaStatus != null and args[0].indiaStatus != ''">
+				AND india_status = #{args[0].indiaStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="IndiaResult" useCache="false">
+		SELECT * FROM oa_india WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.India">
+		UPDATE oa_india
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="userName != null">
+			user_name=#{userName},
+		</if>
+		<if test="departmentId != null">
+			department_id=#{departmentId},
+		</if>
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="uploadFile != null">
+			upload_file=#{uploadFile},
+		</if>
+		<if test="indiaStatus != null">
+			india_status=#{indiaStatus},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_india
+		WHERE id = #{id}
+	</delete>
+</mapper>

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.service.dao.OutSchoolActivityDao">
+
+    <resultMap id="OutSchoolActivityResult" type="platform.education.service.model.OutSchoolActivity">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="name" column="name"/>
+        <result property="location" column="location"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="accessory" column="accessory"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+
+        <result property="state" column="state"/>
+        <result property="summary" column="summary"/>
+        <result property="summaryImgs" column="summary_imgs"/>
+		 <result property="userName" column="user_name"/>
+        <result property="refuseCause" column="refuse_cause"/>
+    </resultMap>
+
+    <resultMap id="OutSchoolActivityVoResult" type="platform.education.service.vo.OutSchoolActivityVo">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="name" column="name"/>
+        <result property="location" column="location"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="accessory" column="accessory"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="status" column="status"/>
+        <result property="feedback" column="feedback"/>
+    </resultMap>
+
+    <resultMap id="OutSchoolActivityPictureVoResult" type="platform.education.service.vo.OutSchoolActivityPictureVo">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="name" column="name"/>
+        <result property="location" column="location"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="accessory" column="accessory"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="status" column="status"/>
+        <result property="feedback" column="feedback"/>
+        <result property="accessoryName" column="accessory_name"/>
+        <result property="accessoryUrl" column="accessory_url"/>
+        <result property="summary" column="summary"/>
+        <collection property="pictureVoList" column="{activityId=id}" ofType="platform.education.service.vo.PictureVo" select="platform.education.service.dao.OutSchoolActivitySummaryPicDao.findPictureVoByActivityId"/>
+    </resultMap>
+
+    <resultMap id="OutSchoolActivityAndApprovalVoResult" type="platform.education.service.vo.OutSchoolActivityAndApprovalVo">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="name" column="name"/>
+        <result property="location" column="location"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="accessory" column="accessory"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="status" column="status"/>
+        <result property="approvalName" column="approval_name"/>
+        <result property="approvalAlias" column="approval_alias"/>
+        <result property="fileName" column="file_name"/>
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.service.model.OutSchoolActivity">
+<!--        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">-->
+<!--            SELECT LAST_INSERT_ID() AS id-->
+<!--        </selectKey>-->
+        INSERT INTO at_out_school_activity (
+        id,
+        user_id,
+        school_id,
+        `name`,
+        location,
+        start_time,
+        end_time,
+        accessory,
+        description,
+        create_date,
+        modify_date,
+        `state`,
+        summary,
+        summary_imgs
+        )
+        VALUES (
+        #{id},
+        #{userId},
+        #{schoolId},
+        #{name},
+        #{location},
+        #{startTime},
+        #{endTime},
+        #{accessory},
+        #{description},
+        #{createDate},
+        #{modifyDate},
+        #{state},
+        #{summary},
+        #{summaryImgs}
+        )
+    </insert>
+
+    <select id="read" resultMap="OutSchoolActivityResult" useCache="false">
+        SELECT * FROM at_out_school_activity WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findOutSchoolActivityByCondition" resultMap="OutSchoolActivityResult" useCache="false">
+        SELECT * FROM at_out_school_activity
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].userId != null">
+                AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].schoolId != null">
+                AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND `name` LIKE CONCAT('%', #{args[0].name,javaType=java.lang.String}, '%')
+            </if>
+            <if test="args[0].location != null and args[0].location != ''">
+                AND location = #{args[0].location,javaType=java.lang.String}
+            </if>
+            <if test="args[0].startTime != null">
+                AND start_time = #{args[0].startTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].endTime != null">
+                AND end_time = #{args[0].endTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].accessory != null and args[0].accessory != ''">
+                AND accessory = #{args[0].accessory,javaType=java.lang.String}
+            </if>
+            <if test="args[0].description != null and args[0].description != ''">
+                AND description = #{args[0].description,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM at_out_school_activity
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].userId != null">
+                AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].schoolId != null">
+                AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND `name` LIKE CONCAT('%', #{args[0].name,javaType=java.lang.String}, '%')
+            </if>
+            <if test="args[0].location != null and args[0].location != ''">
+                AND location = #{args[0].location,javaType=java.lang.String}
+            </if>
+            <if test="args[0].startTime != null">
+                AND start_time = #{args[0].startTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].endTime != null">
+                AND end_time = #{args[0].endTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].accessory != null and args[0].accessory != ''">
+                AND accessory = #{args[0].accessory,javaType=java.lang.String}
+            </if>
+            <if test="args[0].description != null and args[0].description != ''">
+                AND description = #{args[0].description,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="OutSchoolActivityResult" useCache="false">
+        SELECT *
+        FROM at_out_school_activity
+        WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+
+    <update id="update" parameterType="platform.education.service.model.OutSchoolActivity">
+        UPDATE at_out_school_activity
+        SET
+        <if test="userId != null">
+            user_id=#{userId},
+        </if>
+        <if test="schoolId != null">
+            school_id=#{schoolId},
+        </if>
+        <if test="name != null">
+            `name`=#{name},
+        </if>
+        <if test="location != null">
+            location=#{location},
+        </if>
+        <if test="startTime != null">
+            start_time=#{startTime},
+        </if>
+        <if test="endTime != null">
+            end_time=#{endTime},
+        </if>
+        <if test="accessory != null">
+            accessory=#{accessory},
+        </if>
+        <if test="description != null">
+            description=#{description},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM at_out_school_activity
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findOutSchoolActivityVoByCondition" resultMap="OutSchoolActivityVoResult" useCache="false">
+        SELECT osa.*, osaa.`status`, osaa.feedback
+        FROM at_out_school_activity osa
+        LEFT JOIN at_out_school_activity_approval osaa ON osa.id = osaa.activity_id
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND osa.id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].userId != null">
+                AND osa.user_id = #{args[0].userId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].schoolId != null">
+                AND osa.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND osa.`name` LIKE CONCAT('%', #{args[0].name,javaType=java.lang.String}, '%')
+            </if>
+            <if test="args[0].location != null and args[0].location != ''">
+                AND osa.location = #{args[0].location,javaType=java.lang.String}
+            </if>
+            <if test="args[0].startTime != null">
+                AND osa.start_time = #{args[0].startTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].endTime != null">
+                AND osa.end_time = #{args[0].endTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].accessory != null and args[0].accessory != ''">
+                AND osa.accessory = #{args[0].accessory,javaType=java.lang.String}
+            </if>
+            <if test="args[0].description != null and args[0].description != ''">
+                AND osa.description = #{args[0].description,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null">
+                AND osa.create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND osa.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].approvalId != null">
+                AND osaa.user_id = #{args[0].approvalId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].status != null">
+                <choose>
+                    <when test="args[0].status &lt; 200">
+                        AND osaa.`status` &lt; 200
+                    </when>
+                    <otherwise>
+                        AND osaa.`status` &gt;= 200
+                    </otherwise>
+                </choose>
+            </if>
+        </if>
+        GROUP BY osaa.activity_id
+    </select>
+
+    <select id="findOutSchoolActivityVoById" resultMap="OutSchoolActivityPictureVoResult" useCache="false">
+        SELECT osa.*, osaa.`status`, osaa.feedback, ef.file_name AS accessory_name, ef.relative_path AS accessory_url, osas.content AS summary
+        FROM at_out_school_activity osa
+                 LEFT JOIN at_out_school_activity_approval osaa ON osa.id = osaa.activity_id
+                 LEFT JOIN at_out_school_activity_summary osas ON osa.id = osas.activity_id
+                 LEFT JOIN res_entity_file ef ON osa.accessory = ef.uuid
+        WHERE osa.id = #{args[0],javaType=java.lang.Integer}
+        GROUP BY osaa.activity_id
+    </select>
+
+    <select id="findOutSchoolActivityAndApprovalVoByCondition" resultMap="OutSchoolActivityResult" useCache="false">
+        SELECT *
+        FROM at_out_school_activity a
+        <where >
+            <if test="args[0].handleUserId != null">
+                AND a.handle_user_id = #{args[0].handleUserId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].state != null">
+                AND a.`state` = #{args[0].state,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].state == null">
+                AND a.`state` != 0
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND a.`name` LIKE CONCAT('%', #{args[0].name,javaType=java.lang.String}, '%')
+            </if>
+            <if test="args[0].startTime != null and args[0].startTime !='' and args[0].endTime != null and args[0].endTime !='' ">
+                and ( (#{args[0].startTime} >= a.start_time and a.end_time >= #{args[0].endTime}) or ( a.start_time >= #{args[0].startTime} and   #{args[0].endTime} >= a.end_time) or (a.start_time >= #{args[0].startTime} and #{args[0].endTime} >=a.start_time and a.end_time >=#{args[0].endTime}) or (#{args[0].startTime} >= a.start_time and a.end_time >=#{args[0].startTime} and #{args[0].endTime} >=a.end_time) )
+            </if>
+        </where>
+        order by a.create_date desc
+    </select>
+
+    <select id="findOutSchoolActivityByIdAndApprovalId" resultMap="OutSchoolActivityVoResult" useCache="false">
+        SELECT osa.*, osaa.`status`
+        FROM at_out_school_activity osa
+                 LEFT JOIN at_out_school_activity_approval osaa ON osa.id = osaa.activity_id
+        WHERE osa.id = #{args[0],javaType=java.lang.Integer}
+          AND osaa.user_id = #{args[1],javaType=java.lang.Integer}
+    </select>
+</mapper>

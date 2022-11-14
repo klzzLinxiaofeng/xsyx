@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.workAttendance.dao.PjTeamStudentDao">
+  <resultMap id="BaseResultMap" type="com.xunyunedu.workAttendance.model.PjTeamStudent">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="grade_id" jdbcType="INTEGER" property="gradeId" />
+    <result column="team_id" jdbcType="INTEGER" property="teamId" />
+    <result column="student_id" jdbcType="INTEGER" property="studentId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="join_date" jdbcType="TIMESTAMP" property="joinDate" />
+    <result column="finish_date" jdbcType="TIMESTAMP" property="finishDate" />
+    <result column="record_date" jdbcType="TIMESTAMP" property="recordDate" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="in_state" jdbcType="BIT" property="inState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, grade_id, team_id, student_id, user_id, `name`, `number`, join_date, finish_date, 
+    record_date, `position`, create_date, modify_date, is_delete, in_state
+  </sql>
+  <select id="findPjTeamStudentByStudentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pj_team_student
+    where student_id = #{studentId,jdbcType=INTEGER} and is_delete=0
+  </select>
+  <select id="findPjTeamStudentByTeamId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pj_team_student
+    where team_id = #{teamId,jdbcType=INTEGER} and is_delete=0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.xunyunedu.workAttendance.model.PjTeamStudentKey">
+    delete from pj_team_student
+    where id = #{id,jdbcType=INTEGER}
+      and grade_id = #{gradeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.workAttendance.model.PjTeamStudent" useGeneratedKeys="true">
+    insert into pj_team_student (grade_id, team_id, student_id, 
+      user_id, `name`, `number`, 
+      join_date, finish_date, record_date, 
+      `position`, create_date, modify_date, 
+      is_delete, in_state)
+    values (#{gradeId,jdbcType=INTEGER}, #{teamId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{number,jdbcType=INTEGER}, 
+      #{joinDate,jdbcType=TIMESTAMP}, #{finishDate,jdbcType=TIMESTAMP}, #{recordDate,jdbcType=TIMESTAMP}, 
+      #{position,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{modifyDate,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=BIT}, #{inState,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xunyunedu.workAttendance.model.PjTeamStudent" useGeneratedKeys="true">
+    insert into pj_team_student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gradeId != null">
+        grade_id,
+      </if>
+      <if test="teamId != null">
+        team_id,
+      </if>
+      <if test="studentId != null">
+        student_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="number != null">
+        `number`,
+      </if>
+      <if test="joinDate != null">
+        join_date,
+      </if>
+      <if test="finishDate != null">
+        finish_date,
+      </if>
+      <if test="recordDate != null">
+        record_date,
+      </if>
+      <if test="position != null">
+        `position`,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="modifyDate != null">
+        modify_date,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="inState != null">
+        in_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gradeId != null">
+        #{gradeId,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null">
+        #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null">
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="joinDate != null">
+        #{joinDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null">
+        #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordDate != null">
+        #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="inState != null">
+        #{inState,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunyunedu.workAttendance.model.PjTeamStudent">
+    update pj_team_student
+    <set>
+      <if test="teamId != null">
+        team_id = #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null">
+        student_id = #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        `number` = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="joinDate != null">
+        join_date = #{joinDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishDate != null">
+        finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordDate != null">
+        record_date = #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="position != null">
+        `position` = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyDate != null">
+        modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="inState != null">
+        in_state = #{inState,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+      and grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xunyunedu.workAttendance.model.PjTeamStudent">
+    update pj_team_student
+    set team_id = #{teamId,jdbcType=INTEGER},
+      student_id = #{studentId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      `name` = #{name,jdbcType=VARCHAR},
+      `number` = #{number,jdbcType=INTEGER},
+      join_date = #{joinDate,jdbcType=TIMESTAMP},
+      finish_date = #{finishDate,jdbcType=TIMESTAMP},
+      record_date = #{recordDate,jdbcType=TIMESTAMP},
+      `position` = #{position,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=BIT},
+      in_state = #{inState,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+      and grade_id = #{gradeId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.AdjustClassDao">
+
+    <resultMap id="AdjustClassResult" type="platform.education.oa.model.AdjustClass">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="reason" column="reason"/>
+        <result property="applicantId" column="applicant_id"/>
+        <result property="approverId" column="approver_id"/>
+        <result property="status" column="status"/>
+        <result property="approveDate" column="approve_date"/>
+        <result property="rejectionReason" column="rejection_reason"/>
+        <result property="createDate" column="create_date"/>
+        <result property="applyLesson" column="apply_lesson"/>
+        <result property="setLesson" column="set_lesson"/>
+        <result property="applyDate" column="apply_date"/>
+        <result property="setDate" column="set_date"/>
+        <result property="applicantName" column="applicant_name"/>
+        <result property="approverName" column="approver_name"/>
+        <result property="receivers" column="receivers"/>
+    </resultMap>
+
+    <resultMap id="AdjustClassVoResult" type="platform.education.oa.vo.AdjustClassVo">
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="reason" column="reason"/>
+        <result property="applicantId" column="applicant_id"/>
+        <result property="approverId" column="approver_id"/>
+        <result property="status" column="status"/>
+        <result property="approveDate" column="approve_date"/>
+        <result property="rejectionReason" column="rejection_reason"/>
+        <result property="createDate" column="create_date"/>
+        <result property="applyLesson" column="apply_lesson"/>
+        <result property="setLesson" column="set_lesson"/>
+        <result property="applyDate" column="apply_date"/>
+        <result property="setDate" column="set_date"/>
+        <result property="applicantName" column="applicant_name"/>
+        <result property="approverName" column="approver_name"/>
+        <result property="receivers" column="receivers"/>
+    </resultMap>
+
+    <select id="findAdjustClassByDate" resultMap="AdjustClassResult" useCache="false">
+        SELECT * FROM `oa_adjust_class` WHERE set_lesson LIKE concat('[%', '${args[0].applyLesson}', '%]') AND set_date = concat('${args[1]}') AND status = 0
+        UNION SELECT * FROM `oa_adjust_class` WHERE set_lesson LIKE concat('[%', '${args[0].setLesson}', '%]') AND set_date = concat('${args[2]}') AND status = 0
+    </select>
+
+    <select id="findAdjustClassByCondition" resultMap="AdjustClassResult" useCache="false">
+        SELECT * FROM oa_adjust_class
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].applicantId != null">
+                AND applicant_id = #{args[0].applicantId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].approverId != null">
+                AND approver_id = #{args[0].approverId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].searchWord != null and args[0].searchWord!=''">
+                AND CONCAT_WS(",",reason,applicant_id,rejection_reason) LIKE
+                CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+            </if>
+            <if test="args[0].status != null">
+                <choose>
+                    <when test="args[0].status == 0">
+                        AND status = 0
+                    </when>
+                    <otherwise>
+                        AND status != 0
+                    </otherwise>
+                </choose>
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT COUNT(*) FROM
+        ((SELECT ac.id FROM oa_adjust_class ac
+        <if test="args[0] != null">
+            WHERE 1 = 1
+            <if test="args[0].applicantId != null">
+                AND ac.applicant_id = #{args[0].applicantId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].id != null">
+                AND ac.id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].status != null">
+                AND ac.status = #{args[0].status,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND ac.create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].searchWord != null and args[0].searchWord!=''">
+                AND CONCAT_WS(",",ac.reason,ac.applicant_name,ac.approver_name,ac.rejection_reason) LIKE
+                CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+            </if>
+        </if>
+        )
+        UNION
+        (SELECT ac.id FROM oa_adjust_class ac
+        <if test="args[0] != null">
+            WHERE 1 = 1
+            <if test="args[0].approverId != null">
+                AND ac.approver_id = #{args[0].approverId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].id != null">
+                AND ac.id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].status != null">
+                AND ac.status = #{args[0].status,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].createDate != null">
+                AND ac.create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].searchWord != null and args[0].searchWord!=''">
+                AND CONCAT_WS(",",ac.reason,ac.applicant_name,ac.approver_name,ac.rejection_reason) LIKE
+                CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+            </if>
+        </if>
+        )) AS temp
+    </select>
+
+    <select id="findAdjustClassVoByCondition" resultMap="AdjustClassVoResult" useCache="false">
+        SELECT ac.* FROM oa_adjust_class ac
+        <if test="args[0] != null">
+            WHERE 1 = 1
+            <if test="args[0].approverId != null">
+                AND ac.approver_id = #{args[0].approverId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].searchWord != null and args[0].searchWord!=''">
+                AND CONCAT_WS(",",ac.reason,ac.applicant_name,ac.approver_name,ac.rejection_reason) LIKE
+                CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+            </if>
+            <if test="args[0].status != null and args[0].status == 0">
+                AND ac.status = 0
+            </if>
+            <if test="args[0].status != null and args[0].status == 1">
+                AND ac.status = 1
+            </if>
+            <if test="args[0].status != null and args[0].status == 2">
+                AND ac.status = 2
+            </if>
+            <if test="args[0].status != null and args[0].status == 3">
+                AND ac.status != 0
+            </if>
+            <if test="args[0].applicantId != null">
+                OR ac.applicant_id = #{args[0].applicantId,javaType=java.lang.Integer}
+                <if test="args[0].searchWord != null and args[0].searchWord!=''">
+                    AND CONCAT_WS(",",ac.reason,ac.applicant_name,ac.approver_name,ac.rejection_reason) LIKE
+                    CONCAT('%',#{args[0].searchWord,javaType=java.lang.String},'%')
+                </if>
+                <if test="args[0].status != null and args[0].status == 0">
+                    AND ac.status = 0
+                </if>
+                <if test="args[0].status != null and args[0].status == 1">
+                    AND ac.status = 1
+                </if>
+                <if test="args[0].status != null and args[0].status == 2">
+                    AND ac.status = 2
+                </if>
+                <if test="args[0].status != null and args[0].status == 3">
+                    AND ac.status != 0
+                </if>
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="AdjustClassResult" useCache="false">
+		SELECT * FROM oa_adjust_class WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+    <update id="updateReject" parameterType="platform.education.oa.model.AdjustClass">
+        UPDATE oa_adjust_class
+        SET id = #{id},
+        <if test="status != null">
+            status=#{status},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="title != null">
+            title=#{title},
+        </if>
+        <if test="reason != null">
+            reason=#{reason},
+        </if>
+        <if test="applicantId != null">
+            applicant_id=#{applicantId},
+        </if>
+        <if test="approverId != null">
+            approver_id=#{approverId},
+        </if>
+        <if test="approveDate != null">
+            approve_date=#{approveDate},
+        </if>
+        <if test="rejectionReason != null">
+            rejection_reason=#{rejectionReason},
+        </if>
+        <if test="applicantName != null ">
+            applicant_name=#{applicantName},
+        </if>
+        <if test="approverName != null">
+            approver_name=#{approverName},
+        </if>
+        <if test="applyLesson !=null">
+            apply_lesson = #{applyLesson},
+        </if>
+        <if test="setLesson != null">
+            set_lesson=#{setLesson},
+        </if>
+        <if test="applyDate != null ">
+            apply_date = #{applyDate},
+        </if>
+        <if test="setDate != null">
+            set_date=#{setDate}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

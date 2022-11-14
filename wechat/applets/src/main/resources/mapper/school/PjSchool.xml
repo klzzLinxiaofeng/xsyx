@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.school.dao.PjSchoolDao">
+    <resultMap id="ResultMap" type="com.xunyunedu.school.pojo.PjSchool">
+        <id property="id" column="id"/>
+        <result property="uuid" column="uuid"/>
+        <result property="name" column="name"/>
+        <result property="englishName" column="english_name"/>
+        <result property="code" column="code"/>
+        <result property="code2" column="code2"/>
+        <result property="stageScope" column="stage_scope"/>
+        <result property="schoolSystem" column="school_system"/>
+        <result property="schoolType" column="school_type"/>
+        <result property="runningType" column="running_type"/>
+        <result property="buildDate" column="build_date"/>
+        <result property="decorationDay" column="decoration_day"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="district" column="district"/>
+        <result property="street" column="street"/>
+        <result property="regionCode" column="region_code"/>
+        <result property="address" column="address"/>
+        <result property="zipcode" column="zipcode"/>
+        <result property="telephone" column="telephone"/>
+        <result property="websit" column="websit"/>
+        <result property="email" column="email"/>
+        <result property="fax" column="fax"/>
+        <result property="remark" column="remark"/>
+        <result property="entityIdBadge" column="entityId_badge"/>
+        <result property="entityIdImage" column="entityId_image"/>
+        <result property="enrollScope" column="enroll_scope"/>
+        <result property="cityType" column="city_type"/>
+        <result property="economyType" column="economy_type"/>
+        <result property="institutionCode" column="institution_code"/>
+        <result property="authority" column="authority"/>
+        <result property="corporation" column="corporation"/>
+        <result property="certificate" column="certificate"/>
+        <result property="schoolMaster" column="school_master"/>
+        <result property="partyCommittee" column="party_committee"/>
+        <result property="mainLanguage" column="main_language"/>
+        <result property="attributePlatform" column="attribute_platform"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+    <resultMap id="schoolTermResult" type="com.xunyunedu.school.pojo.SchoolTermCurrentVo">
+        <result property="id" column="id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="schoolYearId" column="school_year_id"/>
+        <result property="schoolYearName" column="school_year_name"/>
+        <result property="schoolYear" column="school_year"/>
+        <result property="schoolTermCode" column="school_term_code"/>
+        <result property="schoolTermName" column="school_term_name"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="finishDate" column="finish_date"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+    </resultMap>
+
+    <resultMap id="SchoolTermResult"
+               type="com.xunyunedu.team.pojo.SchoolTermPojo">
+        <result property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="schoolYearId" column="school_year_id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="name" column="name"/>
+        <result property="schoolYear" column="school_year"/>
+        <result property="gbCode" column="gb_code"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="finishDate" column="finish_date"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="ResultMap">
+    select * from pj_school where is_deleted = 0 and id = #{id}
+  </select>
+
+    <select id="findSchoolTermCurrentBySchoolId" resultMap="schoolTermResult">
+        SELECT * FROM pj_school_term_current
+        <where>
+            <if test="schoolId != null">
+                AND school_id = #{schoolId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findTermBycontidion" resultMap="SchoolTermResult">
+        SELECT pst.* FROM `pj_school_term` pst, pj_school_term_current pstc
+        where pst.school_id = #{schoolId} and pstc.school_id = #{schoolId} and pstc.school_term_code = pst.code
+    </select>
+
+    <select id="findTermCurrent" resultType="com.xunyunedu.team.vo.TermTeamVo">
+        select pjt.id as teamId,pjt.grade_id gradeId,tempTable.teacherId,pstc.id termId, pstc.school_term_code code,pjt.school_id schoolId
+        from pj_team pjt
+        join (
+            select pjtt.team_id,pjter.id as teacherId,pjter.name as teacherName
+            from pj_team_teacher pjtt,pj_teacher pjter
+            where pjtt.type=1 and pjtt.is_delete=0 and pjter.is_delete=0 and pjtt.teacher_id = pjter.id and pjter.id = #{teacherId})
+        tempTable on pjt.id = tempTable.team_id
+        join pj_school_term_current pstc on pstc.school_year = pjt.school_year
+        where pjt.school_id = #{schoolId} and pjt.is_delete = 0
+        and pstc.school_id = #{schoolId}
+    </select>
+
+    <select id="findTerm" resultMap="SchoolTermResult">
+        SELECT * FROM pj_school_term
+        where is_delete = 0
+        <if test="id != null">and id = #{id}</if>
+    </select>
+    <select id="getTermBySchoolId" resultMap="SchoolTermResult">
+        SELECT
+        *
+        FROM
+        pj_school_term
+        WHERE
+        pj_school_term.school_id=#{schoolId}
+        AND pj_school_term.begin_date&lt;= #{startDate}
+        AND pj_school_term.finish_date&gt;= #{startDate}
+    </select>
+
+
+</mapper>

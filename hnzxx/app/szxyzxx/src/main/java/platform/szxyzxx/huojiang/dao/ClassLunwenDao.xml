@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.huojiang.dao.ClassLunwenDao">
+
+ <resultMap id="JiXiaoMap" type="platform.szxyzxx.huojiang.vo.ClassLunwen">
+     <id column="id" property="id"></id>
+     <result column="theme" property="theme"></result>
+     <result column="winning_time" property="winningTime"></result>
+     <result column="name_woke" property="nameWoke"></result>
+     <result column="allocated" property="allocated"></result>
+     <result column="student_ids" property="studentIds"></result>
+     <result column="teacher_ids" property="teacherIds"></result>
+     <result column="winning_level" property="winningLevel"></result>
+     <result column="dengci" property="dengci"></result>
+     <result column="pictureId" property="pictureId"></result>
+     <result column="create_time" property="createTime"></result>
+     <result column="modiy_time" property="modiyTime"></result>
+     <result column="is_delete" property="isDelete"></result>
+     <result column="is_Auit" property="isAuit"></result>
+     <result column="shenqingren" property="shenqingren"></result>
+     <result column="shenqing_name" property="shenqingName"></result>
+     <result column="student_names" property="studentNames"></result>
+     <result column="teacher_names" property="teacherNames"></result>
+     <result column="dengciName" property="dengciName"></result>
+     <result column="winningLevelName" property="winningLevelName"></result>
+     <result column="school_year" property="schoolYear"></result>
+     <result column="school_trem" property="schoolTrem"></result>
+     <result column="shuxing" property="shuXing"></result>
+     <result column="type" property="type"></result>
+     <result column="score" property="score"></result>
+     <result column="jiXiaoDeFen" property="jiXiaoDeFen"></result>
+ </resultMap>
+    <select id="findByAll" resultMap="JiXiaoMap">
+        select zh.*,zj.name as dengciName,zx.name as winningLevelName,sum(zj.putongscore+zx.putongscore) as score,
+         sum(zj.jixiao_score+zx.jixiao_score) as jiXiaoDeFen from zy_huojiang  zh
+        inner join zy_jixiaoscore zj on  zj.id=zh.dengci
+        inner join zy_jixiaoscore  zx on zx.id=zh.winning_level
+        <where>
+            zh.is_delete= 0  and zh.is_Auit =1
+            <if test="args[4]!=1">
+                and zh.type!='获奖'
+            </if>
+            <if test="args[4]==1">
+                and zh.type='获奖'
+            </if>
+            <if test="args[5]!=null">
+                and zh.theme like concat ('%',#{args[5]},'%')
+            </if>
+            <if test="args[0]!=null and args[1]!=null ">
+                and zh.winning_time between #{args[0]} and  #{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and zh.type like concat ('%',#{args[2]},'%')
+            </if>
+            <if test="args[3]!=null">
+                and zh.teacher_names like concat ('%',#{args[3]},'%')
+            </if>
+            group by zh.id
+            order by zh.create_time desc
+        </where>
+    </select>
+
+    <select id="findById" resultMap="JiXiaoMap">
+      select zh.*,zj.name as dengciName,zx.name as winningLevelName,sum(zj.putongscore+zx.putongscore) as score,
+         sum(zj.jixiao_score+zx.jixiao_score) as jiXiaoDeFen from zy_huojiang  zh
+        inner join zy_jixiaoscore zj on  zj.id=zh.dengci
+        inner join zy_jixiaoscore  zx on zx.id=zh.winning_level
+      where zh.is_delete=0 and zh.id=#{args[0]}
+    </select>
+
+    <select id="findByTongJi" resultMap="JiXiaoMap">
+         select sum(zj.putongscore+zx.putongscore) as score,
+         sum(zj.jixiao_score+zx.jixiao_score) as jiXiaoDeFen from zy_huojiang  zh
+        inner join zy_jixiaoscore zj on  zj.id=zh.dengci
+        inner join zy_jixiaoscore  zx on zx.id=zh.winning_level
+        where zh.is_delete= 0  and zh.is_Auit =1 and  zh.teacher_ids like concat ('%',#{args[0]},'%')
+    </select>
+
+    <select id="findByhuojiangJiLu" resultMap="JiXiaoMap">
+        select zh.*,zj.name as dengciName,zx.name as winningLevelName,sum(zj.putongscore+zx.putongscore) as score,
+         sum(zj.jixiao_score+zx.jixiao_score) as jiXiaoDeFen from zy_huojiang  zh
+        inner join zy_jixiaoscore zj on  zj.id=zh.dengci
+        inner join zy_jixiaoscore  zx on zx.id=zh.winning_level
+        where  zh.is_delete= 0  and zh.is_Auit =1 and zh.teacher_ids like concat ('%',#{args[0]},'%')
+        group by zh.id
+        order by zh.create_time desc
+    </select>
+
+
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.act.dao.InSchoolActivityDao">
+
+    <resultMap id="InSchoolActivityResult" type="com.xunyunedu.act.pojo.InSchoolActivity">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="roomId" column="room_id"/>
+        <result property="name" column="name"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+
+        <result property="roomName" column="room_name"/>
+        <result property="state" column="state"/>
+        <result property="refuseCause" column="refuse_cause"/>
+        <result property="attendUserIds" column="attend_user_ids"/>
+        <result property="attendUserNames" column="attend_user_names"/>
+        <result property="handleUserId" column="handle_user_id"/>
+        <result property="handleUserName" column="handle_user_name"/>
+    </resultMap>
+
+    
+
+
+    <insert id="create" parameterType="com.xunyunedu.act.pojo.InSchoolActivity">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO at_in_school_activity (
+        id,
+        user_id,
+        room_id,
+        `name`,
+        start_time,
+        end_time,
+        description,
+        create_date,
+        modify_date,
+        `state`,
+        refuse_cause,
+        attend_user_ids,
+        attend_user_names,
+        handle_user_id,
+        user_name,
+        handle_user_name
+        )
+        VALUES (
+        #{id},
+        #{userId},
+        #{roomId},
+        #{name},
+        #{startTime},
+        #{endTime},
+        #{description},
+        #{createDate},
+        #{modifyDate},
+        #{state},
+        #{refuseCause},
+        #{attendUserIds},
+        #{attendUserNames},
+        #{handleUserId},
+          #{userName},
+        #{handleUserName}
+        )
+    </insert>
+
+
+    <select id="selectById" resultMap="InSchoolActivityResult" useCache="false">
+        SELECT isa.*, isr.`name` AS room_name
+        FROM at_in_school_activity isa
+        LEFT JOIN at_in_school_room isr ON isa.room_id = isr.id
+        where isa.id = #{id,javaType=java.lang.Integer}
+    </select>
+
+
+    <select id="selectList" resultMap="InSchoolActivityResult" useCache="false">
+        SELECT isa.*, isr.`name` AS room_name
+        FROM at_in_school_activity isa
+        LEFT JOIN at_in_school_room isr ON isa.room_id = isr.id
+        <where >
+            <if test="id != null">
+                AND isa.id = #{id,javaType=java.lang.Integer}
+            </if>
+            <if test="userId != null">
+                AND isa.user_id = #{userId,javaType=java.lang.Integer}
+            </if>
+            <if test="roomId != null">
+                AND isa.room_id = #{roomId,javaType=java.lang.Integer}
+            </if>
+            <if test="name != null and name != ''">
+                AND isa.`name` LIKE CONCAT('%', #{name,javaType=java.lang.String}, '%')
+            </if>
+            <if test="handleUserId != null">
+                AND isa.handle_user_id = #{handleUserId,javaType=java.lang.Integer}
+            </if>
+            <if test="state != null">
+                AND isa.`state` = #{state,javaType=java.lang.Integer}
+            </if>
+        </where>
+        order by  isa.create_date  desc
+    </select>
+    
+    
+</mapper>

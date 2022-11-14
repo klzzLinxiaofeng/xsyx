@@ -1,0 +1,235 @@
+@charset "utf-8";
+body{
+    margin: 0;
+    padding: 0;
+    background: #fff;
+}
+a{
+    text-decoration: none;
+}
+.clear{
+    clear:both;
+}
+*:focus { outline: none; }
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #eaeaea inset;
+    border: 1px solid #CCC!important;
+}
+
+.parent_logo{
+    background: url("images/p_logo.png") no-repeat 50% 50%;
+    height:680px;
+}
+.plogin_form{
+
+}
+.plogin_form .pass-form-item{
+
+}
+.plogin_form .pass-form-item input{
+    width: 750px;
+    height: 120px;
+    line-height: 120px;
+    text-align: center;
+    font-family: MicrosoftYaHeiUI;
+    font-size: 36px;
+    color: #333 !important;;
+    margin: 0 auto 60px;
+    display: block;
+    background-color: #eaeaea;
+}
+.plogin_form .pass-form-item input.red_warning{
+    background-color: #fae3e3;
+    color: #ff5252;
+}
+.plogin_form .pass-form-item .login_btn{
+    width: 750px;
+    height: 120px;
+    line-height: 120px;
+    background-color: #2299ee;
+    border-radius: 6px;
+    font-size: 48px;
+    color: #ffffff;
+    margin: 0 auto 60px;
+    display: block;
+}
+.error_message{
+    font-size: 36px;
+    color: #ff5252;
+    text-align: center;
+}
+/*教师公众号首页*/
+.p_content{
+
+}
+.p_content .p_head{
+    height: 400px;
+    background: url('images/head_bg.png') no-repeat;
+    background-size: cover;
+    position: relative;
+}
+.p_head img{
+    width: 172px;
+    height: 172px;
+    border-radius: 50%;
+    position: absolute;
+    top: 60px;
+    left: 50px;
+}
+.p_head .main{
+    position: absolute;
+    left: 282px;
+}
+.p_head .main .name{
+    font-size: 48px;
+    color: #ffffff;
+    margin-top: 60px;
+    height: 50px;
+    line-height: 50px;
+}
+.p_head .main .p1{
+    font-size: 36px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 65px;
+}
+.p_head .main .p1 span{
+    color: rgba(255, 255, 255, 0.8);
+}
+.p_head .qhzh{
+    width: 230px;
+    height: 60px;
+    background-color:rgba(255, 255, 255, 0.3) ;
+    border-radius: 30px;
+    position: absolute;
+    top: 117px;
+    right: 64px;
+}
+.p_head .qhzh a{
+    background:url('images/qhzh.png') no-repeat  22px 50%;
+    display: block;
+    font-size: 36px;
+    line-height: 60px;
+    color: #ffffff;
+    padding-left: 62px;
+}
+.day_select{
+    width: 961px;
+    height: 303px;
+    background-color: #ffffff;
+    box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding:0 30px;
+    margin: 0 auto;
+    position: relative;
+    top: -100px;
+}
+.day_select .day_1{
+    border-bottom: 1px solid #e6e6e6;
+    height: 150px;
+}
+.day_select .day_1 a{
+    width: 180px;
+    height: 60px;
+    background-color: #cccccc;
+    border-radius: 29px;
+    display: inline-block;
+    font-size: 36px;
+    line-height: 60px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: 46px;
+    margin-right: 55px;
+}
+.day_select .day_1 a.on{
+    background-image: linear-gradient(48deg,
+    #1795ef 0%,
+    #2da1f8 100%),
+    linear-gradient(
+            #ffffff,
+            #ffffff);
+}
+.day_select .day_2 span{
+    font-size: 36px;
+    line-height: 60px;
+    color: #666666;
+    text-align: center;
+    margin-top: 42px;
+    display: block;
+}
+.main_chart{
+    margin: 0 30px;
+    padding: 0 30px;
+    background-color: #fff;
+    position: relative;
+    top: -70px;
+}
+.xk_select{
+
+}
+.chart_div{
+    border-bottom: 2px solid #e6e6e6;
+}
+.chart_div p{
+    width:90%;
+    font-size: 35px;
+    color: #999999;
+    margin:70px 20px ;
+}
+.chart_div p a{
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 30px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 50%;
+    margin-left: 20px;
+}
+
+.timu_type span.ty{
+    color: #999999;
+    font-size: 36px;
+    height: 146px;
+    line-height: 146px;
+    display:  inline-block;
+}
+.timu_type span.ty.on{
+    color: #2299ee;;
+    border-bottom: 2px solid #2299ee;
+}
+.timu_type div{
+    padding:0px 23px;
+    display: inline-block;
+    width: auto;
+}
+.sc1{
+    border-bottom: 1px solid #e1e1e1;
+    background: #FFFFFF;
+}
+.no_message{
+    max-width:90%;
+    height:640px;
+    margin:0 auto;
+    background: url("images/empty_message.png") no-repeat 50% 50%;
+    display: none;
+}
+.ts{
+    width: 923px;
+    display:none;
+    height: 314px;
+    background: #fff;
+}
+.ts .p1{
+    font-size: 42px;
+    color: #666666;
+    padding-left: 60px;
+    line-height: 100px;
+}
+.ts .p2{
+    font-size: 42px;
+    text-align: center;
+    color: #999999;
+    line-height: 100px;
+}

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ExamStatMajorStudentDao">
+
+	<resultMap id="ExamStatMajorStudentResult" type="platform.education.generalTeachingAffair.model.ExamStatMajorStudent">
+		<result property="id" column="id" />
+		<result property="examWorksId" column="exam_works_id" />
+		<result property="jointExamCode" column="joint_exam_code" />
+		<result property="teamId" column="team_id" />
+		<result property="studentId" column="student_id" />
+		<result property="totalScore" column="total_score" />
+		<result property="teamRank" column="team_rank" />
+		<result property="teamRankChange" column="team_rank_change" />
+		<result property="gradeRank" column="grade_rank" />
+		<result property="gradeRankChange" column="grade_rank_change" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ExamStatMajorStudent">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_exam_stat_major_student (
+		id,
+		exam_works_id,
+		joint_exam_code,
+		team_id,
+		student_id,
+		total_score,
+		team_rank,
+		team_rank_change,
+		grade_rank,
+		grade_rank_change,
+		create_date,
+		modify_date,
+		is_deleted
+		)
+		VALUES (
+		#{id},
+		#{examWorksId},
+		#{jointExamCode},
+		#{teamId},
+		#{studentId},
+		#{totalScore},
+		#{teamRank},
+		#{teamRankChange},
+		#{gradeRank},
+		#{gradeRankChange},
+		#{createDate},
+		#{modifyDate},
+		<choose>
+			<when test="isDeleted != null">
+				<choose>
+					<when test="isDeleted == true">
+						1
+					</when>
+					<otherwise>
+						0
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				0
+			</otherwise>
+		</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="ExamStatMajorStudentResult" useCache="false">
+		SELECT * FROM pj_exam_stat_major_student WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findExamStatMajorStudentByCondition" resultMap="ExamStatMajorStudentResult" useCache="false">
+		SELECT * FROM pj_exam_stat_major_student
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examWorksId != null">
+				AND exam_works_id = #{args[0].examWorksId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].jointExamCode != null and args[0].jointExamCode != ''">
+				AND joint_exam_code = #{args[0].jointExamCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].totalScore != null">
+				AND total_score = #{args[0].totalScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].teamRank != null">
+				AND team_rank = #{args[0].teamRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamRankChange != null">
+				AND team_rank_change = #{args[0].teamRankChange,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeRank != null">
+				AND grade_rank = #{args[0].gradeRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeRankChange != null">
+				AND grade_rank_change = #{args[0].gradeRankChange,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_exam_stat_major_student
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examWorksId != null">
+				AND exam_works_id = #{args[0].examWorksId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].jointExamCode != null and args[0].jointExamCode != ''">
+				AND joint_exam_code = #{args[0].jointExamCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].totalScore != null">
+				AND total_score = #{args[0].totalScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].teamRank != null">
+				AND team_rank = #{args[0].teamRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamRankChange != null">
+				AND team_rank_change = #{args[0].teamRankChange,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeRank != null">
+				AND grade_rank = #{args[0].gradeRank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeRankChange != null">
+				AND grade_rank_change = #{args[0].gradeRankChange,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="ExamStatMajorStudentResult" useCache="false">
+		SELECT * FROM pj_exam_stat_major_student WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ExamStatMajorStudent">
+		UPDATE pj_exam_stat_major_student
+		SET
+		<if test="examWorksId != null">
+			exam_works_id=#{examWorksId},
+		</if>
+		<if test="jointExamCode != null">
+			joint_exam_code=#{jointExamCode},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="totalScore != null">
+			total_score=#{totalScore},
+		</if>
+		<if test="teamRank != null">
+			team_rank=#{teamRank},
+		</if>
+		<if test="teamRankChange != null">
+			team_rank_change=#{teamRankChange},
+		</if>
+		<if test="gradeRank != null">
+			grade_rank=#{gradeRank},
+		</if>
+		<if test="gradeRankChange != null">
+			grade_rank_change=#{gradeRankChange},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_exam_stat_major_student
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findExamStatMajorStudentByExamWorksIdAndStudentId" resultMap="ExamStatMajorStudentResult">
+		SELECT * from 
+			pj_exam_stat_major_student 
+		where 1=1
+		AND is_deleted = 0
+		<if test="args[0] != null">
+		AND exam_works_id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+		AND student_id = #{args[1]}
+		</if>
+	</select>
+				
+	<update id="batchUpdateExamStatMajorStudentTotalScore" parameterType="java.util.List">
+		UPDATE pj_exam_stat_major_student SET
+		total_score =
+		<foreach collection="args[0]" item="item" index="index" separator=" " open="CASE id" close="END">
+		WHEN #{item.id} THEN #{item.totalScore}
+		</foreach>
+		WHERE id in
+		<foreach collection="args[0]" index="index" item="item" separator="," open="(" close=")">
+			#{item.id}
+		</foreach>
+	</update>
+	
+	<update id="batchUpdateExamStatMajorStudentTeamRank" parameterType="java.util.List">
+		UPDATE pj_exam_stat_major_student SET
+		team_rank =
+		<foreach collection="args[0]" item="item" index="index" separator=" " open="CASE id" close="END">
+		WHEN #{item.id} THEN #{item.teamRank}
+		</foreach>
+		WHERE id in
+		<foreach collection="args[0]" index="index" item="item" separator="," open="(" close=")">
+			#{item.id}
+		</foreach>
+	</update>
+	
+	
+	<update id="batchUpdateExamStatMajorStudentGradeRank" parameterType="java.util.List">
+		UPDATE pj_exam_stat_major_student SET
+		grade_rank =
+		<foreach collection="args[0]" item="item" index="index" separator=" " open="CASE id" close="END">
+		WHEN #{item.id} THEN #{item.teamRank}
+		</foreach>
+		WHERE id in
+		<foreach collection="args[0]" index="index" item="item" separator="," open="(" close=")">
+			#{item.id}
+		</foreach>
+	</update>
+	
+
+	<insert id="createBatch">
+		INSERT INTO pj_exam_stat_major_student (
+			id,
+			exam_works_id,
+			joint_exam_code,
+			team_id,
+			student_id,
+			total_score,
+			team_rank,
+			team_rank_change,
+			grade_rank,
+			grade_rank_change,
+			create_date,
+			modify_date,
+			is_deleted
+		)
+		VALUES
+		<foreach collection="args[0]" item="item" index="index" separator="," >
+			(
+				#{item.id},
+				#{item.examWorksId},
+				#{item.jointExamCode},
+				#{item.teamId},
+				#{item.studentId},
+				#{item.totalScore},
+				#{item.teamRank},
+				#{item.teamRankChange},
+				#{item.gradeRank},
+				#{item.gradeRankChange},
+				#{item.createDate},
+				#{item.modifyDate},
+				0
+			)
+		</foreach>
+	</insert>
+
+	<select id="findExamStatMajorCount" resultMap="ExamStatMajorStudentResult"  useCache="false">
+		SELECT
+			*
+		FROM
+			pj_exam_stat_major_student esm
+		where esm.is_deleted = 0
+			<if test="args[0] != null">
+			and esm.exam_works_id = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+			and esm.joint_exam_code = #{args[1]}
+			</if>
+			<if test="args[2] != null">
+			and esm.team_id = #{args[2]}
+			</if>
+			<if test="args[3] != null">
+			and esm.total_score is not null
+			</if>
+			<if test="args[2] == null">
+			order by grade_rank desc;
+			</if>
+			<if test="args[2] != null">
+			order by team_rank desc;
+			</if>
+			
+	</select>
+
+</mapper>

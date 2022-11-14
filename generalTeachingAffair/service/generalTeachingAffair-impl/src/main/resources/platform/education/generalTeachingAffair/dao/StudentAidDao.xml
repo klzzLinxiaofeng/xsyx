@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentAidDao">
+
+	<resultMap id="StudentAidResult" type="platform.education.generalTeachingAffair.model.StudentAid">
+		<result property="id" column="id" javaType="java.lang.Integer"/>
+		<result property="teamId" column="team_id" javaType="java.lang.Integer"/>
+		<result property="studentId" column="student_id" javaType="java.lang.Integer"/>
+		<result property="povertyCategory" column="poverty_category" />
+		<result property="povertyCauses" column="poverty_causes" />
+		<result property="aidForm" column="aid_form" />
+		<result property="oneIncome" column="one_income" />
+		<result property="aidAmount" column="aid_amount" />
+		<result property="aidDay" column="aid_day" javaType="java.util.Date"/>
+		<result property="remark" column="remark" />
+		<result property="isDelete" column="is_delete"/>
+		<result property="createDate" column="create_date" javaType="java.util.Date"/>
+		<result property="modifyDate" column="modify_date" javaType="java.util.Date"/>
+	</resultMap>
+
+
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.StudentAid">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_student_aid (id, team_id, student_id, poverty_category, poverty_causes, aid_form, one_income, aid_amount, aid_day, remark, is_delete, create_date, modify_date)
+		VALUES (#{id}, #{teamId}, #{studentId}, #{povertyCategory}, #{povertyCauses}, #{aidForm}, #{oneIncome}, #{aidAmount}, #{aidDay}, #{remark}, #{isDelete}, #{createDate}, #{modifyDate})
+	</insert>
+
+	<select id="read" resultMap="StudentAidResult" useCache="false">
+		SELECT
+		aid.id,
+		aid.team_id,
+		aid.student_id,
+		aid.poverty_category,
+		aid.poverty_causes,
+		aid.aid_form,
+		aid.one_income,
+		aid.aid_amount,
+		aid.aid_day,
+		aid.remark,
+		aid.create_date,
+		aid.modify_date
+		from pj_student_aid aid,pj_team team
+		where aid.team_id = team.id
+		and aid.is_delete=0
+		<if test="args!=null and args[0]!=null">
+			AND aid.id = #{args[0]}
+		</if>
+		ORDER BY aid.id DESC
+	</select>
+
+	<select id="findStudentAidByCondition" resultMap="StudentAidResult" useCache="false">
+
+		SELECT
+		aid.id,
+		aid.team_id,
+		aid.student_id,
+		aid.poverty_category,
+		aid.poverty_causes,
+		aid.aid_form,
+		aid.one_income,
+		aid.aid_amount,
+		aid.aid_day,
+		aid.remark,
+		aid.create_date,
+		aid.modify_date
+		from pj_student_aid aid,pj_team team
+		where aid.team_id = team.id
+		and 1=1
+		and aid.is_delete = 0
+		<if test="args[0] != null">
+
+			<if test="args[0].id != null">
+				AND aid.id = #{args[0].id}
+			</if>
+			<if test="args[0].teamId != null">
+				AND aid.team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].studentId != null">
+				AND aid.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].povertyCategory != null">
+				AND aid.poverty_category = #{args[0].povertyCategory,javaType=java.lang.String}
+			</if>
+			<if test="args[0].povertyCauses != null">
+				AND aid.poverty_causes = #{args[0].povertyCauses,javaType=java.lang.String}
+			</if>
+			<if test="args[0].aidForm != null">
+				AND aid.aid_form = #{args[0].aidForm,javaType=java.lang.String}
+			</if>
+			<if test="args[0].oneIncome != null">
+				AND aid.one_income = #{args[0].oneIncome,javaType=java.lang.String}
+			</if>
+			<if test="args[0].aidAmount != null">
+				AND aid.aid_amount = #{args[0].aidAmount,javaType=java.lang.String}
+			</if>
+			<if test="args[0].aidDay != null">
+				AND aid.aid_day = #{args[0].aidDay}
+			</if>
+			<if test="args[0].remark != null">
+				AND aid.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<!-- <if test="args[0].isDelete != null">
+			AND aid.is_delete = #{args[0].isDelete}
+			</if> -->
+			<if test="args[0].createDate != null">
+				AND aid.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND aid.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+
+			<!-- 资助页面查询条件 -->
+			<if test="args[0].studentId != null">
+				AND aid.student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			and aid.team_id in (SELECT t.id from pj_team t where 1 = 1
+			<if test="args[0].schoolId != null">
+				and t.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null">
+				and t.school_year = #{args[0].schoolYear}
+			</if>
+			<if test="args[0].gradeId != null">
+				and t.grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				and t.id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			)
+
+
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_student_aid WHERE 1=1 is_delete = 0
+		<if test="args[0] != null">
+
+			<if test="args[0].id != null">
+				AND id = #{args[0].id}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId}
+			</if>
+			<if test="args[0].povertyCategory != null">
+				AND poverty_category = #{args[0].povertyCategory,javaType=java.lang.String}
+			</if>
+			<if test="args[0].povertyCauses != null">
+				AND poverty_causes = #{args[0].povertyCauses,javaType=java.lang.String}
+			</if>
+			<if test="args[0].aidForm != null">
+				AND aid_form = #{args[0].aidForm,javaType=java.lang.String}
+			</if>
+			<if test="args[0].oneIncome != null">
+				AND one_income = #{args[0].oneIncome,javaType=java.lang.String}
+			</if>
+			<if test="args[0].aidAmount != null">
+				AND aid_amount = #{args[0].aidAmount,javaType=java.lang.String}
+			</if>
+			<if test="args[0].aidDay != null">
+				AND aid_day = #{args[0].aidDay}
+			</if>
+			<if test="args[0].remark != null">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="StudentAidResult" useCache="false">
+		SELECT
+		aid.id,
+		aid.team_id,
+		aid.student_id,
+		aid.poverty_category,
+		aid.poverty_causes,
+		aid.aid_form,
+		aid.one_income,
+		aid.aid_amount,
+		aid.aid_day,
+		aid.remark,
+		aid.create_date,
+		aid.modify_date
+		from pj_student_aid aid,pj_team team
+		where aid.team_id = team.id
+		and aid.id = #{args[0]}
+		and aid.is_delete = 0
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.StudentAid">
+		UPDATE pj_student_aid
+		SET
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="povertyCategory != null">
+			poverty_category=#{povertyCategory},
+		</if>
+		<if test="povertyCauses != null">
+			poverty_causes=#{povertyCauses},
+		</if>
+		<if test="aidForm != null">
+			aid_form=#{aidForm},
+		</if>
+		<if test="oneIncome != null">
+			one_income=#{oneIncome},
+		</if>
+		<if test="aidAmount != null">
+			aid_amount=#{aidAmount},
+		</if>
+		<if test="aidDay != null">
+			aid_day=#{aidDay},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="isDelete != null">
+			is_delete=#{isDelete},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate,javaType=java.util.Date},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate,javaType=java.util.Date},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+		and is_delete = 0
+	</update>
+
+	<update id="delete">
+		update pj_student_aid
+		set is_delete =#{isDelete},
+
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate,javaType=java.util.Date},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+		and is_delete = 0
+	</update>
+
+
+</mapper>

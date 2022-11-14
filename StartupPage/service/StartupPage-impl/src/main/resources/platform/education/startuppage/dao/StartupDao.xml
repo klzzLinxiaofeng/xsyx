@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.startuppage.dao.StartupDao">
+
+    <resultMap id="StartupResult" type="platform.education.startuppage.model.Startup">
+        <result property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="url" column="url" />
+        <result property="description" column="description" />
+        <result property="entityId" column="entity_id" />
+        <result property="pushState" column="push_state" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.startuppage.model.Startup">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO start_up (
+        id,
+        title,
+        url,
+        description,
+        entity_id,
+        push_state,
+        create_date,
+        modify_date
+        )
+        VALUES (
+        #{id},
+        #{title},
+        #{url},
+        #{description},
+        #{entityId},
+        #{pushState},
+        #{createDate},
+        #{modifyDate}
+        )
+    </insert>
+
+    <select id="read" resultMap="StartupResult" useCache="false">
+        SELECT * FROM start_up WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findStartupByCondition" resultMap="StartupResult" useCache="false">
+        SELECT * FROM start_up
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].title != null and args[0].title != ''">
+                AND title LIKE CONCAT(CONCAT('%', #{args[0].title,javaType=java.lang.String}),'%')
+            </if>
+            <if test="args[0].url != null and args[0].url != ''">
+                AND url = #{args[0].url,javaType=java.lang.String}
+            </if>
+            <if test="args[0].description != null and args[0].description != ''">
+                AND description = #{args[0].description,javaType=java.lang.String}
+            </if>
+            <if test="args[0].entityId != null and args[0].entityId != ''">
+                AND entity_id = #{args[0].entityId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].pushState != null and args[0].pushState != ''">
+                AND push_state = #{args[0].pushState,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM start_up
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].title != null and args[0].title != ''">
+                AND title = #{args[0].title,javaType=java.lang.String}
+            </if>
+            <if test="args[0].url != null and args[0].url != ''">
+                AND url = #{args[0].url,javaType=java.lang.String}
+            </if>
+            <if test="args[0].description != null and args[0].description != ''">
+                AND description = #{args[0].description,javaType=java.lang.String}
+            </if>
+            <if test="args[0].entityId != null and args[0].entityId != ''">
+                AND entity_id = #{args[0].entityId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].pushState != null and args[0].pushState != ''">
+                AND push_state = #{args[0].pushState,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="StartupResult" useCache="false">
+		SELECT * FROM start_up WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+    <update id="update" parameterType="platform.education.startuppage.model.Startup">
+        UPDATE start_up
+        SET
+        <if test="title != null">
+            title=#{title},
+        </if>
+        <if test="url != null">
+            url=#{url},
+        </if>
+        <if test="description != null">
+            description=#{description},
+        </if>
+        <if test="entityId != null">
+            entity_id=#{entityId},
+        </if>
+        <if test="pushState != null">
+            push_state=#{pushState},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM start_up
+		WHERE id = #{id}
+	</delete>
+</mapper>

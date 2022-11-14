@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.bobao.dao.BoBaoDaPingDao">
+
+ <resultMap id="BoBaoDaPingMap" type="platform.szxyzxx.bobao.vo.BoBaoDaPing">
+   <id column="id" property="id"></id>
+   <result column="grade_ids" property="gradeIds"></result>
+     <result column="gradeNames" property="gradeNames"></result>
+     <result column="bobao" property="boBaoHao"></result>
+   <result column="create_time" property="createTime"></result>
+   <result column="mody_time" property="modiyTime"></result>
+   <result column="name" property="name"></result>
+     <result column="school_trem" property="schoolTrem"></result>
+     <result column="school_year" property="schoolYear"></result>
+     <result column="school_id" property="schoolId"></result>
+ </resultMap>
+
+    <!--	新增年级返回结果-->
+    <resultMap id="gradeInfo" type="platform.education.generalTeachingAffair.model.Grade">
+        <result property="id" column="id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="fullName" column="full_name"/>
+        <result property="gradeNumber" column="grade_number"/>
+    </resultMap>
+
+
+    <select id="findByAll" resultMap="BoBaoDaPingMap">
+        select * from zy_daping
+    </select>
+
+    <select id="findByGradeId" resultMap="BoBaoDaPingMap">
+        select group_concat(name) as gradeNames   from pj_grade where id in (
+        <foreach collection="args[0]" item="i" separator=",">
+        #{i}
+        </foreach>
+        )
+    </select>
+
+    <select id="findById" resultMap="BoBaoDaPingMap">
+        select * from zy_daping where id=#{args[0]}
+    </select>
+
+ <!--   <insert id="createBoBaoDaPing" parameterType="platform.szxyzxx.bobao.vo.BoBaoTime">
+    insert into zy_daping(grade_ids,name,create_time,mody_time,school_year,school_trem,school_id)
+    value(#{args[0].haoma},#{args[0].startTime},#{args[0].endTime},0,null)
+    </insert>-->
+
+    <update id="updateViewDaPing">
+        update zy_daping  set grade_ids=#{args[0].gradeIds},name=#{args[0].name},bobao=#{args[0].boBaoHao}
+        where id=#{args[0].id}
+    </update>
+
+    <select id="findGradeBySchoolId" resultMap="gradeInfo"  useCache="false">
+		select id,school_id,full_name,grade_number from pj_grade where school_id=#{args[0]} and school_year=#{args[1]}  GROUP BY grade_number order by grade_number
+	</select>
+    <select id="findByGradeName" resultType="java.lang.String">
+        select group_concat(id) as gradeIds   from pj_grade where school_year=#{args[1]}  and full_name in (
+        <foreach collection="args[0]" item="i" separator=",">
+            #{i}
+        </foreach>
+        )
+    </select>
+
+</mapper>

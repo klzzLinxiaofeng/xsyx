@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.ApplayLeaveUserDao">
+
+	<resultMap id="ApplayLeaveUserResult" type="platform.education.oa.model.ApplayLeaveUser">
+		<result property="id" column="id" />
+		<result property="leaveId" column="leave_id" />
+		<result property="daikeId" column="daike_id" />
+		<result property="daikeName" column="daike_name" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.ApplayLeaveUser">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_applay_leave_user (
+			id, 
+			leave_id, 
+			daike_id, 
+			daike_name, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{leaveId}, 
+			#{daikeId}, 
+			#{daikeName}, 
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ApplayLeaveUserResult" useCache="false">
+		SELECT * FROM oa_applay_leave_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApplayLeaveUserByCondition" resultMap="ApplayLeaveUserResult" useCache="false">
+		SELECT * FROM oa_applay_leave_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].leaveId != null">
+				AND leave_id = #{args[0].leaveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].daikeId != null">
+				AND daike_id = #{args[0].daikeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].daikeName != null and args[0].daikeName != ''">
+				AND daike_name = #{args[0].daikeName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_applay_leave_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].leaveId != null">
+				AND leave_id = #{args[0].leaveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].daikeId != null">
+				AND daike_id = #{args[0].daikeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].daikeName != null and args[0].daikeName != ''">
+				AND daike_name = #{args[0].daikeName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApplayLeaveUserResult" useCache="false">
+		SELECT * FROM oa_applay_leave_user WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.ApplayLeaveUser">
+		UPDATE oa_applay_leave_user
+		SET 
+		<if test="leaveId != null">
+			leave_id=#{leaveId},
+		</if>
+		<if test="daikeId != null">
+			daike_id=#{daikeId},
+		</if>
+		<if test="daikeName != null">
+			daike_name=#{daikeName},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_applay_leave_user
+		WHERE id = #{id}
+	</delete>
+</mapper>

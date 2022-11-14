@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.lads.dao.LadsActivityDao">
+    <resultMap id="LadsActivityResult" type="platform.education.lads.model.LadsActivity">
+        <result property="id" column="id" />
+        <result property="learningdesign" column="learningdesign" />
+        <result property="title" column="title" />
+        <result property="parentActivity" column="parent_activity" />
+        <result property="description" column="description" />
+        <result property="activityType" column="activity_type" />
+        <result property="toolLibrary" column="tool_library" />
+        <result property="toolId" column="tool_id" />
+        <result property="score" column="score" />
+        <result property="taught" column="taught" />
+        <result property="startTime" column="start_time" />
+        <result property="stopTime" column="stop_time" />
+        <result property="uuid" column="uuid" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.lads.model.LadsActivity">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO lads_activity (id, learningdesign, title, parent_activity, description, activity_type, tool_library, tool_id, score, taught, start_time, stop_time, uuid, create_date, modify_date)
+        VALUES (#{id}, #{learningdesign}, #{title}, #{parentActivity}, #{description}, #{activityType}, #{toolLibrary}, #{toolId}, #{score}, #{taught}, #{startTime}, #{stopTime}, #{uuid}, #{createDate}, #{modifyDate})
+    </insert>
+
+    <select id="read" resultMap="LadsActivityResult" useCache="false">
+        SELECT * FROM lads_activity WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>  
+        ORDER BY id DESC
+    </select>
+	
+    <select id="findLadsActivityByCondition" resultMap="LadsActivityResult" useCache="false">
+        SELECT * FROM lads_activity 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null and args[0].id != ''">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].learningdesign != null and args[0].learningdesign != ''">
+                AND learningdesign = #{args[0].learningdesign,javaType=java.lang.String}
+            </if>
+            <if test="args[0].title != null and args[0].title != ''">
+                AND title = #{args[0].title,javaType=java.lang.String}
+            </if>
+            <if test="args[0].parentActivity != null and args[0].parentActivity != ''">
+                AND parent_activity = #{args[0].parentActivity,javaType=java.lang.String}
+            </if>
+            <if test="args[0].description != null and args[0].description != ''">
+                AND description = #{args[0].description,javaType=java.lang.String}
+            </if>
+            <if test="args[0].activityType != null and args[0].activityType != ''">
+                AND activity_type = #{args[0].activityType,javaType=java.lang.String}
+            </if>
+            <if test="args[0].toolLibrary != null and args[0].toolLibrary != ''">
+                AND tool_library = #{args[0].toolLibrary,javaType=java.lang.String}
+            </if>
+            <if test="args[0].toolId != null and args[0].toolId != ''">
+                AND tool_id = #{args[0].toolId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].score != null and args[0].score != ''">
+                AND score = #{args[0].score,javaType=java.lang.String}
+            </if>
+            <if test="args[0].taught != null and args[0].taught != ''">
+                AND taught = #{args[0].taught,javaType=java.lang.String}
+            </if>
+            <if test="args[0].startTime != null and args[0].startTime != ''">
+                AND start_time = #{args[0].startTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].stopTime != null and args[0].stopTime != ''">
+                AND stop_time = #{args[0].stopTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null and args[0].createDate != ''">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+	
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM lads_activity 
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null and args[0].id != ''">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].learningdesign != null and args[0].learningdesign != ''">
+                AND learningdesign = #{args[0].learningdesign,javaType=java.lang.String}
+            </if>
+            <if test="args[0].title != null and args[0].title != ''">
+                AND title = #{args[0].title,javaType=java.lang.String}
+            </if>
+            <if test="args[0].parentActivity != null and args[0].parentActivity != ''">
+                AND parent_activity = #{args[0].parentActivity,javaType=java.lang.String}
+            </if>
+            <if test="args[0].description != null and args[0].description != ''">
+                AND description = #{args[0].description,javaType=java.lang.String}
+            </if>
+            <if test="args[0].activityType != null and args[0].activityType != ''">
+                AND activity_type = #{args[0].activityType,javaType=java.lang.String}
+            </if>
+            <if test="args[0].toolLibrary != null and args[0].toolLibrary != ''">
+                AND tool_library = #{args[0].toolLibrary,javaType=java.lang.String}
+            </if>
+            <if test="args[0].toolId != null and args[0].toolId != ''">
+                AND tool_id = #{args[0].toolId,javaType=java.lang.String}
+            </if>
+            <if test="args[0].score != null and args[0].score != ''">
+                AND score = #{args[0].score,javaType=java.lang.String}
+            </if>
+            <if test="args[0].taught != null and args[0].taught != ''">
+                AND taught = #{args[0].taught,javaType=java.lang.String}
+            </if>
+            <if test="args[0].startTime != null and args[0].startTime != ''">
+                AND start_time = #{args[0].startTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].stopTime != null and args[0].stopTime != ''">
+                AND stop_time = #{args[0].stopTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].uuid != null and args[0].uuid != ''">
+                AND uuid = #{args[0].uuid,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null and args[0].createDate != ''">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null and args[0].modifyDate != ''">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+	
+    <select id="findById" resultMap="LadsActivityResult" useCache="false">
+        SELECT * FROM lads_activity WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+	
+    <update id="update" parameterType="platform.education.lads.model.LadsActivity">
+        UPDATE lads_activity
+        SET 
+        <if test="learningdesign != null">
+            learningdesign=#{learningdesign},
+        </if>
+        <if test="title != null">
+            title=#{title},
+        </if>
+        <if test="parentActivity != null">
+            parent_activity=#{parentActivity},
+        </if>
+        <if test="description != null">
+            description=#{description},
+        </if>
+        <if test="activityType != null">
+            activity_type=#{activityType},
+        </if>
+        <if test="toolLibrary != null">
+            tool_library=#{toolLibrary},
+        </if>
+        <if test="toolId != null">
+            tool_id=#{toolId},
+        </if>
+        <if test="score != null">
+            score=#{score},
+        </if>
+        <if test="taught != null">
+            taught=#{taught},
+        </if>
+        <if test="startTime != null">
+            start_time=#{startTime},
+        </if>
+        <if test="stopTime != null">
+            stop_time=#{stopTime},
+        </if>
+        <if test="uuid != null">
+            uuid=#{uuid},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+	
+    <delete id="delete">
+        DELETE FROM lads_activity
+        WHERE id = #{id}
+    </delete>
+	
+    <delete id="deleteByCondition">
+        DELETE FROM lads_activity
+        WHERE 1=1
+        <if test="id != null and id != ''">
+            AND id = #{id,javaType=java.lang.Integer}
+        </if>
+        <if test="learningdesign != null and learningdesign != ''">
+            AND learningdesign = #{learningdesign,javaType=java.lang.String}
+        </if>
+        <if test="title != null and title != ''">
+            AND title = #{title,javaType=java.lang.String}
+        </if>
+        <if test="parentActivity != null and parentActivity != ''">
+            AND parent_activity = #{parentActivity,javaType=java.lang.String}
+        </if>
+        <if test="description != null and description != ''">
+            AND description = #{description,javaType=java.lang.String}
+        </if>
+        <if test="activityType != null and activityType != ''">
+            AND activity_type = #{activityType,javaType=java.lang.String}
+        </if>
+        <if test="toolLibrary != null and toolLibrary != ''">
+            AND tool_library = #{toolLibrary,javaType=java.lang.String}
+        </if>
+        <if test="toolId != null and toolId != ''">
+            AND tool_id = #{toolId,javaType=java.lang.String}
+        </if>
+        <if test="score != null and score != ''">
+            AND score = #{score,javaType=java.lang.String}
+        </if>
+        <if test="taught != null and taught != ''">
+            AND taught = #{taught,javaType=java.lang.String}
+        </if>
+        <if test="startTime != null and startTime != ''">
+            AND start_time = #{startTime,javaType=java.util.Date}
+        </if>
+        <if test="stopTime != null and stopTime != ''">
+            AND stop_time = #{stopTime,javaType=java.util.Date}
+        </if>
+        <if test="uuid != null and uuid != ''">
+            AND uuid = #{uuid,javaType=java.lang.String}
+        </if>
+        <if test="createDate != null and createDate != ''">
+            AND create_date = #{createDate,javaType=java.util.Date}
+        </if>
+        <if test="modifyDate != null and modifyDate != ''">
+            AND modify_date = #{modifyDate,javaType=java.util.Date}
+        </if>
+    </delete>
+    
+    <!--以下是业务方法-->
+    
+    <select id="findByUuid" resultMap="LadsActivityResult" useCache="false">
+        SELECT * FROM lads_activity WHERE uuid = #{args[0],javaType=java.lang.String}
+    </select>
+    
+    <!--删除子活动-->    	
+    <delete id="deleteChildrenActivity">
+        DELETE FROM lads_activity
+        WHERE 1=1 
+        AND
+        parent_activity IS NOT NULL
+        AND 
+        learningdesign = #{args[0],javaType=java.lang.String}
+    </delete>
+    
+    <!--根据工具类型和课程id查询工具id-->
+    <select id="findToolIdByToolNameAndLdid" resultType="java.lang.String">
+        SELECT tool_id FROM lads_activity 
+        WHERE 1=1
+        AND 
+        learningdesign = #{args[0].learningdesign,javaType=java.lang.String}
+        AND 
+        tool_library = #{args[0].toolLibrary,javaType=java.lang.String}
+        AND 
+        activity_type = '${@platform.education.lads.contants.ActivityType@TOOL_ID}'
+    </select>
+    
+</mapper>

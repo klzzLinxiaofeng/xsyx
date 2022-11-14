@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.UserAnswerDao">
+
+	<resultMap id="UserAnswerResult" type="platform.education.paper.model.UserAnswer">
+		<result property="id" column="id" />
+		<result property="createDate" column="create_date" />
+		<result property="finalAnswer" column="final_answer" />
+		<result property="answer" column="answer" />
+		<result property="paperQuestion" column="paper_question" />
+		<result property="score" column="score" />
+		<result property="correct" column="correct" />
+		<result property="description" column="description" />
+		<result property="userId" column="user_id" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="uuid" column="uuid" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.paper.model.UserAnswer">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_user_answer (
+			id, 
+			create_date, 
+			final_answer, 
+			answer, 
+			paper_question, 
+			score, 
+			correct, 
+			description, 
+			user_id, 
+			modify_date, 
+			uuid
+		)
+		VALUES (
+			#{id}, 
+			#{createDate}, 
+			#{finalAnswer}, 
+			#{answer}, 
+			#{paperQuestion}, 
+			#{score}, 
+			#{correct}, 
+			#{description}, 
+			#{userId}, 
+			#{modifyDate}, 
+			#{uuid}
+		)
+	</insert>
+
+	<select id="read" resultMap="UserAnswerResult" useCache="false">
+		SELECT * FROM pa_user_answer WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findUserAnswerByCondition" resultMap="UserAnswerResult" useCache="false">
+		SELECT * FROM pa_user_answer 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finalAnswer != null">
+				AND final_answer = #{args[0].finalAnswer,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].answer != null and args[0].answer != ''">
+				AND answer = #{args[0].answer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperQuestion != null and args[0].paperQuestion != ''">
+				AND paper_question = #{args[0].paperQuestion,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].correct != null">
+				AND correct = #{args[0].correct,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].description != null and args[0].description != ''">
+				AND description = #{args[0].description,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND user_id = #{args[0].userId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_user_answer 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].finalAnswer != null">
+				AND final_answer = #{args[0].finalAnswer,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].answer != null and args[0].answer != ''">
+				AND answer = #{args[0].answer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperQuestion != null and args[0].paperQuestion != ''">
+				AND paper_question = #{args[0].paperQuestion,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].correct != null">
+				AND correct = #{args[0].correct,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].description != null and args[0].description != ''">
+				AND description = #{args[0].description,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND user_id = #{args[0].userId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="UserAnswerResult" useCache="false">
+		SELECT * FROM pa_user_answer WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.paper.model.UserAnswer">
+		UPDATE pa_user_answer
+		SET 
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="finalAnswer != null">
+			final_answer=#{finalAnswer},
+		</if>
+		<if test="answer != null">
+			answer=#{answer},
+		</if>
+		<if test="paperQuestion != null">
+			paper_question=#{paperQuestion},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="correct != null">
+			correct=#{correct},
+		</if>
+		<if test="description != null">
+			description=#{description},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="uuid != null">
+			uuid=#{uuid},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pa_user_answer
+		WHERE id = #{id}
+	</delete>
+</mapper>

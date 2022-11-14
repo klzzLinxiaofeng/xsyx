@@ -1,0 +1,857 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.UserQuestionDao">
+
+	<resultMap id="UserQuestionResult" type="platform.education.paper.model.UserQuestion">
+		<result property="id" column="id" />
+		<result property="paperUuid" column="paper_uuid" />
+		<result property="paperQuestionId" column="paper_question_id" />
+		<result property="questionUuid" column="question_uuid" />
+		<result property="userId" column="user_id" />
+		<result property="teamId" column="team_id" />
+		<result property="answer" column="answer" />
+		<result property="score" column="score" />
+		<result property="isCorrect" column="is_correct" />
+		<result property="correctInt" column="is_correct" />
+		<result property="remark" column="remark" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="type" column="type" />
+		<result property="ownerId" column="owner_id" />
+		<result property="fileId" column="file_id" />
+		<result property="answerTime" column="answer_time" />
+		<result property="objectId" column="object_id" />
+	</resultMap>
+
+	<resultMap id="UserQuestionResultVos" type="platform.education.paper.vo.KnowledgeCountVo">
+		<result property="knowledgeId" column="knowledgeId" />
+		<result property="knowledgeName" column="knowledgeName" />
+		<result property="scoreCount" column="scoreCount" />
+	</resultMap>
+
+	<resultMap id="UserQuestionResultVos1" type="platform.education.paper.vo.CognitionCountVo">
+		<result property="cognition" column="type" />
+		<result property="percent" column="percent" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.paper.model.UserQuestion">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_user_question (
+			id, 
+			paper_uuid, 
+			paper_question_id, 
+			question_uuid, 
+			user_id, 
+			team_id, 
+			answer, 
+			score, 
+			is_correct, 
+			remark, 
+			create_date, 
+			modify_date, 
+			type, 
+			owner_id, 
+			file_id, 
+			answer_time,
+			object_id
+		)
+		VALUES (
+			#{id}, 
+			#{paperUuid}, 
+			#{paperQuestionId}, 
+			#{questionUuid}, 
+			#{userId}, 
+			#{teamId}, 
+			#{answer}, 
+			#{score}, 
+			#{correctInt},
+			#{remark}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			#{type}, 
+			#{ownerId}, 
+			#{fileId}, 
+			#{answerTime},
+			#{objectId}
+		)
+	</insert>
+	
+	<insert id="batchUserQuestion" parameterType="platform.education.paper.model.UserQuestion">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_user_question (
+			id, 
+			paper_uuid, 
+			paper_question_id, 
+			question_uuid, 
+			user_id, 
+			team_id, 
+			answer, 
+			score, 
+			is_correct, 
+			remark, 
+			create_date,
+			modify_date, 
+			type, 
+			owner_id, 
+			file_id, 
+			answer_time,
+			object_id
+		)
+		VALUES 
+		<foreach collection ="args[0]" item="item" index= "index" separator =",">
+		(
+			#{item.id}, 
+			#{item.paperUuid}, 
+			#{item.paperQuestionId}, 
+			#{item.questionUuid}, 
+			#{item.userId}, 
+			#{item.teamId}, 
+			#{item.answer}, 
+			#{item.score},
+			#{item.correctInt},
+			#{item.remark}, 
+			#{item.createDate}, 
+			#{item.modifyDate}, 
+			#{item.type}, 
+			#{item.ownerId}, 
+			#{item.fileId}, 
+			#{item.answerTime},
+			#{item.objectId}
+		)
+		</foreach>
+	</insert>
+	
+
+	<select id="read" resultMap="UserQuestionResult" useCache="false">
+		SELECT * FROM pa_user_question WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findUserQuestionByCondition" resultMap="UserQuestionResult" useCache="false">
+		SELECT * FROM pa_user_question 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid = #{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperQuestionId != null">
+				AND paper_question_id = #{args[0].paperQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid = #{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].answer != null and args[0].answer != ''">
+				AND answer = #{args[0].answer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].isCorrect != null">
+				<choose>
+					<when test="args[0].isCorrect == true">
+						AND is_correct  = 1
+					</when>
+					<otherwise>
+						AND is_correct  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].type != null">
+				AND type = #{args[0].type,javaType=Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id = #{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fileId != null and args[0].fileId != ''">
+				AND file_id = #{args[0].fileId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answerTime != null">
+				AND answer_time = #{args[0].answerTime,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectId != null">
+				AND object_id = #{args[0].objectId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_user_question 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid = #{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperQuestionId != null">
+				AND paper_question_id = #{args[0].paperQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid = #{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].answer != null and args[0].answer != ''">
+				AND answer like CONCAT('%',#{args[0].answer},'%') 
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].isCorrect != null">
+				<choose>
+					<when test="args[0].isCorrect == true">
+						AND is_correct  = 1
+					</when>
+					<otherwise>
+						AND is_correct  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].type != null">
+				AND type = #{args[0].type,javaType=Integer}
+			</if>
+			<if test="args[0].ownerId != null">
+				AND owner_id = #{args[0].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fileId != null and args[0].fileId != ''">
+				AND file_id = #{args[0].fileId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answerTime != null">
+				AND answer_time = #{args[0].answerTime,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].objectId != null">
+				AND object_id = #{args[0].objectId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="UserQuestionResult" useCache="false">
+		SELECT * FROM pa_user_question WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.paper.model.UserQuestion">
+		UPDATE pa_user_question
+		SET 
+		<if test="paperUuid != null">
+			paper_uuid=#{paperUuid},
+		</if>
+		<if test="paperQuestionId != null">
+			paper_question_id=#{paperQuestionId},
+		</if>
+		<if test="questionUuid != null">
+			question_uuid=#{questionUuid},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="answer != null">
+			answer=#{answer},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="isCorrect != null">
+			<choose>
+				<when test="isCorrect == true">
+					is_correct  = 1,
+				</when>
+				<otherwise>
+					is_correct  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="type != null">
+			type=#{type},
+		</if>
+		<if test="ownerId != null">
+			owner_id=#{ownerId},
+		</if>
+		<if test="fileId != null">
+			file_id=#{fileId},
+		</if>
+		<if test="answerTime != null">
+			answer_time=#{answerTime},
+		</if>
+		<if test="objectId != null">
+			object_id=#{objectId},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pa_user_question
+		WHERE id = #{id}
+	</delete>
+	
+	<resultMap id="AnswerSituationResult" type="platform.education.paper.model.AnswerSituationResult">
+		<result property="pos" column="pos" />
+		<result property="isCorrect" column="is_correct" />
+		<result property="paperQuestionId" column="paper_question_id" />
+		<result property="questionUuid" column="question_uuid" />
+		<result property="userAnswer" column="answer" />
+		<result property="fileId" column="file_id" />
+	</resultMap>
+	
+	<select id="findUserQuestionByUserIdAndPaperUuId" resultMap="AnswerSituationResult" useCache="false">
+		SELECT
+			qt.pos,
+			uq.is_correct,
+			uq.answer,
+			uq.file_id
+		FROM
+			pa_user_question uq
+		JOIN pa_question q ON q.uuid = uq.question_uuid
+		LEFT JOIN pa_paper_tree pt
+		on pt.question_id = q.id
+		where 1=1
+		<if test="args[0] != null">
+			and uq.user_id=#{args[0]}
+		</if>
+		<if test="args[1] != null">
+			and uq.paper_uuid = #{args[1]}
+		</if>
+		<if test="args[2] != null">
+			and uq.owner_id = #{args[2]}
+		</if>
+		order by pt.pos		
+	</select>
+	
+	<resultMap id="UserQuestionResultData" type="platform.education.paper.model.UserQuestionResult">
+		<result property="questionType" column="question_type" />
+		<result property="questionUuid" column="question_uuid" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="knowledgeId" column="knowledge_id" />
+		<result property="difficulity" column="difficulity" />
+		<result property="cognition" column="cognition" />
+	</resultMap>
+	
+	<select id="findUserQuestionByOwnerId" resultMap="UserQuestionResultData" useCache="false">
+		SELECT
+			q.uuid,
+			(
+				CASE q.question_type
+				WHEN 'radio' THEN
+					'单选题'
+				WHEN 'checkbox' THEN
+					'多选题'
+				WHEN 'blank' THEN
+					'填空题'
+				WHEN 'word' THEN
+					'简答题'
+				WHEN 'complex' THEN
+					'复合题'
+				ELSE
+					'未知题型'
+				END
+			) question_type,
+			uq.team_id,
+			qc.subject_code,
+			q.knowledge_code knowledge_id,
+			q.difficulity,
+			q.cognition
+			FROM
+				pa_question q
+			LEFT JOIN pa_user_question uq ON q.uuid = uq.question_uuid 
+			LEFT JOIN pa_question_knoledge qk on qk.question_id = q.id
+			LEFT JOIN pa_question_catalog qc on  qc.question_id = q.id
+			where 1=1
+			<if test="args[0] != null">
+			and uq.owner_id = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+			and uq.object_id = #{args[1]}
+			</if>
+			<if test="args[2] != null">
+			and uq.type =  #{args[2]}
+			</if>
+			group by uq.question_uuid
+	</select>
+	
+	
+	
+	
+	<select id="findUserQuestionByPaperIdDemo" resultMap="UserQuestionResultData" useCache="false">
+		SELECT
+			q.uuid questionUuid,
+			(
+				CASE q.question_type
+				WHEN 'radio' THEN
+					'单选题'
+				WHEN 'checkbox' THEN
+					'多选题'
+				WHEN 'blank' THEN
+					'填空题'
+				WHEN 'word' THEN
+					'简答题'
+				WHEN 'complex' THEN
+					'复合题'
+				ELSE
+					'未知题型'
+				END
+			) question_type
+			
+			FROM
+	pa_paper p
+	LEFT JOIN pa_paper_tree tree ON p.id = tree.paper_id
+	LEFT JOIN pa_question q on q.id = tree.question_id
+	where p.id = #{args[0]}
+	and tree.node_type in (2,3)
+	and tree.pos != 0
+	</select>
+	
+	
+	
+	
+	
+	
+	<select id="findSumScore" resultType="java.lang.Long" useCache="false">
+		SELECT sum(score) score FROM pa_user_question 
+			WHERE 1=1
+			<if test="args[0] != null">
+				and owner_id = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+				and team_id = #{args[1]}
+			</if>
+			<if test="args[2] != null">
+				and question_uuid = #{args[2]}
+			</if>
+	</select>
+	
+	<select id="findUserQuestionByPaperId" resultMap="UserQuestionResultData" useCache="false">
+		SELECT q.uuid,
+			(
+				CASE q.question_type
+				WHEN 'radio' THEN
+					'单选题'
+				WHEN 'checkbox' THEN
+					'多选题'
+				WHEN 'blank' THEN
+					'填空题'
+				WHEN 'word' THEN
+					'简答题'
+				WHEN 'complex' THEN
+					'复合题'
+				WHEN 'trueOrFalse' THEN
+					'判断题'
+					
+				ELSE
+					'未知题型'
+				END
+			) question_type,
+		qc.subject_code,
+		qk.knowledge_code knowledge_id,
+		q.cognition,
+		pt.score,
+		q.difficulity
+
+ 	from pa_question q LEFT JOIN pa_paper_question ppq on q.uuid = ppq.question_uuid LEFT JOIN pa_paper p
+	
+	on ppq.paper_uuid=p.paper_uuid 
+	 LEFT JOIN pa_paper_tree pt
+	 on pt.question_id = q.id
+	LEFT JOIN  pa_question_knoledge qk
+	on qk.question_id = q.id
+	LEFT JOIN pa_question_catalog qc on  qc.question_id = q.id
+	where 1=1
+	<if test="args[0] != null">
+		and p.id = #{args[0]}
+	</if>
+	</select>
+	
+	<select id="findUserQuestionByTeamIdAndOwnerId" resultType="map" useCache="false">
+		SELECT
+				SUM(up.score) totalScore,
+				up.question_uuid
+			FROM
+				pa_user_question up
+			WHERE 1=1
+				
+				<if test="args[0] != null">
+					AND up.team_id = #{args[0]}
+				</if>
+		<if test="args[1] != null">
+			and up.owner_id = #{args[1]}
+		</if>
+		<if test="args[2] != null">
+			and up.type = #{args[2]}
+		</if>
+		group by up.question_uuid
+	</select>
+
+	<select id="findStudentAllScoreByKnoledgeId" resultMap="UserQuestionResultVos" useCache="false">
+		SELECT
+			((sum(a.score)/sum(a.allScore)))*100 AS scoreCount,
+			a.knowledge_id AS knowledgeId
+		FROM (
+			SELECT
+				uq.score, pqk.knowledge_code knowledge_id,
+				ptr.score allScore
+			FROM
+				pa_user_question uq
+			LEFT JOIN pa_question q
+			on q.uuid = uq.question_uuid
+		LEFT JOIN pa_paper_tree ptr
+		on ptr.question_id = q.id
+		LEFT JOIN pa_question_knoledge pqk
+		on pqk.question_id = ptr.question_id
+			WHERE
+				uq.paper_uuid = #{args[0]}
+			AND
+				pqk.knowledge_code
+			IN
+				(
+				<foreach collection="args[1]" item="knowledgeId" separator=",">
+					#{knowledgeId}
+				</foreach>
+				)
+			AND
+				uq.user_id = #{args[2]}
+				AND uq.owner_id = #{args[3]}
+				AND uq.type = #{args[4]}
+				<if test="args[4] != 2">
+					AND uq.object_id = #{args[5]}
+				</if>
+		  ) a
+		GROUP BY
+			a.knowledge_id
+	</select>
+
+	<select id="findUserCognitionCount" resultMap="UserQuestionResultVos1" useCache="false">
+		SELECT
+			q.cognition AS type,
+			((SUM(uq.score)/(SUM(pt.score)))*100) AS percent
+		FROM
+			pa_user_question uq
+		LEFT JOIN
+			pa_question q
+		ON
+			uq.question_uuid = q.uuid
+		left join pa_paper_tree pt
+		on pt.question_id = q.id
+		WHERE
+			uq.paper_uuid = #{args[1]}
+		AND
+			uq.user_id = #{args[0]}
+		AND uq.owner_id = #{args[2]}
+		AND uq.type = #{args[4]}
+		<if test="args[4] != null and args[4] != 2">
+			AND uq.object_id = #{args[3]}
+		</if>
+		
+		GROUP BY
+			q.cognition
+	</select>
+	
+	
+	<resultMap id="PaperAnswerTimeResult" type="platform.education.paper.model.PaperAnswerTime">
+		<result property="pos" column="pos" />
+		<result property="questionUuid" column="uuid" />
+		<result property="knowledge" column="knowledge" />
+		<result property="isCorrect" column="is_correct" />
+		<result property="answerTime" column="answer_time" />
+		<result property="maxAnswerTime" column="maxAnswerTime" />
+	</resultMap>
+	<select id="findUserQuestionAnswerTimeByUserIdAndOwnerId" resultMap="PaperAnswerTimeResult" useCache="false">
+		SELECT
+			q.uuid ,
+			pt.pos,
+			qk.knowledge_code knowledge,
+			uq.answer_time,
+			uq.is_correct,
+			(SELECT paq.answer_time from pa_user_question paq where paq.team_id = #{args[1]} and paq.owner_id = #{args[2]} ORDER by paq.answer_time DESC LIMIT 1) maxAnswerTime
+		FROM
+			pa_question q
+		LEFT JOIN pa_user_question uq
+		on q.uuid = uq.question_uuid
+		LEFT JOIN pa_paper_tree pt
+		on pt.question_id = q.id
+		lEFT JOIN pa_question_knoledge qk
+		on qk.question_id = q.id
+		where uq.user_id = #{args[0]}
+		and owner_id = #{args[2]}
+		and type=#{args[3]}
+		<if test="args[4] != null">
+		and object_id=#{args[4]}
+		</if>
+	</select>
+	
+	
+	<!-- 统计新方法。。。。 -->
+	
+	<select id="findUserQuestionAnswerCount" resultType="map">
+		SELECT
+			count(*) answerCount,
+			up.question_uuid questionUuid
+		FROM
+			pa_user_question up
+		WHERE
+			1 = 1 
+		<if test="args[0] != null">
+			AND up.team_id = #{args[0]}
+		</if>	
+		<if test="args[1] != null">
+			AND up.owner_id = #{args[1]}
+		</if>
+		<if test="args[2] != null">
+			AND up.type = #{args[2]}
+		</if>
+		<if test="args[3] != null">
+			AND up.is_correct = #{args[3]}
+		</if>
+		<if test="args[4] != null">
+			AND up.answer = #{args[4]}
+		</if>	
+		
+		GROUP BY up.question_uuid
+	</select>
+	
+	<select id="findUserQuestionScoreCount" resultType="java.lang.Long">
+		SELECT
+				SUM(up.score) totalScore
+				
+			FROM
+				pa_user_question up
+			WHERE 1=1
+				
+			<if test="args[0] != null">
+				AND up.team_id = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+				and up.owner_id = #{args[1]}
+			</if>
+			<if test="args[2] != null">
+				and up.type = #{args[2]}
+			</if>
+	</select>
+	
+	<select id="findUserQuestionAnswerTime" resultType="map">
+		SELECT
+				SUM(up.answer_time) totalTime,
+				up.question_uuid questionUuid
+			FROM
+				pa_user_question up
+			WHERE 1=1
+				
+		<if test="args[0] != null">
+			AND up.team_id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			and up.owner_id = #{args[1]}
+		</if>
+		<if test="args[2] != null">
+			and up.type = #{args[2]}
+		</if>
+		group by up.question_uuid
+	</select>
+	
+	<select id="findUserQuestionUserAnswerCount" resultType="map">
+		SELECT
+				count(*) answerCount,
+				up.user_id userId
+			FROM
+				pa_user_question up
+			WHERE 1=1
+				
+				<if test="args[0] != null">
+		  			AND up.paper_uuid =#{args[0]}
+				</if>
+				<if test="args[1] != null">
+		  			AND up.owner_id =#{args[1]}
+				</if>
+				<if test="args[2] != null">
+		  			AND up.type =#{args[2]}
+				</if>
+				<if test="args[3] != null">
+		  			AND up.is_correct =#{args[3]}
+				</if>
+				<if test="args[4] != null">
+		  			AND up.team_id =#{args[4]}
+				</if>
+				GROUP BY up.user_id
+	
+	</select>
+
+
+	<select id="findByOwnerIdByUserId" resultMap="UserQuestionResult" useCache="false">
+		SELECT
+			*
+		FROM
+			pa_user_question
+		WHERE 1=1
+		<if test="args[0] != null">
+			AND owner_id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND user_id = #{args[1]}
+		</if>
+		<if test="args[2] == null">
+			AND type = 2
+		</if>
+		<if test="args[2] != null">
+			AND object_id = #{args[2]}
+		</if>
+	</select>
+
+	<update id="batchUpdateScoreAndIsCorrect" parameterType="java.util.List">
+		UPDATE pa_user_question SET
+		score=
+		<foreach collection="args[0]" item="item" index="index" separator=" " open="CASE id" close="END">
+		WHEN #{item.id} THEN #{item.score}
+		</foreach>
+		,is_correct=
+		<foreach collection="args[0]" item="item" index="index" separator=" " open="CASE id" close="END">
+		WHEN #{item.id} THEN
+			<choose>
+				<when test="item.isCorrect == true">
+					 1 
+				</when>
+				<otherwise>
+					 0
+				</otherwise>
+			</choose>
+		</foreach>
+		WHERE id in
+		<foreach collection="args[0]" index="index" item="item" separator="," open="(" close=")">
+			#{item.id}
+		</foreach>
+	</update>
+	
+	<select id="findUserQuestionListByQuestionUuids" resultMap="UserQuestionResult">
+    	SELECT * FROM pa_user_question WHERE 1=1 and owner_id =#{args[1]}  and   type=#{args[2]}  and question_uuid in 
+    	<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">  
+  		#{item}  
+ 		</foreach>
+ 		 
+    </select>
+    
+    <select id="findUserQuestionListByOwnerIdAndQuestionIds" resultMap="UserQuestionResult">
+    	SELECT * from pa_user_question where 1=1
+    	
+    	<if test="args[0] != null">
+    	and question_uuid in
+    	<foreach item="item" index="index" collection="args[0]" open="(" separator="," close=")">  
+  			#{item}  
+ 		</foreach>
+    	</if>
+    	<if test="args[1] != null">
+		and owner_id = #{args[1]}
+    	</if>
+    	<if test="args[2] != null">
+		and user_id  = #{args[2]}
+    	</if>
+    	<if test="args[3] != null">
+		and object_id  = #{args[3]}
+    	</if>
+    
+    </select>
+	<select id="findUserQuestionByOwnerIds" resultMap="UserQuestionResult"
+		useCache="false">
+		SELECT * from pa_user_question 
+		where 1=1
+		<if test="args[0] != null">
+			AND owner_id IN
+			<foreach item="item" index="index" collection="args[0]" open="("
+				separator="," close=")">
+				#{item,javaType=java.lang.Integer}
+			</foreach>
+		</if>
+		<if test="args[1]!= null">
+			AND object_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2]!= null">
+			AND type = #{args[2],javaType=java.lang.Integer}
+		</if>
+	</select>
+	
+	<delete id="deleteByOwnerIdAndType">
+		DELETE FROM pa_user_question
+		WHERE owner_id = #{args[0]}
+		AND 
+		type =#{args[1]}
+	</delete>
+	
+	<select id="findQuestionAnswerList" resultMap="UserQuestionResult" useCache="false">
+		SELECT
+			*
+		FROM
+			pa_user_question
+		WHERE 1=1
+		<if test="args[0] != null">
+			AND owner_id = #{args[0]}
+		</if>
+		<if test="args[1] == null">
+			AND type = 2
+		</if>
+		<if test="args[1] != null">
+			AND object_id = #{args[1]}
+		</if>
+		<if test="args[2] != null">
+			AND question_uuid = #{args[2]}
+		</if>
+	</select>
+	 <delete id="deleteByNotInQuesitonUuids">
+	 DELETE FROM pa_user_question WHERE question_uuid 
+
+     NOT IN 
+
+        (
+        <foreach collection="args[0]" item="item" index="index" separator="," >  
+			#{item}
+   	 	</foreach>
+        )
+	 
+	 </delete>
+</mapper>

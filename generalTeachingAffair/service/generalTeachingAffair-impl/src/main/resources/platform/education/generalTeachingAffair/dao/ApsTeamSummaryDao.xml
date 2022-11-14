@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ApsTeamSummaryDao">
+
+	<resultMap id="ApsTeamSummaryResult" type="platform.education.generalTeachingAffair.model.ApsTeamSummary">
+		<result property="id" column="id" />
+		<result property="taskId" column="task_id" />
+		<result property="termCode" column="term_code" />
+		<result property="medalId" column="medal_id" />
+		<result property="schoolId" column="school_id" />
+		<result property="teamId" column="team_id" />
+		<result property="periodCode" column="period_code" />
+		<result property="rank" column="rank" />
+		<result property="normalScore" column="normal_score" />
+		<result property="addScore" column="add_score" />
+		<result property="deductScore" column="deduct_score" />
+		<result property="remark" column="remark" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ApsTeamSummary">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_aps_team_summary (
+			id, 
+			task_id, 
+			term_code, 
+			medal_id, 
+			school_id, 
+			team_id, 
+			period_code, 
+			rank, 
+			normal_score, 
+			add_score, 
+			deduct_score, 
+			remark, 
+			is_deleted, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{taskId}, 
+			#{termCode}, 
+			#{medalId}, 
+			#{schoolId}, 
+			#{teamId}, 
+			#{periodCode}, 
+			#{rank}, 
+			#{normalScore}, 
+			#{addScore}, 
+			#{deductScore}, 
+			#{remark}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ApsTeamSummaryResult" useCache="false">
+		SELECT * FROM pj_aps_team_summary WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApsTeamSummaryByCondition" resultMap="ApsTeamSummaryResult" useCache="false">
+		SELECT * FROM pj_aps_team_summary 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskId != null">
+				AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].termCode != null and args[0].termCode != ''">
+				AND term_code = #{args[0].termCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].medalId != null">
+				AND medal_id = #{args[0].medalId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].periodCode != null and args[0].periodCode != ''">
+				AND period_code = #{args[0].periodCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rank != null">
+				AND rank = #{args[0].rank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].normalScore != null">
+				AND normal_score = #{args[0].normalScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].addScore != null">
+				AND add_score = #{args[0].addScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].deductScore != null">
+				AND deduct_score = #{args[0].deductScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_aps_team_summary 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskId != null">
+				AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].termCode != null and args[0].termCode != ''">
+				AND term_code = #{args[0].termCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].medalId != null">
+				AND medal_id = #{args[0].medalId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].periodCode != null and args[0].periodCode != ''">
+				AND period_code = #{args[0].periodCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rank != null">
+				AND rank = #{args[0].rank,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].normalScore != null">
+				AND normal_score = #{args[0].normalScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].addScore != null">
+				AND add_score = #{args[0].addScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].deductScore != null">
+				AND deduct_score = #{args[0].deductScore,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApsTeamSummaryResult" useCache="false">
+		SELECT * FROM pj_aps_team_summary WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ApsTeamSummary">
+		UPDATE pj_aps_team_summary
+		SET 
+		<if test="taskId != null">
+			task_id=#{taskId},
+		</if>
+		<if test="termCode != null">
+			term_code=#{termCode},
+		</if>
+		<if test="medalId != null">
+			medal_id=#{medalId},
+		</if>
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="periodCode != null">
+			period_code=#{periodCode},
+		</if>
+		<if test="rank != null">
+			rank=#{rank},
+		</if>
+		<if test="normalScore != null">
+			normal_score=#{normalScore},
+		</if>
+		<if test="addScore != null">
+			add_score=#{addScore},
+		</if>
+		<if test="deductScore != null">
+			deduct_score=#{deductScore},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_aps_team_summary
+		WHERE id = #{id}
+	</delete>
+	<select id="findApsTeamSummaryByRedBanner" resultMap="ApsTeamSummaryResult" useCache="false">
+    SELECT * FROM pj_aps_team_summary WHERE 1=1
+	AND task_id = #{args[0],javaType=java.lang.Integer}
+	AND term_code = #{args[1],javaType=java.lang.String}
+	AND period_code = #{args[2],javaType=java.lang.String}
+	AND medal_id=#{args[3],javaType=java.lang.Integer}
+	</select>
+</mapper>

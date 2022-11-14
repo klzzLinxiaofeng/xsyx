@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.student.dao.StudentAskingDao">
+    <resultMap id="studentAskingResult" type="com.xunyunedu.student.pojo.StudentAskingPojo">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="student_id" jdbcType="INTEGER" property="studentId"/>
+        <result column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="upload_id" jdbcType="CHAR" property="uploadId"/>
+        <result column="india_status" jdbcType="INTEGER" property="indiaStatus"/>
+        <result column="review_date" jdbcType="TIMESTAMP" property="reviewDate"/>
+        <result column="is_deleted" jdbcType="BIT" property="isDeleted"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="rejected" property="rejected"/>
+        <result column="time_consuming" property="timeConsuming"/>
+        <result column="number" property="number"/>
+        <result column="stuName" property="stuName"/>
+        <result column="team_id" property="teamId"/>
+    </resultMap>
+
+    <resultMap id="TeacherResult" type="com.xunyunedu.student.pojo.TeacherPojo">
+        <result column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="persion_id" property="persionId"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="name" property="name"/>
+        <result column="sex" property="sex"/>
+        <result column="job_number" property="jobNumber"/>
+        <result column="enroll_date" property="enrollDate"/>
+        <result column="leave_date" property="leaveDate"/>
+        <result column="work_begin_date" property="workBeginDate"/>
+        <result column="qualification" property="qualification"/>
+        <result column="occupation_code" property="occupationCode"/>
+        <result column="position" property="position"/>
+        <result column="mobile" property="mobile"/>
+        <result column="telephone" property="telephone"/>
+        <result column="post_staffing" property="postStaffing"/>
+        <result column="job_state" property="jobState"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="alias" property="alias"/>
+        <result column="is_external" property="isExternal"/>
+        <result column="photo_uuid" property="photoUuid"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, student_id, teacher_id, begin_date, end_date, remark, upload_id, india_status,
+        review_date, is_deleted, create_date, modify_date,time_consuming,number
+    </sql>
+
+    <select id="getTeacher" resultMap="TeacherResult">
+        select pt.*,pp.photo_uuid from pj_teacher pt
+        left join pj_person pp on pp.id = pt.persion_id and pp.is_delete = 0
+        where   pt.id in (
+                select ptt.teacher_id from pj_student ps
+                inner join pj_team_student pts on pts.student_id = ps.id and pts.is_delete = 0
+                inner join pj_team_teacher ptt on pts.team_id = ptt.team_id and ptt.type = #{type} and ptt.is_delete = 0
+                where ps.id = #{stuId} and ps.school_id = #{schooldId} and ps.is_delete = 0
+            )
+
+    </select>
+
+    <select id="getTeacherById" resultMap="TeacherResult">
+        select * from pj_teacher where school_id = #{schooldId} and id = #{id}
+    </select>
+
+    <insert id="addAskingInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into pj_student_asking(student_id,teacher_id, school_id ,begin_date, end_date,remark,upload_id,india_status,create_date,time_consuming,number, team_id)
+        values(#{studentId},#{teacherId},#{schoolId},#{beginDate},#{endDate},#{remark},#{uploadId},#{indiaStatus},#{createDate},#{timeConsuming},#{number},#{teamId})
+    </insert>
+
+    <select id="getStuAskingById" resultMap="studentAskingResult">
+         select psa.*,ps.name stuName
+         FROM pj_student_asking psa       join pj_student ps on ps.id = psa.student_id
+         WHERE psa.id = #{id} and psa.school_id = #{schooldId} and psa.is_deleted = 0
+         and ps.is_delete = 0 and ps.school_id = #{schooldId}
+    </select>
+
+    <select id="getStuAskingList" resultMap="studentAskingResult">
+        select psa.*,ps.name stuName
+        from pj_student_asking psa join pj_student ps on ps.id = psa.student_id
+        where psa.is_deleted = 0 and ps.is_delete = 0
+            <if test="studentAskingPojo.schoolId != null">
+             and psa.school_id = #{studentAskingPojo.schoolId}
+             and ps.school_id = #{studentAskingPojo.schoolId}
+            </if>
+            <if test="studentAskingPojo.studentId != null">and psa.student_id = #{studentAskingPojo.studentId}</if>
+            <if test="studentAskingPojo.indiaStatus != null">and psa.india_status = #{studentAskingPojo.indiaStatus}</if>
+            <if test="studentAskingPojo.teacherId != null"> and psa.teacher_id = #{studentAskingPojo.teacherId}</if>
+        order by create_date desc
+    </select>
+</mapper>

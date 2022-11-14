@@ -1,0 +1,3 @@
+ALTER TABLE `oa_repair` 
+ADD COLUMN `receiver_name` VARCHAR(45) NULL AFTER `owner_type`;
+ALTER TABLE `oa_accept_repair` CHANGE COLUMN `school_id` `school_id` int(10) NOT NULL after `is_delete`

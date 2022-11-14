@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.india.dao.OaApplayIndiaDao">
+<resultMap id="ResultMap" type="com.xunyunedu.india.pojo.OaApplayIndia">
+  <id property="id" column="id" />
+  <result property="ownerId" column="owner_id"/>
+  <result property="ownerType" column="owner_type"/>
+  <result property="proposerId" column="proposer_id"/>
+  <result property="proposerName" column="proposer_name"/>
+  <result property="mobile" column="mobile"/>
+  <result property="departmentId" column="department_id"/>
+  <result property="indiaStatus" column="india_status"/>
+  <result property="title" column="title"/>
+  <result property="publishDate" column="publish_date"/>
+  <result property="remark" column="remark"/>
+  <result property="uploadId" column="upload_id"/>
+  <result property="deliveryMethod" column="delivery_method"/>
+  <result property="treatDate" column="treat_date"/>
+  <result property="nonTreatmentCause" column="non_treatment_cause"/>
+  <result property="expectedCompletionTime" column="expected_completion_time"/>
+  <result property="isDeleted" column="is_deleted"/>
+  <result property="createDate" column="create_date"/>
+  <result property="modifyDate" column="modify_date"/>
+  <result property="startDate" column="start_date"/>
+  <result property="endDate" column="end_date"/>
+  <result property="approverId" column="approver_id"/>
+</resultMap>
+
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into oa_applay_india
+    <trim prefix="("  suffix=")" suffixOverrides=",">
+      <if test="ownerId != null">
+        owner_id,
+      </if>
+      <if test="ownerType != null and ownerType != ''">
+        owner_type,
+      </if>
+      <if test="proposerId != null">
+        proposer_id,
+      </if>
+      <if test="proposerName != null and proposerName != ''">
+        proposer_name,
+      </if>
+      <if test="mobile != null and mobile != ''">
+        mobile,
+      </if>
+      <if test="departmentId != null">
+        department_id,
+      </if>
+      <if test="indiaStatus != null and indiaStatus != ''">
+        india_status,
+      </if>
+      <if test="title != null and title != ''">
+        title,
+      </if>
+      <if test="publishDate != null">
+        publish_date,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="uploadId != null and uploadId != ''">
+        upload_id,
+      </if>
+      <if test="deliveryMethod != null and deliveryMethod != ''">
+        delivery_method,
+      </if>
+      <if test="treatDate != null">
+        treat_date,
+      </if>
+      <if test="nonTreatmentCause != null and nonTreatmentCause != ''">
+        non_treatment_cause,
+      </if>
+      <if test="expectedCompletionTime != null">
+        expected_completion_time,
+      </if>
+      <if test="startDate != null">
+        start_date,
+      </if>
+      <if test="endDate != null">
+        end_date,
+      </if>
+      <if test="approverId != null">
+        approver_id,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+      <if test="modifyDate != null">
+        modify_date,
+      </if>
+      create_date
+    </trim>
+    values
+    <trim prefix="("  suffix=")" suffixOverrides=",">
+      <if test="ownerId != null">
+        #{ownerId},
+      </if>
+      <if test="ownerType != null and ownerType != ''">
+        #{ownerType},
+      </if>
+      <if test="proposerId != null">
+        #{proposerId},
+      </if>
+      <if test="proposerName != null and proposerName != ''">
+        #{proposerName},
+      </if>
+      <if test="mobile != null and mobile != ''">
+        #{mobile},
+      </if>
+      <if test="departmentId != null">
+        #{departmentId},
+      </if>
+      <if test="indiaStatus != null and indiaStatus != ''">
+        #{indiaStatus},
+      </if>
+      <if test="title != null and title != ''">
+        #{title},
+      </if>
+      <if test="publishDate != null">
+        #{publishDate},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="uploadId != null and uploadId != ''">
+        #{uploadId},
+      </if>
+      <if test="deliveryMethod != null and deliveryMethod != ''">
+        #{deliveryMethod},
+      </if>
+      <if test="treatDate != null">
+        #{treatDate},
+      </if>
+      <if test="nonTreatmentCause != null and nonTreatmentCause != ''">
+        #{nonTreatmentCause},
+      </if>
+      <if test="expectedCompletionTime != null">
+        #{expectedCompletionTime},
+      </if>
+      <if test="startDate != null">
+        #{startDate},
+      </if>
+      <if test="endDate != null">
+        #{endDate},
+      </if>
+      <if test="approverId != null">
+        #{approverId},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted},
+      </if>
+      <if test="modifyDate != null">
+        #{modifyDate},
+      </if>
+      NOW()
+    </trim>
+  </insert>
+
+  <select id="selectById" resultMap="ResultMap">
+    select * from oa_applay_india where id = #{id}
+  </select>
+
+  <select id="selectByCondition" resultMap="ResultMap">
+    select * from oa_applay_india
+    <where>
+      <if test="proposerId != null">
+        and proposer_id = #{proposerId}
+      </if>
+      <if test="departmentId != null">
+        and department_id = #{departmentId}
+      </if>
+    </where>
+  </select>
+</mapper>

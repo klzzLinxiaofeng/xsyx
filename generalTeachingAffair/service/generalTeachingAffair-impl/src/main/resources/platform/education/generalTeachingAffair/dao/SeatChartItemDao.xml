@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SeatChartItemDao">
+
+	<resultMap id="SeatChartItemResult" type="platform.education.generalTeachingAffair.model.SeatChartItem">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="seatId" column="seat_id" />
+		<result property="studentId" column="student_id" />
+		<result property="positionX" column="position_x" />
+		<result property="positionY" column="position_y" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+	
+	<resultMap id="SeatChartItemResultVo" type="platform.education.generalTeachingAffair.vo.SeatChartItemVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="seatId" column="seat_id" />
+		<result property="studentId" column="student_id" />
+		<result property="positionX" column="position_x" />
+		<result property="positionY" column="position_y" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="studentName" column="studentName" />
+		<result property="studentSex" column="studentSex" />
+		<result property="studentNumber" column="studentNumber" />
+		<result property="userId" column="userId" />
+	</resultMap>
+
+	<resultMap id="StudentResult" type="platform.education.generalTeachingAffair.model.Student">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="personId" column="person_id" />
+		<result property="userId" column="user_id" />
+		<result property="teamId" column="team_id" />
+		<result property="userName" column="user_name" />
+		<result property="teamName" column="team_name" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="studentNumber" column="student_number" />
+		<result property="studentNumber2" column="student_number2" />
+		<result property="isBoarded" column="is_boarded" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="mobile" column="mobile" />
+		<result property="studyState" column="study_state" />
+		<result property="studentType" column="student_type" />
+		<result property="position" column="position" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.SeatChartItem">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_seat_chart_item (
+			id, 
+			school_id, 
+			seat_id, 
+			student_id, 
+			position_x, 
+			position_y, 
+			is_delete, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{seatId}, 
+			#{studentId}, 
+			#{positionX}, 
+			#{positionY}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="SeatChartItemResult" useCache="false">
+		SELECT * FROM pj_seat_chart_item WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findSeatChartItemByCondition" resultMap="SeatChartItemResult" useCache="false">
+		SELECT * FROM pj_seat_chart_item 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].seatId != null">
+				AND seat_id = #{args[0].seatId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].positionX != null">
+				AND position_x = #{args[0].positionX,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].positionY != null">
+				AND position_y = #{args[0].positionY,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_seat_chart_item 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].seatId != null">
+				AND seat_id = #{args[0].seatId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND student_id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].positionX != null">
+				AND position_x = #{args[0].positionX,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].positionY != null">
+				AND position_y = #{args[0].positionY,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findSeatChartItemVoBySeatId" resultMap="SeatChartItemResultVo" useCache="false">
+		select seat.*,stu.name studentName,stu.sex studentSex,stu.student_number studentNumber,stu.user_id userId FROM pj_seat_chart_item seat LEFT JOIN pj_student stu
+		on seat.student_id = stu.id 
+		where stu.is_delete = 0
+		and seat.is_delete = 0 
+		AND seat.seat_id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<select id="findById" resultMap="SeatChartItemResult" useCache="false">
+		SELECT * FROM pj_seat_chart_item WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<select id="findBySeatId" resultMap="SeatChartItemResult" useCache="false">
+		SELECT * FROM pj_seat_chart_item WHERE seat_id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<select id="findStudentDoNotHasSeatInTeam" resultMap="StudentResult"
+	useCache="false">
+
+		SELECT pjs.* from pj_student pjs 
+		INNER JOIN pj_team_student ts 
+		ON pjs.id = ts.student_id
+		AND pjs.is_delete = 0 
+		AND ts.is_delete=0 
+		AND ts.in_state = 1
+		<if test="args[0]!=null and args[0]!=''">
+			AND ts.team_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		LEFT JOIN pj_seat_chart_item si 
+		ON pjs.id = si.student_id
+		<if test="args[1] != null">
+			AND si.seat_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		WHERE si.student_id IS NULL
+</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.SeatChartItem">
+		UPDATE pj_seat_chart_item
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="seatId != null">
+			seat_id=#{seatId},
+		</if>
+		<if test="studentId != null">
+			student_id=#{studentId},
+		</if>
+		<if test="positionX != null">
+			position_x=#{positionX},
+		</if>
+		<if test="positionY != null">
+			position_y=#{positionY},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_seat_chart_item
+		WHERE id = #{id}
+	</delete>
+	
+	<delete id="deleteBySeatId">
+		DELETE FROM pj_seat_chart_item
+		WHERE seat_id = #{args[0],javaType=java.lang.Integer}
+	</delete>
+	
+</mapper>

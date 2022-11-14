@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ResearchProjectDao">
+
+	<resultMap id="ResearchProjectResult" type="platform.education.generalTeachingAffair.model.ResearchProject">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="level" column="level" />
+		<result property="progressLevel" column="progress_level" />
+		<result property="code" column="code" />
+		<result property="name" column="name" />
+		<result property="masterId" column="master_id" />
+		<result property="masterName" column="master_name" />
+		<result property="attendeesName" column="attendees_name" />
+		<result property="attendeesId" column="attendees_id" />
+		<result property="beginDate" column="begin_date" />
+		<result property="endDate" column="end_date" />
+		<result property="prize" column="prize" />
+		<result property="fileUuid" column="file_uuid" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ResearchProject">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_ky_research_project (
+			id, 
+			school_id, 
+			level, 
+			progress_level, 
+			code, 
+			name, 
+			master_id, 
+			master_name, 
+			attendees_name, 
+			attendees_id, 
+			begin_date, 
+			end_date, 
+			prize, 
+			file_uuid, 
+			is_delete, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{level}, 
+			#{progressLevel}, 
+			#{code}, 
+			#{name}, 
+			#{masterId}, 
+			#{masterName}, 
+			#{attendeesName}, 
+			#{attendeesId}, 
+			#{beginDate}, 
+			#{endDate}, 
+			#{prize}, 
+			#{fileUuid}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ResearchProjectResult" useCache="false">
+		SELECT * FROM pj_ky_research_project WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findResearchProjectByCondition" resultMap="ResearchProjectResult" useCache="false">
+		SELECT * FROM pj_ky_research_project 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].level != null and args[0].level != ''">
+				AND level = #{args[0].level,javaType=java.lang.String}
+			</if>
+			<if test="args[0].progressLevel != null and args[0].progressLevel != ''">
+				AND progress_level = #{args[0].progressLevel,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].masterId != null and args[0].masterId != ''">
+				AND master_id = #{args[0].masterId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].masterName != null and args[0].masterName != ''">
+				AND master_name LIKE CONCAT(CONCAT('%', #{args[0].masterName}),'%')
+			</if>
+			<if test="args[0].attendeesName != null and args[0].attendeesName != ''">
+				AND attendees_name = #{args[0].attendeesName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attendeesId != null and args[0].attendeesId != ''">
+				AND attendees_id = #{args[0].attendeesId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND begin_date = #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null">
+				AND end_date = #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].prize != null and args[0].prize != ''">
+				AND prize = #{args[0].prize,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_ky_research_project 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].level != null and args[0].level != ''">
+				AND level = #{args[0].level,javaType=java.lang.String}
+			</if>
+			<if test="args[0].progressLevel != null and args[0].progressLevel != ''">
+				AND progress_level = #{args[0].progressLevel,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].masterId != null and args[0].masterId != ''">
+				AND master_id = #{args[0].masterId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].masterName != null and args[0].masterName != ''">
+				AND master_name = #{args[0].masterName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attendeesName != null and args[0].attendeesName != ''">
+				AND attendees_name = #{args[0].attendeesName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].attendeesId != null and args[0].attendeesId != ''">
+				AND attendees_id = #{args[0].attendeesId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND begin_date = #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null">
+				AND end_date = #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].prize != null and args[0].prize != ''">
+				AND prize = #{args[0].prize,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ResearchProjectResult" useCache="false">
+		SELECT * FROM pj_ky_research_project WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ResearchProject">
+		UPDATE pj_ky_research_project
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="level != null">
+			level=#{level},
+		</if>
+		<if test="progressLevel != null">
+			progress_level=#{progressLevel},
+		</if>
+		<if test="code != null">
+			code=#{code},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="masterId != null">
+			master_id=#{masterId},
+		</if>
+		<if test="masterName != null">
+			master_name=#{masterName},
+		</if>
+		<if test="attendeesName != null">
+			attendees_name=#{attendeesName},
+		</if>
+		<if test="attendeesId != null">
+			attendees_id=#{attendeesId},
+		</if>
+		<if test="beginDate != null">
+			begin_date=#{beginDate},
+		</if>
+		<if test="endDate != null">
+			end_date=#{endDate},
+		</if>
+		<if test="prize != null">
+			prize=#{prize},
+		</if>
+		<if test="fileUuid != null">
+			file_uuid=#{fileUuid},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_ky_research_project
+		WHERE id = #{id}
+	</delete>
+</mapper>

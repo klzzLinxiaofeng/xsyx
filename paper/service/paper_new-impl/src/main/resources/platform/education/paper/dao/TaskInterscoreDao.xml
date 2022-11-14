@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.TaskInterscoreDao">
+
+	<resultMap id="TaskInterscoreResult" type="platform.education.paper.model.TaskInterscore">
+		<result property="id" column="id" />
+		<result property="taskId" column="task_id" />
+		<result property="teamId" column="team_id" />
+		<result property="paperId" column="paper_id" />
+		<result property="scoringUserId" column="scoring_user_id" />
+		<result property="scoredUserId" column="scored_user_id" />
+		<result property="scoredPaperId" column="scored_paper_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="scoringTime" column="scoring_time" />
+	</resultMap>
+    <resultMap id="TaskInterscoreResultVo" type="platform.education.paper.vo.TaskInterscoreVo">
+		<result property="id" column="id" />
+		<result property="taskId" column="task_id" />
+		<result property="teamId" column="team_id" />
+		<result property="paperId" column="paper_id" />
+		<result property="scoringUserId" column="scoring_user_id" />
+		<result property="scoredUserId" column="scored_user_id" />
+		<result property="scoredPaperId" column="scored_paper_id" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="scoringTime" column="scoring_time" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="title" column="title" />
+		<result property="difficultyString" column="difficultyString" />
+		<result property="score" column="score" />
+		<result property="startTime" column="interscore_start_time" />
+		<result property="finishTime" column="interscore_finish_time" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="catalogCode" column="catalog_code" />
+	</resultMap>
+	<insert id="create" parameterType="platform.education.paper.model.TaskInterscore">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_task_interscore (
+		id,
+		task_id,
+		team_id,
+		paper_id,
+		scoring_user_id,
+		scored_user_id,
+		scored_paper_id,
+		is_deleted,
+		create_date,
+		modify_date,
+		scoring_time
+		)
+		VALUES (
+		#{id},
+		#{taskId},
+		#{teamId},
+		#{paperId},
+		#{scoringUserId},
+		#{scoredUserId},
+		#{scoredPaperId},
+		<choose>
+			<when test="isDeleted != null">
+				<choose>
+					<when test="isDeleted == true">
+						1,
+					</when>
+					<otherwise>
+						0,
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		#{createDate},
+		#{modifyDate},
+		#{scoringTime}
+		)
+	</insert>
+
+	<select id="read" resultMap="TaskInterscoreResult" useCache="false">
+		SELECT * FROM pa_task_interscore WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findTaskInterscoreByCondition" resultMap="TaskInterscoreResult"
+		useCache="false">
+		SELECT * FROM pa_task_interscore
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskId != null">
+				AND task_id =
+				#{args[0].taskId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperId != null">
+				AND paper_id =
+				#{args[0].paperId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].scoringUserId != null">
+				AND scoring_user_id =
+				#{args[0].scoringUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].scoredUserId != null">
+				AND scored_user_id =
+				#{args[0].scoredUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].scoredPaperId != null">
+				AND scored_paper_id =
+				#{args[0].scoredPaperId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].scoringTime != null">
+				AND scoring_time =
+				#{args[0].scoringTime,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_task_interscore
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskId != null">
+				AND task_id =
+				#{args[0].taskId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperId != null">
+				AND paper_id =
+				#{args[0].paperId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].scoringUserId != null">
+				AND scoring_user_id =
+				#{args[0].scoringUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].scoredUserId != null">
+				AND scored_user_id =
+				#{args[0].scoredUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].scoredPaperId != null">
+				AND scored_paper_id =
+				#{args[0].scoredPaperId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted = 1
+					</when>
+					<otherwise>
+						AND is_deleted = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].scoringTime != null">
+				AND scoring_time =
+				#{args[0].scoringTime,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="TaskInterscoreResult" useCache="false">
+		SELECT * FROM pa_task_interscore WHERE id =
+		#{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<update id="update" parameterType="platform.education.paper.model.TaskInterscore">
+		UPDATE pa_task_interscore
+		SET
+		<if test="taskId != null">
+			task_id=#{taskId},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="paperId != null">
+			paper_id=#{paperId},
+		</if>
+		<if test="scoringUserId != null">
+			scoring_user_id=#{scoringUserId},
+		</if>
+		<if test="scoredUserId != null">
+			scored_user_id=#{scoredUserId},
+		</if>
+		<if test="scoredPaperId != null">
+			scored_paper_id=#{scoredPaperId},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted = 1,
+				</when>
+				<otherwise>
+					is_deleted = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="scoringTime != null">
+			scoring_time=#{scoringTime},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pa_task_interscore
+		WHERE id = #{id}
+	</delete>
+	<insert id="createBatch">
+		INSERT INTO pa_task_interscore (
+		id,
+		task_id,
+		team_id,
+		paper_id,
+		scoring_user_id,
+		scored_user_id,
+		scored_paper_id,
+		is_deleted,
+		create_date,
+		modify_date,
+		scoring_time
+		)
+		VALUES
+		<foreach collection="args[0]" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},
+			#{item.taskId},
+			#{item.teamId},
+			#{item.paperId},
+			#{item.scoringUserId},
+			#{item.scoredUserId},
+			#{item.scoredPaperId},
+			0,
+			#{item.createDate},
+			#{item.modifyDate},
+			#{item.scoringTime}
+			)
+		</foreach>
+
+	</insert>
+	
+	<select id="findExamScoringTask" resultMap="TaskInterscoreResultVo">
+		SELECT 
+		  pp.`title`,
+		  pp.score,
+		  p.id as task_id,
+		  ptt.scored_user_id,
+		  pt.is_interscoring,
+		  pt.interscore_start_time,
+		  pt.interscore_finish_time,
+		  ptt.scoring_time,
+		  IF(COUNT(ppc.subject_code)=1,ppc.subject_code,'0') AS subject_code,
+		  IF(COUNT(ppc.catalog_code)=1,ppc.catalog_code,'0') AS catalog_code,
+		  (
+					CASE
+		WHEN pp.difficulity IS NULL THEN
+			'未知难度'
+		WHEN pp.difficulity &gt;= 0
+		AND pp.difficulity &lt;= 0.2 THEN
+			'困难'
+		WHEN pp.difficulity &gt;= 0.3
+		AND pp.difficulity &lt;=  0.5 THEN
+			'中等'
+		WHEN pp.difficulity &gt;= 0.6
+		AND pp.difficulity &lt;= 1.0 THEN
+			'简单'
+		ELSE
+			'未知难度'
+		END
+		) AS difficultyString
+		FROM
+		  pa_task_interscore ptt 
+		  INNER JOIN pa_task p 
+		    ON ptt.task_id = p.id 
+		  INNER JOIN pa_task_team pt 
+		    ON pt.task_id = ptt.task_id  AND pt.is_deleted=0
+		    AND pt.team_id = ptt.team_id  AND pt.is_deleted=0 AND pt.is_interscoring=1
+		  INNER JOIN pa_paper pp 
+		    ON ptt.paper_id = pp.id 
+		  INNER JOIN pa_paper_catalog ppc 
+		    ON ppc.paper_id = ptt.paper_id 
+		WHERE 1 = 1
+		<if test="args[0] != null">
+			AND ptt.scoring_user_id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND ppc.subject_code = #{args[1]}	
+		</if>
+		 AND pt.interscore_finish_time > NOW()
+		 
+		 AND NOW() > pt.interscore_start_time
+		
+		GROUP BY  ptt.id
+	</select>
+	
+	<select id="findScoringTimeTaskTaskInterscore"  resultMap="TaskInterscoreResult">
+	SELECT * FROM pa_task_interscore ti 
+
+WHERE 
+
+ti.task_id=#{args[0]}
+
+AND
+
+ti.team_id=#{args[1]}
+
+AND
+
+ti.is_deleted=0
+AND
+
+ti.scoring_time IS NOT null
+	
+	</select>
+</mapper>

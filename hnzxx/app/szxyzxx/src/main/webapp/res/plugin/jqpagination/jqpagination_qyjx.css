@@ -1,0 +1,113 @@
+.pagination {
+  display: inline-block;
+  border-radius: 3px; 
+  float:right;
+  border:0 none;
+  margin:0 20px 20px 0;}
+
+.pagination a {
+  display: block;
+  float: left;
+  width: 35px;
+  height: 35px;
+  line-height:35px;
+  margin:0 6px 0 0;
+  outline: none;
+  border: 1px solid #CDCDCD;
+  border-radius:4px;
+  color: #999999;
+  vertical-align: middle;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: Times, 'Times New Roman', Georgia, Palatino;
+  /* ATTN: need a better font stack */
+  background-color: #fff;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #fff));
+  background-image: -webkit-linear-gradient(#fff, #fff);
+  background-image: linear-gradient(#fff, #fff); 
+   }
+  .pagination a:hover {
+    background-color: #239cf4;
+    background: -webkit-linear-gradient(left top, #1795EF , #2DA1F8); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(bottom right, #1795EF , #2DA1F8); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(bottom right,#1795EF , #2DA1F8); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to bottom right, #1795EF , #2DA1F8);
+    -moz-box-shadow: 0 3px 9px rgba(34, 153, 238, 0.5);
+    -webkit-box-shadow:0 3px 9px rgba(34, 153, 238, 0.5);
+    box-shadow: 0 3px 9px rgba(34, 153, 238, 0.5);
+    color:#fff;
+    border-color: #239cf4;
+/*     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e4e4e4), color-stop(100%, #cecece)); */
+/*     background-image: -webkit-linear-gradient(#e4e4e4, #cecece); */
+/*     background-image: linear-gradient(#e4e4e4, #cecece);  */
+    }
+  .pagination a.disabled, .pagination a.disabled:hover, .pagination a.disabled:focus, .pagination a.disabled:active {
+    background-color: #fff;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #fff));
+    background-image: -webkit-linear-gradient(#fff, #fff);
+    background-image: linear-gradient(#fff, #fff); 
+    color: #cccccc;
+    cursor: default; }
+ .pagination a.disabled:hover{
+ 	background: #fff;
+ 	border: 1px solid #CDCDCD;
+ 	box-shadow:none;
+ }
+.pagination a:first-child {
+  margin:0 6px 0 0;
+  border: 1px solid #CDCDCD;
+  border-radius: 4px;
+ }
+
+.pagination a:last-child {
+  margin:0;
+  border: 1px solid #CDCDCD;
+      border-radius: 4px;
+   }
+
+.pagination input {
+  float: left;
+  border: 1px solid #CDCDCD;
+  margin-right:6px;
+  padding: 0;
+  width: 140px;
+  height: 35px;
+  line-height:35px;
+  outline: none;
+  vertical-align: middle;
+  background-color:#fff;
+  color:#999999;
+  border-radius:4px;
+  text-align: center; }
+
+/* gigantic class for demo purposes */
+.gigantic.pagination {
+  margin: 30px 0; }
+
+.gigantic.pagination a {
+  height: 60px;
+  width: 60px;
+  font-size: 50px;
+  line-height: 50px; }
+
+.gigantic.pagination input {
+  width: 300px;
+  height: 60px;
+  font-size: 30px; }
+
+/* log element for demo purposes */
+.log {
+  display: none;
+  background-color: #EDEDED;
+  border: 1px solid #B4B4B4;
+  height: 300px;
+  width: 524px;
+  overflow: auto;
+  margin-left: 0;
+  list-style: none;
+  padding: 10px; }
+  .log li {
+    margin-top: 0;
+    margin-bottom: 5px; }

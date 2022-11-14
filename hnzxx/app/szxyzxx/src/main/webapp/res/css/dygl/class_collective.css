@@ -1,0 +1,662 @@
+@charset "utf-8";
+.breadcrumb {
+    background: #ddd;
+}
+.breadcrumb {
+    padding: 8px 15px;
+    margin: 10px 0;
+    list-style: none;
+    background-color: #f5f5f5;
+}
+.breadcrumb > li {
+    text-shadow: none;
+}
+.breadcrumb > li {
+    display: inline-block;
+    text-shadow: 0 1px 0 #ffffff;
+}
+.breadcrumb a {
+    color: #7F88A3;
+}
+
+
+.table th, .table td {
+    padding: 3px;
+    height: 35px;
+    line-height: 35px;
+    text-align: left;
+    vertical-align: top;
+    color: #535353;
+    border-top: 1px solid #dddddd;
+    vertical-align: middle;
+    padding-left: 20px;
+}
+.table th.caozuo, .table td.caozuo {
+    width: 285px;
+}
+.content-widgets .table p{margin-bottom:0}
+
+.check-rated{
+        width: 100%;
+    padding-bottom: 20px;
+}
+.minutes-rated{
+    height: 35px;
+    background: #456a8c;
+}
+.minutes-rated a{
+    padding:0 10px;
+    line-height: 35px;
+    color: #adceec;
+    float: left;
+    font-weight: bold;
+}
+a.see-rated{
+    color:#456a8c;
+    background: #fff;
+}
+.table th span, .table td span{
+    color: #ec3e3e;
+    margin-left: 10px;
+}
+.project-rated{
+    margin: 0 20px;
+    display: none;
+}
+.project-rated:first-child{
+    display: block;
+}
+.points-content{
+    display: none;
+}
+.project-rated table tr{
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+#data-table th.caozuo img,#data-table td.caozuo img{
+    height: 30px;
+    width:45px;
+    margin-right: 6px;
+}
+.plus-minus-rated{
+    border:1px solid #ddd;
+    height: 39px;
+}
+.plus-minus-rated a{
+    line-height: 39px;
+    text-align: center;
+    width: 50%;
+    float: left;
+    color: #333;
+    font-weight: bold;
+    box-sizing:border-box;
+    background: #f2f2f2;
+}
+.plus-minus-rated a .bj{
+	padding-left:22px;
+	margin:0 auto;
+	width:52px;
+	display:block;
+}
+.plus-minus-rated .jia span{
+	background:url("images/jian.png") no-repeat 5px center;
+}
+.plus-minus-rated .jian span{
+	background:url("images/jia.png") no-repeat 5px center;
+}
+a.current-rated{
+    background: #fff;
+}
+.project-rated p{
+    color: #333;
+    line-height: 65px;
+    text-align: center;
+    margin:0;
+    font-size:16px;
+    font-weight: bold;
+}
+a.btn-primary{
+    background: #0148a0;
+    padding:0 20px;
+}
+.table th.caozuo button{
+    width: 110px;
+    height:41px;
+    line-height: 41px;
+    background: #5cb85c;
+    border:none;
+    color: #fff;
+    font-weight: bold;
+    float: right;
+}
+.table th.caozuo a{
+    color: #535353;
+    margin-right: 30px;
+    float: right;
+    line-height: 40px;
+    font-size:15px;
+}
+.table th.caozuo a.turn_blue{
+	color:#086fef;
+}
+.table td input{
+    width:60px;
+    height: 20px;
+    border:1px solid #88a4be;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    color: #fa0314;
+}
+.reflective-evaluate th,.reflective-evaluate td{
+    border-right: 1px solid #ddd;
+}
+button{
+    cursor:pointer;
+}
+
+
+.check-list{
+    height: 350px;
+    margin: 0 auto;
+    padding: 0 15px
+}
+.choice-prom{
+    padding: 0 0 6px 0;
+    background-color:#F8F8F8;
+}
+
+.choice-prom input{
+    width: 260px;
+    border:1px solid #dbe0e2;
+}
+.plus-minus-nape a{
+    padding:0 25px;
+    line-height: 35px;
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+    margin-bottom:10px;
+    float: left;
+}
+a.plus-minus{
+    background: #5cb85c;
+    color: #fff;
+}
+.plus-minus-frame{
+    border:1px solid #dbe0e2;
+    float: left;
+    width: 100%;
+    height: 280px;
+    overflow-x: hidden;
+}
+.define-item ul li{
+    width: 133px;
+    line-height: 36px;
+    margin: 10px 0 0 20px;
+    font-size: 14px;
+    display:block;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    float: left;
+    height: 36px;
+    cursor:pointer;
+    position:relative;
+    padding:0 20px 0 5px;
+    display:block;
+}
+.define-item ul li .delete{
+	background:url("images/close-circle-red-16.png") no-repeat;
+	width:16px;
+	height:16px;
+	background-size: 100% 100%;
+	position:absolute;
+	right:5px;
+	top:10px;
+	display:none;
+}
+.define-item ul li input{
+    float: left;
+    margin:10px 18px 0 0;
+}
+.define-item ul li input.add-name{
+    width: 92px;
+    height: 36px;
+    background: #f1f1f1;
+    margin: 0;
+    float: right;
+    padding: 0;
+    border:none;
+    color: #525252;
+    padding-left: 10px;
+}
+/* .define-item ul li.add-nape{ */
+/* 	width:133px; */
+/* } */
+a.click-add{
+    background: url(images/add-nape.png) no-repeat;
+    height: 36px;
+    width: 123px;
+    float: left;
+    margin: 10px 0 0 20px;
+}
+.btn-warning{
+    color: #ffffff;
+    background-color: #e88a05;
+    border:none;
+}
+.confirm-evaluate{
+    width: 100%;
+    float: left;
+    margin-top: 18px;
+}
+.confirm-evaluate button{
+    padding: 0 10px;
+    height: 30px;
+    border-radius: 5px;
+    display: block;
+    margin:0 auto;
+}
+.table-limit td,.table-limit th{
+    min-width: 86px;
+    max-width:86px;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    text-overflow: ellipsis;
+    padding-right: 20px;
+}
+.reflective-evaluate td div{
+    width:70%;
+    overflow: hidden;
+    height:13px;
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    margin-left: 10px;
+}
+.reflective-evaluate td div p{
+    background: #9aca66;
+    height:13px;
+    /*width: 10%;*/
+}
+.limit-broad{
+    width: 86px;
+}
+.table_div{
+    z-index: 1;
+}
+.table_div table{
+    left:0;
+    position: relative;
+}
+
+.reflective-evaluate thead{
+    background:#daf0fb;
+}
+.reflective-evaluate thead tr{
+    color:#4c708a;
+}
+.reflective-evaluate thead tr th:first-child{
+    width: 120px;
+}
+
+.table-spacing{
+    margin-top: 20px;
+}
+.table-spacing table td,.table-spacing table th{
+    text-align: center;
+}
+td input.td-spacing{
+    width: 160px;
+    margin:0 auto;
+    display: block;
+}
+div.limit-high{
+    height: 463px;
+    border:1px #d4d4d4 solid;
+    overflow-x: hidden;
+}
+p.unreviewed{
+    text-align: right;
+    margin-right: 15px;
+    line-height: 40px;
+    font-weight: normal;
+    font-size: 14px;
+}
+span.reviewed-no{
+    color: #000;
+}
+span.reviewed-cease{
+    color: red;
+}
+a.rating{
+    background: #c66e3c;
+    width: 65px;
+    text-align: center;
+}
+a.standard{
+    background: #3c96c8;
+    width: 85px;
+    text-align: center;
+}
+.score-standard{
+    width: 410px;
+    margin:20px;
+}
+.score-standard td input,.score-standard th input{
+    width: 160px;
+    margin:0;
+    color: #000;
+    text-align: left;
+    padding-left:20px;
+}
+.score-standard table{
+    border-left: 1px solid #ddd;
+}
+div.score-standard thead tr th{
+    color: #4b708b;
+}
+div.score-standard thead tr th:first-child{
+    width: 110px;
+}
+button.btn-ensure{
+    background: #0148a0;
+    color: #fff;
+    border:none;
+    width: 60px;
+    line-height: 30px;
+    border-radius: 5px;
+/*     margin: 20px auto; */
+    display: inherit;
+    float:left;
+}
+div.limit-cancel{
+    overflow-x:inline;
+}
+div.limit-cancel table{
+	border:1px solid #ddd;
+}
+div.limit-cancel th a,div.limit-cancel td a{
+    color: #000;
+}
+.table-spacing p {
+    color: #333;
+    line-height: 65px;
+    text-align: center;
+    margin: 0;
+    font-weight: bold;
+}
+p.specific-while {
+    line-height: 50px;
+    margin-top: -30px;
+    font-weight: normal;
+}
+.outnumber{
+    width: 445px;
+    margin:20px auto;
+}
+table.outnumber-installed{
+    border:1px #dbe1e3 solid;
+    width: 100%;
+}
+.outnumber-installed thead{
+    background: #daf0fb;
+    color: #4a6f89;
+}
+.outnumber-installed th,.outnumber-installed td{
+    line-height:35px;
+    text-align: center;
+    border-right: 1px #dbe1e3 solid;
+    border-bottom: 1px #dbe1e3 solid;
+}
+.outnumber-installed td input{
+    width:80px;
+    height: 20px;
+    border:1px #7f9db9 solid;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.outnumber-installed thead th:first-child{
+    width:110px;
+}
+td input.school-star{
+    height: 205px;
+}
+.points table.optimization td,.points table.optimization th{
+    padding-left:20px;
+    text-align: left;
+}
+.optimization thead th{
+    color:#4a6f89;
+}
+th.bad{
+    width: 340px;
+}
+.optimization tbody td span{
+    margin-left: 0;
+    line-height: 20px;
+    display: block;
+}
+.wire-top{
+    border-top: 1px #d9dfe7 solid;
+}
+.luru_fl{
+	background-color:#222132;
+	height:72px;
+	position: relative;
+    top: 1px;
+}
+.luru_fl a{
+	width:50%;
+	float:left;
+	font-size:16px;
+	font-family:"微软雅黑";
+	text-align:center;
+	line-height:78px;
+	
+}
+.luru_fl a.on p{
+	background:url("images/sjx.png") no-repeat 50% bottom;;
+}
+.luru_fl a.on p{
+	color:#2299EE;
+	
+}
+.luru_fl a span{
+	display:block;
+	width:29px;
+	height:29px;
+	float:left;
+	margin-top:24px;
+}
+.luru_fl a p{
+	margin:0 auto;
+	width:100px;
+	color:#8F8F9E;
+	height:72px;
+	line-height:76px;
+}
+.luru_fl .pllr span{
+	background:url("images/pllr.png") no-repeat ;
+}
+.luru_fl .xmlr span{
+	background:url("images/xmlr.png") no-repeat ;
+}
+.luru_fl .pllr.on span{
+	background:url("images/pllr_on.png") no-repeat ;
+}
+.luru_fl .xmlr.on span{
+	background:url("images/xmlr_on.png") no-repeat ;
+}
+.points-content .points ul{
+	
+}
+.points-content .points ul li{
+	float:left;
+	margin:10px 15px;
+}
+.points-content .points ul li a{
+	width:131px;
+	height:141px;
+	display:block;
+	border:1px solid #fFF;
+	text-align:center;
+	color:#616161;
+	font-size:14px;
+	font-family:"微软雅黑";
+	position:relative;
+}
+.points-content .points ul li a span{
+	display: block;
+    position: absolute;
+    width: 100%;
+    top: 47px;
+    font-size: 35px;
+}
+.points-content .points ul li a img{
+	margin:17px 23px 10px 23px;
+}
+.points-content .points ul li a:hover{
+	border:1px solid #92D1FF;
+	border-radius:5px;
+	background-color:#D9EFFF;
+}
+
+div.set-up-switch{
+	height: 35px;
+    line-height: 35px;
+    margin:15px 0 15px 20px;
+}
+.set-up-switch a{
+	float:left;
+	color:#444;
+	padding:0 10px;
+	font-weight: bold;
+}
+a.set-up{
+	background:#5bb75b;
+	color:#fff;
+	font-weight: bold;
+}
+button.btn-negative{
+	background:#a05701;
+    color: #fff;
+    border:none;
+    width: 60px;
+    line-height: 30px;
+    border-radius: 5px;
+/*     margin: 20px auto; */
+    display: inherit;
+    float:left;
+    margin-left:40px;
+}
+.push-button{
+	margin:0 auto;
+	width:250px;
+	width: 160px;
+}
+
+
+/*值日管理*/
+.attendant{
+    min-height: 600px;
+    background: #fff;
+}
+.time-period{
+    color: #535353;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    padding:25px 0 15px 0;
+}
+.personnel{
+    margin: 0 25px;
+    border-top: 1px #d4d4d4 solid;
+    min-height: 200px;
+    border-right: 1px #d4d4d4 solid;
+}
+.personnel ul li:first-child{
+    height: 40px;
+    line-height: 40px;
+    background: #daf0fb;
+    color: #4c708a;
+    font-size: 12px;
+}
+.personnel ul li{
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-left: 1px #d4d4d4 solid;
+    border-bottom: 1px #d4d4d4 solid;
+}
+.confirm-staff{
+    background:url(images/confirm_staff.png) no-repeat #99ffa5 75% 15px;
+}
+.restrict{
+    float: left;
+    width: 18.4%;
+}
+
+.table th.remarks{
+	width:25%;
+}
+
+
+/*明细报表*/
+.mxbb table{
+	width:100%;
+	text-align:center;
+}
+.mxbb table thead tr{
+	height: 45px;
+	line-height: 45px;
+}
+.mxbb table tr{
+	height:36px;
+	line-height:35px;
+}
+.mxbb table th,.mxbb table td{
+	border:1px #ccc solid;
+}
+.mxbb table thead{
+	background: #daf0fb;
+}
+.out {
+	border-top:45px #daf0fb solid;
+	border-left:128px #fff solid;
+    position: relative; /*让里面的两个子容器绝对定位*/
+}
+.mxbb table td.gray{
+	background:#fff;
+}
+b.xiangmu {
+    font-style: normal;
+    position: absolute;
+    top: -4.2em;
+    right: 15px;
+    text-align: right;
+    width: 115px;
+}
+
+em.banji {
+    font-style: normal;
+    display: block;
+    position: absolute;
+    top: -3.2em;
+    left: -168px;
+    width: 130px;
+}
+
+
+
+.mxbb{position: relative;width:100%;overflow: hidden;height: 407px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;}
+.mxbb .table_1,.mxbb .table_3{ width: 130px;left: 0;box-sizing: border-box;position: absolute;}
+.mxbb .table_1{z-index: 1;}
+.mxbb .table_2{position: absolute;left: 130px;}
+.mxbb .table_1,.mxbb .table_2{top:0;}
+.mxbb .table_3{top:46px;}
+.thtd_div{width:99px;overflow:hidden;}
+.div_4{height: 362px;overflow: auto;top:46px;position: absolute;left: 130px;}

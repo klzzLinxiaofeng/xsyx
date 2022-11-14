@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SubjectGradeDao">
+
+	<resultMap id="SubjectGradeResult"
+		type="platform.education.generalTeachingAffair.model.SubjectGrade">
+		<result property="id" column="id" />
+		<result property="gradeCode" column="grade_code" />
+		<result property="schoolId" column="school_id" />
+		<result property="subjectName" column="subject_name" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="stageCode" column="stage_code" />
+		<result property="isDelete" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create"
+		parameterType="platform.education.generalTeachingAffair.model.SubjectGrade">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_subject_grade (
+		id,
+		school_id,
+		grade_code,
+		subject_name,
+		subject_code,
+		stage_code,
+		is_deleted,
+		create_date,
+		modify_date
+		)
+		VALUES (
+		#{id},
+		#{schoolId},
+		#{gradeCode},
+		#{subjectName},
+		#{subjectCode},
+		#{stageCode},
+		#{isDelete},
+		#{createDate},
+		#{modifyDate}
+		)
+	</insert>
+	
+	<select id="read" resultMap="SubjectGradeResult" useCache="false">
+		SELECT * FROM pj_subject_grade WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findSubjectGradeByCondition" resultMap="SubjectGradeResult" useCache="false">
+		SELECT * FROM pj_subject_grade
+		<if test="args[0] != null">
+			WHERE 1=1 and is_deleted = 0
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeCode != null">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].stageCode != null">
+				AND stage_code = #{args[0].stageCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="SubjectGradeResult" useCache="false">
+		SELECT * FROM pj_subject_grade WHERE 1=1 and id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<select id="findSubjectGradeByGradeCodeAndSubjectCode" resultMap="SubjectGradeResult" useCache="false">
+		SELECT * FROM pj_subject_grade 
+		 WHERE 1=1 
+		 and grade_code = #{args[0],javaType=java.lang.String}
+		 and subject_code = #{args[1],javaType=java.lang.String}
+		 and school_id = #{args[2],javaType=java.lang.Integer}
+		 AND is_deleted = 0
+	</select>
+	
+	<!-- 功能描述：根据学校ID,年级Code可以查询到本学校该年级下的科目 -->
+	<select id="findSubjectGradeByGradeCode" resultMap="SubjectGradeResult" useCache="false">
+		SELECT * FROM pj_subject_grade WHERE 1=1 
+		AND school_id = #{args[0],javaType=java.lang.Integer}
+		AND grade_code = #{args[1],javaType=java.lang.String}
+		AND is_deleted = 0
+	</select>
+
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.SubjectGrade">
+		UPDATE pj_subject_grade
+		SET
+		<if test="gradeCode != null">
+			grade_code=#{gradeCode},
+		</if>
+		<if test="subjectName != null">
+			subject_name=#{subjectName},
+		</if>
+		<if test="subjectCode != null">
+			subject_code=#{subjectCode},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDelete != null">
+			is_deleted=#{isDelete},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_subject_grade WHERE id = #{args[0]}
+	</delete>
+	
+</mapper>

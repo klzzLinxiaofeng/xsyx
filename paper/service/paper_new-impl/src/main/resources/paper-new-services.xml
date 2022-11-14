@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+	default-autowire="byName">
+
+	<bean id="paPaperNewDao" parent="baseDao">
+		<property name="target" value="platform.education.paper.dao.PaPaperDao" />
+	</bean>
+	<bean id="paPaperService"
+		class="platform.education.paper.service.impl.PaPaperServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paUserWrongDao" parent="baseDao">
+		<property name="target" value="platform.education.paper.dao.PaUserWrongDao" />
+	</bean>
+	<bean id="paUserWrongService"
+		class="platform.education.paper.service.impl.PaUserWrongServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paUserQuestionDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.paper.dao.PaUserQuestionDao" />
+	</bean>
+	<bean id="paUserQuestionService"
+		class="platform.education.paper.service.impl.PaUserQuestionServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paUserPaperDao" parent="baseDao">
+		<property name="target" value="platform.education.paper.dao.PaUserPaperDao" />
+	</bean>
+	<bean id="paUserPaperService"
+		class="platform.education.paper.service.impl.PaUserPaperServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paUserFileQuestionDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.paper.dao.PaUserFileQuestionDao" />
+	</bean>
+	<bean id="paUserFileQuestionService"
+		class="platform.education.paper.service.impl.PaUserFileQuestionServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paUserFileDao" parent="baseDao">
+		<property name="target" value="platform.education.paper.dao.PaUserFileDao" />
+	</bean>
+	<bean id="paUserFileService"
+		class="platform.education.paper.service.impl.PaUserFileServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paQuestionKnoledgeDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.paper.dao.PaQuestionKnoledgeDao" />
+	</bean>
+	<bean id="paQuestionKnoledgeService"
+		class="platform.education.paper.service.impl.PaQuestionKnoledgeServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paQuestionCatalogDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.paper.dao.PaQuestionCatalogDao" />
+	</bean>
+	<bean id="paQuestionCatalogService"
+		class="platform.education.paper.service.impl.PaQuestionCatalogServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paQuestionDao" parent="baseDao">
+		<property name="target" value="platform.education.paper.dao.PaQuestionDao" />
+	</bean>
+	<bean id="paQuestionService"
+		class="platform.education.paper.service.impl.PaQuestionServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paPaperTreeDao" parent="baseDao">
+		<property name="target" value="platform.education.paper.dao.PaPaperTreeDao" />
+	</bean>
+	<bean id="paPaperTreeService"
+		class="platform.education.paper.service.impl.PaPaperTreeServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paPaperCatalogDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.paper.dao.PaPaperCatalogDao" />
+	</bean>
+	<bean id="paPaperCatalogService"
+		class="platform.education.paper.service.impl.PaPaperCatalogServiceImpl" />
+	<bean id="taskDao" parent="baseDao">
+		<property name="target" value="platform.education.paper.dao.TaskDao" />
+	</bean>
+	<bean id="taskService" class="platform.education.paper.service.impl.TaskServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paFavoritesDao" parent="baseDao">
+		<property name="target" value="platform.education.paper.dao.PaFavoritesDao" />
+	</bean>
+	<bean id="paFavoritesService"
+		class="platform.education.paper.service.impl.PaFavoritesServiceImpl" />
+	<!-- generator-insert-location -->
+	
+	<bean id="paPaperHandleService"
+		class="platform.education.paper.service.impl.PaPaperHandleServiceImpl" />
+	<bean id="taskUserDao" parent="baseDao">
+		<property name="target" value="platform.education.paper.dao.TaskUserDao" />
+	</bean>
+	<bean id="taskUserService"
+		class="platform.education.paper.service.impl.TaskUserServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="taskTeamDao" parent="baseDao">
+		<property name="target" value="platform.education.paper.dao.TaskTeamDao" />
+	</bean>
+	<bean id="taskTeamService"
+		class="platform.education.paper.service.impl.TaskTeamServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="taskInterscoreDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.paper.dao.TaskInterscoreDao" />
+	</bean>
+	<bean id="taskInterscoreService"
+		class="platform.education.paper.service.impl.TaskInterscoreServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paTaskFavoritesDao" parent="baseDao">
+	<property name="target" value="platform.education.paper.dao.PaTaskFavoritesDao" />
+</bean>
+<bean id="paTaskFavoritesService" class="platform.education.paper.service.impl.PaTaskFavoritesServiceImpl" />
+<!--  generator-insert-location -->
+</beans>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.student.dao.ParentDao">
+    <resultMap id="parentResult" type="com.xunyunedu.student.pojo.ParentPojo">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="userName" column="user_name" />
+		<result property="personId" column="person_id" />
+		<result property="name" column="name" />
+		<result property="mobile" column="mobile" />
+		<result property="email" column="email" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+        <result property="stuId" column="stuId"/>
+        <result property="licensePlate" column="license_plate"/>
+	</resultMap>
+
+	<select id="read" resultMap="parentResult">
+	    SELECT * FROM pj_parent
+	    where is_delete = 0
+            <if test="id != null">and id = #{id}</if>
+            <if test="mobile != null and mobile != ''"> and mobile = #{mobile}</if>
+            <if test="userName != null and userName != ''"> and user_name = #{userName}</if>
+            <if test="userId != null">and user_id = #{userId} </if>
+            <if test="licensePlate != null and licensePlate != ''">and license_plate = #{licensePlate} </if>
+    </select>
+
+    <select id="flagSameParentLicensePlate" resultType="java.lang.Integer">
+	   SELECT count(id) FROM pj_parent where license_plate =#{licensePlate} and user_name != #{userName}
+    </select>
+
+    <update id="update">
+        update pj_parent
+        <set>
+            <if test="mobile != null and mobile != ''"> mobile = #{mobile}, </if>
+            <if test="modifyDate != null"> modify_date = #{modifyDate}, </if>
+            <choose>
+                <when test="licensePlate != null and licensePlate != ''">
+                    license_plate = #{licensePlate},
+                </when>
+                <otherwise>
+                    license_plate = null,
+                </otherwise>
+            </choose>
+        </set>
+        <where>
+            <if test="id != null"> id = #{id}</if>
+            <if test="userName != null and userName != ''"> and  user_name = #{userName}</if>
+        </where>
+    </update>
+
+
+    <select id="getParentbyStuId" resultMap="parentResult">
+        SELECT
+            pp.*
+        FROM
+            pj_parent pp
+            LEFT JOIN pj_parent_student pps ON pp.user_id = pps.parent_user_id
+            LEFT JOIN pj_student ps ON ps.user_id = pps.student_user_id
+        WHERE
+            ps.id = #{stuId}
+            AND ps.is_delete = 0
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.ProfileDao">
+    <resultMap id="ProfileResult" type="platform.education.user.model.Profile">
+        <result property="id" column="id" />
+        <result property="userId" column="user_id" />
+        <result property="userName" column="user_name" />
+        <result property="name" column="name" />
+        <result property="nickname" column="nickname" />
+        <result property="sex" column="sex" />
+        <result property="birthday" column="birthday" />
+        <result property="province" column="province" />
+        <result property="city" column="city" />
+        <result property="address" column="address" />
+        <result property="mobile" column="mobile" />
+        <result property="email" column="email" />
+        <result property="remark" column="remark" />
+        <result property="icon" column="icon" />
+        <result property="isDeleted" column="is_deleted" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+    </resultMap>
+
+
+    <select id="findByUserId" resultMap="ProfileResult" useCache="false">
+		SELECT * FROM yh_profile WHERE user_id = #{var1,javaType=java.lang.Integer} AND is_deleted = 0
+	</select>
+
+    <select id="findByUserName" resultMap="ProfileResult" useCache="false">
+		SELECT * FROM yh_profile WHERE user_name = #{var1} AND is_deleted = 0
+	</select>
+</mapper>

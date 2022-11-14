@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.homewoke.dao.HomeWokeDao">
+
+    <resultMap id="GradeResult" type="platform.education.generalTeachingAffair.model.Grade">
+    <result property="id" column="id" />
+    <result property="schoolId" column="school_id" />
+    <result property="stageCode" column="stage_code" />
+    <result property="code" column="code" />
+    <result property="name" column="name" />
+    <result property="fullName" column="full_name" />
+    <result property="schoolYear" column="school_year" />
+    <result property="gradeNumber" column="grade_number" />
+    <result property="uniGradeCode" column="uni_grade_code" />
+    <result property="teamCount" column="team_count" />
+    <result property="beginDate" column="begin_date" />
+    <result property="finishDate" column="finish_date" />
+    <result property="createDate" column="create_date" />
+    <result property="modifyDate" column="modify_date" />
+    <result property="yearName" column="yearName" />
+    </resultMap>
+
+    <resultMap id="StudentResult"
+               type="platform.education.generalTeachingAffair.model.Student">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+        <!--<result property="isDelete" column="is_delete" />-->
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+        <result property="isSendHikdoor" column="is_send_hikdoor"/>
+        <result property="isSendLibrary" column="is_send_library"/>
+        <result property="isSendSeewo" column="is_send_seewo"/>
+        <result property="deptName" column="deptName"/>
+    </resultMap>
+
+    <resultMap id="HomeWokeMap"
+               type="platform.szxyzxx.homewoke.pojo.HomeWokePojo">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="teamId" column="team_id" />
+        <result property="teamName" column="team_Name" />
+        <result property="teacherId" column="teacher_id" />
+        <result property="teachName" column="teacher_name" />
+        <result property="gradeId" column="grade_id" />
+        <result property="subjectId" column="subject_id"/>
+        <result property="subjectName" column="subject_name"/>
+        <result property="createTime" column="create_date"/>
+        <result property="modieTime" column="modify_date"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="text" column="content"/>
+        <result property="pictureUuid" column="picture_uuid"/>
+        <result property="isStats" column="is_stats"/>
+        <result property="isHome" column="is_home"/>
+        <result property="gradeId" column="grade_id"/>
+        <result property="schoolTrem" column="school_trem" javaType="String"/>
+        <result property="schoolYear" column="school_year" javaType="String"/>
+    </resultMap>
+
+    <resultMap id="StudentHomeWokeMap"
+               type="platform.szxyzxx.homewoke.pojo.StudentHomeWoke">
+        <result property="id" column="id" />
+        <result property="studentName" column="student_name"/>
+        <result property="studentId" column="student_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modieTime" column="modiy_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="jobId" column="pj_job_id"/>
+        <result property="zhuantai" column="zhuangtai"/>
+        <result property="fenzhi" column="fenshu"/>
+        <result property="dengji" column="dengji"/>
+        <result property="pingyu" column="pingyu"/>
+    </resultMap>
+    <resultMap id="HomeWokeGongShiMap"
+               type="platform.szxyzxx.homewoke.pojo.HomeWokeGongShi">
+        <result property="name" column="name" />
+        <result property="cishu" column="cishu"/>
+    </resultMap>
+
+    <resultMap id="HomeWokeXueKeMap"
+               type="platform.szxyzxx.homewoke.pojo.HomeWokeXueKe">
+        <result property="name" column="name" />
+        <result property="dengji" column="dengji"/>
+        <result property="zhuantaiid" column="zhuantai_id"/>
+        <result property="pingyu" column="pingyu"/>
+        <result property="shijian" column="shijian"/>
+        <result property="teacherName" column="teacherName"/>
+        <result property="controt" column="controt"/>
+    </resultMap>
+
+    <select id="findByAll" resultMap="HomeWokeMap">
+        select ppjc.*,pt.name as team_Name,ptc.name as teacher_name,ps.name as subject_name  from pj_publish_job_content ppjc
+         inner join pj_team pt on pt.id=ppjc.team_id
+        left join pj_teacher ptc on ptc.id=ppjc.teacher_id
+        inner join pj_subject ps on ps.id=ppjc.subject_id
+        <where>
+         ppjc.school_id=#{args[0]}  and ppjc.is_delete=0
+            <if test="args[1]!=null">
+               and ppjc.team_id=#{args[1]}
+            </if>
+            <if test="args[6]!=null">
+                and ppjc.grade_id=#{args[6]}
+            </if>
+            <if test="args[7]!=null">
+                and ppjc.school_trem=#{args[7]}
+            </if>
+            <if test="args[8]!=null">
+                and ppjc.school_year=#{args[8]}
+            </if>
+
+            <if test="args[2]!=null">
+                and ppjc.subject_id=#{args[2]}
+            </if>
+            <if test="args[3]!=null and args[4]!=null">
+               and   ppjc.create_date between #{args[3]} and #{args[4]}
+            </if>
+            <if test="args[5]!=null">
+                and  ppjc.is_home=#{args[5]}
+            </if>
+        </where>
+        order by  ppjc.team_id asc , ppjc.create_date desc
+    </select>
+
+    <insert id="createHomeWoke" keyProperty="args[0].id" useGeneratedKeys="true" parameterType="platform.szxyzxx.homewoke.pojo.HomeWokePojo">
+        insert into pj_publish_job_content(teacher_id,subject_id,school_id,picture_uuid,content,team_id,create_date,modify_date,student_id,is_delete,is_stats,is_home,grade_id,school_trem,school_year)
+         value(#{args[0].teacherId},#{args[0].subjectId},#{args[0].schoolId},#{args[0].pictureUuid},#{args[0].text},#{args[0].teamId},
+         #{args[0].createTime},#{args[0].modieTime},null,0,0,#{args[0].isHome},#{args[0].gradeId},#{args[0].schoolTrem},#{args[0].schoolYear})
+    </insert>
+
+    <select id="findById" resultMap="HomeWokeMap">
+        select ppjc.*,pt.name as team_Name,ps.name as subject_name from pj_publish_job_content  ppjc
+        inner join pj_team pt on pt.id=ppjc.team_id
+        inner join pj_subject ps on ps.id=ppjc.subject_id
+        where ppjc.id=#{args[0]} and ppjc.is_delete=0
+     </select>
+
+    <update id="updateAll" parameterType="platform.szxyzxx.homewoke.pojo.HomeWokePojo">
+       update  pj_publish_job_content set subject_id=#{args[0].subjectId},
+       picture_uuid=#{args[0].pictureUuid},
+       modify_date=#{args[0].modieTime},
+       team_id=#{args[0].teamId},
+       content=#{args[0].text},
+       is_home=#{args[0].isHome},
+       grade_id=#{args[0].gradeId},
+       school_trem=#{args[0].schoolTrem},
+       school_year=#{args[0].schoolYear}
+       where id=#{args[0].id} and is_delete=0
+    </update>
+
+    <update id="updateIsDelete" parameterType="java.lang.Integer">
+          update pj_publish_job_content set is_delete=#{args[0]}
+       where id=#{args[1]}
+    </update>
+
+    <insert id="createStudent" parameterType="platform.szxyzxx.homewoke.pojo.StudentHomeWoke">
+          insert into zy_publish_job_content_student(pj_job_id,student_id,is_delete,create_time,modiy_time,zhuangtai,fenshu,dengji,pingyu)
+         value(#{args[0].jobId},#{args[0].studentId},0,#{args[0].createTime},#{args[0].modieTime},0,null,null,null)
+    </insert>
+    <update id="updateStudentHomeIsDelete" parameterType="java.lang.Integer">
+          update zy_publish_job_content_student set is_delete=#{args[0]}
+           where pj_job_id=#{args[1]}
+    </update>
+    <select id="findByStudentAll" resultMap="StudentHomeWokeMap">
+     select zy.*,ps.name as student_name from zy_publish_job_content_student zy inner join pj_student ps
+     on ps.id=zy.student_id
+      <where>
+      zy.pj_job_id=#{args[0]}
+      <if test="args[1]!=null">
+          and zy.zhuangtai=#{args[1]}
+      </if>
+      and zy.is_delete=0 and ps.is_delete=0
+      </where>
+      order by ps.emp_code asc
+    </select>
+
+    <update id="updatePingfen" parameterType="platform.szxyzxx.homewoke.pojo.StudentHomeWoke">
+         update zy_publish_job_content_student set modiy_time=NOW()
+        <if test="args[0].pingyu!=null">
+            ,pingyu=#{args[0].pingyu}
+        </if>
+        <if test="args[0].dengji!=null">
+            ,dengji=#{args[0].dengji}
+        </if>
+         where id=#{args[0].id}
+    </update>
+
+    <update id="updateZhuanTai" parameterType="java.lang.Integer">
+         update zy_publish_job_content_student set zhuangtai=#{args[3]}
+         <where>
+             is_delete=0
+             <if test="args[0]!=null">
+              and  student_id=#{args[0]}
+             </if>
+             <if test="args[1]!=null">
+                 and pj_job_id=#{args[1]}
+             </if>
+             <if test="args[2]!=null">
+                 and id=#{args[2]}
+             </if>
+         </where>
+
+    </update>
+
+    <select id="findByStudentId" resultMap="StudentHomeWokeMap">
+        select * from zy_publish_job_content_student where id=#{args[0]} and is_delete=0
+    </select>
+
+    <update id="updateshouzuoye" parameterType="java.lang.Integer">
+          update pj_publish_job_content set is_stats=1
+       where id=#{args[0]} and is_delete=0
+    </update>
+
+    <update id="updateDaoru" parameterType="platform.szxyzxx.homewoke.pojo.StudentHomeWoke">
+         update zy_publish_job_content_student set dengji=#{args[0].dengji},pingyu=#{args[0].pingyu},zhuangtai=#{args[0].zhuantai}
+         where student_id=#{args[0].studentId} and  pj_job_id=#{args[0].jobId} and is_delete=0
+    </update>
+
+    <update id="updateSaoMaQiang">
+         update zy_publish_job_content_student set zhuangtai=1 ,dengji=#{args[2]}
+         where student_id=#{args[0]} and  pj_job_id=#{args[1]} and is_delete=0
+    </update>
+
+    <select id="findByGongshi" resultMap="HomeWokeGongShiMap">
+        select pt.name,count(*) as cishu from pj_publish_job_content ppjc  inner join pj_teacher pt on pt.id=ppjc.teacher_id
+        <where>
+            ppjc.is_delete=0 and ppjc.school_id=#{args[0]} and ppjc.school_year=#{args[1]} and ppjc.school_trem=#{args[2]}
+            <if test="args[3]!=null">
+                and ppjc.grade_id=#{args[3]}
+            </if>
+            <if test="args[4]!=null">
+                and ppjc.team_id=#{args[4]}
+            </if>
+            <if test="args[5]!=null">
+                and ppjc.subject_id=#{args[5]}
+            </if>
+            <if test="args[6]!=null and args[7]!=null">
+                and   ppjc.create_date between #{args[6]} and #{args[7]}
+            </if>
+            <if test="args[8]!=null">
+                and ppjc.is_home=#{args[8]}
+            </if>
+            group by pt.id
+            order by ppjc.team_id desc
+        </where>
+    </select>
+
+    <select id="findByXueKe" resultMap="HomeWokeXueKeMap">
+        select ps.name,zpjcs.zhuangtai as zhuantaiid,zpjcs.dengji,zpjcs.pingyu,zpjcs.create_time as shijian,pt.name as teacherName  ,ppjc.content as controt from  zy_publish_job_content_student zpjcs
+        inner join  pj_publish_job_content ppjc on ppjc.id=zpjcs.pj_job_id
+        inner join pj_student ps on zpjcs.student_id=ps.id
+        inner join pj_teacher pt on ppjc.teacher_id=pt.id
+        <where>
+            zpjcs.is_delete=0
+            and ppjc.school_id=#{args[0]}
+            and ppjc.school_year=#{args[1]}
+            and ppjc.school_trem=#{args[2]}
+            <if test="args[3]!=null">
+                and ppjc.grade_id=#{args[3]}
+            </if>
+            <if test="args[4]!=null">
+                and ppjc.team_id=#{args[4]}
+            </if>
+            <if test="args[5]!=null">
+                and ppjc.subject_id=#{args[5]}
+            </if>
+            <if test="args[6]!=null and args[7]!=null">
+                and   zpjcs.create_time between #{args[6]} and #{args[7]}
+            </if>
+            <if test="args[8]!=null">
+                and ppjc.is_home=#{args[8]}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByIdYiBuZhi" resultMap="HomeWokeMap">
+        select * from  pj_publish_job_content
+        <where>
+            is_delete=0
+            and school_id=#{args[0].schoolId}
+            and school_year=#{args[0].schoolYear}
+            and school_trem=#{args[0].schoolTrem}
+            and grade_id=#{args[0].gradeId}
+            and team_id=#{args[0].teamId}
+            and subject_id=#{args[0].subjectId}
+            and create_date like concat ('%',#{args[0].picturUrl},'%')
+        </where>
+    </select>
+
+</mapper>

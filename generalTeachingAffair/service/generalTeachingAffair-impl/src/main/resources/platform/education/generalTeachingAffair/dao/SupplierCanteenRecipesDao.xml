@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SupplierCanteenRecipesDao">
+    <resultMap id="SupplierRecipesResult" type="platform.education.generalTeachingAffair.model.SupplierPojo">
+        <result property="id" column="id"/>
+        <result property="uuid" column="uuid"/>
+        <result property="type" column="type"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="findSupplier" resultMap="SupplierRecipesResult" useCache="false">
+		SELECT * FROM pj_canteen_publicity where is_delete = 0
+		<if test="args[0].uuid != null and args[0].uuid != ''"> and uuid = #{args[0].uuid}</if>
+		<if test="args[0].type != null and args[0].type != ''"> and type = #{args[0].type}</if>
+		<if test="args[0].id != null"> and id = #{args[0].id}</if>
+    </select>
+
+    <update id="update" parameterType="platform.education.generalTeachingAffair.model.SupplierPojo">
+    UPDATE pj_canteen_publicity
+    <set>
+        <if test="isDelete != null">
+          is_delete  = #{isDelete},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+
+        <if test="name != null and name != ''">
+            name=#{name},
+        </if>
+        <if test="uuid != null and uuid != ''">
+            uuid=#{uuid}
+        </if>
+    </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="read" resultMap="SupplierRecipesResult" useCache="false">
+        SELECT * FROM pj_canteen_publicity WHERE 1=1
+        <if test="args != null and args[0] != null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+
+    ORDER BY id DESC
+
+    </select>
+    <insert id="create" parameterType="platform.education.generalTeachingAffair.model.SupplierPojo">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+    INSERT INTO pj_canteen_publicity (
+        id,
+        uuid,
+        type,
+        name,
+        is_delete,
+        create_date,
+        modify_date
+    )
+    VALUES (
+        null,
+        #{uuid},
+        #{type},
+        #{name},
+        0,
+        #{createDate},
+        now())
+    </insert>
+</mapper>

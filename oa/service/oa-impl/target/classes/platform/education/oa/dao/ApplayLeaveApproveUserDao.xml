@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.ApplayLeaveApproveUserDao">
+
+	<resultMap id="ApplayLeaveApproveUserResult" type="platform.education.oa.model.ApplayLeaveApproveUser">
+		<result property="id" column="id" />
+		<result property="leaveId" column="leave_id" />
+		<result property="approveId" column="approve_id" />
+		<result property="approveState" column="approve_state" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.ApplayLeaveApproveUser">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_applay_leave_approve_user (
+			id, 
+			leave_id, 
+			approve_id, 
+			approve_state, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{leaveId}, 
+			#{approveId}, 
+			#{approveState}, 
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ApplayLeaveApproveUserResult" useCache="false">
+		SELECT * FROM oa_applay_leave_approve_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApplayLeaveApproveUserByCondition" resultMap="ApplayLeaveApproveUserResult" useCache="false">
+		SELECT * FROM oa_applay_leave_approve_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].leaveId != null">
+				AND leave_id = #{args[0].leaveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].approveId != null">
+				AND approve_id = #{args[0].approveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].approveState != null">
+				AND approve_state = #{args[0].approveState,javaType=Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_applay_leave_approve_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].leaveId != null">
+				AND leave_id = #{args[0].leaveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].approveId != null">
+				AND approve_id = #{args[0].approveId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].approveState != null">
+				AND approve_state = #{args[0].approveState,javaType=Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApplayLeaveApproveUserResult" useCache="false">
+		SELECT * FROM oa_applay_leave_approve_user WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.ApplayLeaveApproveUser">
+		UPDATE oa_applay_leave_approve_user
+		SET 
+		<if test="leaveId != null">
+			leave_id=#{leaveId},
+		</if>
+		<if test="approveId != null">
+			approve_id=#{approveId},
+		</if>
+		<if test="approveState != null">
+			approve_state=#{approveState},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_applay_leave_approve_user
+		WHERE id = #{id}
+	</delete>
+</mapper>

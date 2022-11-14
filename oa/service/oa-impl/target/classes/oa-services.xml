@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+	default-autowire="byName">
+
+	<!-- 此配置实际生产环境需要去掉 由web项目统一配置管理 -->
+	<!-- <import resource="classpath*:generic-dao.xml" /> -->
+	<!-- <import resource="classpath*:personnelManagement-datasource.xml" /> -->
+	<!-- <import resource="classpath*:personnelManagement-transaction.xml" /> -->
+
+	<bean id="noticeDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.NoticeDao" />
+	</bean>
+	<bean id="schoolnoticeService" class="platform.education.oa.service.impl.SchoolNoticeServiceImpl">
+		<property name="pubNoticeService" ref="pubNoticeService"/>
+	</bean>
+	<bean id="noticeService" class="platform.education.oa.service.impl.NoticeServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="noticeUserDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.NoticeUserDao" />
+	</bean>
+	<bean id="noticeUserService"
+		class="platform.education.oa.service.impl.NoticeUserServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="leaveDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.LeaveDao" />
+	</bean>
+	<bean id="leaveService" class="platform.education.oa.service.impl.LeaveServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="leaveApprUserDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.LeaveApprUserDao" />
+	</bean>
+	<bean id="leaveApprUserService"
+		class="platform.education.oa.service.impl.LeaveApprUserServiceImpl" />
+	<!-- generator-insert-location -->
+
+
+	<bean id="leaveApprDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.LeaveApprDao" />
+	</bean>
+	<bean id="leaveApprService" class="platform.education.oa.service.impl.LeaveApprServiceImpl" />
+	<!-- generator-insert-location -->
+
+
+
+	<!-- 文印 -->
+	<bean id="indiaDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.IndiaDao" />
+	</bean>
+	<bean id="indiaService" class="platform.education.oa.service.impl.IndiaServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="vehicleDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.VehicleDao" />
+	</bean>
+	<bean id="vehicleService" class="platform.education.oa.service.impl.VehicleServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="deviceDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.DeviceDao" />
+	</bean>
+	<bean id="deviceService" class="platform.education.oa.service.impl.DeviceServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="usecardDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.UsecardDao" />
+	</bean>
+	<bean id="usecardService" class="platform.education.oa.service.impl.UsecardServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="auditcardDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.AuditcardDao" />
+	</bean>
+	<bean id="auditcardService" class="platform.education.oa.service.impl.AuditcardServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="returncardDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.ReturncardDao" />
+	</bean>
+	<bean id="returncardService"
+		class="platform.education.oa.service.impl.ReturncardServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="meetingDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.MeetingDao" />
+	</bean>
+	<bean id="meetingService" class="platform.education.oa.service.impl.MeetingServiceImpl" />
+
+	<!-- generator-insert-location -->
+	<bean id="meetingUserDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.MeetingUserDao" />
+	</bean>
+	<bean id="meetingUserService"
+		class="platform.education.oa.service.impl.MeetingUserServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="meetingSummaryDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.MeetingSummaryDao" />
+	</bean>
+	<bean id="meetingSummaryService"
+		class="platform.education.oa.service.impl.MeetingSummaryServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="repairDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.RepairDao" />
+	</bean>
+	<bean id="repairService" class="platform.education.oa.service.impl.RepairServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="repairFileDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.RepairFileDao" />
+	</bean>
+	<bean id="repairFileService"
+		class="platform.education.oa.service.impl.RepairFileServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="paperDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.PaperDao" />
+	</bean>
+	<bean id="paperService" class="platform.education.oa.service.impl.PaperServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="paperUserDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.PaperUserDao" />
+	</bean>
+	<bean id="paperUserService" class="platform.education.oa.service.impl.PaperUserServiceImpl" />
+	
+	<bean id="paperUserReadDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.PaperUserReadDao" />
+	</bean>
+	<bean id="paperUserReadService" class="platform.education.oa.service.impl.PaperUserReadServiceImpl" />
+	
+	
+
+	<bean id="paperDepartmentCountDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.oa.dao.PaperDepartmentCountDao" />
+	</bean>
+	<bean id="paperDepartmentCountService"
+		class="platform.education.oa.service.impl.PaperDepartmentCountServiceImpl" />
+	<!-- generator-insert-location -->
+
+
+
+
+	<bean id="applyCardDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.ApplyCardDao" />
+	</bean>
+	<bean id="applyCardService" class="platform.education.oa.service.impl.ApplyCardServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="vehicleManagementDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.oa.dao.VehicleManagementDao" />
+	</bean>
+	<bean id="vehicleManagementService"
+		class="platform.education.oa.service.impl.VehicleManagementServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="oaApplycardDepartmentCountDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.oa.dao.OaApplycardDepartmentCountDao" />
+	</bean>
+	<bean id="oaApplycardDepartmentCountService"
+		class="platform.education.oa.service.impl.OaApplycardDepartmentCountServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="noticeImgDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.NoticeImgDao" />
+	</bean>
+	<bean id="noticeImgService" class="platform.education.oa.service.impl.NoticeImgServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="scheduleDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.ScheduleDao" />
+	</bean>
+	<bean id="scheduleService" class="platform.education.oa.service.impl.ScheduleServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="scheduleUserDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.ScheduleUserDao" />
+	</bean>
+	<bean id="scheduleUserService"
+		class="platform.education.oa.service.impl.ScheduleUserServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="scheduleRemindDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.ScheduleRemindDao" />
+	</bean>
+	<bean id="scheduleRemindService"
+		class="platform.education.oa.service.impl.ScheduleRemindServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="acceptRepariDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.AcceptRepariDao" />
+	</bean>
+	<bean id="acceptRepariService"
+		class="platform.education.oa.service.impl.AcceptRepariServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="applyRepairDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.ApplyRepairDao" />
+	</bean>
+	<bean id="applyRepairService"
+		class="platform.education.oa.service.impl.ApplyRepairServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<bean id="commentsDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.CommentsDao" />
+	</bean>
+	<bean id="commentsService" class="platform.education.oa.service.impl.CommentsServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="summaryReadUserDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.SummaryReadUserDao" />
+	</bean>
+	<bean id="summaryReadUserService"
+		class="platform.education.oa.service.impl.SummaryReadUserServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!-- 文印管理 （修改） -->
+	<bean id="applayIndiaDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.ApplayIndiaDao" />
+	</bean>
+	<bean id="applayIndiaService"
+		class="platform.education.oa.service.impl.ApplayIndiaServiceImpl" />
+	<!-- generator-insert-location -->
+	<!-- 计算文印申请数 -->
+	<bean id="applayIndiaDepartmentCountDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.oa.dao.ApplayIndiaDepartmentCountDao" />
+	</bean>
+	<bean id="applayIndiaDepartmentCountService"
+		class="platform.education.oa.service.impl.ApplayIndiaDepartmentCountServiceImpl" />
+	<!-- generator-insert-location -->
+
+
+	<bean id="appStatisticsDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.AppStatisticsDao" />
+	</bean>
+	<bean id="appStatisticsService"
+		class="platform.education.oa.service.impl.AppStatisticsServiceImpl" />
+	<!-- generator-insert-location -->
+	<bean id="appSumStatisticsDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.oa.dao.AppSumStatisticsDao" />
+	</bean>
+	<bean id="appSumStatisticsService"
+		class="platform.education.oa.service.impl.AppSumStatisticsServiceImpl" />
+	<!-- generator-insert-location -->
+	
+	<!-- 请假管理（修改） -->
+	<bean id="applayLeaveDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.ApplayLeaveDao" />
+	</bean>
+	<bean id="applayLeaveService"
+		class="platform.education.oa.service.impl.ApplayLeaveServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!-- 调课管理（修改） -->
+	<bean id="adjustClassDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.AdjustClassDao" />
+	</bean>
+	<bean id="adjustClassService"
+		  class="platform.education.oa.service.impl.AdjustClassServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!--请假所找的代课教师 -->
+	<bean id="applayLeaveUserDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.ApplayLeaveUserDao" />
+	</bean>
+	<bean id="applayLeaveUserService"
+		class="platform.education.oa.service.impl.ApplayLeaveUserServiceImpl" />
+	<!-- generator-insert-location -->
+
+	<!-- 请假人员所在的部门人员统计 -->
+	<bean id="applayLeaveDepartmentCountDao" parent="baseDao">
+		<property name="target"
+			value="platform.education.oa.dao.ApplayLeaveDepartmentCountDao" />
+	</bean>
+	<bean id="applayLeaveDepartmentCountService"
+		class="platform.education.oa.service.impl.ApplayLeaveDepartmentCountServiceImpl" />
+	<!-- generator-insert-location -->
+	
+	<!-- 请假所指定的审批人员 -->
+	<bean id="applayLeaveApproveUserDao" parent="baseDao">
+	<property name="target"
+		value="platform.education.oa.dao.ApplayLeaveApproveUserDao" />
+	</bean>
+	<bean id="applayLeaveApproveUserService"
+		class="platform.education.oa.service.impl.ApplayLeaveApproveUserServiceImpl" />
+	<!-- generator-insert-location -->
+	
+	
+
+	<!-- 会议 计算部门的会议次数 -->
+	<bean id="meetingDepartmentCountDao" parent="baseDao">
+	<property name="target" value="platform.education.oa.dao.MeetingDepartmentCountDao" />
+	</bean>
+	<bean id="meetingDepartmentCountService" class="platform.education.oa.service.impl.MeetingDepartmentCountServiceImpl" />
+	
+	<!--  手机端通知公告 用户删除通知（当前用户删除  当前用户看不见，其他用户可见） -->
+	<bean id="noticeUserDeletedDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.NoticeUserDeletedDao" />
+	</bean>
+	<bean id="noticeUserDeletedService" class="platform.education.oa.service.impl.NoticeUserDeletedServiceImpl" />
+	<!--  generator-insert-location -->
+	
+	<bean id="warrantyEquipmentDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.WarrantyEquipmentDao" />
+	</bean>
+	<bean id="warrantyEquipmentService" class="platform.education.oa.service.impl.WarrantyEquipmentServiceImpl" />
+	
+	<bean id="approvalDao" parent="baseDao">
+		<property name="target" value="platform.education.oa.dao.ApprovalDao" />
+	</bean>
+	<bean id="approvalService" class="platform.education.oa.service.impl.ApprovalServiceImpl" />
+	<!--  generator-insert-location -->
+</beans>
+

@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.ApplyCardDao">
+
+	<resultMap id="ApplyCardResult" type="platform.education.oa.model.ApplyCard">
+		<result property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="cardId" column="card_id" />
+		<result property="proposer" column="proposer" />
+		<result property="phone" column="phone" />
+		<result property="beginDate" column="begin_date" />
+		<result property="endDate" column="end_date" />
+		<result property="releaseDate" column="release_date" />
+		<result property="auditUser" column="audit_user" />
+		<result property="auditStatus" column="audit_status" />
+		<result property="remark" column="remark" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="schoolId" column="school_id" />
+		<result property="departmentId" column="department_id" />
+		<result property="proposerName" column="proposer_name" />
+		<result property="auditName" column="audit_name" />
+	</resultMap>
+	
+	<resultMap id="ApplyCardResult1" type="platform.education.oa.vo.ApplyCardVo">
+		<result property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="cardId" column="card_id" />
+		<result property="proposer" column="proposer" />
+		<result property="phone" column="phone" />
+		<result property="beginDate" column="begin_date" />
+		<result property="endDate" column="end_date" />
+		<result property="releaseDate" column="release_date" />
+		<result property="auditUser" column="audit_user" />
+		<result property="auditStatus" column="audit_status" />
+		<result property="remark" column="remark" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="cardName" column="card_name" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="schoolId" column="school_id" />
+		<result property="departmentId" column="department_id" />
+		<result property="proposerName" column="proposer_name" />
+		<result property="auditName" column="audit_name" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.ApplyCard">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_apply_card (
+			id, 
+			title, 
+			card_id, 
+			proposer,
+			proposer_name, 
+			phone, 
+			begin_date, 
+			end_date, 
+			release_date, 
+			audit_user,
+			audit_name,
+			audit_status, 
+			remark, 
+			create_date, 
+			modify_date,
+			school_id,
+			department_id,
+			is_delete
+		)
+		VALUES (
+			#{id}, 
+			#{title}, 
+			#{cardId}, 
+			#{proposer}, 
+			#{proposerName}, 
+			#{phone}, 
+			#{beginDate}, 
+			#{endDate}, 
+			#{releaseDate}, 
+			#{auditUser},
+			#{auditName},
+			#{auditStatus}, 
+			#{remark}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			#{schoolId},
+			#{departmentId},
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="ApplyCardResult" useCache="false">
+		SELECT * FROM oa_apply_card WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApplyCardByCondition" resultMap="ApplyCardResult" useCache="false">
+		SELECT * FROM oa_apply_card 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].cardId != null">
+				AND card_id = #{args[0].cardId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].proposer != null">
+				AND proposer = #{args[0].proposer,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].phone != null and args[0].phone != ''">
+				AND phone = #{args[0].phone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND begin_date = #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null">
+				AND end_date = #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].releaseDate != null">
+				AND release_date = #{args[0].releaseDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].auditUser != null">
+				AND audit_user = #{args[0].auditUser,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].auditStatus != null and args[0].auditStatus != ''">
+				AND audit_status = #{args[0].auditStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].auditStatusAlready != null and args[0].auditStatusAlready != ''">
+				AND a.audit_status &lt;&gt; 0
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND department_id = #{args[0].departmentId}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findApplyCardAllByCondition" resultMap="ApplyCardResult1" useCache="false">
+		SELECT a.*,mana.card_name,mana.plate_number FROM oa_apply_card a left join oa_vehicle_management mana on a.card_id = mana.id
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND a.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].cardName != null and args[0].cardName != ''">
+				AND mana.card_name LIKE CONCAT(CONCAT('%', #{args[0].cardName}),'%')
+			</if>
+			<if test="args[0].ssword != null and args[0].ssword != ''">
+				and CONCAT_WS(",",mana.card_name,mana.plate_number) like CONCAT('%',#{args[0].ssword},'%')
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND a.title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].cardId != null">
+				AND a.card_id = #{args[0].cardId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].proposer != null">
+				AND a.proposer = #{args[0].proposer,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].phone != null and args[0].phone != ''">
+				AND a.phone = #{args[0].phone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND a.begin_date &gt;= #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null">
+				AND a.begin_date &lt;= #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].releaseDate != null">
+				AND a.release_date = #{args[0].releaseDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].auditUser != null">
+				AND a.audit_user = #{args[0].auditUser,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].auditStatus != null and args[0].auditStatus != ''">
+				AND a.audit_status = #{args[0].auditStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].auditStatusAlready != null and args[0].auditStatusAlready != ''">
+				AND a.audit_status &lt;&gt; 0
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND a.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND a.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND a.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND a.school_id = #{args[0].schoolId}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND a.department_id = #{args[0].departmentId}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND a.department_id in (select department_id from pj_department_teacher where teacher_id = #{args[0].teacherId})
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND a.is_delete  = 1
+					</when>
+					<otherwise>
+						AND a.is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_apply_card a left join oa_vehicle_management mana on a.card_id = mana.id
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND a.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND a.title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].cardId != null">
+				AND a.card_id = #{args[0].cardId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].proposer != null">
+				AND a.proposer = #{args[0].proposer,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].phone != null and args[0].phone != ''">
+				AND a.phone = #{args[0].phone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND a.begin_date &gt;= #{args[0].beginDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null">
+				AND a.begin_date &lt;= #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].ssword != null and args[0].ssword != ''">
+				and CONCAT_WS(",",mana.card_name,mana.plate_number) like CONCAT('%',#{args[0].ssword},'%')
+			</if>
+			<if test="args[0].auditStatusAlready != null and args[0].auditStatusAlready != ''">
+				AND a.audit_status &lt;&gt; 0
+			</if>
+			<if test="args[0].releaseDate != null">
+				AND a.release_date = #{args[0].releaseDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].auditUser != null">
+				AND a.audit_user = #{args[0].auditUser,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].auditStatus != null and args[0].auditStatus != ''">
+				AND a.audit_status = #{args[0].auditStatus,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND a.remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND a.create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND a.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND a.school_id = #{args[0].schoolId}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND a.department_id = #{args[0].departmentId}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND a.department_id in (select department_id from pj_department_teacher where teacher_id = #{args[0].teacherId})
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND a.is_delete  = 1
+					</when>
+					<otherwise>
+						AND a.is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApplyCardResult1" useCache="false">
+		SELECT app.*,mana.card_name FROM oa_apply_card app left join oa_vehicle_management mana on app.card_id=mana.id WHERE app.id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.ApplyCard">
+		UPDATE oa_apply_card
+		SET 
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="cardId != null">
+			card_id=#{cardId},
+		</if>
+		<if test="proposer != null">
+			proposer=#{proposer},
+		</if>
+		<if test="proposerName != null">
+			proposer_name=#{proposerName},
+		</if>
+		<if test="phone != null">
+			phone=#{phone},
+		</if>
+		<if test="beginDate != null">
+			begin_date=#{beginDate},
+		</if>
+		<if test="endDate != null">
+			end_date=#{endDate},
+		</if>
+		<if test="releaseDate != null">
+			release_date=#{releaseDate},
+		</if>
+		<if test="auditUser != null">
+			audit_user=#{auditUser},
+		</if>
+		<if test="auditName != null">
+			audit_name=#{auditName},
+		</if>
+		<if test="auditStatus != null">
+			audit_status=#{auditStatus},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="schoolId != null">
+				AND school_id = #{schoolId},
+		</if>
+		<if test="schoolId != null">
+				AND department_id = #{departmentId},
+		</if>	
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_apply_card
+		WHERE id = #{id}
+	</delete>
+</mapper>

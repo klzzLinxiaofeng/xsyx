@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.GeneralDao">
+    <select id="findAmount" resultType="java.math.BigDecimal">
+        SELECT sum(ppo.pay_amount) FROM pj_pay_order ppo
+        left join pj_pay_amount ppa on ppa.id = pay_amount_id
+        WHERE
+            <if test="args[0] != null ">
+                ppo.school_id = #{args[0],javaType=java.lang.Integer} and ppa.school_id = #{args[0],javaType=java.lang.Integer} and
+            </if>
+            place_order_state = 1 and is_payed = 1
+            and TO_DAYS( pay_time) = TO_DAYS(now())
+    </select>
+
+    <select id="findSumAmount" resultType="platform.education.generalTeachingAffair.model.AmountTrendPojo">
+        select date_format(pay_time, '%Y-%m-%d') date, sum(ppo.pay_amount) amount
+        from pj_pay_order ppo left join pj_pay_amount ppa on ppa.id = pay_amount_id
+        where
+            <if test="args[0] != null ">
+                ppo.school_id = #{args[0],javaType=java.lang.Integer} and ppa.school_id = #{args[0],javaType=java.lang.Integer} and
+            </if>
+        place_order_state = 1 and is_payed = 1
+        and date_format(pay_time, '%Y-%m-%d') between #{args[1],javaType=java.lang.String} and #{args[2],javaType=java.lang.String}
+        group by date_format(pay_time, '%Y-%m-%d')
+    </select>
+
+    <select id="findReplaceCardTotal" resultType="java.lang.Integer">
+        select count(*) from pj_canteen_card where
+        <if test="args[0] != null ">
+            school_id = #{args[0],javaType=java.lang.Integer} and
+        </if>
+        is_deleted = 0
+        <if test="args[3] != null and args[3] == true">
+            and is_send = 0
+        </if>
+        <if test="args[1] != null and args[1] == true ">
+            and DATE_FORMAT(created_at, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+        </if>
+        <if test="args[2] != null">
+            and user_type = #{args[2],javaType=java.lang.Integer}
+        </if>
+    </select>
+
+    <select id="findnotCardTeacherTotal" resultType="java.lang.Integer">
+        select count(*) from pj_teacher where is_delete = 0 and (emp_card = "" or emp_card is null)
+        <if test="args[0] != null ">
+            and school_id = #{args[0],javaType=java.lang.Integer}
+        </if>
+    </select>
+
+    <select id="findnotCardStuTotal" resultType="java.lang.Integer">
+        select count(*) from pj_student where is_delete = 0 and (emp_card = "" or emp_card is null)
+        <if test="args[0] != null ">
+            and school_id = #{args[0],javaType=java.lang.Integer}
+        </if>
+    </select>
+
+    <select id="findfeedbackTotal" resultType="java.lang.Integer">
+        select count(*) from pj_home_to_school_feedback
+        where is_reply=0 and is_delete=0 and school_id = #{args[0],javaType=java.lang.Integer}
+    </select>
+
+    <select id="findFeedbackMonthTotal" resultType="platform.education.generalTeachingAffair.model.AmountTrendPojo">
+        select date_format(create_date, '%Y-%m-%d') date, count(*) total
+        from pj_home_to_school_feedback
+        where date_format(create_date, '%Y-%m-%d') between #{args[1],javaType=java.lang.String} and #{args[2],javaType=java.lang.String}
+        <if test="args[0] != null ">
+            and school_id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        group by date_format(create_date, '%Y-%m-%d');
+    </select>
+
+    <select id="findRepairMonthTotal" resultType="platform.education.generalTeachingAffair.model.AmountTrendPojo">
+        SELECT
+            count( apply.type_id ) total,
+            item.`name` `name`
+        FROM
+            jc_gc_item item
+            LEFT JOIN oa_apply_repair apply ON item.id = apply.type_id
+            <if test="args[0] != null ">
+                AND apply.shcool_id = #{args[0],javaType=java.lang.Integer}
+            </if>
+                AND date_format( apply.create_date, '%Y-%m-%d' ) BETWEEN #{args[1],javaType=java.lang.String} and #{args[2],javaType=java.lang.String}
+                AND apply.is_delete = 0
+        where item.table_code = 'GB-BXLX'
+        GROUP BY
+            item.`name`
+    </select>
+
+    <select id="findRepairUntreated" resultType="java.util.Map">
+        SELECT count(*) total FROM `oa_apply_repair` where is_delete = 0 and shcool_id = #{args[0],javaType=java.lang.Integer} and (status = '01' or status is null)
+    </select>
+
+</mapper>

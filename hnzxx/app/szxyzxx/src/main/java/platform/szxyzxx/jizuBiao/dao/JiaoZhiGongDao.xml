@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.jizuBiao.dao.JiaoZhiGongDao">
+
+    <resultMap id="TeacherWoke" type="platform.szxyzxx.jizuBiao.pojo.TeacherWoke">
+        <id column="id" property="id"></id>
+        <result column="teacher_id" property="teacherId"></result>
+        <result column="teacher_name" property="teacherName"></result>
+        <result column="numenjizu_name" property="numenjizuName"/>
+        <result column="woke_content" property="wokeContent"/>
+        <result column="create_time" property="craeteTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="is_delete" property="is_delete"></result>
+        <result column="school_year" property="schoolYear"></result>
+        <result column="school_trem" property="schoolTrem"></result>
+        <result column="zhoushu" property="zhoushu"></result>
+        <result column="jizu_id" property="jizuId"></result>
+    </resultMap>
+
+    <resultMap id="Teacher" type="platform.szxyzxx.jizuBiao.pojo.JiZuTeacherBiao">
+        <result column="name" property="teacherName"/>
+        <result column="id" property="teacherId"/>
+    </resultMap>
+
+
+    <select id="findByHouQin" resultMap="Teacher">
+        select pt.* from pj_teacher pt inner join yh_user_role yur
+         on yur.user_id=pt.user_id where pt.school_id=#{args[1]}
+         and yur.role_id=4689 and pt.is_delete=0 and yur.is_deleted=0
+          <if test="args[0]!=null">
+              and pt.name like concat('%',#{args[0]}, '%')
+          </if>
+         group by pt.id
+    </select>
+    <select id="findByKeRen" resultMap="Teacher">
+         select pt.* from pj_teacher pt inner join yh_user_role yur
+         on yur.user_id=pt.user_id where pt.school_id=#{args[1]} and
+         yur.role_id=4694 and pt.is_delete=0 and yur.is_deleted=0
+        <if test="args[0]!=null">
+            and pt.name like concat('%',#{args[0]}, '%')
+        </if>
+         group by pt.id
+    </select>
+    <select id="findBydaochus" resultMap="Teacher">
+        select pt.* from pj_teacher pt inner join yh_user_role yur
+        on yur.user_id=pt.user_id where pt.school_id=#{args[1]} and
+        yur.role_id in (4689,4694) and pt.is_delete=0 and yur.is_deleted=0
+        <if test="args[0]!=null">
+            and pt.name like concat('%',#{args[0]}, '%')
+        </if>
+        group by pt.id
+    </select>
+
+    <insert id="createTeacherWoke">
+        insert  into zy_teacher_woke (teacher_id,numenjizu_name,create_time,modity_time,woke_content,is_delete,school_year,school_trem,zhoushu,jizu_id,jiaozhi_id)
+        value(#{args[0].teacherId},#{args[0].numenjizuName},NOW(),NOW(),#{args[0].wokeContent},0,#{args[0].schoolYear},#{args[0].schoolTrem},#{args[0].zhoushu},null,#{args[0].jizuId})
+    </insert>
+
+    <select id="findBydaochuer" resultMap="TeacherWoke">
+        select ztk.*,pt.name as teacher_name from zy_teacher_woke ztk inner join pj_teacher pt
+        on pt.id=ztk.teacher_id where school_year=#{args[0]}
+        and school_trem=#{args[1]} and zhoushu=#{args[2]}
+        and ztk.teacher_id in
+        (select pt.id from pj_teacher pt inner join yh_user_role yur
+        on yur.user_id=pt.user_id where pt.school_id=215 and
+        yur.role_id in (4689,4694) and pt.is_delete=0 and yur.is_deleted=0
+        <if test="args[3]!=null">
+            and pt.name like concat('%',#{args[3]}, '%')
+        </if>
+        group by pt.id) and ztk.is_delete=0
+    </select>
+
+
+</mapper>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.service.dao.InSchoolRoomDao">
+
+    <resultMap id="InSchoolRoomResult" type="platform.education.service.model.InSchoolRoom">
+        <result property="id" column="id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="name" column="name"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+    </resultMap>
+
+    <resultMap id="RoomVoResult" type="platform.education.service.vo.RoomVo">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="count" column="room_count"/>
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.service.model.InSchoolRoom">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO at_in_school_room (
+        id,
+        school_id,
+        `name`,
+        is_deleted,
+        create_date,
+        modify_date
+        )
+        VALUES (
+        #{id},
+        #{schoolId},
+        #{name},
+        <choose>
+            <when test="isDeleted != null">
+                <choose>
+                    <when test="isDeleted == true">
+                        1,
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                0,
+            </otherwise>
+        </choose>
+        #{createDate},
+        #{modifyDate}
+        )
+    </insert>
+
+    <select id="read" resultMap="InSchoolRoomResult" useCache="false">
+        SELECT * FROM at_in_school_room WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findInSchoolRoomByCondition" resultMap="InSchoolRoomResult" useCache="false">
+        SELECT * FROM at_in_school_room
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].schoolId != null">
+                AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND `name` LIKE CONCAT('%', #{args[0].name,javaType=java.lang.String}, '%')
+            </if>
+            <if test="args[0].isDeleted != null">
+                <choose>
+                    <when test="args[0].isDeleted == true">
+                        AND is_deleted = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted = 0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM at_in_school_room
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].schoolId != null">
+                AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].name != null and args[0].name != ''">
+                AND `name` = #{args[0].name,javaType=java.lang.String}
+            </if>
+            <if test="args[0].isDeleted != null">
+                <choose>
+                    <when test="args[0].isDeleted == true">
+                        AND is_deleted = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted = 0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="InSchoolRoomResult" useCache="false">
+        SELECT *
+        FROM at_in_school_room
+        WHERE id = #{args[0],javaType=java.lang.Integer}
+    </select>
+
+    <update id="update" parameterType="platform.education.service.model.InSchoolRoom">
+        UPDATE at_in_school_room
+        SET
+        <if test="schoolId != null">
+            school_id=#{schoolId},
+        </if>
+        <if test="name != null">
+            `name`=#{name},
+        </if>
+        <if test="isDeleted != null">
+            <choose>
+                <when test="isDeleted == true">
+                    is_deleted = 1,
+                </when>
+                <otherwise>
+                    is_deleted = 0,
+                </otherwise>
+            </choose>
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE
+        FROM at_in_school_room
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findInSchoolRoomByName" resultMap="InSchoolRoomResult" useCache="false">
+        SELECT *
+        FROM at_in_school_room
+        WHERE `name` = #{args[0],javaType=java.lang.String} LIMIT 1
+    </select>
+
+    <select id="findInSchoolRoomByUserIdAndStatus" resultMap="RoomVoResult" useCache="false">
+        SELECT isr.id, isr.`name`, COUNT(*) AS room_count
+        FROM at_in_school_activity isa
+        LEFT JOIN at_in_school_activity_approval isaa ON isa.id = isaa.activity_id
+        LEFT JOIN at_in_school_room isr ON isa.room_id = isr.id
+        WHERE isaa.user_id = #{args[0],javaType=java.lang.Integer}
+        <choose>
+            <when test="args[1] &lt; 200">
+                AND isaa.`status` &lt; 200
+            </when>
+            <otherwise>
+                AND isaa.`status` &gt;= 200
+            </otherwise>
+        </choose>
+        GROUP BY isa.room_id
+    </select>
+</mapper>

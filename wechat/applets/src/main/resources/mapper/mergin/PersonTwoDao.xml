@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.PersonTwoDao">
+    <resultMap id="PersonResult"
+               type="com.xunyunedu.mergin.vo.Person">
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="englishName" column="english_name" />
+        <result property="sex" column="sex" />
+        <result property="birthday" column="birthday" />
+        <result property="idCardNumber" column="id_card_number" />
+        <result property="idCardType" column="id_card_type" />
+        <result property="abroadCode" column="abroad_code" />
+        <result property="specialSkill" column="special_skill" />
+        <result property="nationality" column="nationality" />
+        <result property="nativePlace" column="native_place" />
+        <result property="birthPlace" column="birth_place" />
+        <result property="race" column="race" />
+        <result property="marriage" column="marriage" />
+        <result property="politicalStatus" column="political_status" />
+        <result property="residenceType" column="residence_type" />
+        <result property="religion" column="religion" />
+        <result property="healthStatus" column="health_status" />
+        <result property="bloodType" column="blood_type" />
+        <result property="regionCode" column="region_code" />
+        <result property="province" column="province" />
+        <result property="city" column="city" />
+        <result property="district" column="district" />
+        <result property="street" column="street" />
+        <result property="address" column="address" />
+        <result property="resideAddress" column="reside_address" />
+        <result property="residenceAddress" column="residence_address" />
+
+        <result property="mobile" column="mobile" />
+        <result property="telephone" column="telephone" />
+        <result property="email" column="email" />
+        <result property="remark" column="remark" />
+        <result property="photoUuid" column="photo_uuid" />
+        <result property="entityId" column="entity_id" />
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+
+        <result property="pinyinName" column="pinyin_name" />
+        <result property="usedName" column="used_name" />
+        <result property="idCardDate" column="id_card_date" />
+        <result property="village" column="village" />
+        <result property="zipCode" column="zip_code" />
+        <result property="residenceRemark" column="residence_remark" />
+        <result property="homeAddress" column="home_address" />
+        <result property="houseAuthority" column="house_authority" />
+        <result property="workingPlace" column="working_place" />
+        <result property="position" column="position" />
+        <result property="homepage" column="homepage" />
+        <result property="resume" column="resume" />
+    </resultMap>
+
+    <select id="findById" resultMap="PersonResult" useCache="false">
+		SELECT *
+		FROM pj_person WHERE id = #{id,javaType=java.lang.Integer}
+	</select>
+
+    <select id="findJwPersonByCondition" resultMap="PersonResult"
+            useCache="false">
+        SELECT * FROM pj_person
+        <if test="jw != null">
+            WHERE 1=1
+            <if test="jw.id != null and jw.id != ''">
+                AND id = #{jw.id,javaType=java.lang.Integer}
+            </if>
+
+            <choose>
+                <when test="jw.name != null and jw.name != ''">
+                    <choose>
+                        <when test="jw.nameLike == true">
+                            and name LIKE CONCAT(CONCAT('%', #{jw.name}),'%')
+                        </when>
+                        <otherwise>
+                            and name = #{jw.name,javaType=java.lang.String}
+                        </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+
+            <!-- <if test="jw.name != null and jw.name != ''"> -->
+            <!-- AND name LIKE CONCAT(CONCAT('%', #{jw.name}),'%') -->
+            <!-- </if> -->
+
+            <if test="jw.sex != null and jw.sex != ''">
+                AND sex = #{jw.sex,javaType=java.lang.String}
+            </if>
+            <if test="jw.birthday != null and jw.birthday != ''">
+                AND birthday = #{jw.birthday,javaType=java.util.Date}
+            </if>
+
+            <choose>
+                <when test="jw.idCardNumber != null and jw.idCardNumber != ''">
+                    <choose>
+                        <when test="jw.idCardNumberLike == true">
+                            and id_card_number LIKE CONCAT(CONCAT('%',
+                            #{jw.idCardNumber}),'%')
+                        </when>
+                        <otherwise>
+                            and id_card_number =
+                            #{jw.idCardNumber,javaType=java.lang.String}
+                        </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+
+            <!-- <if test="jw.idCardNumber != null and jw.idCardNumber !=
+                ''"> -->
+            <!-- AND id_card_number LIKE CONCAT(CONCAT('%', #{jw.idCardNumber}),'%') -->
+            <!-- </if> -->
+
+            <if test="jw.nationality != null and jw.nationality != ''">
+                AND nationality = #{jw.nationality,javaType=java.lang.String}
+            </if>
+            <if test="jw.nativePlace != null and jw.nativePlace != ''">
+                AND native_place = #{jw.nativePlace,javaType=java.lang.String}
+            </if>
+            <if test="jw.birthPlace != null and jw.birthPlace != ''">
+                AND birth_place = #{jw.birthPlace,javaType=java.lang.String}
+            </if>
+            <if test="jw.race != null and jw.race != ''">
+                AND race = #{jw.race,javaType=java.lang.String}
+            </if>
+            <if test="jw.marriage != null and jw.marriage != ''">
+                AND marriage = #{jw.marriage,javaType=java.lang.String}
+            </if>
+            <if
+                    test="jw.politicalStatus != null and jw.politicalStatus != ''">
+                AND political_status =
+                #{jw.politicalStatus,javaType=java.lang.String}
+            </if>
+            <if test="jw.residenceType != null and jw.residenceType != ''">
+                AND residence_type = #{jw.residenceType,javaType=java.lang.String}
+            </if>
+            <if test="jw.religion != null and jw.religion != ''">
+                AND religion = #{jw.religion,javaType=java.lang.String}
+            </if>
+            <if test="jw.healthStatus != null and jw.healthStatus != ''">
+                AND health_status = #{jw.healthStatus,javaType=java.lang.String}
+            </if>
+            <if test="jw.bloodType != null and jw.bloodType != ''">
+                AND blood_type = #{jw.bloodType,javaType=java.lang.String}
+            </if>
+            <if test="jw.regionCode != null and jw.regionCode != ''">
+                AND region_code = #{jw.regionCode,javaType=java.lang.String}
+            </if>
+            <if test="jw.province != null and jw.province != ''">
+                AND province = #{jw.province,javaType=java.lang.String}
+            </if>
+            <if test="jw.city != null and jw.city != ''">
+                AND city = #{jw.city,javaType=java.lang.String}
+            </if>
+            <if test="jw.street != null and jw.street != ''">
+                AND street = #{jw.street,javaType=java.lang.String}
+            </if>
+            <if test="jw.address != null and jw.address != ''">
+                AND address = #{jw.address,javaType=java.lang.String}
+            </if>
+            <if test="jw.resideAddress != null and jw.resideAddress != ''">
+                AND reside_address = #{jw.resideAddress,javaType=java.lang.String}
+            </if>
+
+            <if test="jw.mobile != null and jw.mobile != ''">
+                AND mobile = #{jw.mobile,javaType=java.lang.String}
+            </if>
+            <if test="jw.telephone != null and jw.telephone != ''">
+                AND telephone = #{jw.telephone,javaType=java.lang.String}
+            </if>
+            <if test="jw.email != null and jw.email != ''">
+                AND email = #{jw.email,javaType=java.lang.String}
+            </if>
+            <if test="jw.remark != null and jw.remark != ''">
+                AND remark = #{jw.remark,javaType=java.lang.String}
+            </if>
+            <if test="jw.photoUuid != null and jw.photoUuid != ''">
+                AND photo_uuid = #{jw.photoUuid,javaType=java.lang.String}
+            </if>
+            <if test="jw.entityId != null and jw.entityId != ''">
+                AND entity_id = #{jw.entityId,javaType=java.lang.String}
+            </if>
+            <if test="jw.isDelete != null and jw.isDelete != ''">
+                AND is_delete = #{jw.isDelete,javaType=java.lang.Integer}
+            </if>
+            <if test="jw.createDate != null and jw.createDate != ''">
+                AND create_date = #{jw.createDate,javaType=java.util.Date}
+            </if>
+            <if test="jw.modifyDate != null and jw.modifyDate != ''">
+                AND modify_date = #{jw.modifyDate,javaType=java.util.Date}
+            </if>
+
+            <if test="jw.pinyinName != null and jw.pinyinName != ''">
+                AND pinyin_name = #{jw.pinyinName,javaType=java.lang.String}
+            </if>
+            <if test="jw.usedName != null and jw.usedName != ''">
+                AND used_name = #{jw.usedName,javaType=java.lang.String}
+            </if>
+            <if test="jw.idCardDate != null and jw.idCardDate != ''">
+                AND id_card_date = #{jw.idCardDate,javaType=java.util.Date}
+            </if>
+            <if test="jw.village != null and jw.village != ''">
+                AND village = #{jw.village,javaType=java.lang.String}
+            </if>
+            <if test="jw.zipCode != null and jw.zipCode != ''">
+                AND zip_code = #{jw.zipCode,javaType=java.lang.String}
+            </if>
+            <if
+                    test="jw.residenceRemark != null and jw.residenceRemark != ''">
+                AND residence_remark =
+                #{jw.residenceRemark,javaType=java.lang.String}
+            </if>
+            <if test="jw.homeAddress != null and jw.homeAddress != ''">
+                AND home_address = #{jw.homeAddress,javaType=java.lang.String}
+            </if>
+            <if test="jw.houseAuthority != null and jw.houseAuthority != ''">
+                AND house_authority =
+                #{jw.houseAuthority,javaType=java.lang.String}
+            </if>
+            <if test="jw.workingPlace != null and jw.workingPlace != ''">
+                AND working_place = #{jw.workingPlace,javaType=java.lang.String}
+            </if>
+            <if test="jw.position != null and jw.position != ''">
+                AND position = #{jw.position,javaType=java.lang.String}
+            </if>
+            <if test="jw.homepage != null and jw.homepage != ''">
+                AND homepage = #{jw.homepage,javaType=java.lang.String}
+            </if>
+        </if>
+    </select>
+
+</mapper>

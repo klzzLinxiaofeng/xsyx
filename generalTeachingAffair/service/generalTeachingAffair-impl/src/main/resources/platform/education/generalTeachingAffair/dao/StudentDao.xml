@@ -1,0 +1,2927 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StudentDao">
+
+	<resultMap id="StudentResult"
+		type="platform.education.generalTeachingAffair.model.Student">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="personId" column="person_id" />
+		<result property="userId" column="user_id" />
+		<result property="teamId" column="team_id" />
+		<result property="userName" column="user_name" />
+		<result property="teamName" column="team_name" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="studentNumber" column="student_number" />
+		<result property="studentNumber2" column="student_number2" />
+		<result property="isBoarded" column="is_boarded" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="mobile" column="mobile" />
+		<result property="studyState" column="study_state" />
+		<result property="studentType" column="student_type" />
+		<result property="position" column="position" />
+		<!--<result property="isDelete" column="is_delete" />-->
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="alias" column="alias" />
+		<result property="empCard" column="emp_card"/>
+		<result property="empCode" column="emp_code"/>
+		<result property="isSendHikdoor" column="is_send_hikdoor"/>
+		<result property="isSendLibrary" column="is_send_library"/>
+		<result property="isSendSeewo" column="is_send_seewo"/>
+		<result property="deptName" column="deptName"/>
+	</resultMap>
+
+
+	<resultMap id="StudentResultTemp"
+		type="platform.education.generalTeachingAffair.model.Student">
+		<result property="id" column="id" />
+		<result property="sex" column="sex" />
+		<result property="schoolId" column="school_id" />
+		<result property="userName" column="user_name" />
+		<result property="teamId" column="team_id" />
+		<result property="teamName" column="team_name" />
+		<result property="personId" column="person_id" />
+		<result property="name" column="name" />
+		<result property="mobile" column="mobile" />
+		<result property="entityId" column="entity_id" />
+		<result property="userId" column="user_id" />
+		<result property="stuNum" column="stuNum" />
+	</resultMap>
+
+	<resultMap id="TeamStudentResultMap" type="platform.education.generalTeachingAffair.bo.TeamStudentInfo">
+		<id property="teamId" column="team_id" />
+		<collection property="stuList" ofType="platform.education.generalTeachingAffair.bo.StudentInfo">
+			<id property="studentCode" column="stu_id" />
+			<result property="studentName" column="stu_name" />
+			<result property="cardCode" column="emp_card" />
+			<collection property="parentList" ofType="platform.education.generalTeachingAffair.bo.StudentParentInfo">
+				<id property="id" column="parent_id" />
+				<result property="parentName" column="parent_name" />
+				<result property="parentPhone" column="parent_phone" />
+			</collection>
+		</collection>
+	</resultMap>
+
+	<resultMap id="StudentInfoResultMap" type="platform.education.generalTeachingAffair.bo.StudentInfo">
+		<id property="studentCode" column="stu_id" />
+			<result property="studentName" column="stu_name" />
+			<result property="cardCode" column="emp_card" />
+			<result property="gradeNumber" column="grade_number" />
+			<result property="teamNumber" column="team_number" />
+			<collection property="parentList" ofType="platform.education.generalTeachingAffair.bo.StudentParentInfo">
+				<id property="id" column="parent_id" />
+				<result property="parentName" column="parent_name" />
+				<result property="parentPhone" column="parent_phone" />
+			</collection>
+	</resultMap>
+
+
+	<resultMap id="StudentVoResult"
+		type="platform.education.generalTeachingAffair.vo.StudentVo">
+		<result property="unNationalMinority" column="unNationalMinority" />
+		<result property="nationalMinority" column="nationalMinority" />
+		<result property="totalNational" column="totalNational" />
+	</resultMap>
+
+	<resultMap id="StudentResultVo"
+		type="platform.education.generalTeachingAffair.vo.StudentVo">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="personId" column="person_id" />
+		<result property="userId" column="user_id" />
+		<result property="teamId" column="team_id" />
+		<result property="userName" column="user_name" />
+		<result property="teamName" column="team_name" />
+		<result property="name" column="name" />
+		<result property="sex" column="sex" />
+		<result property="studentNumber" column="student_number" />
+		<result property="studentNumber2" column="student_number2" />
+		<result property="isBoarded" column="is_boarded" />
+		<result property="enrollDate" column="enroll_date" />
+		<result property="leaveDate" column="leave_date" />
+		<result property="mobile" column="mobile" />
+		<result property="studyState" column="study_state" />
+		<result property="studentType" column="student_type" />
+		<result property="position" column="position" />
+		<result property="isDelete" column="is_delete" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="alias" column="alias" />
+		<result property="number" column="number" />
+		<!-- 2017-11-20 -->
+		<result property="email" column="email" />
+		<result property="teamCode" column="team_code" />
+		<result property="gradeId" column="grade_id" />
+		<result property="gradeName" column="grade_name" />
+		<result property="uniGradeCode" column="uni_grade_code" />
+		<!-- 2018-06-19 -->
+		<result property="teamNumber" column="team_number" />
+		<result property="teamStudentId" column="team_student_id" />
+		<result property="empCard" column="emp_card"></result>
+	</resultMap>
+
+	<resultMap id="CanteenStudentResult" type="platform.education.generalTeachingAffair.model.CanteenStudent">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="ic_number" property="icNumber"/>
+		<result column="grade_name" property="gradeName"/>
+	</resultMap>
+
+	<select id="findByStudentShitang" resultMap="StudentResult">
+			select * from pj_student where is_send_canteen=0 and is_delete=0  and school_id=215 limit 0,50
+	</select>
+	<insert id="create"
+		parameterType="platform.education.generalTeachingAffair.model.Student">
+		<selectKey resultType="java.lang.Integer" order="AFTER"
+			keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_student (id, school_id, person_id, user_id, team_id,
+		user_name, team_name, name, sex, student_number,student_number2,
+		enroll_date,
+		leave_date, mobile, student_type, position,
+		is_delete,
+		create_date, modify_date,is_boarded,alias,emp_code,emp_card)
+		VALUES (#{id},
+		#{schoolId}, #{personId},
+		#{userId}, #{teamId}, #{userName},
+		#{teamName}, #{name}, #{sex},
+		#{studentNumber},#{studentNumber2},
+		#{enrollDate}, #{leaveDate}, #{mobile}, #{studentType},
+		#{position}, #{isDelete},
+		#{createDate},
+		#{modifyDate},#{isBoarded},#{alias}, #{empCode}, #{empCard})
+	</insert>
+
+	<select id="read" resultMap="StudentResult" useCache="false">
+		SELECT * FROM pj_student WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="readStudentSetTeamIsNull" resultMap="StudentResult"
+		useCache="false">
+		SELECT * FROM pj_student WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+			AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<select id="findStudentOfTeam" resultMap="StudentResult"
+		useCache="false">
+		<!-- select * from pj_student pjs where pjs.id -->
+		<!-- IN(select pjts.student_id from pj_team_student pjts where pjts.is_delete 
+			= 0 -->
+		<!-- and pjts.join_date is not NULL -->
+		<!-- and pjts.finish_date is NULL -->
+		<!-- <if test="args[0]!=null and args[0]!=''"> -->
+		<!-- AND pjts.team_id = #{args[0],javaType=java.lang.Integer} -->
+		<!-- </if>) -->
+		select s.* from pj_student s LEFT JOIN pj_team_student ts ON
+		ts.student_id = s.id
+		WHERE ts.team_id = #{args[0],javaType=java.lang.Integer}
+		AND s.is_delete = 0
+		AND ts.in_state = 1
+		group by s.id
+	</select>
+	<select id="findStudentOfTeam2" resultMap="StudentResult" useCache="false">
+		select s.* from pj_student s LEFT JOIN pj_team_student ts ON
+		ts.student_id = s.id
+		WHERE ts.team_id = #{args[0],javaType=java.lang.Integer}
+		<if test="args[1]!=null">
+			and ts.grade_id=#{args[1]}
+		</if>
+		AND s.is_delete = 0
+		AND ts.in_state = 1
+		group by s.id
+		order by s.emp_code asc
+	</select>
+
+
+	<select id="findStudentByParentOrStuName" resultMap="StudentResult"
+		useCache="false">
+		SELECT pst.* from
+			(
+			SELECT s.* FROM pj_student s
+			INNER JOIN pj_team_student ts ON s.user_id = ts.user_id
+			INNER JOIN pj_team t ON ts.team_id = t.id
+			WHERE s.is_delete = 0
+			AND ts.is_delete = 0
+			AND ts.in_state = 1
+			AND t.is_delete = 0
+			<if test="args[0].schoolId != null">
+				AND t.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND t.grade_id =#{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				AND t.school_year = #{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamId != null">
+				AND t.id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentId != null">
+				AND s.id = #{args[0].studentId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentName != null">
+				AND s.`name` LIKE CONCAT(CONCAT('%', #{args[0].studentName}),'%')
+			</if>
+			<if test="args[0].studentUserId != null">
+				AND s.user_id = #{args[0].studentUserId,javaType=java.lang.Integer}
+			</if>
+			) pst
+		INNER JOIN
+			(
+			SELECT pps.student_user_id student_user_id from pj_parent ppa
+			INNER JOIN pj_parent_student pps on ppa.user_id = pps.parent_user_id
+			where ppa.is_delete = 0
+			and pps.is_delete = 0
+			<if test="args[0].licensePlate != null and args[0].licensePlate != ''"> and ppa.license_plate = #{args[0].licensePlate}</if>
+			<choose>
+				<when test="args[0].parentMobile != null and args[0].parentMobile != ''">
+					<choose>
+						<when test="args[0].parentMobileLike == true">
+							and ppa.mobile LIKE CONCAT(CONCAT('%', #{args[0].parentMobile}),'%')
+						</when>
+						<otherwise>
+							and ppa.mobile = #{args[0].parentMobile,javaType=java.lang.String}
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+
+				</otherwise>
+			</choose>
+			) ppas
+		on pst.user_id = ppas.student_user_id
+	</select>
+
+
+	<select id="findStudentByParent" resultMap="StudentResult"
+		useCache="false">
+		SELECT pst.* from
+		(SELECT pstu.* from pj_student pstu INNER JOIN pj_team pt on pstu.team_id =
+		pt.id
+		where
+		pstu.is_delete = 0
+		and pt.is_delete = 0
+
+		<if test="args[0].schoolId != null">
+			and pt.school_id =
+			#{args[0].schoolId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].gradeId != null">
+			and pt.grade_id
+			=#{args[0].gradeId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+			AND pt.school_year =
+			#{args[0].schoolYear,javaType=java.lang.String}
+		</if>
+		<if test="args[0].teamId != null">
+			and pt.id = #{args[0].teamId,javaType=java.lang.Integer}
+		</if>
+
+
+		<if test="args[0].studentId != null">
+			and pstu.id =
+			#{args[0].studentId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].studentUserId != null">
+			and pstu.user_id =
+			#{args[0].studentUserId,javaType=java.lang.Integer}
+		</if>
+		) pst
+		INNER JOIN
+		(SELECT pps.student_user_id student_user_id from pj_parent ppa INNER JOIN
+		pj_parent_student pps on ppa.user_id = pps.parent_user_id
+		where
+		ppa.is_delete = 0
+		and pps.is_delete = 0
+
+		<choose>
+			<when test="args[0].parentMobile != null and args[0].parentMobile != ''">
+				<choose>
+					<when test="args[0].parentMobileLike == true">
+						and ppa.mobile LIKE CONCAT(CONCAT('%', #{args[0].parentMobile}),'%')
+					</when>
+					<otherwise>
+						and ppa.mobile = #{args[0].parentMobile,javaType=java.lang.String}
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+
+			</otherwise>
+		</choose>
+
+
+		) ppas
+		on pst.user_id = ppas.student_user_id
+	</select>
+
+	<select id="findStudentOfTeamIdList" resultMap="StudentResult"
+		useCache="false">
+		SELECT
+		pjs.alias,
+		pjs.create_date,
+		pjs.enroll_date,
+		pjs.is_boarded,
+		pjs.is_delete,
+		pjs.leave_date,
+		pjs.mobile,
+		pjs.modify_date,
+		pjs.name,
+		pjs.person_id,
+		pjs.position,
+		pjs.person_id,
+		pjs.school_id,
+		pjs.sex,
+		pjs.student_number,
+		pjs.student_number2,
+		pjs.student_type,
+		pjs.study_state,
+		pjs.team_name,
+		pjs.user_id,
+		pjs.user_name,
+		pjts.team_id
+		FROM
+		pj_team_student pjts,pj_student pjs
+		where pjts.student_id = pjs.id
+		AND pjts.team_id in
+		<foreach collection="args[0]" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="args[1]!=null and args[1]!=''">
+			and pjs.school_id=#{args[1],javaType=java.lang.Integer}
+		</if>
+		and pjs.is_delete = 0
+		and pjts.is_delete=0
+		and pjts.finish_date is NULL
+		ORDER BY pjs.id DESC
+	</select>
+
+
+	<select id="findStudentOfGradeIdList" resultMap="StudentResult"
+		useCache="false">
+		SELECT pjs.* FROM pj_team_student pjts, pj_student pjs,
+		(SELECT pjt.* FROM pj_grade pjg,pj_team pjt
+		WHERE pjg.id = pjt.grade_id
+		AND pjg.is_deleted = 0
+		AND pjt.is_delete = 0
+		AND pjg.id IN
+		<foreach collection="args[0]" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		)teamTab
+		WHERE
+		pjts.student_id = pjs.id
+		AND pjts.team_id = teamTab.id
+		AND pjs.is_delete = 0
+		AND
+		pjts.is_delete = 0
+		<if test="args[1]!=null and args[1]!=''">
+			AND pjs.school_id=#{args[1],javaType=java.lang.Integer}
+		</if>
+		AND pjts.finish_date IS NULL
+		ORDER BY pjs.id DESC
+	</select>
+
+	<select id="findStudentListBySchoolId" resultMap="StudentResult"
+		useCache="false">
+		select pjs.* from pj_team_student pjts,pj_student pjs
+		where
+		pjts.student_id = pjs.id
+		<if test="args[0]!=null and args[0]!=''">
+			and pjs.school_id=#{args[0],javaType=java.lang.Integer}
+		</if>
+		and pjs.is_delete = 0
+		and pjts.is_delete=0
+		and pjts.finish_date is NULL
+		ORDER BY pjs.id DESC
+	</select>
+
+
+	<select id="findStudentByTeamId" resultMap="StudentResultTemp">
+		<!--select-->
+		<!--pjs.id,pjs.user_id,pjs.sex,pjs.school_id,pjs.name,pjs.person_id,pjp.entity_id,pjs.user_name,pjs.mobile,pjs.team_id,pjs.team_name-->
+		<!--from pj_student pjs, pj_person pjp,pj_team_student ts-->
+		<!--where-->
+		<!--pjs.is_delete = 0 and pjp.is_delete = 0-->
+		<!--and pjs.person_id = pjp.id-->
+		<!--AND-->
+		<!--ts.student_id = pjs.id-->
+		<!--AND ts.finish_date is null-->
+		<!--<if test="args[0]!=null and args[0]!=''">-->
+			<!--AND ts.team_id = #{args[0],javaType=java.lang.Integer}-->
+		<!--</if>-->
+		select s.* from pj_student s LEFT JOIN pj_team_student ts ON
+		ts.student_id = s.id
+		WHERE ts.team_id = #{args[0],javaType=java.lang.Integer}
+		AND s.is_delete = 0
+		AND ts.in_state = 1
+	</select>
+	<select id="findStudentByTeamId2" resultMap="StudentResultTemp">
+		select s.* from pj_student s LEFT JOIN pj_team_student ts ON
+		ts.student_id = s.id
+		WHERE ts.team_id = #{args[0],javaType=java.lang.Integer}
+		<if test="args[1]!=null">
+				and ts.grade_id=#{args[1]}
+		</if>
+		AND s.is_delete = 0
+		AND ts.in_state = 1
+
+
+	</select>
+
+	<select id="findStudentByTeam" resultMap="StudentResult">
+		<!-- SELECT pstu.*from pj_team pt INNER JOIN pj_student pstu -->
+		<!-- on pt.id = pstu.team_id -->
+		<!-- where pt.is_delete=0 -->
+		<!-- and pstu.is_delete=0 -->
+		<!-- <if test="args[0].schoolId != null"> -->
+		<!-- and pt.school_id = #{args[0].schoolId,javaType=java.lang.Integer} -->
+		<!-- </if> -->
+		<!-- <if test="args[0].schoolYear != null and args[0].schoolYear != ''"> -->
+		<!-- and pt.school_year = #{args[0].schoolYear,javaType=java.lang.String} -->
+		<!-- </if> -->
+		<!-- <if test="args[0].gradeId != null"> -->
+		<!-- and pt.grade_id =#{args[0].gradeId,javaType=java.lang.Integer} -->
+		<!-- </if> -->
+		<!-- <if test="args[0].teamId != null"> -->
+		<!-- and pt.id =#{args[0].teamId,javaType=java.lang.Integer} -->
+		<!-- </if> -->
+		<!-- <if test="args[0].id != null"> -->
+		<!-- and pstu.id = #{args[0].id,javaType=java.lang.Integer} -->
+		<!-- </if> -->
+
+		SELECT
+		pstu.*
+		FROM
+		pj_student pstu
+		LEFT JOIN pj_team_student pts ON pstu.id = pts.student_id
+		LEFT JOIN pj_team t ON pts.team_id = t.id
+		where 1=1
+		AND pts.is_delete = 0
+		AND pstu.is_delete = 0
+		<if test="args[0].schoolId != null">
+			and pstu.school_id =
+			#{args[0].schoolId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+			and t.school_year =
+			#{args[0].schoolYear,javaType=java.lang.String}
+		</if>
+		<if test="args[0].gradeId != null">
+			and pts.grade_id
+			=#{args[0].gradeId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].teamId != null">
+			and pts.team_id
+			=#{args[0].teamId,javaType=java.lang.Integer}
+		</if>
+		<if test="args[0].id != null">
+			and pstu.id = #{args[0].id,javaType=java.lang.Integer}
+		</if>
+		group by pstu.id
+	</select>
+
+	<select id="findStudentByCondition" resultMap="StudentResult"
+		useCache="false">
+		SELECT
+		stu.id, stu.school_id, stu.person_id, stu.user_id, stu.user_name,
+		stu.`name`, stu.sex, stu.emp_code student_number, stu.student_number2, stu.enroll_date,
+		stu.leave_date, stu.mobile, stu.study_state, stu.student_type,
+		stu.position,stu.emp_card,
+		stu.is_boarded, stu.is_delete, stu.create_date, stu.modify_date, stu.alias,
+		t.id
+		team_id, t.`name` team_name
+		FROM pj_student stu
+		LEFT JOIN pj_team_student pts ON stu.id =
+		pts.student_id
+		LEFT JOIN pj_team t ON t.id = pts.team_id
+		where pts.is_delete=0
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+				AND stu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND t.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+				AND stu.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<!--学生根据学校，学年，年级，班级，学生查询条件 -->
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				and t.school_year =
+				#{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].empCode != null">
+				and stu.emp_code =#{args[0].empCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamId != null">
+				and pts.team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].personId != null">
+				AND stu.person_id =
+				#{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND stu.user_id =
+				#{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null">
+				AND stu.user_name =
+				#{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamName != null">
+				AND stu.team_name =
+				#{args[0].teamName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null">
+				AND stu.name LIKE CONCAT(CONCAT('%',
+				#{args[0].name}),'%')
+			</if>
+			<if test="args[0].sex != null">
+				AND stu.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND stu.student_number =
+				#{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber2 != null">
+				AND stu.student_number2 =
+				#{args[0].studentNumber2,javaType=java.lang.String}
+			</if>
+			<if test="args[0].enrollDate != null">
+				AND stu.enroll_date =
+				#{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null">
+				AND stu.leave_date =
+				#{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].mobile != null">
+				AND stu.mobile =
+				#{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studyState != null">
+				AND stu.study_state =
+				#{args[0].studyState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentType != null">
+				AND stu.student_type =
+				#{args[0].studentType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null">
+				AND stu.position =
+				#{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND stu.is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null">
+				AND stu.create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND stu.modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].alias != null">
+				AND stu.alias =
+				#{args[0].alias,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+
+	<select id="findStudentUniqByCondition" resultMap="StudentResult"
+		useCache="false">
+		SELECT stu.* FROM pj_student stu
+		LEFT JOIN pj_team_student pts ON
+		stu.id = pts.student_id
+		LEFT JOIN pj_team t ON t.id = pts.team_id WHERE
+		1=1
+		AND pts.finish_date IS NULL
+		and stu.is_delete=0
+		and pts.is_delete=0
+		and t.is_delete=0
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+				AND stu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND stu.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].personId != null">
+				AND stu.person_id =
+				#{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND stu.user_id =
+				#{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND pts.team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null">
+				AND stu.user_name =
+				#{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamName != null">
+				AND stu.team_name =
+				#{args[0].teamName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null">
+				AND stu.name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].sex != null">
+				AND stu.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND stu.student_number =
+				#{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber2 != null">
+				AND stu.student_number2 =
+				#{args[0].studentNumber2,javaType=java.lang.String}
+			</if>
+			<if test="args[0].enrollDate != null">
+				AND stu.enroll_date =
+				#{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null">
+				AND stu.leave_date =
+				#{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].mobile != null">
+				AND stu.mobile =
+				#{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studyState != null">
+				AND stu.study_state =
+				#{args[0].studyState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentType != null">
+				AND stu.student_type =
+				#{args[0].studentType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null">
+				AND stu.position =
+				#{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND stu.is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null">
+				AND stu.create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND stu.modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].alias != null">
+				AND stu.alias =
+				#{args[0].alias,javaType=java.lang.String}
+			</if>
+
+			<!--学生根据学校，学年，年级，班级，学生查询条件 -->
+			<if test="args[0].id != null">
+				AND stu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+
+			<!-- <if test="args[0].schoolId != null"> -->
+			<!-- and t.school_id = #{args[0].schoolId,javaType=java.lang.Integer} -->
+			<!-- </if> -->
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				and t.school_year =
+				#{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null">
+				and pts.grade_id =
+				#{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+		</if>
+		group by stu.id
+	</select>
+
+	<select id="findStudentHasTeamByCondition" resultMap="StudentResult"
+		useCache="false">
+		<!-- select stu.* from pj_student stu RIGHT join pj_team t on -->
+		<!-- stu.team_id = t.id WHERE 1=1 and stu.is_delete=0 -->
+		SELECT 
+		  stu.*,
+		  pts.number
+		FROM
+		  pj_student stu 
+		  LEFT JOIN pj_team_student pts 
+		    ON stu.id = pts.student_id 
+		  LEFT JOIN pj_team t 
+		    ON t.id = pts.team_id 
+		WHERE 1 = 1 
+		  AND pts.finish_date IS NULL 
+		  AND stu.is_delete = 0 
+		  AND pts.is_delete = 0 
+		  AND t.is_delete = 0 
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+				AND stu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND stu.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].personId != null">
+				AND stu.person_id =
+				#{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND stu.user_id =
+				#{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND pts.team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null">
+				AND stu.user_name =
+				#{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamName != null">
+				AND stu.team_name =
+				#{args[0].teamName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null">
+				AND stu.name LIKE CONCAT(CONCAT('%',
+				#{args[0].name}),'%')
+			</if>
+			<if test="args[0].sex != null">
+				AND stu.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND stu.student_number =
+				#{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber2 != null">
+				AND stu.student_number2 =
+				#{args[0].studentNumber2,javaType=java.lang.String}
+			</if>
+
+			<if test="args[0].enrollDate != null">
+				AND stu.enroll_date =
+				#{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null">
+				AND stu.leave_date =
+				#{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].mobile != null">
+				AND stu.mobile =
+				#{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studyState != null">
+				AND stu.study_state =
+				#{args[0].studyState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentType != null">
+				AND stu.student_type =
+				#{args[0].studentType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null">
+				AND stu.position =
+				#{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND stu.is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null">
+				AND stu.create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND stu.modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<!--学生根据学校，学年，年级，班级，学生查询条件 -->
+			<if test="args[0].id != null">
+				AND stu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				and t.school_year =
+				#{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null">
+				and pts.grade_id =
+				#{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<!-- <if test="args[0].teamId != null"> -->
+			<!-- and pts.id = #{args[0].teamId,javaType=java.lang.Integer} -->
+			<!-- </if> -->
+		</if>
+		group by stu.id
+	</select>
+
+	<select id="findTeamStudentByCondition" resultMap="StudentResult"
+		useCache="false">
+		SELECT stu.* from pj_team_student t LEFT JOIN pj_student stu on stu.id
+		= t.student_id
+		where 1=1
+		and stu.is_delete = 0
+		and t.is_delete = 0
+
+		<if test="args[0] != null">
+
+			<if test="args[0].schoolId != null">
+				AND stu.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].gradeId != null">
+				and t.grade_id =
+				#{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].teamId != null">
+				and t.team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].id != null">
+				and t.student_id =
+				#{args[0].id,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findTeamStudentByCondition1" resultMap="StudentResult"
+		useCache="false">
+		SELECT stu.* from pj_team_student t LEFT JOIN pj_student stu on stu.id
+		= t.student_id
+		where 1=1
+		and stu.is_delete = 0
+		and t.is_delete = 0
+		and t.in_state = 1
+		<if test="args[0] != null">
+
+			<if test="args[0].schoolId != null">
+				AND stu.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].gradeId != null">
+				and t.grade_id =
+				#{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+
+			<if test="args[0].teamId != null">
+				and t.team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].id != null">
+				and t.student_id =
+				#{args[0].id,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+
+	<select id="findById" resultMap="StudentResult" useCache="false">
+		SELECT
+		* FROM pj_student WHERE id = #{args[0],javaType=java.lang.Integer}
+		AND
+		is_delete = 0
+	</select>
+
+	<select id="findUniqueStudentId" resultType="java.lang.Integer"
+		useCache="false">
+		SELECT id FROM pj_student WHERE user_id =
+		#{args[0],javaType=java.lang.Integer} AND school_id =
+		#{args[1],javaType=java.lang.Integer} AND is_delete = 0
+	</select>
+
+	<select id="findByName" resultMap="StudentResult" useCache="false">
+		SELECT * FROM pj_student WHERE name =
+		#{args[0],javaType=java.lang.String}
+	</select>
+
+	<select id="findStudentIsNotTeamBySchoolId" resultMap="StudentResult"
+		useCache="false">
+		select * from pj_student pjs where pjs.team_id is NULL and
+		pjs.is_delete=0
+		<if test="args[0] != null">
+			AND school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null and args[1] != ''">
+			AND sex = #{args[1],javaType=java.lang.String}
+		</if>
+	</select>
+
+	<update id="update"
+		parameterType="platform.education.generalTeachingAffair.model.Student">
+		UPDATE pj_student
+		SET
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="personId != null">
+			person_id=#{personId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="userName != null">
+			user_name=#{userName},
+		</if>
+		<if test="teamName != null">
+			team_name=#{teamName},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="sex != null">
+			sex=#{sex},
+		</if>
+		<if test="studentNumber != null">
+			student_number=#{studentNumber},
+		</if>
+		<if test="studentNumber2 != null">
+			student_number2=#{studentNumber2},
+		</if>
+		<if test="isBoarded != null">
+			is_boarded=#{isBoarded},
+		</if>
+		<if test="enrollDate != null">
+			enroll_date=#{enrollDate},
+		</if>
+		<if test="leaveDate != null">
+			leave_date=#{leaveDate},
+		</if>
+		<if test="mobile != null">
+			mobile=#{mobile},
+		</if>
+		<if test="studyState != null">
+			study_state=#{studyState},
+		</if>
+
+		<if test="empCode != null and empCode!=''">
+			emp_code=#{empCode},
+		</if>
+
+		<if test="studentType != null">
+			student_type=#{studentType},
+		</if>
+		<if test="position != null">
+			position=#{position},
+		</if>
+		<if test="isDelete != null">
+			is_delete=#{isDelete},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="alias != null">
+			alias = #{alias},
+		</if>
+		<if test="isSendLibrary != null">
+			is_send_library = #{isSendLibrary},
+		</if>
+		<if test="isHikvisionBindCard != null">
+			is_hikvision_bind_card = #{isHikvisionBindCard},
+		</if>
+		<if test="empCard != null and empCard != ''">
+			emp_card = #{empCard},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateStudentSetTeamIsNull"
+		parameterType="platform.education.generalTeachingAffair.model.Student">
+		UPDATE pj_student
+		SET
+		team_id=null,
+		team_name=''
+		WHERE id =
+		#{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM pj_student
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findOfUser" resultMap="StudentResult" useCache="false">
+		SELECT * FROM pj_student WHERE is_delete = 0 AND school_id =
+		#{args[0],javaType=java.lang.Integer} AND user_id =
+		#{args[1],javaType=java.lang.Integer}
+	</select>
+
+	<select id="findStudentByUserId" resultMap="StudentResult"
+		useCache="false">
+		SELECT * FROM pj_student WHERE is_delete = 0
+		AND user_id =
+		#{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<select id="findStudentByOnlyCondition" resultMap="StudentResult"
+		useCache="false">
+		select s.* from pj_student s inner join pj_team pt on s.team_id =
+		pt.id WHERE s.is_delete = 0
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+				AND s.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND s.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].personId != null">
+				AND s.person_id =
+				#{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND s.user_id =
+				#{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND pt.id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].alias != null">
+				AND s.alias = #{args[0].alias,javaType=java.lang.String}
+			</if>
+			<choose>
+				<when test="args[0].userName != null and args[0].userName != ''">
+					<choose>
+						<when test="args[0].userNameLike == true">
+							and s.user_name LIKE CONCAT(CONCAT('%', #{args[0].userName}),'%')
+						</when>
+						<otherwise>
+							and s.user_name = #{args[0].userName,javaType=java.lang.String}
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+
+				</otherwise>
+			</choose>
+			<if test="args[0].teamName != null">
+				AND pt.team_name =
+				#{args[0].teamName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].sex != null">
+				AND s.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND s.student_number =
+				#{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber2 != null">
+				AND s.student_number2 =
+				#{args[0].studentNumber2,javaType=java.lang.String}
+			</if>
+			<if test="args[0].enrollDate != null">
+				AND s.enroll_date =
+				#{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null">
+				AND s.leave_date =
+				#{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].mobile != null">
+				AND s.mobile =
+				#{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studyState != null">
+				AND s.study_state =
+				#{args[0].studyState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentType != null">
+				AND s.student_type =
+				#{args[0].studentType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null">
+				AND s.position =
+				#{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND s.create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND s.modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+
+			<choose>
+				<when test="args[0].name != null and args[0].name != ''">
+					<choose>
+						<when test="args[0].nameLike == true">
+							and s.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+						</when>
+						<otherwise>
+							and s.name = #{args[0].name,javaType=java.lang.String}
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+
+				</otherwise>
+			</choose>
+		</if>
+		group by s.id
+	</select>
+
+	<select id="findStudentBySchoolRegion" resultMap="StudentResult"
+		useCache="false">
+		SELECT t.* FROM pj_student t LEFT JOIN pj_school s ON t.school_id =
+		s.id LEFT JOIN yh_group g ON s.id = g.owner_id WHERE t.is_delete = 0
+		<if test="args[0] != null">
+			<if test="args[0].id != null and args[0].id != ''">
+				AND s.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].englishName != null and args[0].englishName != ''">
+				AND s.english_name =
+				#{args[0].englishName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND s.code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].stageScope != null and args[0].stageScope != ''">
+				AND s.stage_scope =
+				#{args[0].stageScope,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolSystem != null and args[0].schoolSystem != ''">
+				AND s.school_system =
+				#{args[0].schoolSystem,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolType != null and args[0].schoolType != ''">
+				AND s.school_type =
+				#{args[0].schoolType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].runningType != null and args[0].runningType != ''">
+				AND s.running_type =
+				#{args[0].runningType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].buildDate != null and args[0].buildDate != ''">
+				AND s.build_date =
+				#{args[0].buildDate,javaType=java.lang.String}
+			</if>
+			<if test="args[0].decorationDay != null">
+				AND s.decoration_day =
+				#{args[0].decorationDay,javaType=java.util.Date}
+			</if>
+			<if test="args[0].province != null and args[0].province != ''">
+				AND s.province =
+				#{args[0].province,javaType=java.lang.String}
+			</if>
+			<if test="args[0].city != null and args[0].city != ''">
+				AND s.city = #{args[0].city,javaType=java.lang.String}
+			</if>
+			<if test="args[0].district != null and args[0].district != ''">
+				AND s.district =
+				#{args[0].district,javaType=java.lang.String}
+			</if>
+			<if test="args[0].street != null and args[0].street != ''">
+				AND s.street =
+				#{args[0].street,javaType=java.lang.String}
+			</if>
+			<if test="args[0].regionCode != null and args[0].regionCode != ''">
+				AND s.region_code =
+				#{args[0].regionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].address != null and args[0].address != ''">
+				AND s.address =
+				#{args[0].address,javaType=java.lang.String}
+			</if>
+			<if test="args[0].zipcode != null and args[0].zipcode != ''">
+				AND s.zipcode =
+				#{args[0].zipcode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].telephone != null and args[0].telephone != ''">
+				AND s.telephone =
+				#{args[0].telephone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].websit != null and args[0].websit != ''">
+				AND s.websit =
+				#{args[0].websit,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND s.remark =
+				#{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId_badge != null and args[0].entityId_badge != ''">
+				AND s.badge =
+				#{args[0].entityId_badge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].entityId_image != null and args[0].entityId_image != ''">
+				AND s.image =
+				#{args[0].entityId_image,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND s.create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND s.modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND s.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+		</if>
+		<if test="args[1] != null">
+			<if test="args[1].id != null">
+				AND g.id = #{args[1].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[1].ownerId != null">
+				AND g.owner_id =
+				#{args[1].ownerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[1].name != null and args[1].name != ''">
+				AND g.name LIKE CONCAT(CONCAT('%', #{args[1].name}),'%')
+			</if>
+			<if test="args[1].type != null">
+				AND g.type = #{args[1].type}
+			</if>
+			<if test="args[1].createDate != null">
+				AND g.create_date =
+				#{args[1].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[1].modifyDate != null">
+				AND g.modify_date =
+				#{args[1].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+
+	<select id="findStudentNumBySchoolId" resultMap="StudentResultTemp"
+		useCache="false">
+		select COUNT(*) stuNum,school_id from pj_student pjs where
+		pjs.school_id=1 and pjs.is_delete=0
+	</select>
+
+	<select id="findStudentNumberOfRaceData" resultMap="StudentVoResult"
+		useCache="false">
+		SELECT
+		COUNT(CASE WHEN per.race = 01 THEN per.race END) as unNationalMinority,
+		COUNT(CASE WHEN per.race != 01 AND per.race IS NOT NULL AND per.race
+		!= '' THEN per.race END) as nationalMinority,
+		COUNT(CASE WHEN per.race is null OR per.race = '' THEN 1 ELSE 0 END) as
+		totalNational
+		from pj_student stu INNER JOIN pj_person per ON per.id = stu.person_id
+		AND stu.is_delete = 0
+		<if test="args[0] != null and args[0] != ''">
+			AND stu.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+	</select>
+
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(distinct(stu.id)) FROM pj_student stu LEFT JOIN
+		pj_person per ON stu.person_id = per.id
+		LEFT JOIN pj_team_student ts on ts.student_id = stu.id
+		<if test="args[0] != null">
+			WHERE ts.finish_date IS NULL
+			<if test="args[0].id != null">
+				AND stu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND stu.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].personId != null">
+				AND stu.person_id =
+				#{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND stu.user_id =
+				#{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND ts.team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null">
+				AND stu.user_name =
+				#{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamName != null">
+				AND ts.team_name =
+				#{args[0].teamName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null">
+				AND stu.name LIKE CONCAT(CONCAT('%',
+				#{args[0].name}),'%')
+			</if>
+			<if test="args[0].sex != null">
+				AND stu.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND stu.student_number =
+				#{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber2 != null">
+				AND stu.student_number2 =
+				#{args[0].studentNumber2,javaType=java.lang.String}
+			</if>
+			<if test="args[0].enrollDate != null">
+				AND stu.enroll_date =
+				#{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null">
+				AND stu.leave_date =
+				#{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].mobile != null">
+				AND stu.mobile =
+				#{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studyState != null">
+				AND stu.study_state =
+				#{args[0].studyState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentType != null">
+				AND stu.student_type =
+				#{args[0].studentType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null">
+				AND stu.position =
+				#{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isBoarded != null">
+				AND stu.is_boarded =
+				#{args[0].isBoarded,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND stu.is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null">
+				AND stu.create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND stu.modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<!-- pj_person查询条件 -->
+			<if test="args[0].race != null">
+				AND per.race = #{args[0].race,javaType=java.lang.String}
+			</if>
+			<if test="args[0].politicalStatus != null">
+				AND per.political_status =
+				#{args[0].politicalStatus,javaType=java.lang.String}
+			</if>
+
+		</if>
+	</select>
+
+	<!-- @function 照片模块某个班级学生人数 @date 2016年03月04日 -->
+	<select id="countByTeamId" resultType="java.lang.Long" useCache="false">
+		select count(s.id) from pj_student s LEFT JOIN pj_team_student ts ON
+		ts.student_id = s.id
+		WHERE ts.team_id = #{args[0],javaType=java.lang.Integer}
+		AND s.is_delete = 0
+		AND ts.in_state = 1
+	</select>
+
+	<!-- @function 照片模块某个班级没有照片的学生人数 @date 2016年03月04日 -->
+	<select id="countNoPhotoTeamId" resultType="java.lang.Long"
+		useCache="false">
+		select count(pjs.id)
+		from pj_student pjs, pj_person pjp
+		where
+		pjs.is_delete = 0 and pjp.is_delete = 0
+		and pjs.person_id = pjp.id
+		AND
+		pjs.team_id = #{args[0],javaType=java.lang.Integer} and
+		(pjp.photo_uuid is null or pjp.photo_uuid = '')
+	</select>
+
+	<!-- @function 照片统计模块 查询出一个班级没有照片的学生的姓名 @date 2016年03月04日 -->
+	<select id="findNoPhotoName" resultType="java.lang.String"
+		useCache="false">
+		select group_concat(pjs.name)
+		from pj_student pjs, pj_person
+		pjp
+		where pjs.is_delete = 0 and pjp.is_delete = 0
+		and pjs.person_id =
+		pjp.id
+		AND pjs.team_id = #{args[0],javaType=java.lang.Integer} and
+		(pjp.photo_uuid is null or pjp.photo_uuid = '')
+	</select>
+
+	<!-- @function 照片统计模块 查询出一个部门有照片的学生的姓名 @date 2016年03月04日 -->
+	<select id="findHasPhotoName" resultType="java.lang.String"
+		useCache="false">
+		select group_concat(pjs.name)
+		from pj_student pjs, pj_person
+		pjp
+		where pjs.is_delete = 0 and pjp.is_delete = 0
+		and pjs.person_id =
+		pjp.id
+		AND pjs.team_id = #{args[0],javaType=java.lang.Integer} and
+		pjp.photo_uuid is not null and pjp.photo_uuid != ''
+	</select>
+
+	<select id="findFinishState" resultMap="StudentResult" useCache="false">
+		select stu.* from pj_student stu ,pj_team t ,pj_team_student pts
+		WHERE
+		1=1
+		and pts.team_id = t.id
+		and stu.id = pts.student_id
+		and pts.finish_date is null
+		and stu.is_delete=0
+		and pts.is_delete=0
+		and t.is_delete=0
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+				AND stu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND stu.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].personId != null">
+				AND stu.person_id =
+				#{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND stu.user_id =
+				#{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND pts.team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null">
+				AND stu.user_name =
+				#{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamName != null">
+				AND stu.team_name =
+				#{args[0].teamName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null">
+				AND stu.name LIKE CONCAT(CONCAT('%',
+				#{args[0].name}),'%')
+			</if>
+			<if test="args[0].sex != null">
+				AND stu.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND stu.student_number =
+				#{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber2 != null">
+				AND stu.student_number2 =
+				#{args[0].studentNumber2,javaType=java.lang.String}
+			</if>
+			<if test="args[0].enrollDate != null">
+				AND stu.enroll_date =
+				#{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null">
+				AND stu.leave_date =
+				#{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].mobile != null">
+				AND stu.mobile =
+				#{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studyState != null">
+				AND stu.study_state =
+				#{args[0].studyState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentType != null">
+				AND stu.student_type =
+				#{args[0].studentType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null">
+				AND stu.position =
+				#{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND stu.is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null">
+				AND stu.create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND stu.modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].alias != null">
+				AND stu.alias =
+				#{args[0].alias,javaType=java.lang.String}
+			</if>
+
+			<!--学生根据学校，学年，年级，班级，学生查询条件 -->
+			<if test="args[0].id != null">
+				AND stu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+
+			<!-- <if test="args[0].schoolId != null"> -->
+			<!-- and t.school_id = #{args[0].schoolId,javaType=java.lang.Integer} -->
+			<!-- </if> -->
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				and t.school_year =
+				#{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null">
+				and t.grade_id =
+				#{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<!-- <if test="args[0].teamId != null"> -->
+			<!-- and t.id = #{args[0].teamId,javaType=java.lang.Integer} -->
+			<!-- </if> -->
+			<choose>
+				<when test="args[0].finishName != null and args[0].interrupteur != null">
+					<choose>
+						<when test="args[0].interrupteur == true">
+							AND stu.user_id in (SELECT object_id FROM pj_job_control jc WHERE
+							jc.name=#{args[0].finishName,javaType=java.lang.String} AND
+							jc.interrupteur=1)
+						</when>
+						<otherwise>
+							AND stu.user_id NOT in (SELECT object_id FROM pj_job_control jc
+							WHERE jc.name=#{args[0].finishName,javaType=java.lang.String} AND
+							jc.interrupteur=1)
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+
+				</otherwise>
+			</choose>
+			GROUP BY stu.id
+		</if>
+	</select>
+
+	<select id="findArchiveSummary" resultMap="StudentResultVo"
+		useCache="false">
+		select s.*,tt.number FROM pj_student s LEFT JOIN pj_team_student tt ON
+		tt.user_id = s.user_id WHERE 1=1
+		<if test="args[0] != null">
+			AND tt.team_id = #{args[0]}
+		</if>
+		AND tt.finish_date IS NULL
+		<if test="args[2] != null">
+			<if test="args[2] == true">
+				AND s.user_id in (
+				SELECT object_id FROM pj_job_control j1 WHERE 1=1
+				<if test="args[1] != null">
+					AND j1.`name` = #{args[1]}
+				</if>
+				AND j1.Interrupteur = 1
+				)
+			</if>
+			<if test="args[2] == false">
+				AND s.user_id NOT in (
+				SELECT object_id FROM pj_job_control j1 WHERE 1=1
+				<if test="args[1] != null">
+					AND j1.`name` = #{args[1]}
+				</if>
+				AND j1.Interrupteur = 1
+				)
+			</if>
+		</if>
+		GROUP BY id
+	</select>
+
+	<select id="findbyUserIds" resultMap="StudentResultVo" useCache="false">
+		SELECT * FROM pj_student WHERE is_delete =0
+		AND user_id IN
+		<foreach collection="args[0]" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 学生统计 学校/区域 -->
+
+	<!-- 学生年级人数 -->
+	<select id="findNumberOfGradeBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT g.`name`,count(ts.student_id) number FROM
+		(SELECT *
+		FROM pj_grade WHERE is_deleted = 0
+		AND school_id = #{args[0],javaType=java.lang.Integer}
+		AND school_year = #{args[1],javaType=java.lang.String})g
+		LEFT JOIN
+		(SELECT * FROM pj_team_student WHERE is_delete = 0 AND in_state = 1)ts
+		ON g.id = ts.grade_id
+		GROUP BY g.id
+		ORDER BY g.uni_grade_code;
+	</select>
+
+	<!-- 班级数 -->
+	<select id="findTeamNumberBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT g.`name`,count(t.id) number FROM
+		(SELECT * FROM
+		pj_grade WHERE is_deleted = 0
+		AND school_id = #{args[0],javaType=java.lang.Integer}
+		AND school_year = #{args[1],javaType=java.lang.String})g
+		LEFT JOIN
+		(SELECT * FROM pj_team WHERE is_delete = 0
+		AND school_id = #{args[0],javaType=java.lang.Integer}
+		AND school_year = #{args[1],javaType=java.lang.String})t
+		ON g.id =
+		t.grade_id
+		GROUP BY g.id
+		ORDER BY g.uni_grade_code;
+
+	</select>
+
+	<!-- 籍贯 -->
+	<select id="findNativePlaceBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT getProvinceName(t.native_place) `name`,SUM(t.number)
+		number FROM(
+		SELECT p.native_place , COUNT(p.native_place) number FROM
+		pj_student s
+		LEFT JOIN pj_person p ON s.person_id = p.id
+		WHERE
+		s.is_delete = 0
+		AND p.is_delete = 0
+		AND s.school_id =
+		#{args[0],javaType=java.lang.Integer}
+		GROUP BY p.native_place
+		)t
+		GROUP BY
+		getProvinceName(t.native_place)
+		ORDER BY number DESC;
+	</select>
+
+	<!-- 健康状态 -->
+	<select id="findHealthStatusBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT jgi.`name`,count(t.health_status) number FROM
+		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = 'GB-JKZK' AND
+		`disable` = 0) jgi
+		LEFT JOIN
+		(SELECT p.health_status FROM pj_student s
+		LEFT JOIN pj_person p ON s.person_id = p.id
+		WHERE s.is_delete = 0 AND
+		p.is_delete = 0 AND s.school_id =
+		#{args[0],javaType=java.lang.Integer})t
+		ON t.health_status =
+		jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+	</select>
+
+	<!-- 入学方式 -->
+	<select id="findEnrollTypeBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		<!-- SELECT jgi.`name`,count(t.enroll_type) number FROM -->
+		<!-- (SELECT `value`,`name` FROM jc_gc_item WHERE table_code = 'JY-RXFS' 
+			AND `disable` = 0) jgi -->
+		<!-- LEFT JOIN -->
+		<!-- (SELECT sa.enroll_type FROM pj_student s LEFT JOIN pj_student_archive 
+			sa ON s.id = sa.student_id -->
+		<!-- WHERE s.is_delete = 0 AND s.school_id = #{args[0],javaType=java.lang.Integer})t -->
+		<!-- ON t.enroll_type = jgi.`value` -->
+		<!-- GROUP BY jgi.`value` -->
+		<!-- ORDER BY number; -->
+		SELECT jgi.`name`, count(sa.enroll_type) number FROM pj_student s
+		LEFT
+		JOIN pj_student_archive sa ON s.id = sa.student_id
+		LEFT JOIN jc_gc_item
+		jgi ON sa.enroll_type = jgi.`value`
+		WHERE s.is_delete = 0
+		AND
+		jgi.table_code = 'JY-RXFS'
+		AND jgi.`disable` = 0
+		AND s.school_id =
+		#{args[0],javaType=java.lang.Integer}
+		GROUP BY jgi.`value`
+		ORDER BY
+		number;
+
+	</select>
+
+	<!-- 就读方式 -->
+	<select id="findAttendSchoolTypeBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		<!-- SELECT jgi.`name`,count(t.attend_school_type) number FROM -->
+		<!-- (SELECT `value`,`name` FROM jc_gc_item WHERE table_code = 'JY-JDFS' 
+			AND `disable` = 0) jgi -->
+		<!-- LEFT JOIN -->
+		<!-- (SELECT sa.attend_school_type FROM pj_student s LEFT JOIN pj_student_archive 
+			sa ON s.id = sa.student_id -->
+		<!-- WHERE s.is_delete = 0 AND s.school_id = #{args[0],javaType=java.lang.Integer})t -->
+		<!-- ON t.attend_school_type = jgi.`value` -->
+		<!-- GROUP BY jgi.`value` -->
+		<!-- ORDER BY jgi.`value`; -->
+		SELECT jgi.`name`, count(sa.attend_school_type) number FROM pj_student
+		s
+		LEFT JOIN pj_student_archive sa ON s.id = sa.student_id
+		LEFT JOIN
+		jc_gc_item jgi ON sa.attend_school_type = jgi.`value`
+		WHERE s.is_delete
+		= 0
+		AND jgi.table_code = 'JY-JDFS'
+		AND jgi.`disable` = 0
+		AND s.school_id
+		= #{args[0],javaType=java.lang.Integer}
+		GROUP BY jgi.`value`
+		ORDER BY
+		jgi.`value`;
+
+	</select>
+
+	<!-- 学生来源 -->
+	<select id="findStudentSourceBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		<!-- SELECT jgi.`name`,count(t.student_source) number FROM -->
+		<!-- (SELECT `value`,`name` FROM jc_gc_item WHERE table_code = 'JY-ZXXXSLY' 
+			AND `disable` = 0) jgi -->
+		<!-- LEFT JOIN -->
+		<!-- (SELECT sa.student_source FROM pj_student s LEFT JOIN pj_student_archive 
+			sa ON s.id = sa.student_id -->
+		<!-- WHERE s.is_delete = 0 AND s.school_id = #{args[0],javaType=java.lang.Integer})t -->
+		<!-- ON t.student_source = jgi.`value` -->
+		<!-- GROUP BY jgi.`value` -->
+		<!-- ORDER BY jgi.`value`; -->
+		SELECT jgi.`name`, count(sa.student_source) number FROM pj_student s
+		LEFT JOIN pj_student_archive sa ON s.id = sa.student_id
+		LEFT JOIN
+		jc_gc_item jgi ON sa.student_source = jgi.`value`
+		WHERE s.is_delete = 0
+		AND jgi.table_code = 'JY-ZXXXSLY'
+		AND jgi.`disable` = 0
+		AND s.school_id
+		= #{args[0],javaType=java.lang.Integer}
+		GROUP BY jgi.`value`
+		ORDER BY
+		jgi.`value`;
+
+	</select>
+
+	<!-- 男女比例 -->
+	<select id="findSexBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT jgi.`name`,count(t.sex) number FROM
+		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = "GB-XB" AND
+		`disable` = 0) jgi
+		LEFT JOIN
+		(SELECT sex FROM pj_student WHERE is_delete
+		= 0 AND school_id = #{args[0],javaType=java.lang.Integer})t
+		ON t.sex =
+		jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+
+	</select>
+
+	<!-- 年龄 -->
+	<select id="findAgeBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT groupStuAge(t.age) `name`, count(*) number FROM(
+		SELECT YEAR(FROM_DAYS(DATEDIFF(NOW(),p.birthday))) age FROM pj_student
+		s
+		LEFT JOIN pj_person p ON s.person_id = p.id
+		WHERE s.is_delete = 0
+		AND
+		p.is_delete = 0
+		AND s.school_id =
+		#{args[0],javaType=java.lang.Integer})t
+		GROUP BY groupStuAge(t.age);
+
+	</select>
+
+	<!-- 政治面貌 -->
+	<select id="findPoliticalStatusBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT jgi.`name`,count(t.political_status) number FROM
+		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = 'GB-ZZMM'
+		AND `disable` = 0) jgi
+		LEFT JOIN
+		(SELECT p.political_status FROM
+		pj_student s LEFT JOIN pj_person p ON s.person_id = p.id
+		WHERE
+		s.is_delete = 0 AND p.is_delete = 0 AND s.school_id =
+		#{args[0],javaType=java.lang.Integer})t
+		ON t.political_status =
+		jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+
+	</select>
+
+	<!-- 民族 -->
+	<select id="findRaceBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT jgi.`name`, count(p.race) number FROM pj_student s
+		LEFT JOIN pj_person p ON s.person_id = p.id
+		LEFT JOIN jc_gc_item jgi ON
+		p.race = jgi.`value`
+		WHERE s.is_delete = 0
+		AND p.is_delete = 0
+		AND
+		jgi.table_code = 'GB-MZ'
+		AND jgi.`disable` = 0
+		AND s.school_id =
+		#{args[0],javaType=java.lang.Integer}
+		GROUP BY jgi.`value`
+		ORDER BY
+		number DESC;
+
+	</select>
+
+	<!-- 户口性质 -->
+	<select id="findResidenceTypeBySchoolId"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT jgi.`name`,count(t.residence_type) number FROM
+		(SELECT `value`,`name` FROM jc_gc_item WHERE table_code = 'GB-HKLB' AND
+		`disable` = 0) jgi
+		LEFT JOIN
+		(SELECT p.residence_type FROM pj_student s
+		LEFT JOIN pj_person p ON s.person_id = p.id
+		WHERE s.is_delete = 0 AND
+		p.is_delete = 0 AND s.school_id =
+		#{args[0],javaType=java.lang.Integer})t
+		ON t.residence_type =
+		jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+
+	</select>
+
+
+	<!-- 区域 -->
+	<!-- 学生学校人数 -->
+	<select id="findNumberOfSchoolByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT ps.`name`, count(*) number FROM pj_student s
+		LEFT JOIN pj_school ps ON s.school_id = ps.id
+		WHERE s.is_delete = 0 
+		AND ps.is_deleted = 0
+		AND (s.study_state != '07' OR s.study_state IS NULL)
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY ps.id
+
+	</select>
+
+	<!-- 班级数 -->
+	<select id="findTeamNumberByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT ps.`name`, count(*) number FROM pj_team t
+		LEFT JOIN pj_school ps ON t.school_id = ps.id
+		WHERE t.is_delete = 0 
+		AND ps.is_deleted = 0 
+		AND t.school_year = #{args[1],javaType=java.lang.String}
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY ps.id
+
+	</select>
+
+	<!-- 籍贯 -->
+	<select id="findNativePlaceByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT getProvinceName(t.native_place) `name`,SUM(t.number) number
+		FROM(
+		SELECT p.native_place, COUNT(p.native_place) number FROM pj_school ps
+		RIGHT JOIN pj_student s ON ps.id = s.school_id
+		LEFT JOIN pj_person p ON s.person_id = p.id
+		WHERE s.is_delete = 0
+		AND p.is_delete = 0
+		AND ps.is_deleted = 0
+		AND (s.study_state != '07' OR s.study_state IS NULL)
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String} )
+		</if>
+		GROUP BY p.native_place
+		)t
+		GROUP BY getProvinceName(t.native_place)
+		ORDER BY number DESC;
+	</select>
+
+	<!-- 健康状态 -->
+	<select id="findHealthStatusByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT jgi.`name`,count(t.health_status) number FROM
+		(
+			SELECT `value`,`name` FROM jc_gc_item 
+			WHERE table_code = 'GB-JKZK' 
+			AND `disable` = 0
+		) jgi
+		LEFT JOIN
+		(
+			SELECT p.health_status FROM pj_school ps
+			RIGHT JOIN pj_student s ON ps.id = s.school_id
+			LEFT JOIN pj_person p ON s.person_id = p.id
+			WHERE s.is_delete = 0 
+			AND p.is_delete = 0 
+			AND ps.is_deleted = 0
+			AND (s.study_state != '07' OR s.study_state IS NULL)
+			<if test="args[0] != null and args[0] != ''">
+				AND(ps.province = #{args[0],javaType=java.lang.String}
+				OR ps.city = #{args[0],javaType=java.lang.String}
+				OR ps.district = #{args[0],javaType=java.lang.String})
+			</if>
+		)t
+		ON t.health_status = jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY
+		jgi.`value`;
+
+	</select>
+
+	<!-- 入学方式 -->
+	<select id="findEnrollTypeByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		<!-- SELECT jgi.`name`,count(t.enroll_type) number FROM -->
+		<!-- (SELECT `value`,`name` FROM jc_gc_item WHERE table_code = 'JY-RXFS' 
+			AND `disable` = 0) jgi -->
+		<!-- LEFT JOIN -->
+		<!-- (SELECT sa.enroll_type FROM pj_school ps -->
+		<!-- RIGHT JOIN pj_student s ON ps.id = s.school_id -->
+		<!-- LEFT JOIN pj_student_archive sa ON s.id = sa.student_id -->
+		<!-- WHERE s.is_delete = 0 AND ps.is_deleted = 0 -->
+		<!-- <if test="args[0] != null and args[0] != ''"> -->
+		<!-- AND(ps.province = #{args[0],javaType=java.lang.String} -->
+		<!-- OR ps.city = #{args[0],javaType=java.lang.String} -->
+		<!-- OR ps.district = #{args[0],javaType=java.lang.String}) -->
+		<!-- </if> -->
+		<!-- )t -->
+		<!-- ON t.enroll_type = jgi.`value` -->
+		<!-- GROUP BY jgi.`value` -->
+		<!-- ORDER BY number; -->
+		SELECT jgi.`name`, count(sa.enroll_type) number FROM pj_school ps
+		RIGHT JOIN pj_student s ON ps.id = s.school_id
+		LEFT JOIN
+		pj_student_archive sa ON s.id = sa.student_id
+		LEFT JOIN jc_gc_item jgi
+		ON sa.enroll_type = jgi.`value`
+		WHERE s.is_delete = 0
+		AND jgi.table_code = 'JY-RXFS'
+		AND jgi.`disable` = 0
+		AND ps.is_deleted = 0
+		AND (s.study_state != '07' OR s.study_state IS NULL)
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY jgi.`value`
+		ORDER BY number;
+	</select>
+
+	<!-- 就读方式 -->
+	<select id="findAttendSchoolTypeByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		<!-- SELECT jgi.`name`,count(t.attend_school_type) number FROM -->
+		<!-- (SELECT `value`,`name` FROM jc_gc_item WHERE table_code = 'JY-JDFS' 
+			AND `disable` = 0) jgi -->
+		<!-- LEFT JOIN -->
+		<!-- (SELECT sa.attend_school_type FROM pj_school ps -->
+		<!-- RIGHT JOIN pj_student s ON ps.id = s.school_id -->
+		<!-- LEFT JOIN pj_student_archive sa ON s.id = sa.student_id -->
+		<!-- WHERE s.is_delete = 0 AND ps.is_deleted = 0 -->
+		<!-- <if test="args[0] != null and args[0] != ''"> -->
+		<!-- AND(ps.province = #{args[0],javaType=java.lang.String} -->
+		<!-- OR ps.city = #{args[0],javaType=java.lang.String} -->
+		<!-- OR ps.district = #{args[0],javaType=java.lang.String}) -->
+		<!-- </if> -->
+		<!-- )t -->
+		<!-- ON t.attend_school_type = jgi.`value` -->
+		<!-- GROUP BY jgi.`value` -->
+		<!-- ORDER BY jgi.`value`; -->
+		SELECT jgi.`name`, count(sa.attend_school_type) number FROM pj_school
+		ps
+		RIGHT JOIN pj_student s ON ps.id = s.school_id
+		LEFT JOIN
+		pj_student_archive sa ON s.id = sa.student_id
+		LEFT JOIN jc_gc_item jgi
+		ON sa.attend_school_type = jgi.`value`
+		WHERE s.is_delete = 0
+		AND jgi.table_code = 'JY-JDFS'
+		AND jgi.`disable` = 0
+		AND ps.is_deleted = 0
+		AND (s.study_state != '07' OR s.study_state IS NULL)
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+	</select>
+
+	<!-- 学生来源 -->
+	<select id="findStudentSourceByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		<!-- SELECT jgi.`name`,count(t.student_source) number FROM -->
+		<!-- (SELECT `value`,`name` FROM jc_gc_item WHERE table_code = 'JY-ZXXXSLY' 
+			AND `disable` = 0) jgi -->
+		<!-- LEFT JOIN -->
+		<!-- (SELECT sa.student_source FROM pj_school ps -->
+		<!-- RIGHT JOIN pj_student s ON ps.id = s.school_id -->
+		<!-- LEFT JOIN pj_student_archive sa ON s.id = sa.student_id -->
+		<!-- WHERE s.is_delete = 0 AND ps.is_deleted = 0 -->
+		<!-- <if test="args[0] != null and args[0] != ''"> -->
+		<!-- AND(ps.province = #{args[0],javaType=java.lang.String} -->
+		<!-- OR ps.city = #{args[0],javaType=java.lang.String} -->
+		<!-- OR ps.district = #{args[0],javaType=java.lang.String}) -->
+		<!-- </if> -->
+		<!-- )t -->
+		<!-- ON t.student_source = jgi.`value` -->
+		<!-- GROUP BY jgi.`value` -->
+		<!-- ORDER BY jgi.`value`; -->
+		SELECT jgi.`name`, count(sa.student_source) number FROM pj_school ps
+		RIGHT JOIN pj_student s ON ps.id = s.school_id
+		LEFT JOIN
+		pj_student_archive sa ON s.id = sa.student_id
+		LEFT JOIN jc_gc_item jgi
+		ON sa.student_source = jgi.`value`
+		WHERE s.is_delete = 0
+		AND jgi.table_code = 'JY-ZXXXSLY'
+		AND jgi.`disable` = 0
+		AND ps.is_deleted = 0
+		AND (s.study_state != '07' OR s.study_state IS NULL)
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+	</select>
+
+	<!-- 男女比例 -->
+	<select id="findSexByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT jgi.`name`,count(t.sex) number FROM
+		(
+			SELECT `value`,`name` FROM jc_gc_item 
+			WHERE table_code = "GB-XB"
+			 AND `disable` = 0
+		) jgi
+		LEFT JOIN
+		(
+			SELECT sex FROM pj_school ps
+			RIGHT JOIN pj_student s ON ps.id = s.school_id
+			WHERE s.is_delete = 0 AND ps.is_deleted = 0
+			AND (s.study_state != '07' OR s.study_state IS NULL)
+			<if test="args[0] != null and args[0] != ''">
+				AND(ps.province = #{args[0],javaType=java.lang.String}
+				OR ps.city = #{args[0],javaType=java.lang.String}
+				OR ps.district = #{args[0],javaType=java.lang.String})
+			</if>
+		)t
+		ON t.sex = jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY jgi.`value`;
+
+	</select>
+
+	<!-- 年龄 -->
+	<select id="findAgeByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT groupStuAge(t.age) `name`, count(*) number FROM(
+		SELECT
+		YEAR(FROM_DAYS(DATEDIFF(NOW(),p.birthday))) age FROM pj_school ps
+		RIGHT JOIN pj_student s ON ps.id = s.school_id
+		LEFT JOIN pj_person p ON
+		s.person_id = p.id
+		WHERE s.is_delete = 0
+		AND p.is_delete = 0
+		AND ps.is_deleted = 0
+		AND (s.study_state != '07' OR s.study_state IS NULL)
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		)t
+		GROUP BY groupStuAge(t.age);
+
+	</select>
+
+	<!-- 政治面貌 -->
+	<select id="findPoliticalStatusByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT jgi.`name`,count(t.political_status) number FROM
+		(
+			SELECT `value`,`name` FROM jc_gc_item 
+			WHERE table_code = 'GB-ZZMM' 
+			AND `disable` = 0
+		) jgi
+		LEFT JOIN
+		(
+			SELECT p.political_status FROM pj_school ps
+			RIGHT JOIN pj_student s ON ps.id = s.school_id
+			LEFT JOIN pj_person p ON s.person_id = p.id
+			WHERE s.is_delete = 0 
+			AND p.is_delete = 0 
+			AND ps.is_deleted = 0
+			AND (s.study_state != '07' OR s.study_state IS NULL)
+			<if test="args[0] != null and args[0] != ''">
+				AND(ps.province = #{args[0],javaType=java.lang.String}
+				OR ps.city = #{args[0],javaType=java.lang.String}
+				OR ps.district = #{args[0],javaType=java.lang.String})
+			</if>
+		)t
+		ON t.political_status = jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY
+		jgi.`value`;
+
+	</select>
+
+	<!-- 民族 -->
+	<select id="findRaceByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT jgi.`name`, count(p. race) number FROM pj_school ps
+		RIGHT JOIN
+		pj_student s ON ps.id = s.school_id
+		LEFT JOIN pj_person p ON
+		s.person_id = p.id
+		LEFT JOIN jc_gc_item jgi ON p.race = jgi.`value`
+		WHERE s.is_delete = 0
+		AND p.is_delete = 0
+		AND jgi.table_code = 'GB-MZ'
+		AND jgi.`disable` = 0
+		AND ps.is_deleted = 0
+		AND (s.study_state != '07' OR s.study_state IS NULL)
+		<if test="args[0] != null and args[0] != ''">
+			AND(ps.province = #{args[0],javaType=java.lang.String}
+			OR ps.city = #{args[0],javaType=java.lang.String}
+			OR ps.district = #{args[0],javaType=java.lang.String})
+		</if>
+		GROUP BY jgi.`value`
+		ORDER BY number DESC;
+
+	</select>
+
+	<!-- 户口性质 -->
+	<select id="findResidenceTypeByAreaCode"
+		resultType="platform.education.generalTeachingAffair.vo.StatisticDate"
+		useCache="false">
+		SELECT jgi.`name`,count(t.residence_type) number FROM
+		(
+			SELECT `value`,`name` FROM jc_gc_item 
+			WHERE table_code = 'GB-HKLB' 
+			AND `disable` = 0
+		) jgi
+		LEFT JOIN
+		(
+			SELECT p.residence_type FROM pj_school ps
+			RIGHT JOIN pj_student s ON ps.id = s.school_id
+			LEFT JOIN pj_person p ON s.person_id = p.id
+			WHERE s.is_delete = 0 
+			AND p.is_delete = 0 
+			AND ps.is_deleted = 0
+			AND (s.study_state != '07' OR s.study_state IS NULL)
+			<if test="args[0] != null and args[0] != ''">
+				AND(ps.province = #{args[0],javaType=java.lang.String}
+				OR ps.city = #{args[0],javaType=java.lang.String}
+				OR ps.district = #{args[0],javaType=java.lang.String})
+			</if>
+		)t
+		ON t.residence_type = jgi.`value`
+		GROUP BY jgi.`value`
+		ORDER BY
+		jgi.`value`;
+
+	</select>
+	<!-- 学生统计 学校/区域 end -->
+
+	<select id="findCompleteByUserIds"
+		resultType="platform.education.generalTeachingAffair.vo.StudentArchiveCompleteVo"
+		useCache="false">
+		SELECT
+		s.user_id AS userId,
+		s.id AS studentId,
+		s.`name` AS `name`,s.sex AS sex,
+		p.birth_place AS birthPlaceCode,
+		p.native_place
+		AS nativePlaceCode,p.race AS race,
+		p.nationality AS
+		nationality,p.id_card_type AS idCardType,
+		p.id_card_number AS
+		idCardNumber,p.abroad_code AS abroadCode,
+		p.political_status AS
+		politicalStatus,p.health_status AS healthStatus,
+		p.blood_type AS
+		bloodType,p.photo_uuid AS photoUuid,
+		p.reside_address AS
+		resideAddress,p.residence_address AS residenceAddressCode,
+		p.residence_type AS residenceType,p.special_skill AS specialSkill,
+		p.pinyin_name AS pinyinName,s.user_name AS userName,
+		p.id_card_date AS
+		idCardDate,s.student_type AS studentType,
+		sa.enroll_type AS
+		enrollType,sa.attend_school_type AS attendSchoolType,
+		sa.student_source
+		AS studentSource,ts.number AS number,
+		s.student_number AS
+		studentNumber,s.enroll_date AS enrollDate,
+		s.leave_date AS
+		leaveDate,s.study_state AS studyState,
+		p.address AS
+		address,p.home_address AS homeAddress,
+		p.reside_address
+		resideAddress,p.mobile AS mobile,
+		p.telephone AS telephone,p.zip_code AS
+		zipCode,
+		p.email AS email,p.homepage AS homepage,
+		p.is_only_child AS
+		isOnlyChild,sa.is_preeducated AS isPreeducated,
+		sa.is_unattended_child
+		AS isUnattendedChild,sa.is_city_labour_child AS isCityLabourChild,
+		sa.is_orphan AS isOrphan,sa.is_martyr_child AS isMartyrChild,
+		sa.follow_study AS followStudy,sa.disability_type AS disabilityType,
+		sa.is_buyed_degree AS isBuyedDegree,sa.is_sponsored AS isSponsored,
+		sa.is_first_recommended AS isFirstRecommended,p.house_authority AS
+		houseAuthority,
+		sa.need_special_care AS
+		needSpecialCare,sa.school_distance AS schoolDistance,
+		sa.traffic_type AS
+		trafficType,sa.by_school_bus AS bySchoolBus,
+		p.remark AS remark
+		FROM
+		pj_student s
+		LEFT JOIN
+		pj_team_student ts
+		ON
+		s.id = ts.student_id
+		AND
+		s.team_id = ts.team_id
+		LEFT JOIN
+		pj_person p
+		ON
+		p.id = s.person_id
+		LEFT JOIN
+		pj_student_archive sa
+		ON
+		sa.student_id = s.id
+		WHERE
+		s.user_id IN
+		<foreach collection="args[0]" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+		AND
+		ts.user_id IN
+		<foreach collection="args[0]" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+		AND
+		ts.finish_date IS NULL
+		AND
+		ts.in_state = 1;
+	</select>
+
+
+	<select id="findIncrementDataByModifyDate" resultMap="StudentResultVo" useCache="false">
+		SELECT s.id, s.school_id, s.person_id, s.user_id, s.user_name, s.`name`, s.sex, s.study_state, s.is_delete, s.create_date, s.modify_date,
+		p.email,
+		t.id team_id, t.`name` team_name, t.code2 team_code,
+		g.id grade_id, g.`name` grade_name , g.uni_grade_code
+		FROM pj_student s
+		LEFT JOIN pj_person p ON s.person_id = p.id
+		LEFT JOIN pj_team_student ts ON s.id = ts.student_id
+		LEFT JOIN pj_team t ON ts.team_id = t.id
+		LEFT JOIN pj_grade g ON t.grade_id = g.id
+		WHERE 1=1
+		AND t.is_delete = 0
+		AND g.is_deleted = 0
+		<if test="args[0] != null">
+			AND t.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND t.school_year = #{args[1],javaType=java.lang.String}
+		</if>
+		<if test="args[2] != null">
+			<choose>
+				<when test="args[2] == true">
+					AND s.is_delete = 1
+					AND ts.is_delete = 1
+				</when>
+				<otherwise>
+					AND s.is_delete = 0
+					AND ts.is_delete = 0
+					AND ts.in_state = 1
+				</otherwise>
+			</choose>
+		</if>
+		<if test="args[3] != null">
+			AND s.modify_date > #{args[3],javaType=java.util.Date}
+		</if>
+		<if test="args[4] != null">
+			<choose>
+				<when test="args[5] == true">
+					AND s.id > #{args[4],javaType=java.lang.Integer}
+				</when>
+				<otherwise>
+					AND s.id BETWEEN 0 AND #{args[4],javaType=java.lang.Integer}
+				</otherwise>
+			</choose>
+		</if>
+		GROUP BY s.id
+		ORDER BY s.modify_date, s.id
+	</select>
+	
+	<!-- 比findStudentByCondition多查找学生的班级学号 -->
+	<select id="findStudentVoByCondition" resultMap="StudentResultVo"
+		useCache="false">
+		SELECT
+		stu.id, stu.school_id, stu.person_id, stu.user_id, stu.user_name,
+		stu.`name`, stu.sex, stu.student_number, stu.student_number2, stu.enroll_date,
+		stu.leave_date, stu.mobile, stu.study_state, stu.student_type,
+		stu.position,
+		stu.is_boarded, stu.is_delete, stu.create_date, stu.modify_date, stu.alias, pts.number ,
+		t.id
+		team_id, t.`name` team_name
+		FROM pj_student stu
+		LEFT JOIN pj_team_student pts ON stu.id =
+		pts.student_id
+		LEFT JOIN pj_team t ON t.id = pts.team_id WHERE 1=1
+		AND
+		pts.finish_date IS NULL
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+				AND stu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND t.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+				AND stu.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<!--学生根据学校，学年，年级，班级，学生查询条件 -->
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				and t.school_year =
+				#{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null">
+				and pts.grade_id =
+				#{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				and pts.team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].personId != null">
+				AND stu.person_id =
+				#{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND stu.user_id =
+				#{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null">
+				AND stu.user_name =
+				#{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamName != null">
+				AND stu.team_name =
+				#{args[0].teamName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null">
+				AND stu.name LIKE CONCAT(CONCAT('%',
+				#{args[0].name}),'%')
+			</if>
+			<if test="args[0].sex != null">
+				AND stu.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND stu.student_number =
+				#{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber2 != null">
+				AND stu.student_number2 =
+				#{args[0].studentNumber2,javaType=java.lang.String}
+			</if>
+			<if test="args[0].enrollDate != null">
+				AND stu.enroll_date =
+				#{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null">
+				AND stu.leave_date =
+				#{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].mobile != null">
+				AND stu.mobile =
+				#{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studyState != null">
+				AND stu.study_state =
+				#{args[0].studyState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentType != null">
+				AND stu.student_type =
+				#{args[0].studentType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null">
+				AND stu.position =
+				#{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND stu.is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null">
+				AND stu.create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND stu.modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].alias != null">
+				AND stu.alias =
+				#{args[0].alias,javaType=java.lang.String}
+			</if>
+		</if>
+		GROUP BY stu.id
+	</select>
+
+	<select id="findByTeamOrName" resultMap="StudentResultVo" useCache="false">
+		SELECT
+		s.id,
+		s.school_id,
+		s.person_id,
+		s.user_id,
+		s.user_name,
+		s.`name`,
+		s.sex,
+		s.student_number,
+		s.study_state,
+		t.id team_id,
+		t.`name` team_name,
+		t.code2 team_code
+		FROM pj_student s
+		LEFT JOIN pj_team_student ts ON s.user_id = ts.user_id
+		LEFT JOIN pj_team t ON ts.team_id = t.id
+		WHERE 1=1
+		AND s.is_delete = 0
+		AND ts.is_delete = 0
+		AND ts.in_state = 1
+		AND t.is_delete = 0
+		<if test="args[0] != null">
+			AND s.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null and args[1] != ''">
+			AND t.school_year = #{args[1],javaType=java.lang.String}
+		</if>
+		<if test="args[2] != null">
+			AND ts.team_id = #{args[2],javaType=java.lang.Integer}
+		</if>
+		<if test="args[3] != null">
+			AND s.name LIKE CONCAT(CONCAT('%', #{args[3]}),'%')
+			GROUP BY s.user_id
+		</if>
+	</select>
+
+	<select id="findStudentVoByTeam" resultMap="StudentResultVo" useCache="false">
+		SELECT
+		s.id, s.school_id, s.person_id, s.user_id, s.user_name, s.`name`, s.sex,
+		s.student_number, s.student_number2, ts.number, ts.id team_student_id,
+		t.id team_id, t.`name` team_name, t.team_number,
+		g.id grade_id, g.`name` grade_name, g.uni_grade_code
+		FROM pj_student s
+		LEFT JOIN pj_team_student ts ON s.user_id = ts.user_id
+		LEFT JOIN pj_team t ON ts.team_id = t.id
+		LEFT JOIN pj_grade g ON t.grade_id = g.id
+		WHERE s.is_delete = 0
+		AND ts.is_delete = 0
+		AND ts.in_state = 1
+		<if test="args[0] != null">
+		AND s.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null and args[1] != ''">
+		AND t.school_year = #{args[1],javaType=java.lang.String}
+		</if>
+		<if test="args[2] != null">
+		AND ts.grade_id = #{args[2],javaType=java.lang.Integer}
+		</if>
+		<if test="args[3] != null">
+		AND ts.team_id = #{args[3],javaType=java.lang.Integer}
+		</if>
+		ORDER BY g.uni_grade_code, t.team_number, ts.number
+	</select>
+
+	<select id="findCanSendSeewo" resultMap="StudentResult">
+		select stu.id,stu.name,stu.emp_card
+		from pj_student stu
+		WHERE
+			stu.school_id=215
+		  AND stu.is_delete = 0
+		  AND stu.emp_card!='0'
+		  AND stu.is_send_canteen= 1
+	</select>
+
+	<select id="findStudentByNoSend" resultMap="StudentResult">
+		select * from pj_student where is_delete = 0
+		<if test="args[0].isSendLibrary != null">
+			and is_send_library = #{args[0].isSendLibrary}
+		</if>
+		<if test="args[0].empCard != null and args[0].empCard != ''">
+		    and emp_card = #{args[0].empCard}
+        </if>
+		<if test="args[0].isSendCanteen != null">
+		    and is_send_canteen = #{args[0].isSendCanteen}
+        </if>
+	</select>
+
+	<select id="findSendSeewoStu" resultMap="StudentInfoResultMap">
+		SELECT
+			stu.id stu_id,
+			t.id as team_id,
+			stu.`emp_card`,
+			stu. `name` as stu_name,
+			t.team_number,
+		    g.grade_number,
+			p.id as parent_id,
+			p.`name` AS parent_name,
+			p.mobile AS parent_phone
+		FROM
+			pj_student AS stu
+				inner JOIN pj_team_student pts ON stu.id = pts.student_id
+				inner join pj_team t on t.id=pts.team_id
+			    inner join pj_grade g on g.id=t.grade_id
+				LEFT JOIN pj_parent_student AS ps ON stu.`user_id` = ps.student_user_id
+				LEFT JOIN pj_parent AS p ON ps.`parent_user_id` = p.`user_id`
+		WHERE
+			stu.school_id=215
+		  AND stu.is_delete = 0
+		  and t.school_year=#{args[0]}
+	</select>
+
+	<select id="findBoByIsSendSeewo" resultMap="TeamStudentResultMap">
+		SELECT
+			stu.id stu_id,
+			stu.team_id,
+			stu.`emp_card`,
+			stu. `name` as stu_name,
+			p.id as parent_id,
+			p.`name` AS parent_name,
+			p.mobile AS parent_phone
+		FROM
+			pj_student AS stu
+		LEFT JOIN pj_team_student AS ts ON ts.`student_id` = stu.`id`
+		LEFT JOIN pj_parent_student AS ps ON stu.`user_id` = ps.student_user_id
+		LEFT JOIN pj_parent AS p ON ps.`parent_user_id` = p.`user_id`
+		WHERE
+			stu.is_send_seewo = 0
+		and stu.school_id=215
+		AND stu.is_delete = 0
+		AND stu.emp_card!='0' and stu.is_send_canteen= 1
+	</select>
+
+	<update id="updateAsSendSeewoByIds">
+		update pj_student set is_send_seewo = 1
+		where id in
+		<foreach collection="args[0]" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+
+	</update>
+
+	<update id="updateAsSendSeewoByTeamId">
+		update pj_student set is_send_seewo = 1
+		where team_id =  #{args[0]}
+
+	</update>
+
+	<update id="updateStuSendCanteen">
+	    update pj_student set is_send_canteen = #{isSendCanteen,jdbcType=INTEGER}
+	    where emp_code = #{empCode,jdbcType=VARCHAR}
+    </update>
+    <select id="findStudentByNoSendCanteen" resultMap="StudentResult">
+        select ps.emp_code,ps.name,pt.name deptName from pj_student ps
+        left join pj_team pt on pts.team_id = pt.team_id
+        where ps.is_delete = 0 and ps.is_send_canteen = #{isSendCanteen,jdbcType=INTEGER} and ps.emp_code is not null and ps.emp_code!=''
+        group by ps.id
+    </select>
+
+
+	<select id="findTeamCode">
+		select code as orgIndexCode from
+		pj_team where id=#{args[0]} and pt.is_delete = 0 and pt.is_send_hikdoor = 1
+	</select>
+
+	<select id="findStudentSendHikEr" resultType="platform.education.generalTeachingAffair.model.HikvisionUserPo">
+		select ps.name 'personName',
+		<!--        concat(id, "test") as'personId'-->
+		pts.team_id 'teamId',
+		ps.user_id 'clientId'
+		, ps.user_name 'certificateNo'
+		from pj_student ps
+		join pj_team_student pts on pts.student_id = ps.id and pts.is_delete = 0
+		where ps.is_delete = 0 and ps.emp_card != "0" and ps.emp_card  != ""
+		and ps.is_send_hikdoor =1
+		group by ps.user_id
+	</select>
+    <select id="findStudentSendHik" resultType="platform.education.generalTeachingAffair.model.HikvisionUserPo">
+		<!--推送需要注意班级-->
+		select ps.name 'personName',
+        <!--        concat(id, "test") as'personId'-->
+        ps.user_id 'clientId'
+        , ps.user_name 'certificateNo',  pt.code orgIndexCode
+        from pj_student ps
+        join pj_team_student pts on pts.student_id = ps.id and pts.is_delete = 0
+        join pj_team pt on pt.id = pts.team_id and pt.is_delete = 0 and pt.is_send_hikdoor = 1
+        join pj_grade pg on pg.id=pt.grade_id
+        where pg.school_year=#{args[0]} and  ps.is_delete = 0 and ps.emp_card != "0" and ps.emp_card  != ""
+        and ps.is_send_hikdoor =0
+        group by ps.user_id
+	</select>
+
+
+
+
+	<update id="updateHikvisionUserInfo">
+        UPDATE pj_student
+        <set>
+            <if test="args[1] != null"> is_send_hikdoor = 1,</if>
+            <if test="args[2] != null">is_hikvision_bind_card = 1</if>
+        </set>
+
+        WHERE  id in
+        <foreach collection="args[0]" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+         </foreach>
+    </update>
+
+    <select id="findHikvisionBindCarStu" resultType="platform.education.generalTeachingAffair.model.CardList">
+        select ps.persionId as'personId',ps.emp_card 'cardNo'
+        from pj_student ps
+		where ps.is_send_hikdoor = 1 and ps.is_hikvision_bind_card = 0 and ps.is_delete = 0 order by create_date desc
+    </select>
+
+    <select id="findModifySchoolBusCardStus" resultType="platform.education.generalTeachingAffair.model.ModifyShoolBusCardStu">
+        SELECT ps.id , ps.emp_card empCard FROM pj_student ps
+        join pj_school_bus_manger psbm on psbm.student_id = ps.id
+        and ps.is_delete = 0
+        <!--<if test="args[0].isSendSchoolBusGs != null"> and psbm.is_send_school_bus_gs = #{args[0].isSendSchoolBusGs}</if>-->
+        <if test="args[0].isSendSchoolBusHjs != null"> and psbm.is_send_school_bus_hjs = #{args[0].isSendSchoolBusHjs}</if>
+    </select>
+
+    <select id="findNameById" resultType="java.lang.String">
+        select name from pj_student where id in
+        <foreach collection="args[0]" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+    </select>
+
+	<select id="findStudentByTeacherIdCondition" resultMap="StudentResult"
+		useCache="false">
+		SELECT
+		stu.id, stu.school_id, stu.person_id, stu.user_id, stu.user_name,
+		stu.`name`, stu.sex, stu.student_number, stu.student_number2, stu.enroll_date,
+		stu.leave_date, stu.mobile, stu.study_state, stu.student_type,
+		stu.position,
+		stu.is_boarded, stu.is_delete, stu.create_date, stu.modify_date, stu.alias,
+		t.id
+		team_id, t.`name` team_name
+		FROM pj_student stu
+		LEFT JOIN pj_team_student pts ON stu.id =
+		pts.student_id
+		LEFT JOIN pj_team t ON t.id = pts.team_id
+		WHERE pts.finish_date IS NULL
+
+		<if test="args[1] != null ">
+		    and pts.team_id in (SELECT distinct pt.id teamId FROM `pj_team` pt
+            join `pj_team_teacher` ptt on pt.id = ptt.team_id
+            where pt.is_delete = 0  and ptt.is_delete = 0 and ptt.teacher_id = #{args[1]})
+        </if>
+		<if test="args[0] != null">
+			<if test="args[0].id != null">
+				AND stu.id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND t.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+				AND stu.school_id =
+				#{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<!--学生根据学校，学年，年级，班级，学生查询条件 -->
+			<if test="args[0].schoolYear != null and args[0].schoolYear != ''">
+				and t.school_year =
+				#{args[0].schoolYear,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeId != null">
+				and pts.grade_id =
+				#{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				and pts.team_id =
+				#{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].personId != null">
+				AND stu.person_id =
+				#{args[0].personId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND stu.user_id =
+				#{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userName != null">
+				AND stu.user_name =
+				#{args[0].userName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamName != null">
+				AND stu.team_name =
+				#{args[0].teamName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null">
+				AND stu.name LIKE CONCAT(CONCAT('%',
+				#{args[0].name}),'%')
+			</if>
+			<if test="args[0].sex != null">
+				AND stu.sex = #{args[0].sex,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber != null">
+				AND stu.student_number =
+				#{args[0].studentNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentNumber2 != null">
+				AND stu.student_number2 =
+				#{args[0].studentNumber2,javaType=java.lang.String}
+			</if>
+			<if test="args[0].enrollDate != null">
+				AND stu.enroll_date =
+				#{args[0].enrollDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].leaveDate != null">
+				AND stu.leave_date =
+				#{args[0].leaveDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].mobile != null">
+				AND stu.mobile =
+				#{args[0].mobile,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studyState != null">
+				AND stu.study_state =
+				#{args[0].studyState,javaType=java.lang.String}
+			</if>
+			<if test="args[0].studentType != null">
+				AND stu.student_type =
+				#{args[0].studentType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].position != null">
+				AND stu.position =
+				#{args[0].position,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDelete != null">
+				AND stu.is_delete = #{args[0].isDelete}
+			</if>
+			<if test="args[0].createDate != null">
+				AND stu.create_date =
+				#{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND stu.modify_date =
+				#{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].alias != null">
+				AND stu.alias =
+				#{args[0].alias,javaType=java.lang.String}
+			</if>
+		</if>
+		GROUP BY stu.id
+	</select>
+		<!--添加修改-->
+	<update id="updateHikvisionUserInfoPersonAdd">
+		UPDATE pj_student
+		<set>
+			<if test="args[1] != null"> is_send_hikdoor = 1,</if>
+			<if test="args[2] != null">is_hikvision_bind_card = #{args[2]} ,</if>
+			persionId=#{args[3]}
+		</set>
+		WHERE  user_id =#{args[0]}
+	</update>
+
+	<update id="updateHikvisionUserInfoPerson">
+        UPDATE pj_student
+        <set>
+            <if test="args[1] != null"> is_send_hikdoor = 1,</if>
+            <if test="args[2] != null">is_hikvision_bind_card = #{args[2]}</if>
+        </set>
+        WHERE persionId in
+        <foreach collection="args[0]" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+         </foreach>
+    </update>
+
+    <select id="findUntieHikvisionBindCarStu" resultType="platform.education.generalTeachingAffair.model.UntieCardList">
+        select ps.persionId 'personId', ps.emp_card 'cardNumber' from pj_student ps
+        where ps.is_send_hikdoor = 2 and ps.is_hikvision_bind_card = 1 and ps.team_id=2667 and ps.is_delete = 0
+    </select>
+
+
+	<update id="updateTeamStudent" >
+		UPDATE pj_team_student SET
+		<if test="args[0].teamId != null">
+			team_id=#{args[0]}
+		</if>
+		WHERE student_id=#{args[1]} and is_delete=0
+	</update>
+
+	<update id="updateTeamStudent2"  >
+		UPDATE pj_team_student SET
+		<if test="teamId != null">
+			team_id=#{args[0]}
+		</if>
+		WHERE student_id=#{args[1]} and is_delete=0
+	</update>
+
+	<update id="updateStuid">
+		UPDATE pj_student
+		SET
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="teamName != null">
+			team_name=#{teamName},
+		</if>
+		<if test="empCode != null and empCode!=''">
+			emp_code=#{empCode},
+		</if>
+		<if test="empCard != null and empCard != ''">
+			emp_card = #{empCard}
+		</if>
+		WHERE id=#{id} and is_delete=0
+	</update>
+	<select id="findIddd"
+			resultType="java.lang.Integer">
+		select id from pj_student where id=#{args[0]} and is_delete=0
+	</select>
+	<select id="findByall" resultMap="StudentResult">
+		select ps.* from pj_student ps  inner join pj_team_student pts on pts.student_id=ps.id
+		inner join pj_grade pg on pg.id=pts.grade_id
+		<where>
+			<if test="args[1]!=null">
+				pg.school_year=#{args[1]}
+			</if>
+			<if test="args[2]!=null">
+				and pts.team_id=#{args[2]}
+			</if>
+			<if test="args[3]!=null">
+				and pg.id=#{args[3]}
+			</if>
+			<if test="args[4]!=null">
+			and ps.name  LIKE CONCAT(CONCAT('%',#{args[4]}),'%')
+			</if>
+			and ps.school_id=#{args[0]} and ps.is_delete=0  and pts.is_delete=0 and pg.is_deleted=0
+			group by ps.id
+		</where>
+	</select>
+
+</mapper>

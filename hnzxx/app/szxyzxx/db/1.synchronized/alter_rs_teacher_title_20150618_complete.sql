@@ -1,0 +1,1 @@
+ALTER TABLE `rs_teacher_title` CHANGE COLUMN `title_type` `title_type` char(6) NOT NULL COMMENT '职称类型', CHANGE COLUMN `acquire_type` `acquire_type` char(6) NOT NULL COMMENT '获取方式';

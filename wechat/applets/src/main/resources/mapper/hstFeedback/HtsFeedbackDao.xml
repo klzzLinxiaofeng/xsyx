@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.htsfeedback.dao.HtsFeedbackDao">
+    <resultMap id="BaseResultMap" type="com.xunyunedu.htsfeedback.pojo.HtsFeedbackPojo">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result property="name" jdbcType="VARCHAR" column="name"/>
+        <result property="className" jdbcType="VARCHAR" column="class_name"/>
+        <result property="createDate" jdbcType="DATE" column="create_date"/>
+        <result property="phone" jdbcType="VARCHAR" column="phone"/>
+        <result property="content" jdbcType="VARCHAR" column="content"/>
+        <result property="isDelete" jdbcType="INTEGER" column="is_delete"/>
+        <result property="uuid" jdbcType="VARCHAR" column="uuid"/>
+        <result property="parentName" jdbcType="VARCHAR" column="parent_name"/>
+        <result property="picUrl" jdbcType="VARCHAR" column="pic_url"/>
+        <result property="schoolId" jdbcType="INTEGER" column="school_id"/>
+        <result property="isReply" jdbcType="INTEGER" column="is_reply"/>
+        <result property="stuId" jdbcType="INTEGER" column="stu_id"/>
+        <result property="parentId" jdbcType="INTEGER" column="parent_id"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <!--<resultMap id="HtsFeedbackContetnResultMap" type="com.xunyunedu.htsfeedback.pojo.HtsFeedbackContentPojo">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="school_id" jdbcType="INTEGER" property="schoolId" />
+        <result column="create_date" jdbcType="DATE" property="createDate" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="feedback_id" jdbcType="INTEGER" property="schoolId"/>
+    </resultMap>-->
+
+
+    <sql id="Base_Column_List">
+        id, name, class_name,create_date,phone,content,is_delete,uuid,parent_name,pic_url,school_id,is_reply
+    </sql>
+
+
+    <select id="getFeedbackMsg" resultType="com.xunyunedu.htsfeedback.pojo.HtsFeedbackPojo" resultMap="BaseResultMap">
+        SELECT
+                phtsf.*,
+                concat( phtsfc.content ) remark
+
+        FROM
+                pj_home_to_school_feedback phtsf
+                        LEFT JOIN pj_home_to_school_feedback_content phtsfc ON phtsf.id = phtsfc.id
+        WHERE
+                is_delete = 0
+
+        ORDER BY create_date DESC ;
+
+    </select>
+
+
+
+    <insert id="addFeedback">
+        insert into pj_home_to_school_feedback(
+                name ,class_name,parent_name,phone,content,pic_url,uuid,school_id,is_delete,create_date,stu_id,is_reply
+            )
+            values (
+                #{name},
+                #{className},
+                #{parentName},
+                #{phone},
+                #{content},
+                #{picUrl},
+                #{uuid},
+                #{schoolId},
+                #{isDelete},
+                #{createDate},
+                #{stuId},
+                #{isReply}
+            )
+    </insert>
+
+    <select id="findFeednackById" resultType="com.xunyunedu.htsfeedback.pojo.HtsFeedbackPojo" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from pj_home_to_school_feedback
+            where is_delete = 0 and stu_id = #{stuId}
+    </select>
+
+
+    <select id="queryByStuId" resultMap="BaseResultMap" useCache="false">
+                SELECT
+                phtsf.*,
+                concat( phtsfc.content ) remark
+
+        FROM
+                pj_home_to_school_feedback phtsf
+                        LEFT JOIN pj_home_to_school_feedback_content phtsfc ON phtsf.id = phtsfc.feedback_id
+        WHERE
+                is_delete = 0 and phtsf.stu_id = #{stuId}
+
+        ORDER BY create_date DESC ;
+    </select>
+
+
+</mapper>
+
+
+
+

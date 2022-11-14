@@ -1,0 +1,455 @@
+@charset "utf-8";
+a {
+    text-decoration: none
+}
+input:-webkit-autofill {
+-webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+#cas form {display:block; padding:0; width:100%; height:440px;position:relative;}
+    #cas fieldset {border:0; margin:0; padding:0; float:left; clear:none; width:auto;}
+        #cas fieldset legend {display:none;}
+
+        #cas #login {
+    height: 327px;
+    margin: 0 auto;
+    position: relative;
+    width: 392px;
+    background-color: #fff;
+    box-shadow: 0px 3px 38px 0px
+    rgba(160, 167, 177, 0.66);
+            border-radius: 8px;
+        }
+.fl-controls-left i{
+    position: absolute;
+    width: 46px;
+    height:46px;
+    display: block;
+    left: 61px;
+    border-right: 1px solid #dbdbdb;
+    z-index: 999;
+}
+.fl-controls-left i.i1{
+    top:79px;
+    background: url("images/use_i.png") no-repeat 50% 50%;
+}
+.fl-controls-left i.i2{
+    top:134px;
+    background: url("images/password_i.png") no-repeat 50% 50%;
+}
+#cas #login:before{
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 8px solid #ffffff;
+    content: ".";
+    position: absolute;
+    top: -8px;
+    right:42px;
+}
+        /* #cas #login:before {line-height:0.1; font-size:1px; background:transparent url("../images/key-point_tr.gif") no-repeat top right; margin:-15px -15px 0 -15px; height:15px; display:block; content:url("../images/key-point_tl.gif");}
+        #cas #login:after {display:block; clear:both; padding-top:15px; line-height:0.1; font-size:1px; content:url("../images/key-point_bl.gif"); margin:-15px; height:8px; background:transparent url("../images/key-point_br.gif") scroll no-repeat bottom right;}
+       */      #cas #login h2 {padding-left: 61px;font-size: 21px;height:78px;line-height: 90px;
+                           color: #999999;}
+            #cas #login label {font-size:11px;}
+            #cas #login label span.accesskey {text-decoration:underline;}
+            #cas #login input {letter-spacing:1px;}
+            #cas #login .check input {position:relative; left:-4px; height:auto;    top: 5px;}
+            #cas #login .check label {float:none; xwidth:auto; line-height:1.8;font-size:14px;color:#999999;}
+            #cas #login .btn-row {padding-top:10px; }
+            #cas #login .btn-submit {float:none; clear:none; display:inline; letter-spacing:0;width:273px;height:48px;border:0 none;position:absolute;top:229px;left:60px;padding:0; cursor: pointer;}
+            #cas #login .btn-reset {float:none; clear:none; margin-left:5px; border:0; border-left:1px solid #ddd; background:transparent; color:#777; text-transform:lowercase; letter-spacing:0;}
+#cas #login #username,#cas #login #password{
+    position:absolute;
+    font-size: 14px;
+    color: #b3b3b3;
+    width: 205px;
+    height: 46px;
+    line-height:46px;
+    background-color: #ffffff;
+    box-shadow: 0px 3px 9px 0px
+    rgba(139, 170, 185, 0.16);
+    border-radius: 3px;
+    border: solid 1px #dbdbdb;
+    font-family:"微软雅黑";
+    padding:0 0 0  65px;
+    left:60px;
+}
+#cas #login #username:focus,#cas #login #password:focus{
+    background-color: #f3faff;
+}
+#cas #login #username{
+	top:78px;
+}
+#cas #login #password{
+	top:133px;
+}
+.rememberMe{
+	position:absolute;
+	   left:60px;
+    top: 188px;
+}
+.rememberMe #rememberMe{position:relative;top:2px;}
+    #cas #sidebar {float:left; margin-left:296px; padding:18px 15px;}
+        #cas #sidebar h3 {font:normal 400 14px Georgia, "Times New Roman", Times, serif; color:#555; margin:18px 0 0; padding:6px 0 3px;}
+        #cas #sidebar p {margin:0 0 18px; padding:0; color:#555; font-size:1.1em;}
+
+        #cas #list-languages ul {margin:0; padding:0; line-height:1.5; list-style:none;}
+            #cas #list-languages ul li {display:inline; padding:0 5px; border-right:1px solid #ccc;}
+            #cas #list-languages ul li.first {padding-left:0;}
+            #cas #list-languages ul li.last {padding-right:0; border:0;}
+#cas #footer{padding:50px 0;}
+#cas #footer p {text-align:center;color:#414141;line-height:26px;font-size:12px;}
+#cas #footer p a{color:#414141;}
+/* RESET --------------------------------- */
+/* reset some properties for elements since defaults are not crossbrowser - http://meyerweb.com/eric/thoughts/2007/05/01/reset-reloaded/ */
+html,body,div,span,h1,h2,h3,p,a,img,ul,li,fieldset,form,label,legend {margin:0; padding:0; border:0; outline:0; font-weight:inherit; font-style:inherit; font-size:100%; font-family:inherit; vertical-align:baseline;}
+:focus {outline:0;}
+ul {list-style:none; font-size:1.1em; padding:0 0 18px 40px;}
+
+/* browser default font-size is 16px which is too big so we make it 16px x 62.5% = 10px */
+    body {font:normal 400 62.5%/1.0 Verdana, sans-serif; min-width:960px; background:#fff; color:#333;}
+
+/*
+ - used to clear or contain floats within a non-floated container
+ - this ruleset is used by UAs that handle :after - not IE - see ie_cas.css for IE fix
+http://www.positioniseverything.net/easyclearing.html and http://www.ejeliot.com/blog/59 */
+#header:after, #content:after, #footer:after, .clearfix:after {content:"."; clear:both; display:block; height:0; visibility:hidden;}
+
+
+/* HEADER --------------------------------- */
+#header {position:relative; top:0; left:0; padding-top:52px; background:#fff url(../images/ja-sig-logo.gif) no-repeat scroll 25px 10px;}
+    #header h1#app-name {clear:both; padding:0 0 0 25px; background:#210f7a; color:#fff; font:normal 400 2.8em/2.5em Georgia,"Times New Roman", serif;} /* d21033 */
+
+/* CONTENT --------------------------------- */
+#content {clear:both;position: absolute;z-index: 9999;    left: 50%;display: none;
+    margin:0 0 0 209px;}
+    #content h2 {margin:0 0 .5em 0; font-size:1.3em; font-weight:400; color:#000; xborder-bottom:1px solid #eee; padding:3px 0; xletter-spacing:-1px;}
+    #content h3 {font:1em arial, helvetica, sans-serif; font-weight:400;}
+
+    #content p {line-height:1.5; font-size:1.1em; padding:0 0 18px;}
+
+/* FOOTER --------------------------------- */
+#footer {clear:both; position:relative; padding:0 0 1px 0; background:transparent; color:#999;}
+    #footer div#copyright {position:relative ,display:block;  width:959px;margin:0 auto; overflow:hidden;}
+    #footer a#jasig {position:relative; float:right; clear:both; display: block; background-image: url(../images/ja-sig-logo.gif); width: 118px; height: 31px; margin:1em 5px .5em;}
+	#footer div#copyright .jianjie{line-height:30px;color:#fff;}
+	#footer div#copyright .jianjie a{color:#fff;margin-right:2px;text-decoration:none;}
+/* MESSAGES --------------------------------- */
+.info, .errors, .success {clear:both; position:absolute; padding:0 30px; font-size:10px; line-height:1.5;width:392px;right:0;top:373px;text-align:center;}
+.info {border:1px dotted 008;    background:#eff url(../images/info.gif) no-repeat 20px 18px; color:#008;}
+.errors { color:#d21033;}
+.success {/* border:1px dotted #390; background:#dfa url(../images/confirm.gif) no-repeat 20px 18px; */ color:#390;}
+    #content .errors h2, #content .success h2 {font-family:Georgia,"Times New Roman",Times,serif; font-size:18px; font-weight:400; margin:0 18px 0 0; padding:0;}
+    #content .success h2 {color: #008 !important;}
+    #content .errors h2 {color:#b00 !important;}
+    #content .success h2 {color:#060 !important;}
+    
+
+/* static messages */
+#content #msg p {padding:0;}
+
+/* FORMS --------------------------------- */
+    label {cursor:pointer; font-size:1.1em; color:#777;}
+    input {border-width:1px; font-family:Verdana,sans-serif; font-size:1.1em; color:#000; padding:3px; min-height:1.5em;}
+    input.btn-submit {border-width:2px;}
+
+
+    .fm-v div.row {}
+    .fm-v div.row label {float:left; width:100%; line-height:1.5;}
+    .fm-v div.row input.btn-submit {display:block; margin:0;}
+
+
+/* highlight errors */
+    input.error {background:#FFEFEF; color:#b00;}
+
+/* mark as required */
+    .required {background:#ffd;}
+    .error {background:#ffefef;}
+    input.required {border-width:1px;}
+    
+/* .logo{
+	width:950px;
+	height:100px;
+	margin:0 auto;
+	padding:10px 0 0 12px;
+}
+.logo .logo_1{
+	background:url("images/logo.png") no-repeat;
+	width:221px;
+	height:45px;
+	
+} */
+.login_top {
+    background-color: #fff;
+    height: 80px;
+    position:relative;
+    z-index:1;
+    -moz-box-shadow: 0 1px 2px #878787;
+    -webkit-box-shadow: 0 1px 2px #878787;
+    box-shadow: 0 1px 2px #878787 ;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#878787')";
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=2, Direction=135, Color='#878787');
+    
+}
+.login_top .lt_main {
+    margin: 0 auto;
+    width: 1200px;
+}
+.login_top .lt_main .logo {
+    background: url("images/logo_1.png") no-repeat;
+    float: left;
+    height: 42px;
+	width: 275px;
+	margin-top: 18px;
+}
+.login_top .lt_main .return_dnxxw{
+	background:url("images/return.png") no-repeat 14px center;
+	border:1px solid #88cdff;
+	height:38px;
+	line-height:38px;
+	text-align:center;
+	padding-left:40px;
+	padding-right:18px;
+	display:block;
+	float:right;
+	font-size:16px;
+	color:#2298ef;
+	font-family:"微软雅黑";
+	border-radius:3px;
+	margin-top:21px;
+	-moz-box-shadow: 0 2px 7px #d2cbcb;
+    -webkit-box-shadow: 0 2px 7px #d2cbcb;
+    box-shadow: 0 2px 7px #d2cbcb;
+	
+}
+.login_top .lt_main p {
+    /*float: right;*/
+    /*width:342px;*/
+    /*height:74px;*/
+     /*background: url("images/logo_2.png") no-repeat;*/
+}
+.login_top .lt_main p span {
+    color: #fc6e51;
+}
+
+.f1 {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.lt_main .menu{
+    margin-left: 40px;
+}
+.lt_main .menu ul{
+}
+.lt_main .menu ul li{
+    float: left;
+    margin: 26px 23px 0 0;
+}
+.lt_main .menu ul li a{
+    padding: 0 3px;
+    line-height: 30px;
+    font-size: 18px;
+    color: #222;
+    display: block;
+}
+.lt_main .menu ul li.on{
+    color: #00a0e9;
+    border-bottom: #0e9cf6 solid 3px;
+}
+.kj_div{
+    width: 1200px;
+    margin: 25px auto 0;
+}
+.kj_div  .app-module{
+    margin:0;
+    padding: 0 20px;
+    height: 440px;
+}
+.kj_div .kj_top{
+    height: 58px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.kj_div .kj_top .title{
+    font-size: 24px;
+    line-height: 70px;
+    color: #333333;
+    padding-left: 8px;
+    float: left;
+    height: 55px;
+}
+.kj_div .kj_top .more{
+    font-size: 16px;
+    height: 55px;
+    line-height: 70px;
+    color: #2298ef;
+    padding-right: 18px;
+    float: right;
+}
+.kj_div .kj_top .kj_fl{
+    float: left;
+    margin-left: 25px;
+    position: relative;
+    top: 23px;
+}
+.kj_div .kj_top .kj_fl a{
+    width: 60px;
+    height: 24px;
+    line-height: 24px;
+    display: block;
+    font-size: 14px;
+    color: #666666;
+    text-align: center;
+    float: left;
+    margin: 0 6px;
+}
+.kj_div .kj_top .kj_fl a.on,.kj_div .kj_top .kj_fl a:hover{
+    background-color: #2299ee;
+    box-shadow: 0px 8px 9px 0px
+    rgba(63, 116, 231, 0.24);
+    border-radius: 12px;
+    color: #fff;
+}
+.kj_div .kj_bottom{
+
+}
+.yxkj_list ul{
+    padding: 0;
+}
+.yxkj_list ul li{
+    position: relative;
+    margin:18px 0 10px 10px;
+    float:left;
+    padding:10px;
+}
+.yxkj_list ul li:hover{
+    background-color:rgba(90,90,90,0.05);
+    border-radius: 5px;
+}
+.yxkj_list ul li a {
+    display: block;
+    width: 220px;
+    height: 72px;
+}
+.yxkj_list ul li a img{
+    width: 72px;
+    height: 72px;
+    border-radius: 6px;
+    float: left;
+}
+.yxkj_list ul li a p{
+    margin-left: 90px;
+}
+.yxkj_list ul li a .p1{
+    font-size: 14px;
+    color: #2298ef;
+    line-height: 22px;
+}
+.yxkj_list ul li a .p2{
+    color: #999999;
+    margin-bottom: 20px;
+    height:10px;
+}
+.yxkj_list ul li a .p3{
+    font-size: 14px;
+    color: #666666;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    word-wrap:normal;
+}
+.kjdt_list{
+
+}
+.kjdt_list ul{
+    border-left: 1px solid  #e5e5e5;
+    height:100%;
+    margin-left: 52px;
+    padding:0 0 20px 0;
+}
+.kjdt_list ul li{
+    position: relative;
+    height: 60px;
+    padding-top: 30px;
+}
+.kjdt_list ul li p{
+    padding-left: 100px;
+}
+.kjdt_list ul li img{
+    width: 60px;
+    height: 60px;
+    float:left;
+    margin-left: 20px;
+}
+.kjdt_list ul li .time{
+    color: #999999;
+    position: absolute;
+    padding: 0;
+    left: -70px;
+    top: 52px;
+    width: 57px;
+    text-align: right;
+}
+.kjdt_list ul li:before{
+    content:".";
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    background-color: #2298ef;
+    border-radius: 50%;
+    top: 52px;
+    left: -4px;
+}
+.kjdt_list ul li .teacher{
+    font-size: 12px;
+    color: #666666;
+    line-height: 20px;
+}
+.kjdt_list ul li .teacher span{
+    font-size: 14px;
+    color: #333333;
+}
+.kjdt_list ul li .paper{
+    font-size: 14px;
+    color: #666666;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    word-wrap:normal;
+    padding-left: 18px;
+    margin-top: 15px;
+}
+.kjdt_list ul li .paper a{
+    font-size: 12px;
+    color: #2299ee;
+}
+.login_btn{
+    margin: 21px 0 0 20px;
+}
+.grxx{
+    border-left: 1px solid #cccccc;
+    height: 40px;
+}
+.grxx img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    float: left;
+    margin-left: 20px;
+}
+.grxx p{
+    margin-left: 72px;
+    line-height: 20px;
+}
+.grxx .p1{
+    font-size: 16px;
+    color: #333333;
+}
+.grxx .p2{
+    font-size: 14px;
+    color: #666666;
+}

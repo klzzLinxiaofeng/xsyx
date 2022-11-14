@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.VehicleDao">
+
+	<resultMap id="VehicleResult" type="platform.education.oa.model.Vehicle">
+		<result property="id" column="id" />
+		<result property="uuid" column="uuid" />
+		<result property="schoolId" column="school_id" />
+		<result property="name" column="name" />
+		<result property="plateNumber" column="plate_number" />
+		<result property="model" column="model" />
+		<result property="frameNumber" column="frame_number" />
+		<result property="engineNumber" column="engine_number" />
+		<result property="purchaseDate" column="purchase_date" />
+		<result property="vehicleType" column="vehicle_type" />
+		<result property="remark" column="remark" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="createDate" column="create_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="serviceCondition" column="service_condition" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.Vehicle">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_vehicle (
+			id, 
+			uuid, 
+			school_id, 
+			name, 
+			plate_number, 
+			model, 
+			frame_number, 
+			engine_number, 
+			purchase_date, 
+			vehicle_type,
+			service_condition, 
+			remark, 
+			modify_date, 
+			create_date, 
+			is_delete
+		)
+		VALUES (
+			#{id}, 
+			#{uuid}, 
+			#{schoolId}, 
+			#{name}, 
+			#{plateNumber}, 
+			#{model}, 
+			#{frameNumber}, 
+			#{engineNumber}, 
+			#{purchaseDate}, 
+			#{vehicleType},
+			#{serviceCondition}, 
+			#{remark}, 
+			#{modifyDate}, 
+			#{createDate}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="VehicleResult" useCache="false">
+		SELECT * FROM oa_vehicle WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findVehicleByplateNumber" resultMap="VehicleResult" useCache="false">
+		SELECT * FROM oa_vehicle WHERE is_delete = 0
+		AND plate_number = #{args[0]}
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findVehicleByCondition" resultMap="VehicleResult" useCache="false">
+		SELECT * FROM oa_vehicle 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+			</if>
+			<if test="args[0].plateNumber != null and args[0].plateNumber != ''">
+				AND plate_number LIKE CONCAT(CONCAT('%', #{args[0].plateNumber}),'%')
+			</if>
+			<if test="args[0].model != null and args[0].model != ''">
+				AND model LIKE CONCAT(CONCAT('%', #{args[0].model}),'%')
+			</if>
+			<if test="args[0].frameNumber != null and args[0].frameNumber != ''">
+				AND frame_number = #{args[0].frameNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].engineNumber != null and args[0].engineNumber != ''">
+				AND engine_number = #{args[0].engineNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].purchaseDate != null">
+				AND purchase_date = #{args[0].purchaseDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].vehicleType != null and args[0].vehicleType != ''">
+				AND vehicle_type LIKE CONCAT(CONCAT('%', #{args[0].vehicleType}),'%')
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].serviceCondition != null">
+				AND service_condition = #{args[0].serviceCondition}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_vehicle 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].uuid != null and args[0].uuid != ''">
+				AND uuid = #{args[0].uuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].plateNumber != null and args[0].plateNumber != ''">
+				AND plate_number = #{args[0].plateNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].model != null and args[0].model != ''">
+				AND model = #{args[0].model,javaType=java.lang.String}
+			</if>
+			<if test="args[0].frameNumber != null and args[0].frameNumber != ''">
+				AND frame_number = #{args[0].frameNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].engineNumber != null and args[0].engineNumber != ''">
+				AND engine_number = #{args[0].engineNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].purchaseDate != null">
+				AND purchase_date = #{args[0].purchaseDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].vehicleType != null and args[0].vehicleType != ''">
+				AND vehicle_type = #{args[0].vehicleType,javaType=java.lang.String}
+			</if>
+			<if test="args[0].serviceCondition != null and args[0].serviceCondition != ''">
+				AND service_condition = #{args[0].serviceCondition,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="VehicleResult" useCache="false">
+		SELECT * FROM oa_vehicle WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.Vehicle">
+		UPDATE oa_vehicle
+		SET 
+		<if test="uuid != null">
+			uuid=#{uuid},
+		</if>
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="plateNumber != null">
+			plate_number=#{plateNumber},
+		</if>
+		<if test="model != null">
+			model=#{model},
+		</if>
+		<if test="frameNumber != null">
+			frame_number=#{frameNumber},
+		</if>
+		<if test="engineNumber != null">
+			engine_number=#{engineNumber},
+		</if>
+		<if test="purchaseDate != null">
+			purchase_date=#{purchaseDate},
+		</if>
+		<if test="vehicleType != null">
+			vehicle_type=#{vehicleType},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="serviceCondition != null">
+			service_condition=#{serviceCondition},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_vehicle
+		WHERE id = #{id}
+	</delete>
+</mapper>

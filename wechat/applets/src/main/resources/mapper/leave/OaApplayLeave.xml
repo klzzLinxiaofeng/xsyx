@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.leave.dao.OaApplayLeaveDao">
+<resultMap id="ResultMap" type="com.xunyunedu.leave.pojo.OaApplayLeave">
+  <id property="id" column="id" />
+  <result property="uuid" column="uuid"/>
+  <result property="appId" column="app_id"/>
+  <result property="ownerId" column="owner_id"/>
+  <result property="ownerType" column="owner_type"/>
+  <result property="propserId" column="propser_id"/>
+    <result property="propserName" column="propser_name"/>
+  <result property="propserDepartmentId" column="propser_department_id"/>
+  <result property="title" column="title"/>
+  <result property="leaveType" column="leave_type"/>
+  <result property="startDate" column="start_date"/>
+  <result property="endDate" column="end_date"/>
+  <result property="mobile" column="mobile"/>
+  <result property="detail" column="detail"/>
+  <result property="auditStatus" column="audit_status"/>
+    <result property="approveState" column="approve_state"/>
+  <result property="approveName" column="approve_name"/>
+  <result property="publishDate" column="publish_date"/>
+  <result property="approveRemark" column="approve_remark"/>
+  <result property="isDeleted" column="is_deleted"/>
+  <result property="createDate" column="create_date"/>
+  <result property="modifyDate" column="modify_date"/>
+  <result property="attachmentUuid" column="attachment_uuid"/>
+    <result property="timeConsuming" column="time_consuming"/>
+
+</resultMap>
+
+  <select id="selectById" resultMap="ResultMap">
+    select * from oa_applay_leave where id = #{id} and is_deleted = 0
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    insert into oa_applay_leave
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="uuid != null and uuid != ''">
+          uuid,
+        </if>
+        <if test="appId != null">
+          app_id,
+        </if>
+        <if test="ownerId != null">
+          owner_id,
+        </if>
+        <if test="ownerType != null and ownerType != ''">
+          owner_type,
+        </if>
+        <if test="propserId != null">
+          propser_id,
+        </if>
+        <if test="propserName != null and propserName != ''">
+          propser_name,
+        </if>
+        <if test="propserDepartmentId != null">
+          propser_department_id,
+        </if>
+        <if test="title != null and title != ''">
+          title,
+        </if>
+        <if test="leaveType != null and leaveType != ''">
+          leave_Type,
+        </if>
+        <if test="startDate != null">
+          start_date,
+        </if>
+        <if test="endDate != null">
+          end_date,
+        </if>
+        <if test="mobile != null and mobile != ''">
+          mobile,
+        </if>
+        <if test="detail != null and detail != ''">
+          detail,
+        </if>
+        <if test="isDaike != null">
+          is_daike,
+        </if>
+        <if test="auditStatus != null and auditStatus != ''">
+          audit_status,
+        </if>
+        <if test="approveState != null and approveState != ''">
+          approve_state,
+        </if>
+        <if test="approveId != null">
+          approve_id,
+        </if>
+        <if test="approveName != null and approveName != ''">
+          approve_name,
+        </if>
+        <if test="publishDate != null">
+          publish_date,
+        </if>
+        <if test="approveRemark != null and approveRemark != ''">
+          approve_remark,
+        </if>
+        <if test="attachmentUuid != null and attachmentUuid != ''">
+          attachment_uuid,
+        </if>
+        <if test="timeConsuming != null and timeConsuming != ''">
+            time_consuming,
+        </if>
+        create_date,
+        is_deleted
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null and uuid != ''">
+        #{uuid},
+      </if>
+      <if test="appId != null">
+        #{appId},
+      </if>
+      <if test="ownerId != null">
+        #{ownerId},
+      </if>
+      <if test="ownerType != null and ownerType != ''">
+        #{ownerType},
+      </if>
+      <if test="propserId != null">
+        #{propserId},
+      </if>
+      <if test="propserName != null and propserName != ''">
+        #{propserName},
+      </if>
+      <if test="propserDepartmentId != null">
+        #{propserDepartmentId},
+      </if>
+      <if test="title != null and title != ''">
+        #{title},
+      </if>
+      <if test="leaveType != null and leaveType != ''">
+        #{leaveType},
+      </if>
+      <if test="startDate != null">
+        #{startDate},
+      </if>
+      <if test="endDate != null">
+        #{endDate},
+      </if>
+      <if test="mobile != null and mobile != ''">
+        #{mobile},
+      </if>
+      <if test="detail != null and detail != ''">
+        #{detail},
+      </if>
+      <if test="isDaike != null">
+        #{isDaike},
+      </if>
+      <if test="auditStatus != null and auditStatus != ''">
+        #{auditStatus},
+      </if>
+      <if test="approveState != null and approveState != ''">
+        #{approveState},
+      </if>
+      <if test="approveId != null">
+        #{approveId},
+      </if>
+      <if test="approveName != null and approveName != ''">
+        #{approveName},
+      </if>
+      <if test="publishDate != null">
+        #{publishDate},
+      </if>
+      <if test="approveRemark != null and approveRemark != ''">
+        #{approveRemark},
+      </if>
+      <if test="attachmentUuid != null and attachmentUuid != ''">
+        #{attachmentUuid},
+      </if>
+        <if test="timeConsuming != null and timeConsuming != ''">
+            #{timeConsuming},
+        </if>
+
+      NOW(),
+      0
+    </trim>
+  </insert>
+  <select id="selectByCondition" resultMap="ResultMap">
+    select * from oa_applay_leave
+    <where>
+        <if test="propserId != null">
+            propser_id = #{propserId}
+        </if>
+    </where>
+  </select>
+
+    <select id="selectLeaveTypes" resultType="map">
+        select `name`,`value` from jc_gc_item where table_code='XY-JY-QJLX' and disable=0 and level=0
+    </select>
+</mapper>

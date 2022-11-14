@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.hnzxx.ui.dao.PjPermissionDao">
+
+	<resultMap id="PjPermissionResult" type="platform.education.hnzxx.ui.model.PjPermission">
+		<result property="id" column="id" />
+		<result property="schoolId" column="school_id" />
+		<result property="appId" column="app_id" />
+		<result property="parentCode" column="parent_code" />
+		<result property="code" column="code" />
+		<result property="name" column="name" />
+		<result property="accessUrl" column="access_url" />
+		<result property="level" column="level" />
+		<result property="listOrder" column="list_order" />
+		<result property="description" column="description" />
+		<result property="state" column="state" />
+		<result property="icon" column="icon" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="type" column="type" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.hnzxx.ui.model.PjPermission">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_permission (
+			id, 
+			school_id, 
+			app_id, 
+			parent_code, 
+			code, 
+			name, 
+			access_url, 
+			level, 
+			list_order, 
+			description, 
+			state, 
+			icon, 
+			create_date, 
+			modify_date, 
+			type
+		)
+		VALUES (
+			#{id}, 
+			#{schoolId}, 
+			#{appId}, 
+			#{parentCode}, 
+			#{code}, 
+			#{name}, 
+			#{accessUrl}, 
+			#{level}, 
+			#{listOrder}, 
+			#{description}, 
+			#{state}, 
+			#{icon}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			#{type}
+		)
+	</insert>
+
+	<select id="read" resultMap="PjPermissionResult" useCache="false">
+		SELECT * FROM pj_permission WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPjPermissionByCondition" resultMap="PjPermissionResult" useCache="false">
+		SELECT * FROM pj_permission 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].parentCode != null and args[0].parentCode != ''">
+				AND parent_code = #{args[0].parentCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].accessUrl != null and args[0].accessUrl != ''">
+				AND access_url = #{args[0].accessUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].level != null">
+				AND level = #{args[0].level,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].listOrder != null">
+				AND list_order = #{args[0].listOrder,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].description != null and args[0].description != ''">
+				AND description = #{args[0].description,javaType=java.lang.String}
+			</if>
+			<if test="args[0].state != null and args[0].state != ''">
+				AND state = #{args[0].state,javaType=java.lang.String}
+			</if>
+			<if test="args[0].icon != null and args[0].icon != ''">
+				AND icon = #{args[0].icon,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_permission 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].appId != null">
+				AND app_id = #{args[0].appId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].parentCode != null and args[0].parentCode != ''">
+				AND parent_code = #{args[0].parentCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].name != null and args[0].name != ''">
+				AND name = #{args[0].name,javaType=java.lang.String}
+			</if>
+			<if test="args[0].accessUrl != null and args[0].accessUrl != ''">
+				AND access_url = #{args[0].accessUrl,javaType=java.lang.String}
+			</if>
+			<if test="args[0].level != null">
+				AND level = #{args[0].level,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].listOrder != null">
+				AND list_order = #{args[0].listOrder,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].description != null and args[0].description != ''">
+				AND description = #{args[0].description,javaType=java.lang.String}
+			</if>
+			<if test="args[0].state != null and args[0].state != ''">
+				AND state = #{args[0].state,javaType=java.lang.String}
+			</if>
+			<if test="args[0].icon != null and args[0].icon != ''">
+				AND icon = #{args[0].icon,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PjPermissionResult" useCache="false">
+		SELECT * FROM pj_permission WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<select id="findByCodeANDtype" resultMap="PjPermissionResult" useCache="false">
+		SELECT * FROM pj_permission WHERE code = #{args[0],javaType=java.lang.String} AND type = #{args[1],javaType=java.lang.String}
+	</select>
+	
+	<update id="update" parameterType="platform.education.hnzxx.ui.model.PjPermission">
+		UPDATE pj_permission
+		SET 
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="appId != null">
+			app_id=#{appId},
+		</if>
+		<if test="parentCode != null">
+			parent_code=#{parentCode},
+		</if>
+		<if test="code != null">
+			code=#{code},
+		</if>
+		<if test="name != null">
+			name=#{name},
+		</if>
+		<if test="accessUrl != null">
+			access_url=#{accessUrl},
+		</if>
+		<if test="level != null">
+			level=#{level},
+		</if>
+		<if test="listOrder != null">
+			list_order=#{listOrder},
+		</if>
+		<if test="description != null">
+			description=#{description},
+		</if>
+		<if test="state != null">
+			state=#{state},
+		</if>
+		<if test="icon != null">
+			icon=#{icon},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="type != null">
+			type=#{type},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_permission
+		WHERE id = #{id}
+	</delete>
+</mapper>

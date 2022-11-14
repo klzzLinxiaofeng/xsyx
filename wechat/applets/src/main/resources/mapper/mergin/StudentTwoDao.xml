@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.mergin.dao.StudentTwoDao">
+    <resultMap id="StudentResult"
+               type="com.xunyunedu.mergin.vo.Student">
+        <result property="id" column="id" />
+        <result property="schoolId" column="school_id" />
+        <result property="personId" column="person_id" />
+        <result property="userId" column="user_id" />
+        <result property="teamId" column="team_id" />
+        <result property="userName" column="user_name" />
+        <result property="teamName" column="team_name" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="studentNumber" column="student_number" />
+        <result property="studentNumber2" column="student_number2" />
+        <result property="isBoarded" column="is_boarded" />
+        <result property="enrollDate" column="enroll_date" />
+        <result property="leaveDate" column="leave_date" />
+        <result property="mobile" column="mobile" />
+        <result property="studyState" column="study_state" />
+        <result property="studentType" column="student_type" />
+        <result property="position" column="position" />
+      <!--  <result property="isDelete" column="is_delete" />-->
+        <result property="createDate" column="create_date" />
+        <result property="modifyDate" column="modify_date" />
+        <result property="alias" column="alias" />
+        <result property="empCard" column="emp_card"/>
+        <result property="empCode" column="emp_code"/>
+        <result property="isSendHikdoor" column="is_send_hikdoor"/>
+        <result property="isSendLibrary" column="is_send_library"/>
+        <result property="isSendSeewo" column="is_send_seewo"/>
+        <result property="deptName" column="deptName"/>
+    </resultMap>
+
+
+
+    <select id="findStudentByCondition" resultMap="StudentResult"
+            useCache="false">
+        SELECT
+        stu.id, stu.school_id, stu.person_id, stu.user_id, stu.user_name,
+        stu.`name`, stu.sex, stu.emp_code student_number, stu.student_number2, stu.enroll_date,
+        stu.leave_date, stu.mobile, stu.study_state, stu.student_type,
+        stu.position,
+        stu.is_boarded, stu.is_delete, stu.create_date, stu.modify_date, stu.alias,
+        t.id
+        team_id, t.`name` team_name
+        FROM pj_student stu
+        LEFT JOIN pj_team_student pts ON stu.id =
+        pts.student_id
+        LEFT JOIN pj_team t ON t.id = pts.team_id
+        where pts.is_delete=0
+        <if test="studentCondition != null">
+            <if test="studentCondition.id != null">
+                AND stu.id = #{studentCondition.id,javaType=java.lang.Integer}
+            </if>
+            <if test="studentCondition.schoolId != null">
+                AND t.school_id =
+                #{studentCondition.schoolId,javaType=java.lang.Integer}
+                AND stu.school_id =
+                #{studentCondition.schoolId,javaType=java.lang.Integer}
+            </if>
+            <!--学生根据学校，学年，年级，班级，学生查询条件 -->
+            <if test="studentCondition.schoolYear != null and studentCondition.schoolYear != ''">
+                and t.school_year =
+                #{studentCondition.schoolYear,javaType=java.lang.String}
+            </if>
+            <if test="studentCondition.gradeId != null">
+                and pts.grade_id =
+                #{studentCondition.gradeId,javaType=java.lang.Integer}
+            </if>
+            <if test="studentCondition.teamId != null">
+                and pts.team_id =
+                #{studentCondition.teamId,javaType=java.lang.Integer}
+            </if>
+            <if test="studentCondition.personId != null">
+                AND stu.person_id =
+                #{studentCondition.personId,javaType=java.lang.Integer}
+            </if>
+            <if test="studentCondition.userId != null">
+                AND stu.user_id =
+                #{studentCondition.userId,javaType=java.lang.Integer}
+            </if>
+            <if test="studentCondition.userName != null">
+                AND stu.user_name =
+                #{studentCondition.userName,javaType=java.lang.String}
+            </if>
+            <if test="studentCondition.teamName != null">
+                AND stu.team_name =
+                #{studentCondition.teamName,javaType=java.lang.String}
+            </if>
+            <if test="studentCondition.name != null">
+                AND stu.name LIKE CONCAT(CONCAT('%',
+                #{studentCondition.name}),'%')
+            </if>
+            <if test="studentCondition.sex != null">
+                AND stu.sex = #{studentCondition.sex,javaType=java.lang.String}
+            </if>
+            <if test="studentCondition.studentNumber != null">
+                AND stu.student_number =
+                #{studentCondition.studentNumber,javaType=java.lang.String}
+            </if>
+            <if test="studentCondition.studentNumber2 != null">
+                AND stu.student_number2 =
+                #{studentCondition.studentNumber2,javaType=java.lang.String}
+            </if>
+            <if test="studentCondition.enrollDate != null">
+                AND stu.enroll_date =
+                #{studentCondition.enrollDate,javaType=java.util.Date}
+            </if>
+            <if test="studentCondition.leaveDate != null">
+                AND stu.leave_date =
+                #{studentCondition.leaveDate,javaType=java.util.Date}
+            </if>
+            <if test="studentCondition.mobile != null">
+                AND stu.mobile =
+                #{studentCondition.mobile,javaType=java.lang.String}
+            </if>
+            <if test="studentCondition.studyState != null">
+                AND stu.study_state =
+                #{studentCondition.studyState,javaType=java.lang.String}
+            </if>
+            <if test="studentCondition.studentType != null">
+                AND stu.student_type =
+                #{studentCondition.studentType,javaType=java.lang.String}
+            </if>
+            <if test="studentCondition.position != null">
+                AND stu.position =
+                #{studentCondition.position,javaType=java.lang.String}
+            </if>
+            <if test="studentCondition.isDelete != null">
+                AND stu.is_delete = #{studentCondition.isDelete}
+            </if>
+            <if test="studentCondition.createDate != null">
+                AND stu.create_date =
+                #{studentCondition.createDate,javaType=java.util.Date}
+            </if>
+            <if test="studentCondition.modifyDate != null">
+                AND stu.modify_date =
+                #{studentCondition.modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="studentCondition.alias != null">
+                AND stu.alias =
+                #{studentCondition.alias,javaType=java.lang.String}
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="StudentResult" useCache="false">
+		SELECT
+		* FROM pj_student WHERE id = #{id,javaType=java.lang.Integer}
+		AND
+		is_delete = 0
+	</select>
+    <select id="findStudentByOnlyCondition" resultMap="StudentResult"
+            useCache="false">
+        select s.* from pj_student s inner join pj_team pt on s.team_id =
+        pt.id WHERE s.is_delete = 0
+        <if test="studentCondition != null">
+            <if test="studentCondition.id != null">
+                AND s.id = #{studentCondition.id,javaType=java.lang.Integer}
+            </if>
+            <if test="studentCondition.schoolId != null">
+                AND s.school_id =
+                #{studentCondition.schoolId,javaType=java.lang.Integer}
+            </if>
+            <if test="studentCondition.personId != null">
+                AND s.person_id =
+                #{studentCondition.personId,javaType=java.lang.Integer}
+            </if>
+            <if test="studentCondition.userId != null">
+                AND s.user_id =
+                #{studentCondition.userId,javaType=java.lang.Integer}
+            </if>
+            <if test="studentCondition.teamId != null">
+                AND pt.id = #{studentCondition.teamId,javaType=java.lang.Integer}
+            </if>
+            <if test="studentCondition.alias != null">
+                AND s.alias = #{studentCondition.alias,javaType=java.lang.String}
+            </if>
+            <choose>
+                <when test="studentCondition.userName != null and studentCondition.userName != ''">
+                    <choose>
+                        <when test="studentCondition.userNameLike == true">
+                            and s.user_name LIKE CONCAT(CONCAT('%', #{studentCondition.userName}),'%')
+                        </when>
+                        <otherwise>
+                            and s.user_name = #{studentCondition.userName,javaType=java.lang.String}
+                        </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+            <if test="jw.teamName != null">
+                AND pt.team_name =
+                #{jw.teamName,javaType=java.lang.String}
+            </if>
+            <if test="jw.sex != null">
+                AND s.sex = #{jw.sex,javaType=java.lang.String}
+            </if>
+            <if test="jw.studentNumber != null">
+                AND s.student_number =
+                #{jw.studentNumber,javaType=java.lang.String}
+            </if>
+            <if test="jw.studentNumber2 != null">
+                AND s.student_number2 =
+                #{jw.studentNumber2,javaType=java.lang.String}
+            </if>
+            <if test="jw.enrollDate != null">
+                AND s.enroll_date =
+                #{jw.enrollDate,javaType=java.util.Date}
+            </if>
+            <if test="jw.leaveDate != null">
+                AND s.leave_date =
+                #{jw.leaveDate,javaType=java.util.Date}
+            </if>
+            <if test="jw.mobile != null">
+                AND s.mobile =
+                #{jw.mobile,javaType=java.lang.String}
+            </if>
+            <if test="jw.studyState != null">
+                AND s.study_state =
+                #{jw.studyState,javaType=java.lang.String}
+            </if>
+            <if test="jw.studentType != null">
+                AND s.student_type =
+                #{jw.studentType,javaType=java.lang.String}
+            </if>
+            <if test="jw.position != null">
+                AND s.position =
+                #{jw.position,javaType=java.lang.String}
+            </if>
+            <if test="args[0].createDate != null">
+                AND s.create_date =
+                #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND s.modify_date =
+                #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+
+            <choose>
+                <when test="args[0].name != null and args[0].name != ''">
+                    <choose>
+                        <when test="args[0].nameLike == true">
+                            and s.name LIKE CONCAT(CONCAT('%', #{args[0].name}),'%')
+                        </when>
+                        <otherwise>
+                            and s.name = #{args[0].name,javaType=java.lang.String}
+                        </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+</mapper>

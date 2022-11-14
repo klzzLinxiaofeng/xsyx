@@ -1,0 +1,172 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>platform.education.resource.app</groupId>
+        <artifactId>app</artifactId>
+        <version>0.0.1</version>
+    </parent>
+    <artifactId>ResourceImport</artifactId>
+    <name>ResourceImport</name>
+    <description>资源导入子项目</description>
+    <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.24</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!-- 基础代码 -->
+        <dependency>
+            <groupId>platform.education.service</groupId>
+            <artifactId>generalCode-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 基础代码 -->
+        <dependency>
+            <groupId>platform.education.service</groupId>
+            <artifactId>generalCode-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 资源库模块API -->
+        <dependency>
+            <groupId>platform.education.resource.service</groupId>
+            <artifactId>resource-api</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 资源库模块API实现 -->
+        <dependency>
+            <groupId>platform.education.resource.service</groupId>
+            <artifactId>resource-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 微课模块API实现 -->
+        <dependency>
+            <groupId>platform.education.resource.service</groupId>
+            <artifactId>micro-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 素材模块API实现 -->
+        <dependency>
+            <groupId>platform.education.resource.service</groupId>
+            <artifactId>material-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 作业模块API实现 -->
+        <dependency>
+            <groupId>platform.education.resource.service</groupId>
+            <artifactId>homework-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 试卷模块API实现 -->
+        <dependency>
+            <groupId>platform.education.resource.service</groupId>
+            <artifactId>exam-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 教案模块API实现 -->
+        <dependency>
+            <groupId>platform.education.resource.service</groupId>
+            <artifactId>teachingPlan-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <!-- 课件模块API实现 -->
+        <dependency>
+            <groupId>platform.education.resource.service</groupId>
+            <artifactId>learningDesign-impl</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <finalName>resource_import</finalName>
+        <resources>
+            <resource>
+                <targetPath>${project.build.directory}/classes</targetPath>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+            <!-- 结合com.alibaba.dubbo.container.Main -->
+            <resource>
+                <targetPath>${project.build.directory}/classes/META-INF/spring</targetPath>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>resource_application.xml</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <pluginManagement>
+            <plugins>
+                <!-- 解决Maven插件在Eclipse内执行了一系列的生命周期引起冲突 -->
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>1.0.0</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>org.apache.maven.plugins</groupId>
+                                        <artifactId>maven-dependency-plugin</artifactId>
+                                        <versionRange>[2.0,)</versionRange>
+                                        <goals>
+                                            <goal>copy-dependencies</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore/>
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!-- 打包jar文件时，配置manifest文件，加入lib包的jar依赖 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <classesDirectory>target/classes/</classesDirectory>
+                    <archive>
+                        <manifest>
+                            <mainClass>platform.resource.main.DisplayResource</mainClass>
+                            <!-- 打包时 MANIFEST.MF文件不记录的时间戳版本 -->
+                            <useUniqueVersions>false</useUniqueVersions>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>.</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <finalName>ri</finalName>
+                    <descriptors>
+                        <descriptor>release.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

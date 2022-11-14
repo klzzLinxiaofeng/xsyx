@@ -1,0 +1,193 @@
+@charset "utf-8";
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+.bg_fff {
+	background: #ffffff;
+}
+.c_red{
+	color: #ff5252;
+}
+.c_blue{
+	color: #2ba9e8;
+}
+.c_green{
+	color: green;
+}
+.c_yellow{
+	color: rgb(255, 153, 0);;
+}
+
+/*创教云资源 后台*/
+.banner_slt{
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+}
+.b_title.on {
+	font-weight: bold;
+	color: deepskyblue;
+}
+.table3 th, .table3 td {
+	text-align: center;
+}
+.table-striped tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th {
+	background-color: transparent;
+}
+.table3 thead th{
+	background: #F9F9F9;
+}
+.jcbb_icon{
+	margin: 0 auto;
+	display: none;
+}
+.add_banner .s1{
+	display: block;
+	float: left;
+	width: 100px;
+	line-height: 34px;
+	text-align: right;
+}
+.add_banner{
+	padding: 20px;
+}
+.banner_slt1{
+	position: absolute;
+	top: -95px;
+	left: 33%;
+}
+.lan_button{
+	padding: 0 20px;
+	height: 30px;
+	background-color: #0e9cf6;
+	border-radius: 4px;
+	color: #ffFFFF;
+	display: inline-block;
+	line-height: 26px;
+	margin: 0 5px;
+	box-shadow: 0 3px 9px rgba(34, 153, 238, 0.5);
+}
+.lan_button:hover{
+	background-color: #0e9cf6;
+}
+.xkzy_list dl dd .item-msg .i2{
+    position: relative;
+}
+.xkzy_list dl dd .item-msg .i2 .set_tjzy{
+    position: absolute;
+    right: 0;
+    top: -88px;
+}
+.xkzy_list dl {
+    box-sizing: border-box;
+}
+.tis02 .s1{
+    display: inline-block;
+    line-height: 34px;
+    height: 34px;
+    float: left;
+}
+.tis02 .select_div{
+    margin:0 0 10px 0;
+}
+.tis02 .div01{
+    margin: 0 0 0 70px;
+    display: block;
+    height: 34px;
+    line-height: 34px;
+}
+.tis02 .div01 span{
+    margin: 0 10px 0 0;
+}
+.tis02 .div01 span input{
+    margin: 0;
+}
+.jcbb_span_1,.jcbb_span_2{
+	display: inline-block;
+	float: none;
+	margin: 0;
+}
+.container-fluid{
+	/*margin: 20px;*/
+	padding: 0;
+}
+.zysh_span1{
+	width:300px;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.table th, .table td{
+	text-align: center;
+}
+/*统计图*/
+.yyjk .yyjk_1 .appCont {
+	width: 50%;
+	float: left;
+	height: 387px;
+	
+}
+.yyjk .yyjk_1 .appCont .title {
+	line-height: 60px;
+	
+	color: #666666;
+	font-size: 22px;
+	height: 60px;
+	text-align: left;
+	font-weight: bold;
+	padding: 0 0 0 20px;
+}
+.appCont_top{
+	margin: 30px 0;
+}
+.zyzl_div1{
+	float: left;
+	position: relative;
+	top: 12%;
+	left: 4%;
+}
+.zyzl_div1 p{
+	font-size: 14px;
+}
+.appCont .cxqj{
+	font-weight: normal;
+	font-size: 14px;
+}
+.appCont select{
+	width: 150px;
+	margin: 0 5px;
+}
+.appCont_top .title01{
+	line-height: 60px;
+	color: #666666;
+	font-size: 22px;
+	height: 60px;
+	font-weight: bold;
+	padding: 0 0 0 20px
+}
+.shenhe_pm_choose a{
+	height: 30px;
+	background-color: #ffffff;
+	border-radius: 4px;
+	border: solid 1px #cccccc;
+	color: #333333;
+	padding: 5px 10px;
+}
+.shenhe_pm_choose a.on{
+	background-color: #58bbee;
+	border-radius: 4px 0px 0px 4px;
+	border: solid 1px #cccccc;
+	color: #ffFFFF;
+}
+.tongji_title{
+    line-height: 60px;
+    color: #666666;
+    font-size: 22px;
+    height: 60px;
+    text-align: left;
+    font-weight: bold;
+    padding: 0 0 0 20px;
+}

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PjAptsTaskScoreDao">
+
+	<resultMap id="PjAptsTaskScoreResult" type="platform.education.generalTeachingAffair.model.PjAptsTaskScore">
+		<result property="id" column="id" />
+		<result property="aptsTaskUserId" column="apts_task_user_id" />
+		<result property="summaryId" column="summary_id" />
+		<result property="aptsTaskJudgeId" column="apts_task_judge_id" />
+		<result property="itemScore" column="item_score" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+	</resultMap>
+	<resultMap id="AssessmentScoreVoResult" type="platform.education.generalTeachingAffair.vo.AssessmentScoreVo">
+		<result property="judgeId" column="judgeId" />
+		<result property="description" column="description" />
+		<result property="score" column="score" />
+		<result property="itemName" column="itemName" />
+		<result property="itemId" column="itemId" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.PjAptsTaskScore">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_apts_task_score (
+			id, 
+			apts_task_user_id, 
+			summary_id, 
+			apts_task_judge_id, 
+			item_score, 
+			create_date, 
+			modify_date, 
+			is_delete
+		)
+		VALUES (
+			#{id}, 
+			#{aptsTaskUserId}, 
+			#{summaryId}, 
+			#{aptsTaskJudgeId}, 
+			#{itemScore}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="PjAptsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_apts_task_score WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPjAptsTaskScoreByCondition" resultMap="PjAptsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_apts_task_score 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].aptsTaskUserId != null">
+				AND apts_task_user_id = #{args[0].aptsTaskUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].summaryId != null">
+				AND summary_id = #{args[0].summaryId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].aptsTaskJudgeId != null">
+				AND apts_task_judge_id = #{args[0].aptsTaskJudgeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].itemScore != null">
+				AND item_score = #{args[0].itemScore,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_apts_task_score 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].aptsTaskUserId != null">
+				AND apts_task_user_id = #{args[0].aptsTaskUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].summaryId != null">
+				AND summary_id = #{args[0].summaryId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].aptsTaskJudgeId != null">
+				AND apts_task_judge_id = #{args[0].aptsTaskJudgeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].itemScore != null">
+				AND item_score = #{args[0].itemScore,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PjAptsTaskScoreResult" useCache="false">
+		SELECT * FROM pj_apts_task_score WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.PjAptsTaskScore">
+		UPDATE pj_apts_task_score
+		SET 
+		<if test="aptsTaskUserId != null">
+			apts_task_user_id=#{aptsTaskUserId},
+		</if>
+		<if test="summaryId != null">
+			summary_id=#{summaryId},
+		</if>
+		<if test="aptsTaskJudgeId != null">
+			apts_task_judge_id=#{aptsTaskJudgeId},
+		</if>
+		<if test="itemScore != null">
+			item_score=#{itemScore},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_apts_task_score
+		WHERE id = #{id}
+	</delete>
+	<insert id="createBatch" >
+		INSERT INTO pj_apts_task_score (
+			id, 
+			apts_task_user_id, 
+			summary_id, 
+			apts_task_judge_id, 
+			item_score, 
+			create_date, 
+			modify_date, 
+			is_delete
+		)
+			VALUES 
+		<foreach collection="args[0]" item="item" index="index"
+			separator=",">
+	(
+			#{item.id}, 
+			#{item.aptsTaskUserId}, 
+			#{item.summaryId}, 
+			#{item.aptsTaskJudgeId}, 
+			#{item.itemScore}, 
+			#{item.createDate}, 
+			#{item.modifyDate}, 
+			0
+		)
+		</foreach>
+	</insert>
+<select  id="findAssessmentCount"  resultMap="AssessmentScoreVoResult">
+     SELECT
+ pats.apts_task_judge_id AS judgeId,
+ patj.description AS description,
+ pats.item_score AS score,
+ patis.task_item_name AS itemName,
+ patis.id AS itemId
+FROM
+	pj_apts_task_score pats
+INNER JOIN pj_apts_task_judge patj ON patj.apts_task_user_id = #{args[0]} AND patj.id=pats.apts_task_judge_id
+AND patj.judge_id = #{args[1]}
+INNER JOIN pj_apts_task_item_summary  patis ON  patis.id=pats.summary_id AND patis.apts_task_user_id=#{args[0]}
+</select>
+
+	<select id="findAvgScore" resultType="java.lang.Float" parameterType="java.lang.Integer" useCache="false">
+		SELECT ROUND(AVG(item_score),1) FROM pj_apts_task_score WHERE apts_task_user_id=#{args[0]} GROUP BY summary_id ORDER BY summary_id
+	</select>
+</mapper>

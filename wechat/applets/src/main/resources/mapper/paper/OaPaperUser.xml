@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.paper.dao.OaPaperUserDao">
+  <resultMap id="ResultMap" type="com.xunyunedu.paper.pojo.OaPaperUser">
+    <id property="id" column="id" />
+    <result property="ownerId" column="owner_id" />
+    <result property="ownerType" column="owner_type" />
+    <result property="paperId" column="paper_id" />
+    <result property="receiverId" column="receiver_id" />
+    <result property="receiverName" column="receiver_name" />
+    <result property="departmentId" column="department_id" />
+    <result property="readStatus" column="read_status" />
+    <result property="createDate" column="create_date" />
+    <result property="modifyDate" column="modify_date" />
+    <result property="isDeleted" column="is_deleted" />
+  </resultMap>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO oa_paper_user (
+    owner_id,
+    owner_type,
+    paper_id,
+    receiver_id,
+    receiver_name,
+    department_id,
+    read_status,
+    create_date,
+    modify_date,
+    is_deleted
+    )
+    VALUES (
+    #{ownerId},
+    #{ownerType},
+    #{paperId},
+    #{receiverId},
+    #{receiverName},
+    #{departmentId},
+    <choose>
+      <when test="readStatus != null">
+        <choose>
+          <when test="readStatus == true">
+            1,
+          </when>
+          <otherwise>
+            0,
+          </otherwise>
+        </choose>
+      </when>
+      <otherwise>
+        0,
+      </otherwise>
+    </choose>
+    #{createDate},
+    #{modifyDate},
+    <choose>
+      <when test="isDeleted != null">
+        <choose>
+          <when test="isDeleted == true">
+            1
+          </when>
+          <otherwise>
+            0
+          </otherwise>
+        </choose>
+      </when>
+      <otherwise>
+        0
+      </otherwise>
+    </choose>
+    )
+  </insert>
+
+  <update id="update">
+    UPDATE oa_paper_user
+    SET
+    <if test="ownerId != null">
+      owner_id=#{ownerId},
+    </if>
+    <if test="ownerType != null">
+      owner_type=#{ownerType},
+    </if>
+    <if test="paperId != null">
+      paper_id=#{paperId},
+    </if>
+    <if test="receiverId != null">
+      receiver_id=#{receiverId},
+    </if>
+    <if test="receiverName != null">
+      receiver_name=#{receiverName},
+    </if>
+    <if test="departmentId != null">
+      department_id = #{departmentId},
+    </if>
+    <if test="readStatus != null">
+      <choose>
+        <when test="readStatus == true">
+          read_status  = 1,
+        </when>
+        <otherwise>
+          read_status  = 0,
+        </otherwise>
+      </choose>
+    </if>
+    <if test="createDate != null">
+      create_date=#{createDate},
+    </if>
+    <if test="modifyDate != null">
+      modify_date=#{modifyDate},
+    </if>
+    <if test="isDeleted != null">
+      <choose>
+        <when test="isDeleted == true">
+          is_deleted = 1
+        </when>
+        <otherwise>
+          is_deleted = 0
+        </otherwise>
+      </choose>
+    </if>
+    WHERE id = #{id}
+  </update>
+
+  <select id="selectByCondition" resultMap="ResultMap">
+    select * from oa_paper_user
+    <where>
+      <if test="ownerId != null">
+        and owner_id=#{ownerId},
+      </if>
+      <if test="ownerType != null">
+        and owner_type=#{ownerType},
+      </if>
+      <if test="paperId != null">
+        and paper_id=#{paperId},
+      </if>
+      <if test="receiverId != null">
+        and receiver_id=#{receiverId},
+      </if>
+      <if test="receiverName != null">
+        and receiver_name like concat('%',#{receiverName},'%'),
+      </if>
+      <if test="departmentId != null">
+        and department_id = #{departmentId},
+      </if>
+      <if test="readStatus != null">
+        <choose>
+          <when test="readStatus == true">
+            and read_status  = 1,
+          </when>
+          <otherwise>
+            and read_status  = 0,
+          </otherwise>
+        </choose>
+      </if>
+      <if test="isDeleted != null">
+        <choose>
+          <when test="isDeleted == true">
+            and is_deleted = 1
+          </when>
+          <otherwise>
+            and is_deleted = 0
+          </otherwise>
+        </choose>
+      </if>
+    </where>
+  </select>
+</mapper>

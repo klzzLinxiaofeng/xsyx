@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.ishangkelilu.dao.TeamClassDao">
+
+    <resultMap id="StudyHabitsMap" type="platform.szxyzxx.ishangkelilu.pojo.TeamClassPassWord">
+        <id column="id" property="id"></id>
+        <result column="team_id" property="teamId"></result>
+        <result column="name" property="teamName"></result>
+        <result column="grade_id" property="gradeId"></result>
+        <result column="grade_name" property="gradeName"></result>
+        <result column="passWord" property="passWord"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="school_id" property="schoolId"></result>
+        <result column="school_year" property="schoolTrem"></result>
+        <result column="school_tream" property="schoolYear"></result>
+    </resultMap>
+
+    <select id="findByAll" resultMap="StudyHabitsMap">
+            select pt.*,ztp.password from pj_team pt left join zy_team_password ztp
+            on ztp.team_id=pt.id
+            <where>
+            pt.school_id=#{args[2]} and pt.school_year=#{args[3]}
+                <if test="args[0]!=null">
+                    and pt.grade_id=#{args[0]}
+                </if>
+                <if test="args[1]!=null">
+                    and pt.id=#{args[1]}
+                </if>
+            </where>
+    </select>
+
+    <select id="findById" resultMap="StudyHabitsMap">
+           select * from zy_team_password where  team_id=#{args[0]}
+    </select>
+    <insert id="create">
+        insert into zy_team_password(school_id,school_year,school_trem,grade_id,
+        team_id,team_name,create_time,modiy_time,password)
+        value(#{args[0].schoolId},#{args[0].schoolYear},#{args[0].schoolTrem},#{args[0].gradeId},
+        #{args[0].teamId},#{args[0].teamName},NOW(),null,#{args[0].passWord})
+    </insert>
+    <update id="update">
+        update zy_team_password set password=#{args[1]} where team_id=#{args[0]}
+    </update>
+
+
+</mapper>

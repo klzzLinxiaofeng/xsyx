@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.PaUserWrongDao">
+
+	<resultMap id="PaUserWrongResult" type="platform.education.paper.model.PaUserWrong">
+		<result property="id" column="id" />
+		<result property="createDate" column="create_date" />
+		<result property="userId" column="user_id" />
+		<result property="paperUuid" column="paper_uuid" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="paperQuestionId" column="paper_question_id" />
+		<result property="questionUuid" column="question_uuid" />
+		<result property="answer" column="answer" />
+		<result property="isCorrect" column="is_correct" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="isOffline" column="is_offline" />
+		<result property="userQuestionId" column="user_question_id" />
+		<result property="lastTime" column="last_time" />
+		<result property="lastAnswer" column="last_answer" />
+		<result property="rightCount" column="right_count" />
+		<result property="wrongCount" column="wrong_count" />
+		<result property="fileId" column="file_id" />
+		<result property="userQuestionUuid" column="user_question_uuid" />
+	</resultMap>
+	<resultMap id="WrongPaperVoResult" type="platform.education.paper.vo.WrongPaperVo">
+	        <result property="userWrongId"  column="userWrongId" />
+			<result property="questionType"  column="questionType" />
+			<result property="questionUuId"  column="uuid" />
+			<result property="content"  column="content" />
+			<result property="answer"  column="answer" />
+			<result property="dbCorrectAnswer"  column="correct_answer" />
+			<result property="rightCount"  column="right_count" />
+			<result property="wrongCount"  column="wrong_count" />
+			<result property="explanation"  column="explanation" />
+			<result property="difficulity"  column="difficulity" />
+			<result property="rightAnswerRight"  column="rightAnswerRight" />
+			<result property="dbPaperAnswer"  column="dbPaperAnswer" />
+			<result property="totalTime"  column="total_time" />
+			<result property="averageTime"  column="average_time" />
+			<result property="parentId" column="parent_id" />
+			<result property="number"  column="number"/>
+			<result property="paperTitle"  column="paper_title"/>
+			<result property="score"  column="score"/>
+			<result property="questionId"  column="questionId"/>
+			<result property="difficulityFloat"  column="difficulityFloat"/>
+			<result property="isCorrect" column="is_correct" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.paper.model.PaUserWrong">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_user_wrong (
+			id, 
+			create_date, 
+			user_id, 
+			paper_uuid, 
+			modify_date, 
+			paper_question_id, 
+			question_uuid, 
+			answer, 
+			is_correct, 
+			is_deleted, 
+			is_offline, 
+			user_question_id, 
+			last_time, 
+			last_answer, 
+			right_count, 
+			wrong_count, 
+			file_id, 
+			user_question_uuid
+		)
+		VALUES (
+			#{id}, 
+			#{createDate}, 
+			#{userId}, 
+			#{paperUuid}, 
+			#{modifyDate}, 
+			#{paperQuestionId}, 
+			#{questionUuid}, 
+			#{answer}, 
+			<choose>
+				<when test="isCorrect != null">
+					<choose>
+						<when test="isCorrect == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="isOffline != null">
+					<choose>
+						<when test="isOffline == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{userQuestionId}, 
+			#{lastTime}, 
+			#{lastAnswer}, 
+			#{rightCount}, 
+			#{wrongCount}, 
+			#{fileId}, 
+			#{userQuestionUuid}
+		)
+	</insert>
+
+	<select id="read" resultMap="PaUserWrongResult" useCache="false">
+		SELECT * FROM pa_user_wrong WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPaUserWrongByCondition" resultMap="PaUserWrongResult" useCache="false">
+		SELECT * FROM pa_user_wrong 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid = #{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].paperQuestionId != null">
+				AND paper_question_id = #{args[0].paperQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid = #{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answer != null and args[0].answer != ''">
+				AND answer = #{args[0].answer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isCorrect != null">
+				<choose>
+					<when test="args[0].isCorrect == true">
+						AND is_correct  = 1
+					</when>
+					<otherwise>
+						AND is_correct  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isOffline != null">
+				<choose>
+					<when test="args[0].isOffline == true">
+						AND is_offline  = 1
+					</when>
+					<otherwise>
+						AND is_offline  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].userQuestionId != null">
+				AND user_question_id = #{args[0].userQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lastTime != null">
+				AND last_time = #{args[0].lastTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].lastAnswer != null and args[0].lastAnswer != ''">
+				AND last_answer = #{args[0].lastAnswer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rightCount != null">
+				AND right_count = #{args[0].rightCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].wrongCount != null">
+				AND wrong_count = #{args[0].wrongCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fileId != null and args[0].fileId != ''">
+				AND file_id = #{args[0].fileId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userQuestionUuid != null and args[0].userQuestionUuid != ''">
+				AND user_question_uuid = #{args[0].userQuestionUuid,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_user_wrong 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid = #{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].paperQuestionId != null">
+				AND paper_question_id = #{args[0].paperQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].questionUuid != null and args[0].questionUuid != ''">
+				AND question_uuid = #{args[0].questionUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].answer != null and args[0].answer != ''">
+				AND answer = #{args[0].answer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isCorrect != null">
+				<choose>
+					<when test="args[0].isCorrect == true">
+						AND is_correct  = 1
+					</when>
+					<otherwise>
+						AND is_correct  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].isOffline != null">
+				<choose>
+					<when test="args[0].isOffline == true">
+						AND is_offline  = 1
+					</when>
+					<otherwise>
+						AND is_offline  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].userQuestionId != null">
+				AND user_question_id = #{args[0].userQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].lastTime != null">
+				AND last_time = #{args[0].lastTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].lastAnswer != null and args[0].lastAnswer != ''">
+				AND last_answer = #{args[0].lastAnswer,javaType=java.lang.String}
+			</if>
+			<if test="args[0].rightCount != null">
+				AND right_count = #{args[0].rightCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].wrongCount != null">
+				AND wrong_count = #{args[0].wrongCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fileId != null and args[0].fileId != ''">
+				AND file_id = #{args[0].fileId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].userQuestionUuid != null and args[0].userQuestionUuid != ''">
+				AND user_question_uuid = #{args[0].userQuestionUuid,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PaUserWrongResult" useCache="false">
+		SELECT * FROM pa_user_wrong WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.paper.model.PaUserWrong">
+		UPDATE pa_user_wrong
+		SET 
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="paperUuid != null">
+			paper_uuid=#{paperUuid},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="paperQuestionId != null">
+			paper_question_id=#{paperQuestionId},
+		</if>
+		<if test="questionUuid != null">
+			question_uuid=#{questionUuid},
+		</if>
+		<if test="answer != null">
+			answer=#{answer},
+		</if>
+		<if test="isCorrect != null">
+			<choose>
+				<when test="isCorrect == true">
+					is_correct  = 1,
+				</when>
+				<otherwise>
+					is_correct  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="isOffline != null">
+			<choose>
+				<when test="isOffline == true">
+					is_offline  = 1,
+				</when>
+				<otherwise>
+					is_offline  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="userQuestionId != null">
+			user_question_id=#{userQuestionId},
+		</if>
+		<if test="lastTime != null">
+			last_time=#{lastTime},
+		</if>
+		<if test="lastAnswer != null">
+			last_answer=#{lastAnswer},
+		</if>
+		<if test="rightCount != null">
+			right_count=#{rightCount},
+		</if>
+		<if test="wrongCount != null">
+			wrong_count=#{wrongCount},
+		</if>
+		<if test="fileId != null">
+			file_id=#{fileId},
+		</if>
+		<if test="userQuestionUuid != null">
+			user_question_uuid=#{userQuestionUuid},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pa_user_wrong
+		WHERE id = #{id}
+	</delete>
+	<select id="findUserWrongList" resultMap="WrongPaperVoResult">
+	SELECT
+	puq.answer_time AS total_time,
+	puw.id AS userWrongId,
+	pq.uuid,
+	pq.content,
+	pq.answer,
+	pq.correct_answer,
+	puw.right_count,
+	puw.is_correct,
+	puw.wrong_count,
+	pq.explanation,
+	pq.question_type AS questionType,
+	pq.parent_id,
+	(
+				CASE
+		WHEN pq.difficulity IS NULL THEN
+			'未知难度'
+		WHEN pq.difficulity &gt;= 0
+		AND pq.difficulity &lt;= 0.2 THEN
+			'困难'
+		WHEN pq.difficulity &gt;= 0.3
+		AND pq.difficulity &lt;=  0.5 THEN
+			'中等'
+		WHEN pq.difficulity &gt;= 0.6
+		AND pq.difficulity &lt;= 1.0 THEN
+			'简单'
+		ELSE
+			'未知难度'
+		END
+	) AS difficulityString,
+	  pq.difficulity AS difficulityFloat,
+	(
+		CASE
+		WHEN pq.right_answer_count = 0 THEN
+			0
+		ELSE
+			(
+			    ROUND(pq.right_answer_count / pq.answer_count,2)
+			)
+		END
+	) AS rightAnswerRight,
+ (
+  CASE
+  WHEN  puw.last_answer IS NULL
+ THEN
+  puw.answer
+  ELSE
+  puw.last_answer
+  END
+ ) AS dbPaperAnswer,
+	(
+	CASE
+   WHEN
+   pq.average_time IS NULL
+   THEN  0
+   ELSE pq.average_time
+   END
+  )AS average_time,
+   ppt.node_order+1 AS number,
+   pp.title AS paper_title,
+   pq.id AS questionId,
+   ppt.score AS score
+FROM
+	pa_user_wrong puw
+INNER JOIN pa_question pq ON pq.uuid=puw.question_uuid  AND pq.question_property=1
+<if test="args[1] != null">
+INNER JOIN pa_question_catalog pqc ON pq.id = pqc.question_id  AND pqc.subject_code = #{args[1],javaType=java.lang.String}
+</if>
+INNER JOIN pa_paper pp ON pp.paper_uuid=puw.paper_uuid
+INNER JOIN pa_paper_tree ppt ON ppt.paper_id=pp.id AND ppt.question_id=pq.id
+INNER JOIN pa_user_question puq ON puq.uuid=puw.user_question_uuid
+WHERE
+	puw.user_id = #{args[0],javaType=java.lang.Integer}
+
+ORDER BY puw.create_date DESC
+	</select>
+</mapper>

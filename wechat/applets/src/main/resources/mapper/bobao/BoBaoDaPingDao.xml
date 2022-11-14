@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.bobao.dao.BoBaoDaPingDao">
+
+ <resultMap id="BoBaoDaPingMap" type="com.xunyunedu.bobao.vo.BoBaoDaPing">
+   <id column="id" property="id"></id>
+   <result column="grade_ids" property="gradeIds"></result>
+     <result column="gradeNames" property="gradeNames"></result>
+     <result column="bobao" property="boBaoHao"></result>
+   <result column="create_time" property="createTime"></result>
+   <result column="mody_time" property="modiyTime"></result>
+   <result column="name" property="name"></result>
+     <result column="school_trem" property="schoolTrem"></result>
+     <result column="school_year" property="schoolYear"></result>
+     <result column="school_id" property="schoolId"></result>
+ </resultMap>
+
+    <!--	新增年级返回结果-->
+    <resultMap id="gradeInfo" type="platform.education.generalTeachingAffair.model.Grade">
+        <result property="id" column="id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="fullName" column="full_name"/>
+        <result property="gradeNumber" column="grade_number"/>
+    </resultMap>
+
+    <select id="findById" resultMap="BoBaoDaPingMap">
+        select * from zy_daping where id=#{args[0]}
+    </select>
+
+    <select id="findByGradeId" resultMap="BoBaoDaPingMap">
+        select group_concat(name) as gradeNames   from pj_grade where id in (
+        <foreach collection="args[0]" item="i" separator=",">
+            #{i}
+        </foreach>
+        )
+    </select>
+
+</mapper>

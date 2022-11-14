@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.PublicClassTeacherDao">
+
+
+	<resultMap id="publicTeacherResult" type="platform.education.generalTeachingAffair.model.PublicTeacherVo">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="isDelete" column="is_deleted" />
+		<result property="coverUuid" column="cover_uuid" />
+		<result property="teacherDesc" column="teacher_desc" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="schoolId" column="school_id" />
+	</resultMap>
+
+
+
+	<select id="findPublicClassTeacherInfoByCondition" resultMap="publicTeacherResult" parameterType="platform.education.generalTeachingAffair.model.PublicTeacherVo">
+		select * from pj_public_teacher
+		where is_deleted = 0
+		<if test="schoolId != null">
+		    and school_id = #{schoolId}
+        </if>
+	</select>
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.PublicTeacherVo">
+	    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		insert into pj_public_teacher(id,name,cover_uuid,teacher_desc,is_deleted,school_id,create_date,modify_date)
+		values(
+                null,
+                #{name},
+                #{coverUuid},
+                #{teacherDesc},
+                #{isDelete},
+                #{schoolId},
+                #{createDate},
+                #{modifyDate}
+            )
+    </insert>
+
+    <update id="update"  parameterType="platform.education.generalTeachingAffair.model.PublicTeacherVo">
+        update pj_public_teacher
+        <set>
+            <if test="schoolId != null">
+                school_id=#{schoolId},
+            </if>
+            <if test="name != null">
+                name=#{name},
+            </if>
+            <if test="teacherDesc != null">
+                teacher_desc=#{teacherDesc},
+            </if>
+            <if test="isDelete != null">
+                is_deleted = #{isDelete},
+            </if>
+            <if test="createDate != null">
+                create_date=#{createDate},
+            </if>
+            <if test="modifyDate != null">
+                modify_date=#{modifyDate},
+            </if>
+            <if test="coverUuid != null">
+                cover_uuid = #{coverUuid}
+            </if>
+        </set>
+		WHERE id = #{id}
+    </update>
+    <select id="findByTeacherId" resultMap="publicTeacherResult" useCache="false">
+		SELECT * FROM pj_public_teacher WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+	<select id="read" resultMap="publicTeacherResult" useCache="false">
+		SELECT * FROM pj_public_teacher WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		    AND id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		ORDER BY id DESC
+	</select>
+	<select id="findByClassId" resultMap="publicTeacherResult">
+        select ppt.* from pj_public_teacher ppt inner join pj_public_teacher_related pptr
+        on ppt.id = pptr.teacher_id
+        where ppt.is_deleted = 0 and pptr.is_deleted = 0 and public_class_id =  #{args[0],javaType=java.lang.Integer}
+        and ppt.school_id =  #{args[1],javaType=java.lang.Integer} and pptr.school_id =  #{args[1],javaType=java.lang.Integer}
+    </select>
+
+</mapper>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <link rel="stylesheet" href="educational.css">
+    <script type="text/javascript" src='echarts.js'></script>
+    <script src="echarts.min.js"></script>
+    <script src="vue.js"></script>
+    <link rel="stylesheet" href="iview.css">
+    <script src="vue.min.js"></script>
+    <script src="iview.min.js"></script>
+    <script src="jquery.min.js"></script>
+    <script>
+        //屏幕适应
+        (function(win, doc) {
+            if (!win.addEventListener) return;
+            var html = document.documentElement;
+            function setFont() {
+                var html = document.documentElement;
+                var k = 1920;
+                html.style.fontSize = html.clientWidth / k * 100 + "px";
+            }
+            setFont();
+            setTimeout(function() {
+                setFont();
+            }, 300);
+            doc.addEventListener('DOMContentLoaded', setFont, false);
+            win.addEventListener('resize', setFont, false);
+            win.addEventListener('load', setFont, false);
+        })(window, document);
+    </script>
+    <style>
+        html {
+            font-size: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app" ref="app" style="display: none;">
+        <div id="consumption">
+            <div class="headers">
+                <div class="headersTitleTxt gradient-text-one">{{titleList[titleIndex]}}</div>
+                <div class="titleBox">
+                    <div v-for="(item,index) in titleList" class="headersTitleTxt" @click="changeTitle(index)">
+                        <div :class="titleIndex ===index?'itemTxt2 itemTxt':'itemTxt'">
+                            <div :class="titleIndex ===index?'itemTxt_One itemTxt1':'itemTxt1'">{{item}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 总务大数据 -->
+            <div class="main" v-show="titleIndex === 0">
+                <div class="mainLeft">
+                    <div class="consumeBox">
+                        <div class="boxTitle">消费统计</div>
+                        <div class="totleConsume">
+                            <img src="images/consume_icon1.png">
+                            <div class="totleConsumeNum">
+                                <p>当日总消费</p>
+                                <p>{{SchoolDaySumMoney}}</p>
+                            </div>
+                        </div>
+                        <div class="totleConsume">
+                            <img src="images/consume_icon2.png">
+                            <div class="totleConsumeNum">
+                                <p>当日总充值</p>
+                                <p>{{SumAmout}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="trend">
+                        <div class="boxTitle">日消费趋势图</div>
+                        <div ref="trend" id="trend" style="">
+                        </div>
+                    </div>
+                    <div class="recharge">
+                        <div class="boxTitle">日充值趋势图</div>
+                        <div ref="recharge" id="recharge" style="">
+                        </div>
+                    </div>
+                </div>
+                <div class="mainCenter">
+                    <div class="dataBox">
+                        <div class="statistics">
+                            <div class="statisticsItem">
+                                <p class="statisticsTop">
+                                    <img class="statisticsIcon" src="images/title_icon1.png">
+                                    <span>补卡未处理</span>
+                                </p>
+                                <p class="statisticsNum">{{replaceCardTotal}}</p>
+                            </div>
+                            <div class="statisticsItem">
+                                <p class="statisticsTop" style="background: #2BA2F1;">
+                                    <img class="statisticsIcon" src="images/title_icon2.png">
+                                    <span>反馈未处理</span>
+                                </p>
+                                <p class="statisticsNum" style="color:#2BA2F1;">{{feedbackTotal}}</p>
+                            </div>
+                            <div class="statisticsItem">
+                                <p class="statisticsTop" style="background: #EE7070;">
+                                    <img class="statisticsIcon" src="images/title_icon3.png">
+                                    <span>报修未处理</span>
+                                </p>
+                                <p class="statisticsNum" style="color:#EE7070;">{{notCardTotal}}</p>
+                            </div>
+                        </div>
+                        <div class="home_bg">
+                            <img src="images/home_bg.png">
+                        </div>
+                        <div class="repairwrap">
+                            <div class="boxTitle2">本月报修统计
+                                <div class="select">
+                                    <!-- <date-picker type="month" placement="bottom-end" placeholder="请选择时间" style="width: 200px" @on-change="getDay"></date-picker> -->
+                                    <i-select v-model="currady" style="width:200px">
+                                        <i-option v-for="item in monthList" :value="item" :key="item" @click.native="getDay">{{ item }}</i-option>
+                                    </i-select>
+                                </div>
+                            </div>
+                            <div ref="repair" id="repair"></div>
+                            <!-- <div class="repair">
+                                <div class="repairItem">
+                                    <p>报修申请数</p>
+                                    <p>12 <span style="font-size: 24px;">次</span></p>
+                                </div>
+                                <div class="repairItem">
+                                    <p>已处理</p>
+                                    <p>8 <span style="font-size: 24px;">次</span></p>
+                                </div>
+                                <div class="repairItem">
+                                    <p>待处理</p>
+                                    <p>3 <span style="font-size: 24px;">次</span></p>
+                                </div>
+                                <div class="repairItem">
+                                    <p>未处理</p>
+                                    <p>2 <span style="font-size: 24px;">次</span></p>
+                                </div>
+                                <div class="repairItem">
+                                    <p>处理中</p>
+                                    <p>2 <span style="font-size: 24px;">次</span></p>
+                                </div>
+                            </div> -->
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mainRight">
+                    <div class="katong">
+                        <div class="boxTitle">一卡通统计</div>
+                        <div class="katonginner">
+                            <div class="katongitem left">
+                                <div class="title">本月学生补卡</div>
+                                <div class="num"><span class="cardnum">{{stuTotal}}</span>次</div>
+                            </div>
+                            <div class="katongitem right">
+                                <div class="title">本月教师补卡</div>
+                                <div class="num"><span class="cardnum">{{teacherTotal}}</span>次</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feedback">
+                        <div class="boxTitle">家校反馈月趋势图</div>
+                        <div ref="feedback" id="feedback" style=""></div>
+                    </div>
+                    <div class="daily">
+                        <div class="boxTitle">日消费区域分布</div>
+                        <div ref="daily" id="daily" style=""></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 教务大数据 -->
+            <div class="educationalMain" v-show="titleIndex === 2">
+                <div class="educationalLeft">
+                    <div class="select">
+                        <!-- <date-picker type="month" placement="bottom-end" placeholder="请选择时间" style="width: 200px" @on-change="getDay"></date-picker> -->
+                        <i-select v-model="currady" style="width:200px">
+
+                            <i-option v-for="item in monthList" :value="item" :key="item" @click.native="getDay">{{ item }}</i-option>
+                        </i-select>
+                    </div>
+                    <img src="./images/jtLeft.png" alt="" class="jtLeft"  @click="toLast">
+                    <img src="./images/jtRight.png" alt="" class="jtRight" @click="toNext">
+                    <div class="leftBox">
+                        <div class="classItem">
+                            <!-- {{educationalList[educationalIdx]}} -->
+                            <div class="classItem1" style="margin-right: 0.15rem;">
+                                <div class="grade">
+                                    <img src="./images/title_icon6.png" alt=""> {{grade}}
+                                    <img src="./images/title_icon5.png" alt="">
+                                </div>
+                                <div class="classAverage">
+                                    <div id="averageRadar" ref="averageRadar"></div>
+                                </div>
+                                <div class="classAverage">
+                                    <div id="classAverage" ref="classAverage"></div>
+                                </div>
+                            </div>
+                            <div class="classItem1">
+                                <div class="grade">
+                                    <img src="./images/title_icon6.png" alt=""> {{grade1}}
+                                    <img src="./images/title_icon5.png" alt="">
+                                </div>
+                                <div class="classAverage">
+                                    <div id="averageRadar1" ref="averageRadar1"></div>
+                                </div>
+                                <div class="classAverage">
+                                    <div id="classAverage1" ref="classAverage1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="educationalRight">
+                    <div class="selectionBox">
+                        <div class="selectionTitle">选课压力预警</div>
+                        <div class="selectionCircle">
+                            <img class="CircleIcon" src="./images/title_icon7.png" alt="">
+                            <div class="Circlenormal">正常</div>
+                        </div>
+                    </div>
+                    <div class="PassRate PassRate1">
+                        <div class="selectionTitle1">年级合格率分布</div>
+                        <div id="PassRate" ref="PassRate"></div>
+                    </div>
+                    <div class="PassRate">
+                        <div class="selectionTitle1">年级综合素质评分</div>
+                        <div id="PassRate2" ref="PassRate2"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 行政大数据 -->
+            <div class="administrationMain" v-show="titleIndex === 1">
+                <div class="mainLeft">
+                    <div class="consumeBox">
+                        <img style="width: 5.05rem;height: 2.86rem;" src="./images/administration/picture1.png" alt="">
+						<div class="teacher_class">{{countNum.teacherLeaveCount}}</div>
+						<div class="student_class">{{countNum.studentLeaveCount}}</div>
+                    </div>
+                    <div class="trend">
+						 <div class="boxTitle">今日审批数</div>
+						<div ref="appDayNumOption" id="appDayNumOption" style=""></div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/administration/今日审批数.png" alt=""> -->
+                    </div>
+                    <div class="trend">
+						<div class="boxTitle">本月审批公布</div>
+						<div ref="approveOption" id="approveOption" style=""></div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/administration/本月审批公布.png" alt=""> -->
+                    </div>
+                </div>
+                <div class="mainCenter">
+                    <div class="statistics" style="padding-top: 0.2rem;">
+                        <div class="statisticsItem">
+                            <p class="statisticsTop">
+                                <img class="statisticsIcon" src="images/title_icon1.png">
+                                <span>教职工人数</span>
+                            </p>
+                            <p class="statisticsNum">{{teacherInfo.jzgCount}}</p>
+                        </div>
+                        <div class="statisticsItem">
+                            <p class="statisticsTop" style="background: #2BA2F1;">
+                                <img class="statisticsIcon" src="images/title_icon2.png">
+                                <span>学生人数</span>
+                            </p>
+                            <p class="statisticsNum" style="color:#2BA2F1;">{{teacherInfo.stuCount}}</p>
+                        </div>
+                        <div class="statisticsItem">
+                            <p class="statisticsTop" style="background: #EE7070;">
+                                <img class="statisticsIcon" src="images/title_icon3.png">
+                                <span>教师总数</span>
+                            </p>
+                            <p class="statisticsNum" style="color:#EE7070;">{{teacherInfo.teacherCount}}</p>
+                        </div>
+                    </div>
+                    <div class="home_bg1">
+                        <img src="images/home_bg1.png">
+                    </div>
+                </div>
+                <div class="mainRight">
+                    <div class="consumeBox">
+						<div class="boxTitle">学生年级分布</div>
+						<div ref="studentGrade" id="studentGrade" style=""></div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/administration/学生年级分布.png" alt=""> -->
+                    </div>
+                    <div class="trend">
+						<div class="boxTitle">教师职称分布</div>
+						<div ref="teacherTitle" id="teacherTitle" style=""></div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/administration/教师职称分布.png" alt=""> -->
+                    </div>
+                    <div class="trend">
+						<div class="boxTitle">教师学历分布</div>
+						<div ref="education" id="education" style=""></div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/administration/教师学历分布.png" alt=""> -->
+                    </div>
+                </div>
+            </div>
+            <!-- 德育大数据 -->
+            <div class="administrationMain" v-show="titleIndex === 3">
+                <div class="mainLeft">
+                    <div class="consumeBox">
+						<div class="boxTitle">校园出勤状况</div>
+						<div ref="campusOption" id="campusOption" style="">
+                            {{}}
+                        </div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/moralEducation/校园出勤状况.png" alt=""> -->
+                    </div>
+                    <div class="trend">
+						<div class="boxTitle">今日年级出勤率分布</div>
+						<div ref="attendanceToday" id="attendanceToday" style=""></div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/moralEducation/今日年级出勤率分布.png" alt=""> -->
+                    </div>
+                    <div class="trend" style="position: relative;">
+                        <div class="boxTitle">教师到课率趋势</div>
+                        <div ref="courseOption" id="courseOption" style=""></div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/moralEducation/教师到课率趋势.png" alt=""> -->
+                    </div>
+                </div>
+                <div class="mainCenter">
+                    <div class="statistics" style="justify-content: space-around;">
+						<div style="position: relative;">
+							<div class="attendance_num" id="attendance_num">{{shidaoNum}}%</div>
+							<img src="./images/moralEducation/picture2.png" alt="">
+							<div class="attendance_text">今日出勤率</div>
+						</div>
+						<div style="position: relative;">
+							<div class="healthy_num">{{healthNum}}</div>
+							<img src="./images/moralEducation/picture3.png" alt="">
+							<div class="healthy_text">今日健康上报</div>
+						</div>
+                    </div>
+                    <div class="content_list">
+                        <!-- <img src="images/home_bg2.png"> -->
+						<div class="left">
+							<div class="list_title">周明星学生</div>
+							<div>
+								<div class="list_item" v-for="(item,index) in stulist" :key="index">
+									<span v-if="index>2" class="list_num">{{index+1}}</span>
+									<img v-if="index==0" class="list_img1" src="images/one.png">
+									<img v-if="index==1" class="list_img1" src="images/two.png">
+									<img v-if="index==2" class="list_img1" src="images/three.png">
+									<img v-if="index>2" class="list_img1" src="images/medal.png">
+									<img v-if="item.img" class="list_img2" :src="item.img">
+									<img v-else class="list_img2" src="images/noPhoto.jpg">
+									<span class="span1">{{item.name}}</span>
+								</div>
+								
+							</div>
+						</div>
+						<div class="right">
+							<div class="list_title">优秀教师</div>
+							<div>
+								<div class="list_item" v-for="(item,index) in tealist" :key="index">
+									<span v-if="index>2" class="list_num">{{index+1}}</span>
+									<img v-if="index==0" class="list_img1" src="images/one.png">
+									<img v-if="index==1" class="list_img1" src="images/two.png">
+									<img v-if="index==2" class="list_img1" src="images/three.png">
+									<img v-if="index>2" class="list_img1" src="images/medal.png">
+									<img v-if="item.img" class="list_img2" :src="item.img">
+									<img v-else class="list_img2" src="images/noPhoto.jpg">
+									<span class="span1">{{item.teacherNames}}</span>
+								</div>
+							</div>
+						</div>
+                    </div>
+                </div>
+                <div class="mainRight">
+                    <div class="consumeBox">
+						<div class="boxTitle">今日年级健康上报数</div>
+						<div ref="gradeHealthy" id="gradeHealthy" style=""></div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/moralEducation/今日年级健康上报数.png" alt=""> -->
+                    </div>
+                    <div class="trend">
+						<div class="boxTitle">今日健康状态分布</div>
+						<div ref="healthyToday" id="healthyToday" style=""></div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/moralEducation/今日健康状态分布.png" alt=""> -->
+                    </div>
+                    <div class="trend">
+						<div class="boxTitle">校园健康上报趋势</div>
+						<div ref="campusHealth" id="campusHealth" style=""></div>
+                        <!-- <img style="width: 5.05rem;height: 2.86rem;" src="./images/moralEducation/校园健康上报趋势.png" alt=""> -->
+                    </div>
+                </div>
+            </div>
+            <!-- 图书馆大数据 -->
+            <div class="administrationMain" v-show="titleIndex === 4">
+                <div class="mainLeft">
+                    <div class="consumeBox">
+                        <img style="width: 5.05rem;height: 2.86rem;" src="./images/library/借阅统计.png" alt="">
+                    </div>
+                    <div class="trend">
+                        <img style="width: 5.05rem;height: 2.86rem;" src="./images/library/图书热度榜.png" alt="">
+                    </div>
+                    <div class="trend">
+                        <img style="width: 5.05rem;height: 2.86rem;" src="./images/library/班级周榜.png" alt="">
+                    </div>
+                </div>
+                <div class="mainCenter">
+                    <div class="statistics" style="justify-content: space-around;">
+                        <img src="./images/library/中间数据.png" alt="">
+                    </div>
+                    <div class="home_bg1">
+                        <img src="images/home_bg3.png">
+                    </div>
+                </div>
+                <div class="mainRight">
+                    <div class="consumeBox">
+                        <img style="width: 5.05rem;height: 2.86rem;" src="./images/library/周借阅分布.png" alt="">
+                    </div>
+                    <div class="trend">
+                        <img style="width: 5.05rem;height: 2.86rem;" src="./images/library/阅读之星.png" alt="">
+                    </div>
+                    <div class="trend">
+                        <img style="width: 5.05rem;height: 2.86rem;" src="./images/library/教师周榜.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript ">
+    var that = this;
+    // var baseurl = 'http://192.168.1.14:80';//于的本地ip
+    // var baseurl1 = "http://139.159.242.158:8089 ";//食堂測試ip
+    // var baseurl2 = "http://10.191.109.85:8089 ";//食堂測試ip 
+
+    function request(baseurl, method, url, data) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: method,
+                contentType: 'application/json',
+                url: baseurl + url,
+                data: data,
+                success: function(res) {
+                    resolve(res);
+                }
+            });
+        });
+    };
+</script>
+
+<script src="util.js "></script>
+<script src="index.js "></script>
+<!-- <script src="index2.js "></script> -->
+<script type="text/javascript ">
+</script>

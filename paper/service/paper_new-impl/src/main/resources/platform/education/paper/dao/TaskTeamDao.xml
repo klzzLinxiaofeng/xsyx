@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.TaskTeamDao">
+
+    <resultMap id="TaskTeamResult" type="platform.education.paper.model.TaskTeam">
+        <result property="id" column="id"/>
+        <result property="taskId" column="task_id"/>
+        <result property="teamId" column="team_id"/>
+        <result property="pjExamId" column="pj_exam_id"/>
+        <result property="isInterscoring" column="is_interscoring"/>
+        <result property="interscoreStartTime" column="interscore_start_time"/>
+        <result property="interscoreFinishTime" column="interscore_finish_time"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+
+    <resultMap id="TaskTeamVoResult" type="platform.education.paper.vo.TaskTeamVo" extends="TaskTeamResult">
+        <result property="teamName" column="team_name"/>
+        <result property="finishRate" column="finish_rate"/>
+        <association property="totalOfCompleted" column="{taskId=task_id,teamId=team_id}" javaType="java.lang.String"
+                     select="platform.education.paper.dao.TaskUserDao.findTotalOfCompletedByTaskIdAndTeamId"/>
+        <association property="averageScore" column="{examId=pj_exam_id,teamId=team_id}" javaType="java.lang.String"
+                     select="platform.education.generalTeachingAffair.dao.PjExamDao.findAverageScoreByExamIdAndTeamId"/>
+        <collection property="taskUserVoList" column="{taskId=task_id,teamId=team_id}" javaType="java.util.ArrayList"
+                    ofType="platform.education.paper.vo.TaskUserVo"
+                    select="platform.education.paper.dao.TaskUserDao.findTaskUserVoByIds"/>
+        <collection property="examTeamScoreVoList" column="{examId=pj_exam_id}" javaType="java.util.ArrayList"
+                    ofType="platform.education.generalTeachingAffair.vo.ExamTeamScoreVo"
+                    select="platform.education.generalTeachingAffair.dao.PjExamDao.findTeamAverageScoreByExamId"/>
+    </resultMap>
+
+    <insert id="create" parameterType="platform.education.paper.model.TaskTeam">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO pa_task_team (
+        id,
+        task_id,
+        team_id,
+        pj_exam_id,
+        is_interscoring,
+        interscore_start_time,
+        interscore_finish_time,
+        create_date,
+        modify_date,
+        is_deleted
+        )
+        VALUES (
+        #{id},
+        #{taskId},
+        #{teamId},
+        #{pjExamId},
+        <choose>
+            <when test="isInterscoring != null">
+                <choose>
+                    <when test="isInterscoring == true">
+                        1,
+                    </when>
+                    <otherwise>
+                        0,
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                0,
+            </otherwise>
+        </choose>
+        #{interscoreStartTime},
+        #{interscoreFinishTime},
+        #{createDate},
+        #{modifyDate},
+        <choose>
+            <when test="isDeleted != null">
+                <choose>
+                    <when test="isDeleted == true">
+                        1
+                    </when>
+                    <otherwise>
+                        0
+                    </otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                0
+            </otherwise>
+        </choose>
+        )
+    </insert>
+
+    <select id="read" resultMap="TaskTeamResult" useCache="false">
+        SELECT * FROM pa_task_team WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findTaskTeamByCondition" resultMap="TaskTeamResult" useCache="false">
+        SELECT * FROM pa_task_team
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].taskId != null">
+                AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].teamId != null">
+                AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].pjExamId != null">
+                AND pj_exam_id = #{args[0].pjExamId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].isInterscoring != null">
+                <choose>
+                    <when test="args[0].isInterscoring == true">
+                        AND is_interscoring = 1
+                    </when>
+                    <otherwise>
+                        AND is_interscoring = 0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="args[0].interscoreStartTime != null">
+                AND interscore_start_time = #{args[0].interscoreStartTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].interscoreFinishTime != null">
+                AND interscore_finish_time = #{args[0].interscoreFinishTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].isDeleted != null">
+                <choose>
+                    <when test="args[0].isDeleted == true">
+                        AND is_deleted = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted = 0
+                    </otherwise>
+                </choose>
+            </if>
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Long" useCache="false">
+        SELECT count(*) FROM pa_task_team
+        <if test="args[0] != null">
+            WHERE 1=1
+            <if test="args[0].id != null">
+                AND id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].taskId != null">
+                AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].teamId != null">
+                AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].pjExamId != null">
+                AND pj_exam_id = #{args[0].pjExamId,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].isInterscoring != null">
+                <choose>
+                    <when test="args[0].isInterscoring == true">
+                        AND is_interscoring = 1
+                    </when>
+                    <otherwise>
+                        AND is_interscoring = 0
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="args[0].interscoreStartTime != null">
+                AND interscore_start_time = #{args[0].interscoreStartTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].interscoreFinishTime != null">
+                AND interscore_finish_time = #{args[0].interscoreFinishTime,javaType=java.util.Date}
+            </if>
+            <if test="args[0].createDate != null">
+                AND create_date = #{args[0].createDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].modifyDate != null">
+                AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+            </if>
+            <if test="args[0].isDeleted != null">
+                <choose>
+                    <when test="args[0].isDeleted == true">
+                        AND is_deleted = 1
+                    </when>
+                    <otherwise>
+                        AND is_deleted = 0
+                    </otherwise>
+                </choose>
+            </if>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="TaskTeamResult" useCache="false">
+		SELECT * FROM pa_task_team WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+
+    <update id="update" parameterType="platform.education.paper.model.TaskTeam">
+        UPDATE pa_task_team
+        SET
+        <if test="taskId != null">
+            task_id=#{taskId},
+        </if>
+        <if test="teamId != null">
+            team_id=#{teamId},
+        </if>
+        <if test="pjExamId != null">
+            pj_exam_id=#{pjExamId},
+        </if>
+        <if test="isInterscoring != null">
+            <choose>
+                <when test="isInterscoring == true">
+                    is_interscoring = 1,
+                </when>
+                <otherwise>
+                    is_interscoring = 0,
+                </otherwise>
+            </choose>
+        </if>
+        <if test="interscoreStartTime != null">
+            interscore_start_time=#{interscoreStartTime},
+        </if>
+        <if test="interscoreFinishTime != null">
+            interscore_finish_time=#{interscoreFinishTime},
+        </if>
+        <if test="createDate != null">
+            create_date=#{createDate},
+        </if>
+        <if test="modifyDate != null">
+            modify_date=#{modifyDate},
+        </if>
+        <if test="isDeleted != null">
+            <choose>
+                <when test="isDeleted == true">
+                    is_deleted = 1,
+                </when>
+                <otherwise>
+                    is_deleted = 0,
+                </otherwise>
+            </choose>
+        </if>
+        id = #{id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+		DELETE FROM pa_task_team
+		WHERE id = #{id}
+	</delete>
+    <insert id="createBatch">
+        INSERT INTO pa_task_team (
+        id,
+        task_id,
+        team_id,
+        pj_exam_id,
+        is_interscoring,
+        interscore_start_time,
+        interscore_finish_time,
+        create_date,
+        modify_date,
+        is_deleted
+        )
+        VALUES
+        <foreach collection="args[0]" item="item" index="index"
+                 separator=",">
+            (
+            #{item.id},
+            #{item.taskId},
+            #{item.teamId},
+            #{item.pjExamId},
+            <choose>
+                <when test="item.isInterscoring != null">
+                    <choose>
+                        <when test="item.isInterscoring == true">
+                            1,
+                        </when>
+                        <otherwise>
+                            0,
+                        </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+                    0,
+                </otherwise>
+            </choose>
+            #{item.interscoreStartTime},
+            #{item.interscoreFinishTime},
+            #{item.createDate},
+            #{item.modifyDate},
+            <choose>
+                <when test="item.isDeleted != null">
+                    <choose>
+                        <when test="item.isDeleted == true">
+                            1
+                        </when>
+                        <otherwise>
+                            0
+                        </otherwise>
+                    </choose>
+                </when>
+                <otherwise>
+                    0
+                </otherwise>
+            </choose>
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByTaskIdAndTeamId">
+        UPDATE pa_task_team
+        SET is_deleted = 1
+        WHERE
+        task_id = #{args[0]}
+        <if test="args[1]!=null">
+            AND team_id = #{args[1]}
+        </if>
+    </update>
+
+    <select id="findTaskTeamByTaskId" resultMap="TaskTeamVoResult">
+        SELECT ptt.id,
+            ptt.task_id,
+            ptt.team_id,
+            ptt.pj_exam_id,
+            ptt.is_interscoring,
+            ptt.interscore_start_time,
+            ptt.interscore_finish_time,
+            ptt.create_date,
+            ptt.modify_date,
+            ptt.is_deleted,
+		    pt.`name` AS team_name
+	    FROM `pa_task_team` ptt LEFT JOIN `pj_team` pt ON ptt.team_id = pt.id
+        WHERE ptt.is_deleted = 0 AND ptt.task_id = #{args[0]}
+    </select>
+</mapper>

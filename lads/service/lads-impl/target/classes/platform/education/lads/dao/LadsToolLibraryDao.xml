@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.lads.dao.LadsToolLibraryDao">
+
+	<resultMap id="LadsToolLibraryResult" type="platform.education.lads.model.LadsToolLibrary">
+		<result property="id" column="id" />
+		<result property="validFlag" column="valid_flag" />
+		<result property="toolName" column="tool_name" />
+		<result property="image" column="image" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.lads.model.LadsToolLibrary">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO lads_tool_library (id, valid_flag, tool_name, image)
+		VALUES (#{id}, #{validFlag}, #{toolName}, #{image})
+	</insert>
+
+	<select id="read" resultMap="LadsToolLibraryResult" useCache="false">
+		SELECT * FROM lads_tool_library WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.String}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findLadsToolLibraryByCondition" resultMap="LadsToolLibraryResult" useCache="false">
+		SELECT * FROM lads_tool_library 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.String}
+			</if>
+			<if test="args[0].validFlag != null and args[0].validFlag != ''">
+			AND valid_flag = #{args[0].validFlag,javaType=java.lang.String}
+			</if>
+			<if test="args[0].toolName != null and args[0].toolName != ''">
+			AND tool_name = #{args[0].toolName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].image != null and args[0].image != ''">
+			AND image = #{args[0].image,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM lads_tool_library 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null and args[0].id != ''">
+			AND id = #{args[0].id,javaType=java.lang.String}
+			</if>
+			<if test="args[0].validFlag != null and args[0].validFlag != ''">
+			AND valid_flag = #{args[0].validFlag,javaType=java.lang.String}
+			</if>
+			<if test="args[0].toolName != null and args[0].toolName != ''">
+			AND tool_name = #{args[0].toolName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].image != null and args[0].image != ''">
+			AND image = #{args[0].image,javaType=java.lang.String}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="LadsToolLibraryResult" useCache="false">
+		SELECT * FROM lads_tool_library WHERE id = #{args[0],javaType=java.lang.String}
+	</select>
+	
+	<update id="update" parameterType="platform.education.lads.model.LadsToolLibrary">
+		UPDATE lads_tool_library
+		SET 
+				<if test="validFlag != null">
+					valid_flag=#{validFlag},
+				</if>
+				<if test="toolName != null">
+					tool_name=#{toolName},
+				</if>
+				<if test="image != null">
+					image=#{image},
+				</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM lads_tool_library
+		WHERE id = #{id}
+	</delete>
+	
+	<delete id="deleteByCondition">
+		DELETE FROM lads_tool_library
+		WHERE 1=1
+		<if test="id != null and id != ''">
+		AND id = #{id,javaType=java.lang.String}
+		</if>
+		<if test="validFlag != null and validFlag != ''">
+		AND valid_flag = #{validFlag,javaType=java.lang.String}
+		</if>
+		<if test="toolName != null and toolName != ''">
+		AND tool_name = #{toolName,javaType=java.lang.String}
+		</if>
+		<if test="image != null and image != ''">
+		AND image = #{image,javaType=java.lang.String}
+		</if>
+	</delete>
+        
+        <!--以下是业务方法-->
+        <select id="findByToolName" resultMap="LadsToolLibraryResult" useCache="false">
+		SELECT * FROM lads_tool_library 
+		AND tool_name = #{args[0],javaType=java.lang.String}
+	</select>
+        
+</mapper>

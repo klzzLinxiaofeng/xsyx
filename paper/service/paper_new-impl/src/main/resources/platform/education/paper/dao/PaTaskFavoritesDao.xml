@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.PaTaskFavoritesDao">
+
+	<resultMap id="PaTaskFavoritesResult" type="platform.education.paper.model.PaTaskFavorites">
+		<result property="id" column="id" />
+		<result property="taskId" column="task_id" />
+		<result property="unitId" column="unit_id" />
+		<result property="userId" column="user_id" />
+		<result property="userQuestionId" column="user_question_id" />
+		<result property="studentUserId" column="student_user_id" />
+		<result property="type" column="type" />
+		<result property="createDate" column="createDate" />
+		<result property="modifyDate" column="modifyDate" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="teamId" column="team_id" />
+		<result property="examQuestionId" column="exam_question_id" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.paper.model.PaTaskFavorites">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_task_favorites (
+			id, 
+			task_id, 
+			unit_id, 
+			user_id, 
+			user_question_id, 
+			student_user_id, 
+			type, 
+			createDate, 
+			modifyDate, 
+			is_deleted, 
+			team_id, 
+			exam_question_id
+		)
+		VALUES (
+			#{id}, 
+			#{taskId}, 
+			#{unitId}, 
+			#{userId}, 
+			#{userQuestionId}, 
+			#{studentUserId}, 
+			#{type}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{teamId}, 
+			#{examQuestionId}
+		)
+	</insert>
+
+	<select id="read" resultMap="PaTaskFavoritesResult" useCache="false">
+		SELECT * FROM pa_task_favorites WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPaTaskFavoritesByCondition" resultMap="PaTaskFavoritesResult" useCache="false">
+		SELECT * FROM pa_task_favorites 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskId != null">
+				AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].unitId != null">
+				AND unit_id = #{args[0].unitId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userQuestionId != null">
+				AND user_question_id = #{args[0].userQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentUserId != null">
+				AND student_user_id = #{args[0].studentUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].type != null">
+				AND type = #{args[0].type,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND createDate = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modifyDate = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examQuestionId != null">
+				AND exam_question_id = #{args[0].examQuestionId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_task_favorites 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].taskId != null">
+				AND task_id = #{args[0].taskId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].unitId != null">
+				AND unit_id = #{args[0].unitId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userId != null">
+				AND user_id = #{args[0].userId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].userQuestionId != null">
+				AND user_question_id = #{args[0].userQuestionId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].studentUserId != null">
+				AND student_user_id = #{args[0].studentUserId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].type != null">
+				AND type = #{args[0].type,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].createDate != null">
+				AND createDate = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modifyDate = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examQuestionId != null">
+				AND exam_question_id = #{args[0].examQuestionId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PaTaskFavoritesResult" useCache="false">
+		SELECT * FROM pa_task_favorites WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.paper.model.PaTaskFavorites">
+		UPDATE pa_task_favorites
+		SET 
+		<if test="taskId != null">
+			task_id=#{taskId},
+		</if>
+		<if test="unitId != null">
+			unit_id=#{unitId},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="userQuestionId != null">
+			user_question_id=#{userQuestionId},
+		</if>
+		<if test="studentUserId != null">
+			student_user_id=#{studentUserId},
+		</if>
+		<if test="type != null">
+			type=#{type},
+		</if>
+		<if test="createDate != null">
+			createDate=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modifyDate=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="examQuestionId != null">
+			exam_question_id=#{examQuestionId},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pa_task_favorites
+		WHERE id = #{id}
+	</delete>
+</mapper>

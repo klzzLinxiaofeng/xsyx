@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ComplainDao">
+
+	<resultMap id="ComplainResult" type="platform.education.generalTeachingAffair.model.Complain">
+		<result property="id" column="id" />
+		<result property="complainantId" column="complainant_id" />
+		<result property="schoolId" column="school_id" />
+		<result property="departId" column="depart_id" />
+		<result property="type" column="type" />
+		<result property="description" column="description" />
+		<result property="isDispose" column="is_dispose" />
+		<result property="disposeId" column="dispose_id" />
+		<result property="disposeWay" column="dispose_way" />
+		<result property="isEvaluate" column="is_evaluate" />
+		<result property="content" column="content" />
+		<result property="level" column="level" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+	</resultMap>
+
+	<resultMap id="ComplainVoResult" type="platform.education.generalTeachingAffair.vo.ComplainVo">
+		<result property="id" column="id" />
+		<result property="complainantId" column="complainant_id" />
+		<result property="schoolId" column="school_id" />
+		<result property="departId" column="depart_id" />
+		<result property="type" column="type" />
+		<result property="description" column="description" />
+		<result property="isDispose" column="is_dispose" />
+		<result property="disposeId" column="dispose_id" />
+		<result property="disposeWay" column="dispose_way" />
+		<result property="isEvaluate" column="is_evaluate" />
+		<result property="content" column="content" />
+		<result property="level" column="level" />
+		<result property="isDeleted" column="is_deleted" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="count" column="count"/>
+		<result property="averageLevel" column="averageLevel"/>
+		<result property="fileUUIDs" column="fileUUIDs"/>
+		<result property="departName" column="departName"/>
+		<result property="complainName" column="complainName"/>
+		<result property="disposeName" column="disposeName"/>
+		<result property="percent" column="percent"/>
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.Complain">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO dn_complain (
+			id, 
+			complainant_id, 
+			school_id, 
+			depart_id, 
+			type, 
+			description, 
+			is_dispose, 
+			dispose_id, 
+			dispose_way, 
+			is_evaluate, 
+			content, 
+			level, 
+			is_deleted, 
+			create_date, 
+			modify_date
+		)
+		VALUES (
+			#{id}, 
+			#{complainantId}, 
+			#{schoolId}, 
+			#{departId}, 
+			#{type}, 
+			#{description}, 
+			<choose>
+				<when test="isDispose != null">
+					<choose>
+						<when test="isDispose == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{disposeId}, 
+			#{disposeWay}, 
+			<choose>
+				<when test="isEvaluate != null">
+					<choose>
+						<when test="isEvaluate == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{content}, 
+			#{level}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}
+		)
+	</insert>
+
+	<select id="read" resultMap="ComplainResult" useCache="false">
+		SELECT * FROM dn_complain WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findComplainByCondition" resultMap="ComplainResult" useCache="false">
+		SELECT * FROM dn_complain
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].complainantId != null">
+				AND complainant_id = #{args[0].complainantId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departId != null">
+				AND depart_id = #{args[0].departId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].description != null and args[0].description != ''">
+				AND description = #{args[0].description,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDispose != null">
+				<choose>
+					<when test="args[0].isDispose == true">
+						AND is_dispose  = 1
+					</when>
+					<otherwise>
+						AND is_dispose  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].disposeId != null">
+				AND dispose_id = #{args[0].disposeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].disposeWay != null and args[0].disposeWay != ''">
+				AND dispose_way = #{args[0].disposeWay,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isEvaluate != null">
+				<choose>
+					<when test="args[0].isEvaluate == true">
+						AND is_evaluate  = 1
+					</when>
+					<otherwise>
+						AND is_evaluate  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+				AND content = #{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].level != null">
+				AND level = #{args[0].level,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM dn_complain
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].complainantId != null">
+				AND complainant_id = #{args[0].complainantId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].departId != null">
+				AND depart_id = #{args[0].departId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].type != null and args[0].type != ''">
+				AND type = #{args[0].type,javaType=java.lang.String}
+			</if>
+			<if test="args[0].description != null and args[0].description != ''">
+				AND description = #{args[0].description,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isDispose != null">
+				<choose>
+					<when test="args[0].isDispose == true">
+						AND is_dispose  = 1
+					</when>
+					<otherwise>
+						AND is_dispose  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].disposeId != null">
+				AND dispose_id = #{args[0].disposeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].disposeWay != null and args[0].disposeWay != ''">
+				AND dispose_way = #{args[0].disposeWay,javaType=java.lang.String}
+			</if>
+			<if test="args[0].isEvaluate != null">
+				<choose>
+					<when test="args[0].isEvaluate == true">
+						AND is_evaluate  = 1
+					</when>
+					<otherwise>
+						AND is_evaluate  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].content != null and args[0].content != ''">
+				AND content = #{args[0].content,javaType=java.lang.String}
+			</if>
+			<if test="args[0].level != null">
+				AND level = #{args[0].level,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ComplainResult" useCache="false">
+		SELECT * FROM dn_complain WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.Complain">
+		UPDATE dn_complain
+		SET 
+		<if test="complainantId != null">
+			complainant_id=#{complainantId},
+		</if>
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="departId != null">
+			depart_id=#{departId},
+		</if>
+		<if test="type != null">
+			type=#{type},
+		</if>
+		<if test="description != null">
+			description=#{description},
+		</if>
+		<if test="isDispose != null">
+			<choose>
+				<when test="isDispose == true">
+					is_dispose  = 1,
+				</when>
+				<otherwise>
+					is_dispose  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="disposeId != null">
+			dispose_id=#{disposeId},
+		</if>
+		<if test="disposeWay != null">
+			dispose_way=#{disposeWay},
+		</if>
+		<if test="isEvaluate != null">
+			<choose>
+				<when test="isEvaluate == true">
+					is_evaluate  = 1,
+				</when>
+				<otherwise>
+					is_evaluate  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="content != null">
+			content=#{content},
+		</if>
+		<if test="level != null">
+			level=#{level},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM dn_complain
+		WHERE id = #{id}
+	</delete>
+
+	<select id="findByComplainant" resultMap="ComplainVoResult" useCache="false">
+		SELECT c.*, GROUP_CONCAT(cf.file_id) fileUUIDs, d.`name` departName, t.`name` complainName,t1.`name` disposeName, CONCAT(ROUND(IFNULL(c.`level`,0)/5*100),'%') percent FROM dn_complain c
+		LEFT JOIN dn_complain_file cf ON c.id = cf.complain_id
+		LEFT JOIN pj_department d ON c.depart_id = d.id
+		LEFT JOIN pj_teacher t ON c.complainant_id = t.user_id AND c.school_id = t.school_id
+		LEFT JOIN pj_teacher t1 ON c.dispose_id = t1.user_id AND c.school_id = t1.school_id
+		WHERE c.is_deleted = 0
+		AND c.school_id = #{args[0],javaType=java.lang.Integer}
+		AND c.complainant_id = #{args[1],javaType=java.lang.Integer}
+		<if test="args[2] != null and args[2] != ''">
+			AND (c.type LIKE CONCAT(CONCAT('%', #{args[2],javaType=java.lang.String}),'%')
+			OR c.description LIKE CONCAT(CONCAT('%', #{args[2],javaType=java.lang.String}),'%'))
+		</if>
+		GROUP BY c.id
+		ORDER BY c.create_date DESC
+	</select>
+
+	<select id="findAllComplain" resultMap="ComplainVoResult" useCache="false">
+		SELECT c.*, GROUP_CONCAT(cf.file_id) fileUUIDs, d.`name` departName, t.`name` complainName,t1.`name` disposeName, CONCAT(ROUND(IFNULL(c.`level`,0)/5*100),'%')percent FROM dn_complain c
+		LEFT JOIN dn_complain_file cf ON c.id = cf.complain_id
+		LEFT JOIN pj_department d ON c.depart_id = d.id
+		LEFT JOIN pj_teacher t ON c.complainant_id = t.user_id AND c.school_id = t.school_id
+		LEFT JOIN pj_teacher t1 ON c.dispose_id = t1.user_id AND c.school_id = t1.school_id
+		WHERE c.is_deleted = 0
+		AND c.school_id = #{args[0],javaType=java.lang.Integer}
+		<if test="args[1] != null">
+			AND c.depart_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null and args[2] != ''">
+			AND (c.type LIKE CONCAT(CONCAT('%', #{args[2],javaType=java.lang.String}),'%')
+			OR c.description LIKE CONCAT(CONCAT('%', #{args[2],javaType=java.lang.String}),'%'))
+		</if>
+		<if test="args[3] != null">
+			<choose>
+				<when test="args[3] == true">
+					AND c.is_dispose  = 1
+				</when>
+				<otherwise>
+					AND c.is_dispose  = 0
+				</otherwise>
+			</choose>
+		</if>
+		GROUP BY c.id
+		ORDER BY c.create_date DESC
+	</select>
+
+	<select id="findByCreateDate" resultMap="ComplainVoResult" useCache="false">
+		SELECT c.*, COUNT(*) COUNT, d.`name` departName, t.`name` complainName,
+		IFNULL(ROUND(SUM(c.`level`)/SUM(c.is_evaluate), 1),0) averageLevel,
+		CONCAT(IFNULL(ROUND(SUM(c.`level`)/SUM(c.is_evaluate)/5*100),0),'%') percent
+		FROM dn_complain c
+		LEFT JOIN pj_department d ON c.depart_id = d.id
+		LEFT JOIN pj_teacher t ON c.complainant_id = t.user_id AND c.school_id = t.school_id
+		WHERE c.is_deleted = 0
+		AND c.school_id = #{args[0],javaType=java.lang.Integer}
+		<if test="args[1] != null">
+			AND c.depart_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null and args[2] != ''">
+			AND (c.type LIKE CONCAT(CONCAT('%', #{args[2],javaType=java.lang.String}),'%')
+			OR c.description LIKE CONCAT(CONCAT('%', #{args[2],javaType=java.lang.String}),'%'))
+		</if>
+		AND c.is_dispose  = 1
+		AND DATE_FORMAT(c.create_date,'%Y-%m-%d')
+			BETWEEN DATE_FORMAT(#{args[3],javaType=java.util.Date} ,'%Y-%m-%d')
+			AND DATE_FORMAT(#{args[4],javaType=java.util.Date} ,'%Y-%m-%d')
+		GROUP BY c.complainant_id, c.depart_id
+	</select>
+
+	<select id="findComplainVoById" resultMap="ComplainVoResult" useCache="false">
+		SELECT c.*, GROUP_CONCAT(cf.file_id) fileUUIDs, CONCAT(ROUND(c.`level`/5*100),'%') percent FROM dn_complain c
+		LEFT JOIN dn_complain_file cf ON c.id = cf.complain_id
+		WHERE c.id = #{args[0],javaType=java.lang.Integer}
+	</select>
+</mapper>

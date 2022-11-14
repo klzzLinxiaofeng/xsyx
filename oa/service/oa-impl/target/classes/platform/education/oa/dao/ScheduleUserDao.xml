@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.ScheduleUserDao">
+
+	<resultMap id="ScheduleUserResult" type="platform.education.oa.model.ScheduleUser">
+		<result property="id" column="id" />
+		<result property="scheduleId" column="schedule_id" />
+		<result property="receiverId" column="receiver_id" />
+		<result property="receiverName" column="receiver_name" />
+		<result property="receiverType" column="receiver_type" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.ScheduleUser">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_schedule_user (
+			id, 
+			schedule_id, 
+			receiver_id, 
+			receiver_name, 
+			receiver_type, 
+			create_date, 
+			modify_date, 
+			is_deleted
+		)
+		VALUES (
+			#{id}, 
+			#{scheduleId}, 
+			#{receiverId}, 
+			#{receiverName}, 
+			<choose>
+				<when test="receiverType != null">
+					<choose>
+						<when test="receiverType == true">
+							1, 
+						</when>
+						<otherwise>
+							0, 
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0, 
+				</otherwise>
+			</choose>
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="ScheduleUserResult" useCache="false">
+		SELECT * FROM oa_schedule_user WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findScheduleUserByCondition" resultMap="ScheduleUserResult" useCache="false">
+		SELECT * FROM oa_schedule_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].scheduleId != null">
+				AND schedule_id = #{args[0].scheduleId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].receiverId != null">
+				AND receiver_id = #{args[0].receiverId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].receiverName != null and args[0].receiverName != ''">
+				AND receiver_name = #{args[0].receiverName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].receiverType != null">
+				<choose>
+					<when test="args[0].receiverType == true">
+						AND receiver_type  = 1
+					</when>
+					<otherwise>
+						AND receiver_type  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_schedule_user 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].scheduleId != null">
+				AND schedule_id = #{args[0].scheduleId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].receiverId != null">
+				AND receiver_id = #{args[0].receiverId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].receiverName != null and args[0].receiverName != ''">
+				AND receiver_name = #{args[0].receiverName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].receiverType != null">
+				<choose>
+					<when test="args[0].receiverType == true">
+						AND receiver_type  = 1
+					</when>
+					<otherwise>
+						AND receiver_type  = 0
+					</otherwise>
+				</choose>
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ScheduleUserResult" useCache="false">
+		SELECT * FROM oa_schedule_user WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.ScheduleUser">
+		UPDATE oa_schedule_user
+		SET 
+		<if test="scheduleId != null">
+			schedule_id=#{scheduleId},
+		</if>
+		<if test="receiverId != null">
+			receiver_id=#{receiverId},
+		</if>
+		<if test="receiverName != null">
+			receiver_name=#{receiverName},
+		</if>
+		<if test="receiverType != null">
+			<choose>
+				<when test="receiverType == true">
+					receiver_type  = 1,
+				</when>
+				<otherwise>
+					receiver_type  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_schedule_user
+		WHERE id = #{id}
+	</delete>
+</mapper>

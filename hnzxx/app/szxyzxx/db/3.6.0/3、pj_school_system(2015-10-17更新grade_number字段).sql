@@ -1,0 +1,1 @@
+UPDATE pj_school_system SET grade_number = right(grade_code,1) WHERE grade_number is NULL;

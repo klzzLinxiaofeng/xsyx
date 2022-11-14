@@ -1,0 +1,1 @@
+ALTER TABLE `yh_role` CHANGE COLUMN `app_id` `app_id` int(10) COMMENT '此角色所属的App';

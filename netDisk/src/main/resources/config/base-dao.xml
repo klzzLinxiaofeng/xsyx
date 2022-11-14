@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+       default-autowire="byName">
+
+
+    <bean id="oldDataSource" class="com.zaxxer.hikari.util.DriverDataSource">
+        <constructor-arg name="driverClassName" value="${spring.datasource.driverClassName}" />
+        <constructor-arg name="jdbcUrl" value="${spring.datasource.url}" />
+        <constructor-arg name="username" value="${spring.datasource.username}" />
+        <constructor-arg name="password" value="${spring.datasource.password}" />
+        <constructor-arg name="properties" value="classpath:application.yml"/>
+    </bean>
+
+    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >-->
+        <!--<property name="dataSource" ref="oldDataSource"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="oldSqlSessionTemplate"  class="org.mybatis.spring.SqlSessionTemplate" >-->
+        <!--<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+    <!--</bean>-->
+
+    <bean id="genericDao" class="framework.generic.dao.mybatis.MybatisGenericDao" >
+        <!--<property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory" />-->
+    </bean>
+
+    <bean id="baseDao" abstract="true"
+          class="framework.generic.dao.mybatis.MapperFactoryBean" >
+        <property name="executor" ref="genericDao" />
+    </bean>
+
+</beans>

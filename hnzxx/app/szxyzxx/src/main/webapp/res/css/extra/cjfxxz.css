@@ -1,0 +1,145 @@
+html {
+    color: #000;
+    font-family: "MicrosoftYaHeiLight";
+}
+*{
+	marring:0;
+	padding:0;
+	}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+    font-size:12px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+fieldset, img {
+    border: 0
+}
+
+address, caption, cite, code, dfn, em, strong, th, var {
+    font-style: normal;
+    font-weight: normal
+}
+
+ol, ul {
+    list-style: none
+}
+
+caption, th {
+    text-align: left
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal
+}
+
+q:before, q:after {
+    content: ''
+}
+
+abbr, acronym {
+    border: 0;
+    font-variant: normal
+}
+
+sup {
+    vertical-align: text-top
+}
+
+sub {
+    vertical-align: text-bottom
+}
+
+input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit
+}
+
+input, textarea, select {
+    *font-size: 100%
+}
+
+legend {
+    color: #000
+}
+
+article, aside, figure, figcaption, footer, header, hgroup, nav, section, summary {
+    display: block;
+    margin: 0;
+    padding: 0
+}
+
+a {
+    text-decoration: none
+}
+
+button {
+    cursor: pointer
+}
+.w1200{
+    width: 1200px;
+    margin: 0 auto;
+}
+.clear {
+    clear: both;
+}
+.main{
+    background: url("images/main_bg.png")  no-repeat 50% 50%;
+    height: 977px;
+}
+.main .logo{
+    width: 311px;
+    height: 87px;
+    background: url("images/logo.png") no-repeat 0 33px;
+}
+.main p{
+    font-size: 36px;
+    color: #666666;
+    line-height: 50px;
+    margin-top: 164px;
+    font-weight: lighter;
+}
+.main p span{
+    font-weight: bold;
+}
+.main p .span1{
+    color: #2299ee;
+}
+.main p .span2{
+   
+}
+.main a{
+  background-color: rgb( 0, 176, 255 );
+  box-shadow: 5px 8.66px 30px 0px rgba( 109, 197, 251 ,0.7);
+  width: 180px;
+  height: 55px;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  line-height: 55px;
+  display: block;
+  border-radius: 27px;
+  margin-top: 47px;
+}
+.footer {
+  background-color: rgb( 38, 50, 56 );
+  height: 133px;
+  padding-top: 68px;
+}
+.footer p{
+    text-align: center;
+    color: rgba( 255, 255, 255, 0.6 );
+    font-size: 14px;
+    line-height: 40px;
+}
+.footer p a{
+    color: #fff;
+    padding: 0 15px;
+}

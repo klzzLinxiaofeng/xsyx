@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.StuCommentsDao">
+    <resultMap id="BaseResultMap" type="platform.education.generalTeachingAffair.vo.UserCommentsPojo">
+        <result column="id" property="id"/>
+        <result column="school_id" property="schoolId"/>
+        <result column="micro_id" property="microId"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_type" property="userType"/>
+        <result column="comments" property="comments"/>
+        <result column="comments_date" property="commentsDate"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="name" property="name"/>
+        <result column="className" property="className"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,micro_id,stu_id,school_id,comments,comments_date,is_deleted,create_date,modify_date
+    </sql>
+
+    <select id="findStuCommentsPojoByCondition" resultMap="BaseResultMap" useCache="false">
+        select psc.id, psc.micro_id, psc.user_id,psc.user_type, psc.school_id, psc.comments, psc.comments_date, psc.is_deleted, psc.create_date, psc.modify_date
+        from pj_user_comments  psc
+        WHERE psc.is_deleted = 0
+        <if test="args[0] != null">
+            <if test="args[0].id != null" >
+                and psc.micro_id = #{args[0].id,javaType=java.lang.Integer}
+            </if>
+            <if test="args[0].schoolId != null">
+                AND psc.school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+            </if>
+        </if>
+
+
+    </select>
+
+    <select id="read" resultMap="BaseResultMap" useCache="false">
+        SELECT * FROM pj_user_comments WHERE 1=1
+        <if test="args!=null and args[0]!=null">
+            AND id = #{args[0],javaType=java.lang.Integer}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <update id="update" parameterType="platform.education.generalTeachingAffair.vo.UserCommentsPojo">
+        UPDATE pj_user_comments
+        <set>
+            <if test="modifyDate != null">
+                modify_date=#{modifyDate},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted=#{isDeleted},
+            </if>
+        </set>
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="schoolId != null">
+                and school_id = #{schoolId}
+            </if>
+        </where>
+    </update>
+
+</mapper>

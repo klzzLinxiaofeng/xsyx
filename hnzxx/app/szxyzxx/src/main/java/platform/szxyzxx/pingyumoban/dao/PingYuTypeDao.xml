@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.pingyumoban.dao.PingYuTypeDao">
+
+    <resultMap id="PingYuTypeMap" type="platform.szxyzxx.pingyumoban.vo.PingYuType">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modiyTime" column="modiy_time"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+
+
+
+
+    <select id="findByAll" resultMap="PingYuTypeMap">
+        select * from zy_pingyutype
+        <where>
+        is_delete=0
+            <if test="args[0]!=null">
+               and name like concat ('%',#{args[0]},'%')
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+    <insert id="create">
+        insert into zy_pingyutype(name,create_time,modiy_time,is_delete)
+        value(#{args[0].name},NOW(),NOW(),0)
+    </insert>
+    <update id="update">
+        update zy_pingyutype set name=#{args[1]} where id=#{args[0]}
+    </update>
+
+    <update id="updateShanChu">
+        update zy_pingyutype set is_delete=1 where id=#{args[0]}
+    </update>
+
+    <select id="findById" resultMap="PingYuTypeMap">
+          select * from zy_pingyutype where is_delete=0 and id=#{args[0]}
+    </select>
+
+
+</mapper>

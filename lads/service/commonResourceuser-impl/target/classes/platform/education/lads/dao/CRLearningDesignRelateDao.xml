@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.lads.dao.CRLearningDesignRelateDao">  
+	
+    <select id="findRelateIdByLdId" resultType="java.lang.Integer" useCache="false">
+        SELECT relate_id FROM ld_learning_design_relate 
+        WHERE 1=1
+        AND real_micro_list LIKE CONCAT(CONCAT('%', #{args[0],javaType=java.lang.String}),'%')
+        AND type = '${@platform.education.learningDesign.contants.LearningDesignType@LADS_LEARNINGDESIGN}'
+    </select>
+	
+    
+</mapper>

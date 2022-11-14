@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="index.css" />
+		<script type="text/javascript" src='echarts.js'></script>
+		<script src="echarts.min.js"></script>
+		<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+		<!-- <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script> -->
+		<script src="vue.js"></script>
+		<script src="jquery.min.js"></script>
+		<script>
+			//屏幕适应
+			(function(win, doc) {
+				if (!win.addEventListener) return;
+				var html = document.documentElement;
+
+				function setFont() {
+					var html = document.documentElement;
+					var k = 1920;
+					html.style.fontSize = html.clientWidth / k * 100 + "px";
+				}
+				setFont();
+				setTimeout(function() {
+					setFont();
+				}, 300);
+				doc.addEventListener('DOMContentLoaded', setFont, false);
+				win.addEventListener('resize', setFont, false);
+				win.addEventListener('load', setFont, false);
+			})(window, document);
+		</script>
+		<style>
+			html {
+		        font-size: 100px;
+		    }
+		</style>
+	</head>
+	<body>
+
+		<div id="app">
+			<div id="consumption">
+				<div class="headers">
+					<div class="headersTitle gradient-text-one" style="left: 0;top:0;">总务大数据</div>
+					<div class="headersTitle" style="left: 16%;top:0;">行政大数据</div>
+					<div class="gradient-text gradient-text-one headersTitle1" style="left: 33%;top:0;">
+						<img class="headerIcon" src="images/title_icon4.png">
+						总务大数据</div>
+					<div class="headersTitle" style="right: 16%;top:0;">教务大数据</div>
+					<div class="headersTitle" style="right: 0%;top:0;">德育大数据</div>
+				</div>
+				<div class="main">
+					<div class="mainLeft">
+						<div class="consumeBox">
+							<div class="boxTitle">消费统计</div>
+							<div class="totleConsume">
+								<img src="images/consume_icon1.png">
+								<div class="totleConsumeNum">
+									<p>当日总消费</p>
+									<p>{{SchoolDaySumMoney}}</p>
+								</div>
+							</div>
+							<div class="totleConsume">
+								<img src="images/consume_icon2.png">
+								<div class="totleConsumeNum">
+									<p>当日总充值</p>
+									<p>{{SumAmout}}</p>
+								</div>
+							</div>
+						</div>
+						<div class="trend">
+							<div class="boxTitle">日消费趋势图</div>
+							<div ref="trend" id="trend" style="">
+							</div>
+						</div>
+						<div class="recharge">
+							<div class="boxTitle">日充值趋势图</div>
+							<div ref="recharge" id="recharge" style="">
+							</div>
+						</div>
+					</div>
+					<div class="mainCenter">
+						<div class="dataBox">
+							<div class="statistics">
+								<div class="statisticsItem">
+									<p class="statisticsTop">
+										<img class="statisticsIcon" src="images/title_icon1.png">
+										<span>补卡申请</span>
+									</p>
+									<p class="statisticsNum">{{replaceCardTotal}}</p>
+								</div>
+								<div class="statisticsItem">
+									<p class="statisticsTop" style="background: #2BA2F1;">
+										<img class="statisticsIcon" src="images/title_icon2.png">
+										<span>学校反馈</span>
+									</p>
+									<p class="statisticsNum" style="color:#2BA2F1;">{{feedbackTotal}}</p>
+								</div>
+								<div class="statisticsItem">
+									<p class="statisticsTop" style="background: #EE7070;">
+										<img class="statisticsIcon" src="images/title_icon3.png">
+										<span>未发卡人</span>
+									</p>
+									<p class="statisticsNum" style="color:#EE7070;">{{notCardTotal}}</p>
+								</div>
+							</div>
+							<div class="home_bg">
+								<img src="images/home_bg.png">
+							</div>
+							<div class="repairwrap">
+								<div class="boxTitle2">本月报修统计</div>
+								<div class="repair">
+									<div class="repairItem">
+										<p>报修申请数</p>
+										<p>0 <span style="font-size: 24px;">次</span></p>
+									</div>
+									<div class="repairItem">
+										<p>已处理</p>
+										<p>0 <span style="font-size: 24px;">次</span></p>
+									</div>
+									<div class="repairItem">
+										<p>待处理</p>
+										<p>0 <span style="font-size: 24px;">次</span></p>
+									</div>
+									<div class="repairItem">
+										<p>未处理</p>
+										<p>0 <span style="font-size: 24px;">次</span></p>
+									</div>
+									<div class="repairItem">
+										<p>处理中</p>
+										<p>0 <span style="font-size: 24px;">次</span></p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="mainRight">
+						<div class="katong">
+							<div class="boxTitle">一卡通统计</div>
+							<div class="katonginner">
+								<div class="katongitem left">
+									<div class="title">本月学生补卡</div>
+									<div class="num"><span class="cardnum">{{stuTotal}}</span>次</div>
+								</div>
+								<div class="katongitem right">
+									<div class="title">本月教师补卡</div>
+									<div class="num"><span class="cardnum">{{teacherTotal}}</span>次</div>
+								</div>
+							</div>
+						</div>
+						<div class="feedback">
+							<div class="boxTitle">家校反馈月趋势图</div>
+							<div ref="feedback" id="feedback" style=""></div>
+						</div>
+						<div class="daily">
+							<div class="boxTitle">日消费区域分布</div>
+							<div ref="daily" id="daily" style=""></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	var that = this;
+	// var baseurl = 'http://192.168.1.14:80';//于的本地ip
+	// var baseurl1 = "http://139.159.242.158:8089";//食堂測試ip
+	// var baseurl2 = "http://10.191.109.85:8089";//食堂測試ip
+
+	function request(baseurl, method, url, data) {
+		return new Promise((resolve, reject) => {
+			$.ajax({
+				type: method,
+				contentType: 'application/json',
+				url: baseurl + url,
+				data: data,
+				success: function(res) {
+					resolve(res);
+				}
+			});
+		});
+	};
+</script>
+<script src="util.js"></script>
+<script type="text/javascript">
+	var app = new Vue({
+		el: '#app',
+		data: {
+			baseurl: "http://192.168.1.14:80",
+			canteenUrl: "http://10.191.109.85:8090", //食堂正式ip
+			// canteenUrl: "http://139.159.242.158:8090", //測試
+			SchoolDaySumMoney: 0, //总消费金额
+			SumAmout: 0, //当日总充值金额
+			trendOption: { //日消费趋势图
+				xAxis: {
+					type: 'category',
+					// data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+					data: []
+				},
+				yAxis: {
+					type: 'value',
+					splitLine: {
+						show: false
+					},
+				},
+				series: [{
+					// data: [820, 932, 901, 934, 1290, 1330, 1320],
+					data: [],
+					type: 'line',
+					itemStyle: {
+						color: 'rgba(232, 82, 58, 1)'
+					},
+					areaStyle: {
+						color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+							offset: 0,
+							color: 'rgba(232, 82, 58, 1)'
+						}, {
+							offset: 1,
+							color: 'rgba(232, 82, 58,0.1)'
+						}])
+					},
+				}]
+			},
+			rechargeOption: { //日充值趋势图
+				xAxis: {
+					type: 'category',
+					// data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+					data: []
+				},
+				yAxis: {
+					type: 'value',
+					splitLine: {
+						show: false
+					},
+				},
+				series: [{
+					// data: [820, 932, 901, 934, 1290, 1330, 1320],
+					data: [],
+					type: 'line',
+					itemStyle: {
+						color: 'rgba(150, 249, 254, 1)'
+					},
+					areaStyle: {
+						color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+								offset: 0,
+								color: 'rgba(150, 249, 254, 1)'
+							},
+							{
+								offset: 1,
+								color: 'rgba(150, 249, 254,0.1)'
+							}
+						])
+					},
+				}]
+			},
+			feedbackOption: { //家校反馈趋势图
+				xAxis: {
+					type: 'category',
+					// data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+					data: []
+				},
+				yAxis: {
+					type: 'value',
+					splitLine: {
+						show: false
+					},
+				},
+				series: [{
+					// data: [820, 932, 901, 934, 1290, 1330, 1320],
+					data: [],
+					type: 'line',
+					itemStyle: {
+						color: 'rgba(39, 126, 241, 1)'
+					},
+					areaStyle: {
+						color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+								offset: 0,
+								color: 'rgba(39, 126, 241, 1)'
+							},
+							{
+								offset: 1,
+								color: 'rgba(39, 126, 241,0.1)'
+							}
+						])
+					},
+				}]
+			},
+			replaceCardTotal: 0, //补卡人数
+			stuTotal: 0,
+			teacherTotal: 0,
+			notCardTotal: 0, //未发卡人数统计
+			feedbackTotal: 0, //家校反馈统计
+			HotelOption:  {
+				tooltip: {
+					trigger: 'item',
+					formatter: '{a} <br/>{b}: {c} ({d}%)'
+				},
+				legend: {
+					orient: 'vertical',
+					right: 10,
+					bottom: 40,
+					padding: [5,10, 5,20,],
+					// data: ['食堂一楼', '食堂2楼外堂', '食堂2楼里堂'],
+					data:[],
+					textStyle: {
+						color: '#fff'
+					},
+					formatter:""
+					// formatter: function(name) {
+					// 	var value = hotel_nameData.filter(v => v.name == name)[0].value
+					// 	var all = 0;
+					// 	hotel_nameData.forEach(function(item) {
+					// 		all = all + item.value
+					// 	})
+					// 	var result = (value / all * 100).toFixed(2) + '%'
+					// 	return name + ' : ' + result;
+					// },
+				},
+				series: [{
+					name: '访问来源',
+					type: 'pie',
+					left: '0%',
+					right: '30%',
+					radius: ['40%', '60%'],
+					avoidLabelOverlap: false,
+					silent: false,
+					animation: false,
+					label: {
+						normal: {
+							show: true,
+							formatter: "{d}% ",
+							textStyle: {
+								fontSize: 13,
+								color: "#fff"
+							},
+						},
+					},
+					labelLine: {
+						normal: {
+							show: true,
+							lineStyle: {
+								color: '#fff'
+							},
+							smooth: 0.2,
+						}
+					},
+					emphasis: {
+						label: {
+							show: true,
+							fontSize: '20',
+							fontWeight: 'bold'
+						}
+					},
+					data:[]
+					// data: [{
+					// 		value: 335,
+					// 		name: '食堂一楼'
+					// 	},
+					// 	{
+					// 		value: 310,
+					// 		name: '食堂2楼外堂'
+					// 	},
+					// 	{
+					// 		value: 234,
+					// 		name: '食堂2楼里堂'
+					// 	},
+					// ]
+				}]
+			}
+		},
+		created() {
+			this.getSchoolDaySumMoney();//总消费金额		
+			this.getSumAmout(); //總充值	
+			this.getReplaceCardTotal(); //补卡人数统计
+			this.getFeedbackTotal(); //家校反馈统计
+			this.getNotCardTotal(); //未发卡人数统计
+			this.getOnePassCardCount(); //一卡通统计
+			setInterval(()=>{
+				this.getSchoolDaySumMoney();//总消费金额
+				this.getSumAmout(); //總充值	
+				this.getReplaceCardTotal(); //补卡人数统计
+				this.getFeedbackTotal(); //家校反馈统计
+				this.getNotCardTotal(); //未发卡人数统计
+				this.getOnePassCardCount(); //一卡通统计
+			},60000)
+		},
+		mounted() {
+			this.getAmountTrend(); // 日充值趋势图
+			this.getSchoolDayHotelCodePoint(); //日消费区域分布
+			this.getSchoolDaySumMoneyList(); //日消费趋势图
+			this.getFeedbackMonthTotal(); //家校反馈月趋势图
+			setInterval(()=>{
+				this.getAmountTrend(); // 日充值趋势图
+				this.getSchoolDaySumMoneyList(); //日消费趋势图
+				this.getFeedbackMonthTotal(); //家校反馈月趋势图
+				this.getSchoolDayHotelCodePoint(); //日消费区域分布
+			},60000)	
+		},
+		methods: {
+			getEchartData(name, option) {
+				const chart = this.$refs[name]
+				if (chart) {
+					const myChart = echarts.init(chart)
+					var option = option;
+					myChart.setOption(option)
+					window.addEventListener("resize", function() {
+						myChart.resize()
+					})
+				}
+				this.$on('hook:destroyed', () => {
+					window.removeEventListener("resize", function() {
+						myChart.resize();
+					});
+				})
+			},
+
+			async getSumAmout() { // 获取当日充值总金额
+				var res = await that.request(this.baseurl, 'GET', '/general/getSumAmount', {});
+				res = JSON.parse(res)
+				if (res.info == "success") {
+					if (res.responseData) {
+						this.SumAmout = res.responseData;
+					}
+				}
+			},
+			async getAmountTrend() { // 日充值趋势图
+				this.rechargeOption.xAxis.data = [];
+				this.rechargeOption.series[0].data = [];
+				let endDate = formatTime(new Date()).day;
+				let beginDate = getBeforeDate(30);
+				let data = {
+					beginDate: beginDate,
+					endDate: endDate
+				}
+				var res = await that.request(this.baseurl, 'GET', '/general/amountTrend', data);
+				res = JSON.parse(res)
+				if (res.info == "success") {
+					res.responseData.forEach(item => {
+						this.rechargeOption.xAxis.data.push(item.date);
+						this.rechargeOption.series[0].data.push(item.amount)
+					})
+					this.getEchartData('recharge', this.rechargeOption);
+				}
+			},
+			async getReplaceCardTotal() { //补卡人数统计
+				var res = await that.request(this.baseurl, 'GET', '/general/replaceCardTotal', {});
+				res = JSON.parse(res)
+				if (res.info == "success") {
+					this.replaceCardTotal = res.responseData;
+				}
+			},
+			async getOnePassCardCount() { //一卡通统计
+				var res = await that.request(this.baseurl, 'GET', '/general/onePassCardCount', {});
+				res = JSON.parse(res)
+				if (res.info == "success") {
+					this.teacherTotal = res.responseData.teacherTotal;
+					this.stuTotal = res.responseData.stuTotal;
+				}
+			},
+			async getNotCardTotal() { //未发卡人数统计
+				var res = await that.request(this.baseurl, 'GET', '/general/notCardTotal', {});
+				res = JSON.parse(res);
+				if (res.info == "success") {
+					this.notCardTotal = res.responseData;
+				}
+			},
+			async getFeedbackTotal() { //家校反馈统计
+				var res = await that.request(this.baseurl, 'GET', '/general/feedbackTotal', {});
+				res = JSON.parse(res);
+				if (res.info == "success") {
+					this.feedbackTotal = res.responseData;
+				}
+			},
+			async getFeedbackMonthTotal() { //家校反馈月趋势图
+				this.feedbackOption.xAxis.data = [];
+				this.feedbackOption.series[0].data=[];
+				let endDate = formatTime(new Date()).day;
+				let beginDate = getBeforeDate(30);
+				let data = {
+					beginDate: beginDate,
+					endDate: endDate
+				}
+				var res = await that.request(this.baseurl, 'GET', '/general/feedbackMonthTotal', data);
+				res = JSON.parse(res);
+				if (res.info == "success") {
+					res.responseData.forEach(item => {
+						this.feedbackOption.xAxis.data.push(item.date);
+						this.feedbackOption.series[0].data.push(item.amount);
+					})
+					this.getEchartData('feedback', this.feedbackOption);
+				}
+			},
+			async getSchoolDaySumMoney() { //总消费金额
+				let query_dateBegin = formatTime(new Date()).day;
+				let data = {
+					query_dateBegin: query_dateBegin,
+					query_dateEnd: query_dateBegin
+				}
+				var res = await that.request(this.canteenUrl, 'GET', '/api/mobile/VipUser/SchoolDaySumMoney', data);
+				if (res.result === true) {
+					this.SchoolDaySumMoney = res.data;
+				}
+			},
+			async getSchoolDaySumMoneyList() { //日消费趋势图
+				this.trendOption.xAxis.data=[];
+				this.trendOption.series[0].data = [];
+				let query_dateBegin = formatTime(new Date()).day;
+				let beginDate = getBeforeDate(30);
+				let data = {
+					query_dateBegin: beginDate,
+					query_dateEnd: query_dateBegin
+				}
+				var res = await that.request(this.canteenUrl, 'GET', '/api/mobile/VipUser/SchoolDaySumMoneyList', data);
+				if (res.result === true) {
+					res.data.forEach(item => {
+						this.trendOption.xAxis.data.push(item.key);
+						this.trendOption.series[0].data.push(item.value);
+					})
+					this.getEchartData('trend', this.trendOption);
+				}
+			},
+			async getSchoolDayHotelCodePoint() { //日消费区域分布
+				this.HotelOption.legend.data = [];
+				this.HotelOption.series[0].data = [];
+				let query_dateBegin = formatTime(new Date()).day;
+				let beginDate = getBeforeDate(30);
+				let data = {
+					query_dateBegin: beginDate,
+					query_dateEnd: query_dateBegin
+				}
+				var res = await that.request(this.canteenUrl, 'GET', '/api/mobile/VipUser/SchoolDayHotelCodePoint', data);
+				// var res = {
+				// 	data: [{
+				// 			hotel_code: "001",
+				// 			hotel_name: "公司餐厅",
+				// 			mac_point: 5
+				// 		},
+				// 		{
+				// 			hotel_code: "002",
+				// 			hotel_name: "小卖部",
+				// 			mac_point: 25
+				// 		},
+				// 		{
+				// 			hotel_code: "003",
+				// 			hotel_name: "干部餐厅",
+				// 			mac_point: 38
+				// 		},
+				// 		{
+				// 			hotel_code: "005",
+				// 			hotel_name: "二楼餐厅",
+				// 			mac_point: 32
+				// 		}
+				// 	],
+				// 	error: "",
+				// 	result: true,
+				// 	statusCode: 200,
+				// }
+				if (res.result === true) {
+					let hotel_nameData=[];
+					res.data.forEach(item => {
+						this.HotelOption.legend.data.push(item.hotel_name);
+						let obj = {};
+						obj.value = item.mac_point;
+						obj.name = item.hotel_name;
+						this.HotelOption.series[0].data.push(obj);
+						hotel_nameData.push(obj);
+					})
+					this.HotelOption.legend.formatter = function(name) {
+						var value = hotel_nameData.filter(v => v.name == name)[0].value
+						var all = 0;
+						hotel_nameData.forEach(function(item) {
+							all = all + item.value
+						})
+						var result = (value / all * 100).toFixed(1) + '%'
+						return name + ' : ' + result;
+					},
+					this.getEchartData('daily', this.HotelOption);
+				}
+			}
+		},
+	});
+</script>

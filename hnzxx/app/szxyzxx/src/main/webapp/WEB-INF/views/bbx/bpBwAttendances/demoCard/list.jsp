@@ -1,0 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file="/views/embedded/taglib.jsp" %>
+<style>
+.icon{    display: inline-block;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 100%;
+    margin:5px 0;margin-right:10px; 
+    
+}
+.table th{font-size:16px;}
+tr td{ text-align:center; color:#8e8e8e;}
+tr td span{ display:bolck; float:left; line-height:60px; 
+    font-size: 16px;
+    font-weight: bold;}
+.name{ display}
+</style>
+<tr>
+	<td style="padding:0;border:0 none;">
+		<input type="hidden" id="currentPage" name="currentPage" value="${page.currentPage}" />
+		<input type="hidden" id="totalPages" name="totalPages" value="${page.totalPages}" />
+		<input type="hidden" id="totalRows" name="totalPages" value="${page.totalRows}" />
+	</td>
+</tr>
+<c:forEach items="${items}" var="item">
+	<tr id="${item.userId}_tr">
+				<td><span class="icon"><img alt="" src="${item.icon }"></span><span class=“name”>${item.name}</span></td>
+				<td>
+					<fmt:formatDate value="${item.attendanceTime}" pattern="yyyy-MM-dd HH:mm:ss" />
+				</td>
+		
+		<td class="caozuo">
+			<%-- <c:if test="${acl:hasPermission(sessionScope[sca:currentUserKey()].id, param.dm, 2)}"> --%>
+			<%-- <button class="btn btn-blue" type="button" onclick="loadEditPage('${item.gradeId}');">编辑</button> --%>
+			<%-- </c:if> --%>
+			<%-- <c:if test="${acl:hasPermission(sessionScope[sca:currentUserKey()].id, param.dm, 3)}">
+				<button class="btn btn-red" type="button" onclick="deleteObj(this, '${item.gradeId}');">删除</button>
+			</c:if> --%>
+		</td>
+	</tr>
+</c:forEach>

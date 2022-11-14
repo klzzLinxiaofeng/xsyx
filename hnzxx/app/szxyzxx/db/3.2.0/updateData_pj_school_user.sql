@@ -1,0 +1,1 @@
+INSERT INTO pj_school_user(school_id,user_id,name,user_type,OWNER_id,CREATE_date) (SELECT ps.school_id,pp.user_id,pp.`name`,'3',0,now() from pj_parent_student pps,pj_student ps,pj_parent pp where pps.student_user_id = ps.user_id and pp.user_id = pps.parent_user_id);

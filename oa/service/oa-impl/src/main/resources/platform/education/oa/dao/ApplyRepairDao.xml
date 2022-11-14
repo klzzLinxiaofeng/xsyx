@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.oa.dao.ApplyRepairDao">
+
+	<resultMap id="ApplyRepairResult" type="platform.education.oa.model.ApplyRepair">
+		<result property="id" column="id" />
+		<result property="shcoolId" column="shcool_id" />
+		<result property="title" column="title" />
+		<result property="picture" column="picture" />
+		<result property="wholePicture" column="whole_picture" />
+		<result property="details" column="details" />
+		<result property="place" column="place" />
+		<result property="bildingId" column="bilding_id" />
+		<result property="roomId" column="room_id" />
+		<result property="contact" column="contact" />
+		<result property="phone" column="phone" />
+		<result property="appointmentDate" column="appointment_date" />
+		<result property="status" column="status" />
+		<result property="remark" column="remark" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="proposerId" column="proposer_id" />
+		<result property="proposerName" column="proposer_name" />
+		<result property="proposerName" column="proposer_name" />
+		<result property="departmentId" column="department_id" />
+		<result property="number" column="number" />
+		<result property="typeId" column="type_id"/>
+		<result property="typeName" column="typeName"/>
+		<result property="weixiugong" column="weixiugong"/>
+		<result property="weixiugongName" column="weixiugongName"/>
+		<result property="pictureId" column="pictureId"/>
+		<result property="isHaocai" column="is_haocai"/>
+		<result property="shenherenId" column="shenheren_id"/>
+		<result property="shenherenName" column="shenheren_name"/>
+		<result property="isShenhe" column="is_shenhe"/>
+		<result property="liyou" column="liyou"/>
+
+	</resultMap>
+	
+	<resultMap id="ApplyRepairResultMore" type="platform.education.oa.vo.ApplyRepairVo">
+		<result property="id" column="id" />
+		<result property="shcoolId" column="shcool_id" />
+		<result property="title" column="title" />
+		<result property="picture" column="picture" />
+		<result property="wholePicture" column="whole_picture" />
+		<result property="details" column="details" />
+		<result property="place" column="place" />
+		<result property="contact" column="contact" />
+		<result property="phone" column="phone" />
+		<result property="appointmentDate" column="appointment_date" />
+		<result property="status" column="status" />
+		<result property="remark" column="remark" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDelete" column="is_delete" />
+		<result property="proposerId" column="proposer_id" />
+		<result property="proposerName" column="proposer_name" />
+		
+		<result property="accepterId" column="accepter_id" />
+		<result property="accepterName" column="accepter_name" />
+		<result property="appraise" column="appraise" />
+
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.oa.model.ApplyRepair">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO oa_apply_repair (
+			id,
+			proposer_id,
+			proposer_name,
+			shcool_id, 
+			title, 
+			picture, 
+			whole_picture,
+			details, 
+			place,
+			bilding_id,
+			room_id, 
+			contact, 
+			phone, 
+			appointment_date, 
+			status, 
+			remark, 
+			create_date, 
+			modify_date,
+			departmentId,
+			number,
+			type_id,
+			is_delete,
+		    weixiugong,
+		    pictureId,
+		    is_haocai,
+		    shenheren_id,
+		    shenheren_name,
+		    is_shenhe,
+		    liyou
+
+		)
+		VALUES (
+			#{id},
+			#{proposerId},
+			#{proposerName},
+			#{shcoolId}, 
+			#{title}, 
+			#{picture},
+			#{wholePicture},
+			#{details}, 
+			#{place},
+			#{bildingId},
+			#{roomId},
+			#{contact}, 
+			#{phone}, 
+			#{appointmentDate}, 
+			#{status}, 
+			#{remark}, 
+			#{createDate}, 
+			#{modifyDate},
+			#{departmentId}, 
+			#{number},
+			#{typeId},
+			<choose>
+				<when test="isDelete != null">
+					<choose>
+						<when test="isDelete == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>,
+			null,
+		#{pictureId},
+		0,
+		#{shenherenId},
+		#{shenherenName},
+		0,
+		null
+		)
+	</insert>
+
+	<select id="read" resultMap="ApplyRepairResult" useCache="false">
+		SELECT * FROM oa_apply_repair WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findApplyRepairByCondition" resultMap="ApplyRepairResult" useCache="false">
+		SELECT * FROM oa_apply_repair 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].proposerId != null">
+				AND proposer_id = #{args[0].proposerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].proposerName != null">
+				AND proposer_name = #{args[0].proposerName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].shcoolId != null and args[0].shcoolId != ''">
+				AND shcool_id = #{args[0].shcoolId}
+			</if>
+			<if test="args[0].title != null">
+				AND title = #{args[0].title,javaType=byte[]}
+			</if>
+			<if test="args[0].picture != null and args[0].picture != ''">
+				AND picture = #{args[0].picture,javaType=java.lang.String}
+			</if>
+			<if test="args[0].wholePicture != null and args[0].wholePicture != ''">
+				AND whole_picture = #{args[0].wholePicture,javaType=java.lang.String}
+			</if>
+			<if test="args[0].details != null">
+				AND details = #{args[0].details,javaType=byte[]}
+			</if>
+			<if test="args[0].place != null and args[0].place != ''">
+				AND place = #{args[0].place,javaType=java.lang.String}
+			</if>
+			<if test="args[0].bildingId != null and args[0].bildingId != ''">
+				AND bilding_id = #{args[0].bildingId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].roomId != null and args[0].roomId != ''">
+				AND room_id = #{args[0].roomId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].contact != null">
+				AND contact = #{args[0].contact,javaType=byte[]}
+			</if>
+			<if test="args[0].phone != null and args[0].phone != ''">
+				AND phone = #{args[0].phone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appointmentDate != null">
+				AND appointment_date = #{args[0].appointmentDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].status != null and args[0].status != ''">
+				AND status = #{args[0].status,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND departmentId = #{args[0].departmentId}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findApplyAndAcceptRepairByCondition" resultMap="ApplyRepairResultMore" useCache="false">
+<!--		SELECT apply.*,accept.appraise,accept.accepter_id,accept.accepter_name FROM oa_apply_repair apply left join oa_accept_repair accept on apply.id = accept.repari_id-->
+		SELECT
+		apply.*,
+		accept.appraise,
+		accept.accepter_id,
+		accept.accepter_name,
+		accept.remark remark2,
+		jgi.`name` typeName
+		FROM
+		oa_apply_repair apply
+		inner JOIN oa_accept_repair accept ON apply.id = accept.repari_id
+		inner JOIN jc_gc_item jgi ON jgi.id = apply.type_id
+		<where>
+			<if test="args[0] != null">
+				and apply.is_delete = 0
+				<if test="args[0].startTime!=null and args[0].endTime!=null">
+					and apply.create_date between #{args[0].startTime} and #{args[0].endTime}
+				</if>
+				<if test="args[0].id != null">
+					AND apply.id = #{args[0].id,javaType=java.lang.Integer}
+				</if>
+				<if test="args[0].proposerId != null">
+					AND apply.proposer_id = #{args[0].proposerId,javaType=java.lang.Integer}
+				</if>
+				<if test="args[0].searchWord != null">
+					and CONCAT_WS(",",title,proposer_name) like CONCAT('%',#{args[0].searchWord},'%')
+				</if>
+				<if test="args[0].proposerName != null">
+					AND apply.proposer_name = #{args[0].proposerName,javaType=java.lang.String}
+				</if>
+				<if test="args[0].shcoolId != null and args[0].shcoolId != ''">
+					AND apply.shcool_id = #{args[0].shcoolId}
+				</if>
+				<if test="args[0].title != null">
+					AND apply.title = #{args[0].title,javaType=byte[]}
+				</if>
+				<if test="args[0].picture != null and args[0].picture != ''">
+					AND apply.picture = #{args[0].picture,javaType=java.lang.String}
+				</if>
+				<if test="args[0].wholePicture != null and args[0].wholePicture != ''">
+					AND apply.whole_picture = #{args[0].wholePicture,javaType=java.lang.String}
+				</if>
+				<if test="args[0].details != null">
+					AND apply.details = #{args[0].details,javaType=byte[]}
+				</if>
+				<if test="args[0].place != null and args[0].place != ''">
+					AND apply.place = #{args[0].place,javaType=java.lang.String}
+				</if>
+				<if test="args[0].bildingId != null and args[0].bildingId != ''">
+					AND bilding_id = #{args[0].bildingId,javaType=java.lang.Integer}
+				</if>
+				<if test="args[0].roomId != null and args[0].roomId != ''">
+					AND room_id = #{args[0].roomId,javaType=java.lang.Integer}
+				</if>
+				<if test="args[0].contact != null">
+					AND apply.contact = #{args[0].contact,javaType=byte[]}
+				</if>
+				<if test="args[0].phone != null and args[0].phone != ''">
+					AND apply.phone = #{args[0].phone,javaType=java.lang.String}
+				</if>
+				<if test="args[0].appointmentDate != null">
+					AND apply.appointment_date = #{args[0].appointmentDate,javaType=java.util.Date}
+				</if>
+				<if test="args[0].status != null and args[0].status != ''">
+					AND apply.status = #{args[0].status,javaType=java.lang.String}
+				</if>
+				<if test="args[0].remark != null and args[0].remark != ''">
+					AND apply.remark = #{args[0].remark,javaType=java.lang.String}
+				</if>
+				<if test="args[0].createDate != null">
+					AND apply.create_date = #{args[0].createDate,javaType=java.util.Date}
+				</if>
+				<if test="args[0].modifyDate != null">
+					AND apply.modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+				</if>
+				<if test="args[0].departmentId != null">
+					AND departmentId = #{args[0].departmentId}
+				</if>
+				<if test="args[0].number != null">
+					AND number = #{args[0].number}
+				</if>
+				<if test="args[0].typeId != null">
+					AND apply.type_id = #{args[0].typeId}
+				</if>
+				<if test="args[0].isDelete != null">
+					<choose>
+						<when test="args[0].isDelete == true">
+							AND apply.is_delete  = 1
+						</when>
+						<otherwise>
+							AND apply.is_delete  = 0
+						</otherwise>
+					</choose>
+				</if>
+			</if>
+		</where>
+		order by apply.create_date desc
+	</select>
+	
+	<select id="findRepairHasApprovalByTeacherId" resultMap="ApplyRepairResultMore" useCache="false">
+		SELECT apply.*, accept.appraise, accept.accepter_id, accept.accepter_name
+			FROM
+		oa_apply_repair apply
+			LEFT JOIN oa_accept_repair accept
+		ON apply.id = accept.repari_id
+			LEFT JOIN oa_approval ap
+		ON ap.project_id = apply.id
+		WHERE ap.teacher_id = #{args[0]}
+		AND apply.is_delete = 0
+		GROUP BY apply.id
+		order by apply.create_date desc
+	</select>
+
+	<select id="findByshenhe" resultMap="ApplyRepairResult">
+		select oar.*,jgi.name as typeName from oa_apply_repair oar  inner join jc_gc_item jgi on jgi.id=oar.type_id where oar.shcool_id=215
+		<if test="args[0]!=null">
+			and oar.proposer_name like CONCAT('%',#{args[0]},'%')
+		</if>
+		<if test="args[1]!=null" >
+			and oar.shenheren_id =#{args[1]}
+		</if>
+		<if test="args[2]!=null" >
+			and oar.type_id=#{args[2]}
+		</if>
+		<if test="args[3]!=null" >
+			and oar.is_shenhe=#{args[3]}
+		</if>
+	</select>
+	<select id="findByshenheId" resultMap="ApplyRepairResult">
+		select oar.*,jgi.name as typeName from oa_apply_repair oar
+		inner join jc_gc_item jgi on jgi.id=oar.type_id
+		where oar.shcool_id=215 and oar.id=#{args[0]}
+
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM oa_apply_repair 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].proposerId != null">
+				AND proposer_id = #{args[0].proposerId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].proposerName != null">
+				AND proposer_name = #{args[0].proposerName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].shcoolId != null and args[0].shcoolId != ''">
+				AND shcool_id = #{args[0].shcoolId}
+			</if>
+			<if test="args[0].title != null">
+				AND title = #{args[0].title,javaType=byte[]}
+			</if>
+			<if test="args[0].picture != null and args[0].picture != ''">
+				AND picture = #{args[0].picture,javaType=java.lang.String}
+			</if>
+			<if test="args[0].wholePicture != null and args[0].wholePicture != ''">
+				AND whole_picture = #{args[0].wholePicture,javaType=java.lang.String}
+			</if>
+			<if test="args[0].details != null">
+				AND details = #{args[0].details,javaType=byte[]}
+			</if>
+			<if test="args[0].place != null and args[0].place != ''">
+				AND place = #{args[0].place,javaType=java.lang.String}
+			</if>
+			<if test="args[0].bildingId != null and args[0].bildingId != ''">
+				AND bilding_id = #{args[0].bildingId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].roomId != null and args[0].roomId != ''">
+				AND room_id = #{args[0].roomId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].contact != null">
+				AND contact = #{args[0].contact,javaType=byte[]}
+			</if>
+			<if test="args[0].phone != null and args[0].phone != ''">
+				AND phone = #{args[0].phone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].appointmentDate != null">
+				AND appointment_date = #{args[0].appointmentDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].status != null and args[0].status != ''">
+				AND status = #{args[0].status,javaType=java.lang.String}
+			</if>
+			<if test="args[0].remark != null and args[0].remark != ''">
+				AND remark = #{args[0].remark,javaType=java.lang.String}
+			</if>
+			<if test="args[0].beginDate != null">
+				AND appointment_date &gt;= #{args[0].beginDate ,javaType=java.util.Date}
+			</if>
+			<if test="args[0].endDate != null">
+				AND appointment_date &lt;= #{args[0].endDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].departmentId != null">
+				AND departmentId = #{args[0].departmentId}
+			</if>
+			<if test="args[0].number != null">
+				AND number = #{args[0].number}
+			</if>
+			<if test="args[0].isDelete != null">
+				<choose>
+					<when test="args[0].isDelete == true">
+						AND is_delete  = 1
+					</when>
+					<otherwise>
+						AND is_delete  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ApplyRepairResult" useCache="false">
+		SELECT * FROM oa_apply_repair WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<select id="findMoreById" resultMap="ApplyRepairResultMore" useCache="false">
+		SELECT apply.*,accept.appraise FROM oa_apply_repair apply left join oa_accept_repair accept on apply.id = accept.repari_id WHERE apply.id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.oa.model.ApplyRepair">
+		UPDATE oa_apply_repair
+		SET 
+		<if test="shcoolId != null">
+			shcool_id=#{shcoolId},
+		</if>
+		<if test="proposerId != null">
+				AND proposer_id = #{proposerId},
+			</if>
+			<if test="proposerName != null">
+				AND proposer_name = #{proposerName},
+			</if>
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="picture != null">
+			picture=#{picture},
+		</if>
+		<if test="wholePicture != null">
+			whole_picture = #{wholePicture},
+		</if>
+		<if test="details != null">
+			details=#{details},
+		</if>
+		<if test="place != null">
+			place=#{place},
+		</if>
+		<if test="bildingId != null">
+			bilding_id=#{bildingId},
+		</if>
+		<if test="roomId != null">
+			room_id=#{roomId},
+		</if>
+		<if test="contact != null">
+			contact=#{contact},
+		</if>
+		<if test="phone != null">
+			phone=#{phone},
+		</if>
+		<if test="appointmentDate != null">
+			appointment_date=#{appointmentDate},
+		</if>
+		<if test="status != null">
+			status=#{status},
+		</if>
+		<if test="remark != null">
+			remark=#{remark},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="departmentId != null">
+			departmentId = #{departmentId}
+		</if>
+		<if test="number != null">
+			number = #{number}
+		</if>
+		<if test="isDelete != null">
+			<choose>
+				<when test="isDelete == true">
+					is_delete  = 1,
+				</when>
+				<otherwise>
+					is_delete  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM oa_apply_repair
+		WHERE id = #{id}
+	</delete>
+
+	<update id="updateShenhe">
+		update oa_apply_repair set
+		<if test="args[1]!=null">
+			weixiugong=#{args[1]},
+		</if>
+		<if test="args[2]!=null">
+			liyou=#{args[2]},
+		</if>
+		is_shenhe=#{args[3]}
+		where id=#{args[0]}
+	</update>
+</mapper>

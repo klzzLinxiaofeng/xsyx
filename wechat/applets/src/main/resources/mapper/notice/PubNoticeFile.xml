@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.notice.dao.PubNoticeFileDao">
+    <resultMap id="BaseResultMap" type="com.xunyunedu.notice.pojo.PubNoticeFile">
+        <id column="id" property="id"/>
+        <result column="notice_id" property="noticeId"/>
+        <result column="file_uuid" property="fileUuid"/>
+        <result column="file_url" property="fileUrl"/>
+        <result column="fileName" property="fileName"/>
+        <result column="fileSize" property="fileSize"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into pub_notice_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="noticeId != null">
+                notice_id,
+            </if>
+            <if test="fileUuid != null and fileUuid != ''">
+                file_uuid,
+            </if>
+            <if test="fileUrl != null and fileUrl != ''">
+                file_url,
+            </if>
+            create_date
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="noticeId != null">
+                #{noticeId},
+            </if>
+            <if test="fileUuid != null and fileUuid != ''">
+                #{fileUuid},
+            </if>
+            <if test="fileUrl != null and fileUrl != ''">
+                #{fileUrl},
+            </if>
+            NOW()
+        </trim>
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select f.*,e.size as fileSize,e.file_name as fileName from pub_notice_file as f
+        left join res_entity_file as e
+        on e.uuid = f.file_uuid
+        where f.id = #{id} and f.is_deleted = 0
+    </select>
+
+    <select id="selectByNoticeId" resultMap="BaseResultMap">
+        select e.file_name as fileName,e.relative_path as file_url
+        from pub_notice_file as f
+        left join res_entity_file as e
+        on e.uuid = f.file_uuid
+        where f.notice_id = #{noticeId} and f.is_deleted = 0
+    </select>
+</mapper>

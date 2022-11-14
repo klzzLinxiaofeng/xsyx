@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.paper.dao.PaperDao">
+
+	<resultMap id="PaperResult" type="platform.education.paper.model.Paper">
+		<result property="id" column="id" />
+		<result property="paperUuid" column="paper_uuid" />
+		<result property="title" column="title" />
+		<result property="paperType" column="paper_type" />
+		<result property="score" column="score" />
+		<result property="createDate" column="create_date" />
+		<result property="userId" column="user_id" />
+		<result property="stageCode" column="stage_code" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="versionCode" column="version_code" />
+		<result property="gradeCode" column="grade_code" />
+		<result property="volumeCode" column="volume_code" />
+		<result property="categoryCode" column="category_code" />
+		<result property="difficulity" column="difficulity" />
+		<result property="knowledge" column="knowledge" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="questionsCount" column="questions_count" />
+		<result property="usedCount" column="used_count" />
+		<result property="fileUuid" column="file_uuid" />
+		<result property="fileMd5" column="file_md5" />
+		<result property="fileSize" column="file_size" />
+	</resultMap>
+
+	<resultMap id="KnowledgeCountResult" type="platform.education.paper.vo.KnowledgeCountVo">
+		<result property="knowledgeId" column="knowledgeId" />
+		<result property="scoreCount" column="scoreCount" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.paper.model.Paper">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pa_paper (
+			id, 
+			paper_uuid, 
+			title, 
+			paper_type, 
+			score, 
+			create_date, 
+			user_id, 
+			stage_code, 
+			subject_code, 
+			version_code, 
+			grade_code, 
+			volume_code, 
+			category_code, 
+			difficulity, 
+			knowledge, 
+			modify_date, 
+			questions_count, 
+			used_count, 
+			file_uuid, 
+			file_md5, 
+			file_size
+		)
+		VALUES (
+			#{id}, 
+			#{paperUuid}, 
+			#{title}, 
+			#{paperType}, 
+			#{score}, 
+			#{createDate}, 
+			#{userId}, 
+			#{stageCode}, 
+			#{subjectCode}, 
+			#{versionCode}, 
+			#{gradeCode}, 
+			#{volumeCode}, 
+			#{categoryCode}, 
+			#{difficulity}, 
+			#{knowledge}, 
+			#{modifyDate}, 
+			#{questionsCount}, 
+			#{usedCount}, 
+			#{fileUuid}, 
+			#{fileMd5}, 
+			#{fileSize}
+		)
+	</insert>
+
+	<select id="read" resultMap="PaperResult" useCache="false">
+		SELECT * FROM pa_paper WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findPaperByCondition" resultMap="PaperResult" useCache="false">
+		SELECT * FROM pa_paper 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid = #{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperType != null">
+				AND paper_type = #{args[0].paperType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND user_id = #{args[0].userId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].stageCode != null and args[0].stageCode != ''">
+				AND stage_code = #{args[0].stageCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].versionCode != null and args[0].versionCode != ''">
+				AND version_code = #{args[0].versionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].volumeCode != null and args[0].volumeCode != ''">
+				AND volume_code = #{args[0].volumeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].categoryCode != null and args[0].categoryCode != ''">
+				AND category_code = #{args[0].categoryCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].difficulity != null">
+				AND difficulity = #{args[0].difficulity,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].knowledge != null and args[0].knowledge != ''">
+				AND knowledge = #{args[0].knowledge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].questionsCount != null">
+				AND questions_count = #{args[0].questionsCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].usedCount != null">
+				AND used_count = #{args[0].usedCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fileMd5 != null and args[0].fileMd5 != ''">
+				AND file_md5 = #{args[0].fileMd5,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fileSize != null">
+				AND file_size = #{args[0].fileSize,javaType=java.lang.Long}
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pa_paper 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].paperUuid != null and args[0].paperUuid != ''">
+				AND paper_uuid = #{args[0].paperUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].title != null and args[0].title != ''">
+				AND title = #{args[0].title,javaType=java.lang.String}
+			</if>
+			<if test="args[0].paperType != null">
+				AND paper_type = #{args[0].paperType,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].score != null">
+				AND score = #{args[0].score,javaType=java.lang.Float}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].userId != null and args[0].userId != ''">
+				AND user_id = #{args[0].userId,javaType=java.lang.String}
+			</if>
+			<if test="args[0].stageCode != null and args[0].stageCode != ''">
+				AND stage_code = #{args[0].stageCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].versionCode != null and args[0].versionCode != ''">
+				AND version_code = #{args[0].versionCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].gradeCode != null and args[0].gradeCode != ''">
+				AND grade_code = #{args[0].gradeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].volumeCode != null and args[0].volumeCode != ''">
+				AND volume_code = #{args[0].volumeCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].categoryCode != null and args[0].categoryCode != ''">
+				AND category_code = #{args[0].categoryCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].difficulity != null">
+				AND difficulity = #{args[0].difficulity,javaType=java.lang.Double}
+			</if>
+			<if test="args[0].knowledge != null and args[0].knowledge != ''">
+				AND knowledge = #{args[0].knowledge,javaType=java.lang.String}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].questionsCount != null">
+				AND questions_count = #{args[0].questionsCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].usedCount != null">
+				AND used_count = #{args[0].usedCount,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].fileUuid != null and args[0].fileUuid != ''">
+				AND file_uuid = #{args[0].fileUuid,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fileMd5 != null and args[0].fileMd5 != ''">
+				AND file_md5 = #{args[0].fileMd5,javaType=java.lang.String}
+			</if>
+			<if test="args[0].fileSize != null">
+				AND file_size = #{args[0].fileSize,javaType=java.lang.Long}
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="PaperResult" useCache="false">
+		SELECT * FROM pa_paper WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.paper.model.Paper">
+		UPDATE pa_paper
+		SET 
+		<if test="paperUuid != null">
+			paper_uuid=#{paperUuid},
+		</if>
+		<if test="title != null">
+			title=#{title},
+		</if>
+		<if test="paperType != null">
+			paper_type=#{paperType},
+		</if>
+		<if test="score != null">
+			score=#{score},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="userId != null">
+			user_id=#{userId},
+		</if>
+		<if test="stageCode != null">
+			stage_code=#{stageCode},
+		</if>
+		<if test="subjectCode != null">
+			subject_code=#{subjectCode},
+		</if>
+		<if test="versionCode != null">
+			version_code=#{versionCode},
+		</if>
+		<if test="gradeCode != null">
+			grade_code=#{gradeCode},
+		</if>
+		<if test="volumeCode != null">
+			volume_code=#{volumeCode},
+		</if>
+		<if test="categoryCode != null">
+			category_code=#{categoryCode},
+		</if>
+		<if test="difficulity != null">
+			difficulity=#{difficulity},
+		</if>
+		<if test="knowledge != null">
+			knowledge=#{knowledge},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="questionsCount != null">
+			questions_count=#{questionsCount},
+		</if>
+		<if test="usedCount != null">
+			used_count=#{usedCount},
+		</if>
+		<if test="fileUuid != null">
+			file_uuid=#{fileUuid},
+		</if>
+		<if test="fileMd5 != null">
+			file_md5=#{fileMd5},
+		</if>
+		<if test="fileSize != null">
+			file_size=#{fileSize},
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pa_paper
+		WHERE id = #{id}
+	</delete>
+	
+	 <!--以下是业务方法-->
+    <select id="findPaperByUuid" resultMap="PaperResult" useCache="false">
+        SELECT * FROM pa_paper WHERE paper_uuid = #{args[0],javaType=java.lang.String}
+    </select>
+
+	<select id="findKnowledgeCountByPaperUuid" resultMap="KnowledgeCountResult" useCache="false">
+		SELECT
+			SUM(score) AS scoreCount,
+			knowledge_id AS knowledgeId
+		FROM
+		 	pa_question
+		WHERE
+			question_uuid
+		IN(
+			SELECT
+				question_uuid
+			FROM
+			 	pa_paper_question
+			WHERE
+			 	paper_uuid = #{args[0],javaType=java.lang.String}
+		)
+		GROUP BY
+			knowledge_id
+	</select>
+	
+	<update id="batchUnitModify">    
+        update lp_task_unit_user set     
+            has_finished = 1,
+            start_time = now(),
+            finish_time = now()
+        where lp_id = #{args[0]}
+</update> 
+
+
+<update id="bachTaskModify">    
+        update lp_task_user set 
+            state = 2,
+            start_time = now(),
+            finish_time = now()
+        where lp_id = #{args[0]}
+</update>  
+<select id="findALL" resultType="map">
+	SELECT * from lp_task_user_activity where unit_id in( 1114,1115,1121,1124) and files is not null and files != '' and files != 'null';
+</select>	
+</mapper>

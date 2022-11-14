@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ============================================= -->
+<!-- CPC : the script be user for deploy Project -->
+<!-- ============================================= -->
+<project name="Jenkins_ant_test" default="usage" basedir=".">
+	<!-- import setting file -->
+	<property file="${basedir}/build.properties" />
+	<!--Judgment OS -->
+	<condition property="isWindows">
+		<os family="windows" />
+	</condition>
+	<condition property="isUnix">
+		<os family="unix" />
+	</condition>
+	<!-- ================================= -->
+	<!-- Show script instructions -->
+	<!-- ================================= -->
+	<target name="usage" description="print usage message">
+		<echo>++++++++++++++++++++</echo>
+		<echo> usage message</echo>
+		<echo>++++++++++++++++++++</echo>
+		<echo>++About Project Targer++</echo>
+		<echo>1.deploy: deploy project</echo>
+		<echo>++About Tomcat Targer++</echo>
+		<echo>1.tomcat.stop: Stop Tomcat</echo>
+		<echo>2.tomcat.clean: Clean Tomcat</echo>
+		<echo>3.tomcat.start: Start Tomcat</echo>
+	</target>
+
+	<!-- ================================= -->
+	<!-- Stop Tomcat -->
+	<!-- ================================= -->
+	<target name="tomcat.stop" depends="windows.tomcat.stop,unix.tomcat.stop" />
+
+	<!--windows -->
+	<target name="windows.tomcat.stop" if="isWindows">
+		<echo>++++++++++++++++++++</echo>
+		<echo> stop Tomcat for ${os.name}</echo>
+		<echo>++++++++++++++++++++</echo>
+		<exec executable="${tomcat.instance.home}/shutdown.bat" />
+		<!--<exec executable="cmd" dir="${tomcat.instance.home}">
+			<arg line="${tomcat.instance.home}/startup.bat" />
+		</exec>-->
+		<sleep seconds="20" />
+	</target>
+	<!--unix -->
+	<target name="unix.tomcat.stop" if="isUnix">
+		<echo>++++++++++++++++++++</echo>
+		<echo> stop Tomcat for ${os.name}</echo>
+		<echo>++++++++++++++++++++</echo>
+		<exec executable="${tomcat.instance.home}/shutdown.sh" />
+		<sleep seconds="20" />
+	</target>
+	<!-- ================================= -->
+	<!-- Start tomcat -->
+	<!-- ================================= -->
+	<target name="tomcat.start" depends="unix.tomcat.start" />
+	<!--windows -->
+	<target name="windows.tomcat.start" if="isWindows">
+		<echo>++++++++++++++++++++</echo>
+		<echo> start Tomcat for ${os.name}</echo>
+		<echo>++++++++++++++++++++</echo>
+		<exec dir="${tomcat.instance.home}" executable="cmd">
+			<arg line="/c startup.bat" />
+		</exec>
+		<sleep seconds="30" />
+	</target>
+	<!--unix -->
+	<target name="unix.tomcat.start" if="isUnix">
+		<echo>++++++++++++++++++++</echo>
+		<echo> start Tomcat for ${os.name}</echo>
+		<echo>++++++++++++++++++++</echo>
+		<exec executable="${tomcat.instance.home}/startup.sh" />
+		<sleep seconds="30" />
+	</target>
+	<!-- ================================= -->
+	<!-- Clean tomcat -->
+	<!-- ================================= -->
+	<!-- ================================= -->
+	<!-- rebuild DB -->
+	<!-- ================================= -->
+	<target name="rebuild-db">
+		<tstamp />
+	</target>
+
+	<!-- ================================= -->
+	<!-- deplpy Project to Tomcat -->
+	<!-- ================================= -->
+	<target name="deploy">
+		<echo>++++++++++++++++++++</echo>
+		<echo> deploy project to Tomcat</echo>
+		<echo>++++++++++++++++++++</echo>
+		<!--delet -->
+		<delete includeemptydirs="true">
+			<fileset dir="${tomcat.deploy.home}" includes="**/*" />
+		</delete>
+		<!--Delete obsolete files-->
+		<copy todir="${tomcat.deploy.home}" overwrite="true">
+			<fileset dir="${web.dir}">
+				<include name="**/**" />
+				<exclude name="**/.svn" />
+			</fileset>
+		</copy>
+		<copy tofile="${tomcat.deploy.home}/WEB-INF/classes/ftp.properties" file="${src.java.dir}/main/resources/ftp.test.properties" overwrite="true" />
+		<copy tofile="${tomcat.deploy.home}/WEB-INF/classes/jdbc.properties" file="${src.java.dir}/main/resources/jdbc.test.properties" overwrite="true" />
+		<copy tofile="${tomcat.deploy.home}/WEB-INF/classes/logback.xml" file="${src.java.dir}/main/resources/logback.test.xml" overwrite="true" />
+		<copy tofile="${tomcat.deploy.home}/WEB-INF/classes/System.properties" file="${src.java.dir}/main/resources/System.test.properties" overwrite="true" />
+		<!--Set the permissions
+			<chmod perm="777" type="dir" dir="${deploy.home}" includes="**/**" />
+			<chmod perm="777" type="file" dir="${deploy.home}" includes="**/**" />
+			-->
+	</target>
+	<!-- ================================= -->
+	<!-- All -->
+	<!-- ================================= -->
+	<target name="all">
+		<!--stop Tomcat-->
+		<antcall target="tomcat.stop" />
+		<!--deploy project-->
+		<antcall target="deploy" />
+		<!--Set the permissions
+			<chmod perm="777" type="dir" dir="${tomcat.home}" includes="**/**" />
+			<chmod perm="777" type="file" dir="${tomcat.home}" includes="**/**" />
+			-->
+		<!--start Tomcat-->
+		<antcall target="tomcat.start" />
+		<echo>!!!!!!!!!!!!!!!!!!!!</echo>
+		<echo>  All Done!</echo>
+		<echo>!!!!!!!!!!!!!!!!!!!!</echo>
+
+	</target>
+
+</project>

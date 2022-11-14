@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+    <!--&lt;!&ndash; 创建job &ndash;&gt;
+    <bean id="publicClassJob" class="com.xunyunedu.task.Job.PublicClassJob">
+    </bean>
+
+    &lt;!&ndash; 定义调用对象和调用对象的方法 &ndash;&gt;
+    <bean id="batchCreateAccountJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        &lt;!&ndash; 调用的类 &ndash;&gt;
+        <property name="targetObject" ref="publicClassJob"/>
+        &lt;!&ndash; 调用类中的方法 &ndash;&gt;
+        <property name="targetMethod" value="historyJob"/>
+        &lt;!&ndash; 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 &ndash;&gt;
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="batchCreatePayOrderJobTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="batchCreateAccountJobDetail"/>
+        <property name="cronExpression">
+            <value>0 0/1 * * * ?</value>
+        </property>
+    </bean>-->
+    <!-- 调度任务触发器 启动定时任务 -->
+   <!-- <bean id="pay_scheduler" lazy-init="true" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="batchCreatePayOrderJobTrigger"/>
+            </list>
+        </property>
+    </bean>-->
+
+
+</beans>

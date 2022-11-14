@@ -1,0 +1,9 @@
+.ztree li a{height:26px;color:#444444;}
+.ztree li span{line-height:26px;}
+.ztree li a.curSelectedNode{height:26px;}
+.ztree li span.button.chk{    margin: 7px 3px 0 0;}
+.ztree li span.button{    margin: 4px 0 0 0;}
+.ztree>li>a span{font-size:14px;font-weight:bold;}
+.ztree>li>ul>li>a span{font-weight:bold;}
+.ztree>ul>ul li a span{ font-weight:normal;}
+.ztree li a input.rename{margin-top:5px;}

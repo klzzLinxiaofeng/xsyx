@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.SchoolInitDao">
+
+	<resultMap id="TeacherTmpResult" type="platform.education.generalTeachingAffair.model.TeacherTmp">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="alias" column="alias" />
+		<result property="phone" column="phone" />
+		<result property="department" column="department" />
+		<result property="position" column="position" />
+		<result property="job" column="job" />
+		<result property="status" column="status" />
+		<result property="errorFiled" column="error_filed" />
+		<result property="errorInfo" column="error_info" />
+		<result property="teacherId" column="teacher_id" />
+		<result property="code" column="code" />
+		<result property="sex" column="sex" />
+	</resultMap>
+	
+	<resultMap id="StudentTmpResult" type="platform.education.generalTeachingAffair.model.StudentTmp">
+		<result property="id" column="id" />
+		<result property="num" column="num" />
+		<result property="name" column="name" />
+		<result property="grade" column="grade" />
+		<result property="team" column="team" />
+		<result property="guardian" column="guardian" />
+		<result property="guardianPhone" column="guardianPhone" />
+		<result property="status" column="status" />
+		<result property="errorFiled" column="error_filed" />
+		<result property="errorInfo" column="error_info" />
+		<result property="studentId" column="student_id" />
+		<result property="code" column="code" />
+	</resultMap>
+	
+	<resultMap id="SubjectTeacherTmpResult" type="platform.education.generalTeachingAffair.model.SubjectTeacherTmp">
+		<result property="id" column="id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="gradeName" column="grade_name" />
+		<result property="teamId" column="team_id" />
+		<result property="teamNumber" column="team_number" />
+		<result property="teacherName" column="teacher_name" />
+		<result property="subjectName" column="subject_name" />
+		<result property="alias" column="alias" />
+		<result property="phone" column="phone" />
+		<result property="status" column="status" />
+		<result property="errorFiled" column="error_filed" />
+		<result property="errorInfo" column="error_info" />
+		<result property="code" column="code" />
+		<result property="subjectTeacherId" column="subject_teacher_id" />
+	</resultMap>
+
+	<resultMap id="ParentStudentTmpResult" type="platform.education.generalTeachingAffair.model.ParentStudentTmp">
+		<result property="id" column="id" />
+		<result property="gradeName" column="gradeName" />
+		<result property="teamNumber" column="teamNumber" />
+		<result property="studentName" column="studentName" />
+		<result property="number" column="number" />
+		<result property="parentName" column="parentName" />
+		<result property="mobile" column="mobile" />
+		<result property="relation" column="relation" />
+		<result property="rank" column="rank" />
+		<result property="status" column="status" />
+		<result property="errorFiled" column="error_filed" />
+		<result property="errorInfo" column="error_info" />
+		<result property="code" column="code" />
+		<result property="studentId" column="student_id" />
+	</resultMap>
+	
+	<insert id="createTeacherTmpBatch">
+		INSERT INTO pj_teacher_tmp (
+			id, 
+			name, 
+			alias, 
+			phone, 
+			department, 
+			position, 
+			job, 
+			status, 
+			error_filed, 
+			error_info, 
+			teacher_id,
+			sex,
+			code
+		)
+		VALUES 
+		<foreach collection="args[0]" item="item" index="index" separator="," >
+       	(
+			#{item.id}, 
+			#{item.name}, 
+			#{item.alias}, 
+			#{item.phone}, 
+			#{item.department}, 
+			#{item.position}, 
+			#{item.job}, 
+			#{item.status}, 
+			#{item.errorFiled}, 
+			#{item.errorInfo}, 
+			#{item.teacherId}, 
+			#{item.sex},
+			#{item.code}
+		)
+   	 	</foreach>  
+	</insert>
+	
+	<insert id="createStudentTmpBatch">
+		INSERT INTO pj_student_tmp (
+			id, 
+			num, 
+			name, 
+			grade, 
+			team, 
+			guardian, 
+			guardianPhone,
+			status, 
+			error_filed, 
+			error_info, 
+			student_id,
+			code
+		)
+		VALUES
+		<foreach collection="args[0]" item="item" index="index" separator="," >
+       	(
+			#{item.id}, 
+			#{item.num}, 
+			#{item.name}, 
+			#{item.grade}, 
+			#{item.team}, 
+			#{item.guardian}, 
+			#{item.guardianPhone},
+			#{item.status}, 
+			#{item.errorFiled}, 
+			#{item.errorInfo}, 
+			#{item.studentId}, 
+			#{item.code}
+		)
+   	 	</foreach>  
+	</insert>
+	
+	<insert id="createSubjectTeacherTmpBatch">
+		INSERT INTO pj_subject_teacher_tmp (
+			id, 
+			grade_id, 
+			grade_name, 
+			team_id, 
+			team_number, 
+			teacher_name, 
+			subject_name, 
+			alias, 
+			phone, 
+			status, 
+			error_filed, 
+			error_info, 
+			code, 
+			subject_teacher_id
+		)
+		VALUES
+		<foreach collection="args[0]" item="item" index="index" separator="," >
+       	(
+			#{item.id}, 
+			#{item.gradeId}, 
+			#{item.gradeName}, 
+			#{item.teamId}, 
+			#{item.teamNumber}, 
+			#{item.teacherName}, 
+			#{item.subjectName}, 
+			#{item.alias}, 
+			#{item.phone}, 
+			#{item.status}, 
+			#{item.errorFiled}, 
+			#{item.errorInfo}, 
+			#{item.code}, 
+			#{item.subjectTeacherId}
+		)
+   	 	</foreach>  
+	</insert>
+
+	<insert id="createParentStudentTmpBatch">
+		INSERT INTO pj_parent_student_tmp (
+			id,
+			gradeName,
+			teamNumber,
+			studentName,
+			number,
+			parentName,
+			mobile,
+			relation,
+			rank,
+			status,
+			error_filed,
+			error_info,
+			code,
+			student_id
+		)
+		VALUES
+		<foreach collection="args[0]" item="item" index="index" separator="," >
+		(
+			#{item.id},
+			#{item.gradeName},
+			#{item.teamNumber},
+			#{item.studentName},
+			#{item.number},
+			#{item.parentName},
+			#{item.mobile},
+			#{item.relation},
+			#{item.rank},
+			#{item.status},
+			#{item.errorFiled},
+			#{item.errorInfo},
+			#{item.code},
+			#{item.studentId}
+		)
+		</foreach>
+	</insert>
+	
+	<delete id="deleteTeacherTmpByCode">
+		DELETE FROM pj_teacher_tmp
+		where code = #{args[0]}
+	</delete>
+	
+	<delete id="deleteStudentTmpByCode">
+		DELETE FROM pj_student_tmp
+		where code = #{args[0]}
+	</delete>
+	
+	<delete id="deleteSubjectTeacherTmpByCode">
+		DELETE FROM pj_subject_teacher_tmp
+		where code = #{args[0]}
+	</delete>
+
+	<delete id="deleteParentStudentTmpByCode">
+		DELETE FROM pj_parent_student_tmp WHERE code = #{args[0]}
+	</delete>
+	
+	<delete id="deleteTeacherTmpByTeacherId">
+		DELETE FROM pj_teacher_tmp
+		where teacher_id = #{args[0]}
+	</delete>
+	
+	<delete id="deleteStudentTmpByStudentId">
+		DELETE FROM pj_student_tmp
+		where student_id = #{args[0]}
+	</delete>
+	
+	<delete id="deleteSubjectTeacherTmpBySubjectTeacherId">
+		DELETE FROM pj_subject_teacher_tmp
+		where subject_teacher_id = #{args[0]}
+	</delete>
+
+	<delete id="deleteParentStudentTmpByStudentId">
+		DELETE FROM pj_parent_student_tmp WHERE student_id = #{args[0]}
+	</delete>
+	
+	<delete id="deleteTeacherTmpById">
+		DELETE FROM pj_teacher_tmp
+		where id = #{args[0]}
+	</delete>
+	
+	<delete id="deleteStudentTmpById">
+		DELETE FROM pj_student_tmp
+		where id = #{args[0]}
+	</delete>
+	
+	<delete id="deleteSubjectTeacherTmpById">
+		DELETE FROM pj_subject_teacher_tmp
+		where id = #{args[0]}
+	</delete>
+
+	<delete id="deleteParentStudentTmpById">
+		DELETE FROM pj_parent_student_tmp WHERE id = #{args[0]}
+	</delete>
+	
+	<select id="findTeacherTmpByCodeAndStatus" resultMap="TeacherTmpResult" useCache="false">
+		SELECT * FROM pj_teacher_tmp 
+		where code = #{args[0]}
+		<if test="args[1] != null">
+			AND status = #{args[1]}
+		</if>
+	</select>
+	
+	<select id="findStudentTmpByCodeAndStatus" resultMap="StudentTmpResult" useCache="false">
+		SELECT * FROM pj_student_tmp 
+		where code = #{args[0]}
+		<if test="args[1] != null">
+			AND status = #{args[1]}
+		</if>
+	</select>
+	
+	<select id="findSubjectTeacherTmpByCodeAndStatus" resultMap="SubjectTeacherTmpResult" useCache="false">
+		SELECT * FROM pj_subject_teacher_tmp 
+		where code = #{args[0]}
+		<if test="args[1] != null">
+			AND status = #{args[1]}
+		</if>
+	</select>
+
+	<select id="findParentStudentTmpByCodeAndStatus" resultMap="ParentStudentTmpResult" useCache="false">
+		SELECT * FROM pj_parent_student_tmp
+		where code = #{args[0]}
+		<if test="args[1] != null">
+			AND status = #{args[1]}
+		</if>
+	</select>
+
+	<select id="findTeacherTmpById" resultMap="TeacherTmpResult" useCache="false">
+		SELECT * FROM pj_teacher_tmp 
+		where id = #{args[0]}
+	</select>
+	
+	<select id="findStudentTmpById" resultMap="StudentTmpResult" useCache="false">
+		SELECT * FROM pj_student_tmp 
+		where id = #{args[0]}
+	</select>
+	
+	<select id="findSubjectTeacherTmpById" resultMap="SubjectTeacherTmpResult" useCache="false">
+		SELECT * FROM pj_subject_teacher_tmp 
+		where id = #{args[0]}
+	</select>
+
+	<select id="findParentStudentTmpById" resultMap="ParentStudentTmpResult" useCache="false">
+		SELECT * FROM pj_parent_student_tmp
+		where id = #{args[0]}
+	</select>
+
+	<select id="countTeacherTmpByCodeAndStatus" resultType="java.lang.Long" useCache="false">
+		SELECT count(1) FROM pj_teacher_tmp 
+		where 1=1
+		<if test="args[0] != null">
+			AND code = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND status = #{args[1]}
+		</if>
+	</select>
+	
+	<select id="countStudentTmpByCodeAndStatus" resultType="java.lang.Long" useCache="false">
+		SELECT count(1) FROM pj_student_tmp 
+		where 1=1
+		<if test="args[0] != null">
+			AND code = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND status = #{args[1]}
+		</if>
+	</select>
+	
+	<select id="countSubjectTeacherTmpByCodeAndStatus" resultType="java.lang.Long" useCache="false">
+		SELECT count(1) FROM pj_subject_teacher_tmp 
+		where 1=1
+		<if test="args[0] != null">
+			AND code = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND status = #{args[1]}
+		</if>
+	</select>
+
+	<select id="countParentStudentTmpByCodeAndStatus" resultType="java.lang.Long" useCache="false">
+		SELECT count(1) FROM pj_parent_student_tmp
+		where 1=1
+		<if test="args[0] != null">
+			AND code = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND status = #{args[1]}
+		</if>
+	</select>
+
+	
+	<update id="updateTeacherTmp">
+		UPDATE pj_teacher_tmp
+		SET 
+		<if test="args[0].name != null">
+			name=#{args[0].name},
+		</if>
+		<if test="args[0].status != null">
+			status=#{args[0].status},
+		</if>
+		<if test="args[0].alias != null">
+			alias=#{args[0].alias},
+		</if>
+		<if test="args[0].phone != null">
+			phone=#{args[0].phone},
+		</if>
+		<if test="args[0].department != null">
+			department=#{args[0].department},
+		</if>
+		<if test="args[0].position != null">
+			position=#{args[0].position},
+		</if>
+		<if test="args[0].job != null">
+			job=#{args[0].job},
+		</if>
+		<if test="status != null">
+			status=#{args[0].status},
+		</if>
+		<if test="args[0].errorFiled != null">
+			error_filed=#{args[0].errorFiled},
+		</if>
+		<if test="args[0].errorInfo != null">
+			error_info=#{args[0].errorInfo},
+		</if>
+		<if test="args[0].teacherId != null">
+			teacher_id=#{args[0].teacherId},
+		</if>
+		<if test="args[0].code != null">
+			code=#{args[0].code},
+		</if>
+		<if test="args[0].sex != null">
+			sex=#{args[0].sex},
+		</if>
+		id = #{args[0].id}
+		WHERE id = #{args[0].id}
+	</update>
+	
+	<update id="updateStudentTmp">
+		UPDATE pj_student_tmp
+		SET 
+		<if test="args[0].num != null">
+			num=#{args[0].num},
+		</if>
+		<if test="args[0].name != null">
+			name=#{args[0].name},
+		</if>
+		<if test="args[0].grade != null">
+			grade=#{args[0].grade},
+		</if>
+		<if test="args[0].team != null">
+			team=#{args[0].team},
+		</if>
+		<if test="args[0].guardian != null">
+			guardian=#{args[0].guardian},
+		</if>
+		<if test="args[0].guardianPhone != null">
+			guardianPhone=#{args[0].guardianPhone},
+		</if>
+		<if test="args[0].status != null">
+			status=#{args[0].status},
+		</if>
+		<if test="args[0].errorFiled != null">
+			error_filed=#{args[0].errorFiled},
+		</if>
+		<if test="args[0].errorInfo != null">
+			error_info=#{args[0].errorInfo},
+		</if>
+		<if test="args[0].studentId != null">
+			student_id=#{args[0].studentId},
+		</if>
+		<if test="args[0].code != null">
+			code=#{args[0].code},
+		</if>
+		id = #{args[0].id}
+		WHERE id = #{args[0].id}
+	</update>
+	
+	<update id="updateSubjectTeacherTmp" parameterType="platform.education.generalTeachingAffair.model.SubjectTeacherTmp">
+		UPDATE pj_subject_teacher_tmp
+		SET 
+		<if test="args[0].gradeId != null">
+			grade_id=#{args[0].gradeId},
+		</if>
+		<if test="args[0].gradeName != null">
+			grade_name=#{args[0].gradeName},
+		</if>
+		<if test="args[0].teamId != null">
+			team_id=#{args[0].teamId},
+		</if>
+		<if test="args[0].teamNumber != null">
+			team_number=#{args[0].teamNumber},
+		</if>
+		<if test="args[0].teacherName != null">
+			teacher_name=#{args[0].teacherName},
+		</if>
+		<if test="args[0].subjectName != null">
+			subject_name=#{args[0].subjectName},
+		</if>
+		<if test="args[0].alias != null">
+			alias=#{args[0].alias},
+		</if>
+		<if test="args[0].phone != null">
+			phone=#{args[0].phone},
+		</if>
+		<if test="args[0].status != null">
+			status=#{args[0].status},
+		</if>
+		<if test="args[0].errorFiled != null">
+			error_filed=#{args[0].errorFiled},
+		</if>
+		<if test="args[0].errorInfo != null">
+			error_info=#{errorInfo},
+		</if>
+		<if test="args[0].code != null">
+			code=#{args[0].code},
+		</if>
+		<if test="args[0].subjectTeacherId != null">
+			subject_teacher_id=#{args[0].subjectTeacherId},
+		</if>
+		id = #{args[0].id}
+		WHERE id = #{args[0].id}
+	</update>
+
+	<update id="updateParentStudentTmp" parameterType="platform.education.generalTeachingAffair.model.ParentStudentTmp">
+		UPDATE pj_parent_student_tmp
+		SET
+		<if test="gradeName != null">
+			gradeName=#{args[0].gradeName},
+		</if>
+		<if test="teamNumber != null">
+			teamNumber=#{args[0].teamNumber},
+		</if>
+		<if test="studentName != null">
+			studentName=#{args[0].studentName},
+		</if>
+		<if test="number != null">
+			number=#{args[0].number},
+		</if>
+		<if test="parentName != null">
+			parentName=#{args[0].parentName},
+		</if>
+		<if test="mobile != null">
+			mobile=#{args[0].mobile},
+		</if>
+		<if test="relation != null">
+			relation=#{args[0].relation},
+		</if>
+		<if test="rank != null">
+			rank=#{args[0].rank},
+		</if>
+		<if test="status != null">
+			status=#{args[0].status},
+		</if>
+		<if test="errorFiled != null">
+			error_filed=#{args[0].errorFiled},
+		</if>
+		<if test="errorInfo != null">
+			error_info=#{args[0].errorInfo},
+		</if>
+		<if test="code != null">
+			code=#{args[0].code},
+		</if>
+		<if test="studentId != null">
+			student_id=#{args[0].studentId},
+		</if>
+		id = #{args[0].id}
+		WHERE id = #{args[0].id}
+	</update>
+	
+	<select id="findSubjectTeacherTmpByCondition" resultMap="SubjectTeacherTmpResult" useCache="false">
+		SELECT * FROM pj_subject_teacher_tmp 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeName != null and args[0].gradeName != ''">
+				AND grade_name = #{args[0].gradeName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamNumber != null and args[0].teamNumber != ''">
+				AND team_number = #{args[0].teamNumber,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherName != null and args[0].teacherName != ''">
+				AND teacher_name = #{args[0].teacherName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectName != null and args[0].subjectName != ''">
+				AND subject_name = #{args[0].subjectName,javaType=java.lang.String}
+			</if>
+			<if test="args[0].alias != null and args[0].alias != ''">
+				AND alias = #{args[0].alias,javaType=java.lang.String}
+			</if>
+			<if test="args[0].phone != null and args[0].phone != ''">
+				AND phone = #{args[0].phone,javaType=java.lang.String}
+			</if>
+			<if test="args[0].status != null">
+				AND status = #{args[0].status,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].errorFiled != null and args[0].errorFiled != ''">
+				AND error_filed = #{args[0].errorFiled,javaType=java.lang.String}
+			</if>
+			<if test="args[0].errorInfo != null and args[0].errorInfo != ''">
+				AND error_info = #{args[0].errorInfo,javaType=java.lang.String}
+			</if>
+			<if test="args[0].code != null and args[0].code != ''">
+				AND code = #{args[0].code,javaType=java.lang.String}
+			</if>
+			<if test="args[0].subjectTeacherId != null">
+				AND subject_teacher_id = #{args[0].subjectTeacherId,javaType=java.lang.Integer}
+			</if>
+		</if>
+	</select>
+	
+</mapper>

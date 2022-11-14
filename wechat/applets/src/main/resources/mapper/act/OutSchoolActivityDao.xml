@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.act.dao.OutSchoolActivityDao">
+
+    <resultMap id="OutSchoolActivityResult" type="com.xunyunedu.act.pojo.OutSchoolActivity">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="name" column="name"/>
+        <result property="location" column="location"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="accessory" column="accessory"/>
+        <result property="description" column="description"/>
+        <result property="createDate" column="create_date"/>
+        <result property="modifyDate" column="modify_date"/>
+
+        <result property="handleUserId" column="handle_user_id"/>
+        <result property="handleUserName" column="handle_user_name"/>
+        <result property="state" column="state"/>
+        <result property="summary" column="summary"/>
+        <result property="summaryImgs" column="summary_imgs"/>
+        <result property="userName" column="user_name"/>
+        <result property="refuseCause" column="refuse_cause"/>
+
+    </resultMap>
+
+    
+
+
+    <insert id="create" parameterType="com.xunyunedu.act.pojo.OutSchoolActivity">
+        INSERT INTO at_out_school_activity (
+            user_id,
+            school_id,
+            `name`,
+            location,
+            start_time,
+            end_time,
+            accessory,
+            description,
+            create_date,
+            modify_date,
+            `state`,
+            summary,
+            summary_imgs,
+            user_name,
+            refuse_cause,
+            handle_user_id,
+            handle_user_name
+        )
+        VALUES (
+                   #{userId},
+                   #{schoolId},
+                   #{name},
+                   #{location},
+                   #{startTime},
+                   #{endTime},
+                   #{accessory},
+                   #{description},
+                   #{createDate},
+                   #{modifyDate},
+                   #{state},
+                   #{summary},
+                   #{summaryImgs},
+                   #{userName},
+                   #{refuseCause},
+                   #{handleUserId},
+                   #{handleUserName}
+               )
+    </insert>
+
+
+    <select id="selectById" resultMap="OutSchoolActivityResult" useCache="false">
+        SELECT * FROM at_out_school_activity
+        where id = #{id,javaType=java.lang.Integer}
+    </select>
+
+
+    <select id="selectList" resultMap="OutSchoolActivityResult" useCache="false">
+        SELECT *
+        FROM at_out_school_activity isa
+        <where >
+            <if test="userId != null">
+                AND isa.user_id = #{userId,javaType=java.lang.Integer}
+            </if>
+            <if test="handleUserId != null">
+                AND isa.handle_user_id = #{handleUserId,javaType=java.lang.Integer}
+            </if>
+            <if test="state != null">
+                AND isa.`state` = #{state,javaType=java.lang.Integer}
+            </if>
+        </where>
+        order by  isa.create_date desc
+    </select>
+    
+    
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.szxyzxx.pingyumoban.dao.PingYuMoBanDao">
+
+    <resultMap id="PingYuMoBanMap" type="platform.szxyzxx.pingyumoban.vo.PingYuMoBan">
+        <result property="id" column="id"/>
+        <result property="text" column="text"/>
+        <result property="gradeId" column="grade_id"/>
+        <result property="pingYuId" column="zy_type_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modiyTime" column="modiy_time"/>
+        <result property="isDelete" column="is_delete"/>
+        <result property="gradeName" column="grade_name"/>
+        <result property="pingYuTypeName" column="name"/>
+        <result property="subjectId" column="subject_id"/>
+        <result property="subjectName" column="subject_name"/>
+        <result property="subjctZhiBiaoId" column="subjctZhiBiaoId"/>
+        <result property="subjectZhiBiaoName" column="subjectZhiBiaoName"/>
+        <result property="minScore" column="min_score"/>
+        <result property="maxScore" column="max_score"/>
+        <result property="schoolYear" column="school_year"/>
+        <result property="schoolTrem" column="school_trem"/>
+    </resultMap>
+
+    <select id="findByAll" resultMap="PingYuMoBanMap">
+        select zpm.*,pg.name as grade_name,zp.name,pl.literacy_name as subjectZhiBiaoName,ps.name as subject_name  from zy_pingyu_moban zpm
+        inner join pj_grade pg on pg.id=zpm.grade_id
+        inner join zy_pingyutype zp on zp.id=zpm.zy_type_id
+        inner join pj_subject ps  on ps.id=zpm.subject_id
+        inner join pj_literacy pl  on pl.id=zpm.subjctZhiBiaoId
+        <where>
+        zpm.is_delete=0
+            <if test="args[0]!=null">
+               and zpm.grade_id=#{args[0]}
+            </if>
+            <if test="args[1]!=null">
+                and zpm.zy_type_id=#{args[1]}
+            </if>
+            <if test="args[2]!=null">
+                and zpm.school_year=#{args[2]}
+            </if>
+            <if test="args[3]!=null">
+                and zpm.school_trem=#{args[3]}
+            </if>
+            <if test="args[4]!=null">
+                and zpm.subject_id=#{args[4]}
+            </if>
+        </where>
+        order by zpm.create_time desc
+    </select>
+
+    <insert id="create">
+        insert into zy_pingyu_moban(zy_type_id,grade_id,text,create_time,modiy_time,is_delete,subject_id,subjctZhiBiaoId,min_score,max_score,school_year,school_trem)
+        value(#{args[0].pingYuId},#{args[0].gradeId},#{args[0].text},NOW(),NOW(),0,#{args[0].subjectId},#{args[0].subjctZhiBiaoId},#{args[0].minScore},#{args[0].maxScore},#{args[0].schoolYear},#{args[0].schoolTrem})
+    </insert>
+
+    <update id="update">
+        update zy_pingyu_moban set
+        text=#{args[0].text},
+        zy_type_id=#{args[0].pingYuId},
+        grade_id=#{args[0].gradeId},
+        subject_id=#{args[0].subjectId},
+        subjctZhiBiaoId=#{args[0].subjctZhiBiaoId},
+        min_score=#{args[0].minScore},
+        max_score=#{args[0].maxScore},
+        school_year=#{args[0].schoolYear},
+        school_trem=#{args[0].schoolTrem}
+        where id=#{args[0].id}
+    </update>
+
+    <update id="updateShanChu">
+        update zy_pingyu_moban set is_delete=1 where id=#{args[0]}
+    </update>
+    <update id="updateDelete">
+        update zy_pingyu_moban set is_delete=1 where zy_type_id=#{args[0]}
+    </update>
+
+    <select id="findById" resultMap="PingYuMoBanMap">
+        select zpm.*,pg.name as grade_name,zp.name from zy_pingyu_moban zpm
+        inner join pj_grade pg on pg.id=zpm.grade_id
+        inner join zy_pingyutype zp on zp.id=zpm.zy_type_id
+           where zpm.is_delete=0 and zpm.id=#{args[0]}
+    </select>
+    <select id="findByIds" resultMap="PingYuMoBanMap">
+        select zpm.*,pg.name as grade_name,zp.name from zy_pingyu_moban zpm
+        inner join pj_grade pg on pg.id=zpm.grade_id
+        inner join zy_pingyutype zp on zp.id=zpm.zy_type_id
+        where zpm.is_delete=0 and  zpm.grade_id=#{args[1]}
+        <if test="args[2]!=null">
+            and zpm.subject_id=#{args[2]}
+        </if>
+        <if test="args[3]!=null">
+            and zpm.subjctZhiBiaoId=#{args[3]}
+        </if>
+        <if test="args[0]!=null">
+            and zp.name=#{args[0]}
+        </if>
+        <if test="args[4]!=null">
+            and zpm.school_year=#{args[4]}
+        </if>
+        <if test="args[5]!=null">
+            and zpm.school_trem=#{args[5]}
+        </if>
+    </select>
+    <select id="findBySchoolYear" resultMap="PingYuMoBanMap">
+       select zpm.*,pg.name as grade_name,pl.literacy_name as subjectZhiBiaoName from zy_pingyu_moban zpm
+        inner join pj_grade pg on pg.id=zpm.grade_id
+        inner join pj_literacy  pl on pl.id=zpm.subjctZhiBiaoId
+        where zpm.is_delete=0
+        <if test="args[0]!=null">
+            and zpm.school_year=#{args[0]}
+        </if>
+        <if test="args[1]!=null">
+            and zpm.school_trem=#{args[1]}
+        </if>
+    </select>
+
+
+</mapper>

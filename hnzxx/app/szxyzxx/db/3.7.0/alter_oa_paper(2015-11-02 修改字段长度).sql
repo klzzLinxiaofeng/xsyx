@@ -1,0 +1,2 @@
+ALTER TABLE oa_paper
+MODIFY COLUMN `author` VARCHAR(40) NULL COMMENT '发文单位'

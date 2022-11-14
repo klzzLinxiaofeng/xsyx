@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunyunedu.screening.dao.ScreeningDao">
+
+    <resultMap id="ScreeningMap" type="com.xunyunedu.screening.vo.Screening">
+        <id column="id" property="id"></id>
+        <result column="paicha_user_id" property="paichaUserId"></result>
+        <result column="paicha_name" property="paichaUserName"></result>
+        <result column="paicha_time" property="paichaTime2"></result>
+        <result column="screening_area" property="screeningArea"></result>
+        <result column="trouble" property="trouble"></result>
+        <result column="water_electricity" property="waterElectricity"></result>
+        <result column="construction" property="construction"></result>
+        <result column="facilities" property="facilities"></result>
+        <result column="qita" property="qita"></result>
+        <result column="qita_name" property="qitaName"></result>
+        <result column="beizhu" property="beizhu"></result>
+        <result column="fujian_uuid" property="fujianUuid"></result>
+        <result column="fujian_url" property="fujianUrl"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="modiy_time" property="modiyTime"></result>
+        <result column="is_delete" property="isDelete"></result>
+    </resultMap>
+    <select id="findByAll" resultMap="ScreeningMap">
+        select  * from zy_screening
+        where is_delete=0
+        and  paicha_user_id like concat('%',#{id}, '%')
+        order by create_time desc
+    </select>
+    <insert id="create" parameterType="com.xunyunedu.screening.vo.Screening" useGeneratedKeys="true" keyProperty="screening.id" keyColumn="id">
+        insert  into zy_screening(
+        paicha_user_id,
+        paicha_name,
+        paicha_time,
+        screening_area,
+        trouble,
+        water_electricity,
+        construction,
+        facilities,
+        qita,
+        qita_name,
+        beizhu,
+        fujian_uuid,
+        fujian_url,
+        create_time,
+        modiy_time,
+        is_delete)
+        value(
+        #{screening.paichaUserId},
+        #{screening.paichaUserName},
+        #{screening.paichaTime},
+        #{screening.screeningArea},
+        #{screening.trouble},
+        #{screening.waterElectricity},
+        #{screening.construction},
+        #{screening.facilities},
+        #{screening.qita},
+        #{screening.qitaName},
+        #{screening.beizhu},
+        #{screening.fujianUuid},
+        #{screening.fujianUrl},
+       NOW(),
+       NOW(),
+       0)
+    </insert>
+    <select id="findById" resultMap="ScreeningMap">
+        select  * from zy_screening where id=#{id} and is_delete=0
+    </select>
+</mapper>

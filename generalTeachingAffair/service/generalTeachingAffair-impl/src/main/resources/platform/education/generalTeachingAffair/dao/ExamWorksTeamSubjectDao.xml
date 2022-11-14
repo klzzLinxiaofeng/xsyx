@@ -1,0 +1,870 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="platform.education.generalTeachingAffair.dao.ExamWorksTeamSubjectDao">
+
+	<resultMap id="ExamWorksTeamSubjectResult" type="platform.education.generalTeachingAffair.model.ExamWorksTeamSubject">
+		<result property="id" column="id" />
+		<result property="examWorksId" column="exam_works_id" />
+		<result property="examWorksGradeId" column="exam_works_grade_id" />
+		<result property="examId" column="exam_id" />
+		<result property="schoolId" column="school_id" />
+		<result property="gradeId" column="grade_id" />
+		<result property="teamId" column="team_id" />
+		<result property="subjectCode" column="subject_code" />
+		<result property="teacherId" column="teacher_id" />
+		<result property="postTeacherId" column="post_teacher_id" />
+		<result property="postTime" column="post_time" />
+		<result property="publishTeacherId" column="publish_teacher_id" />
+		<result property="publishTime" column="publish_time" />
+		<result property="createDate" column="create_date" />
+		<result property="modifyDate" column="modify_date" />
+		<result property="isDeleted" column="is_deleted" />
+	</resultMap>
+
+	<resultMap id="ExamWorksTeamSubjectVoResult" type="platform.education.generalTeachingAffair.vo.ExamWorksTeamSubjectVo" extends="ExamWorksTeamSubjectResult">
+		<result property="gradeName" column="grade_name" />
+		<result property="gradeCode" column="grade_code" />
+		<result property="teamName" column="team_name" />
+		<result property="teamNumber" column="team_number" />
+		<result property="subjectName" column="subject_name" />
+		<result property="fullScore" column="full_score" />
+		<result property="highScore" column="high_score" />
+		<result property="lowScore" column="low_score" />
+		<result property="passScore" column="pass_score" />
+	</resultMap>
+
+	<insert id="create" parameterType="platform.education.generalTeachingAffair.model.ExamWorksTeamSubject">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+		INSERT INTO pj_exam_works_team_subject (
+			id, 
+			exam_works_id, 
+			exam_works_grade_id, 
+			exam_id, 
+			school_id, 
+			grade_id, 
+			team_id, 
+			subject_code, 
+			teacher_id, 
+			post_teacher_id, 
+			post_time, 
+			publish_teacher_id, 
+			publish_time, 
+			create_date, 
+			modify_date, 
+			is_deleted
+		)
+		VALUES (
+			#{id}, 
+			#{examWorksId}, 
+			#{examWorksGradeId}, 
+			#{examId}, 
+			#{schoolId}, 
+			#{gradeId}, 
+			#{teamId}, 
+			#{subjectCode}, 
+			#{teacherId}, 
+			#{postTeacherId}, 
+			#{postTime}, 
+			#{publishTeacherId}, 
+			#{publishTime}, 
+			#{createDate}, 
+			#{modifyDate}, 
+			<choose>
+				<when test="isDeleted != null">
+					<choose>
+						<when test="isDeleted == true">
+							1
+						</when>
+						<otherwise>
+							0
+						</otherwise>						
+					</choose>
+				</when>
+				<otherwise>
+					0
+				</otherwise>
+			</choose>
+		)
+	</insert>
+
+	<select id="read" resultMap="ExamWorksTeamSubjectResult" useCache="false">
+		SELECT * FROM pj_exam_works_team_subject WHERE 1=1
+		<if test="args!=null and args[0]!=null">
+		AND id = #{args[0],javaType=java.lang.Integer}
+		</if>  
+		ORDER BY id DESC
+	</select>
+	
+	<select id="findExamWorksTeamSubjectByCondition" resultMap="ExamWorksTeamSubjectResult" useCache="false">
+		SELECT * FROM pj_exam_works_team_subject 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examWorksId != null">
+				AND exam_works_id = #{args[0].examWorksId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examWorksGradeId != null">
+				AND exam_works_grade_id = #{args[0].examWorksGradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examId != null">
+				AND exam_id = #{args[0].examId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].postTeacherId != null">
+				AND post_teacher_id = #{args[0].postTeacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].postTime != null">
+				AND post_time = #{args[0].postTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].publishTeacherId != null">
+				AND publish_teacher_id = #{args[0].publishTeacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].publishTime != null">
+				AND publish_time = #{args[0].publishTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="count" resultType="java.lang.Long" useCache="false">
+		SELECT count(*) FROM pj_exam_works_team_subject 
+		<if test="args[0] != null">
+			WHERE 1=1
+			<if test="args[0].id != null">
+				AND id = #{args[0].id,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examWorksId != null">
+				AND exam_works_id = #{args[0].examWorksId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examWorksGradeId != null">
+				AND exam_works_grade_id = #{args[0].examWorksGradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].examId != null">
+				AND exam_id = #{args[0].examId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].schoolId != null">
+				AND school_id = #{args[0].schoolId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].gradeId != null">
+				AND grade_id = #{args[0].gradeId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].teamId != null">
+				AND team_id = #{args[0].teamId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].subjectCode != null and args[0].subjectCode != ''">
+				AND subject_code = #{args[0].subjectCode,javaType=java.lang.String}
+			</if>
+			<if test="args[0].teacherId != null">
+				AND teacher_id = #{args[0].teacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].postTeacherId != null">
+				AND post_teacher_id = #{args[0].postTeacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].postTime != null">
+				AND post_time = #{args[0].postTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].publishTeacherId != null">
+				AND publish_teacher_id = #{args[0].publishTeacherId,javaType=java.lang.Integer}
+			</if>
+			<if test="args[0].publishTime != null">
+				AND publish_time = #{args[0].publishTime,javaType=java.util.Date}
+			</if>
+			<if test="args[0].createDate != null">
+				AND create_date = #{args[0].createDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].modifyDate != null">
+				AND modify_date = #{args[0].modifyDate,javaType=java.util.Date}
+			</if>
+			<if test="args[0].isDeleted != null">
+				<choose>
+					<when test="args[0].isDeleted == true">
+						AND is_deleted  = 1
+					</when>
+					<otherwise>
+						AND is_deleted  = 0
+					</otherwise>
+				</choose>
+			</if>
+		</if>
+	</select>
+	
+	<select id="findById" resultMap="ExamWorksTeamSubjectResult" useCache="false">
+		SELECT * FROM pj_exam_works_team_subject WHERE id = #{args[0],javaType=java.lang.Integer}
+	</select>
+	
+	<update id="update" parameterType="platform.education.generalTeachingAffair.model.ExamWorksTeamSubject">
+		UPDATE pj_exam_works_team_subject
+		SET 
+		<if test="examWorksId != null">
+			exam_works_id=#{examWorksId},
+		</if>
+		<if test="examWorksGradeId != null">
+			exam_works_grade_id=#{examWorksGradeId},
+		</if>
+		<if test="examId != null">
+			exam_id=#{examId},
+		</if>
+		<if test="schoolId != null">
+			school_id=#{schoolId},
+		</if>
+		<if test="gradeId != null">
+			grade_id=#{gradeId},
+		</if>
+		<if test="teamId != null">
+			team_id=#{teamId},
+		</if>
+		<if test="subjectCode != null">
+			subject_code=#{subjectCode},
+		</if>
+		<if test="teacherId != null">
+			teacher_id=#{teacherId},
+		</if>
+		<if test="postTeacherId != null">
+			post_teacher_id=#{postTeacherId},
+		</if>
+		<if test="postTime != null">
+			post_time=#{postTime},
+		</if>
+		<if test="publishTeacherId != null">
+			publish_teacher_id=#{publishTeacherId},
+		</if>
+		<if test="publishTime != null">
+			publish_time=#{publishTime},
+		</if>
+		<if test="createDate != null">
+			create_date=#{createDate},
+		</if>
+		<if test="modifyDate != null">
+			modify_date=#{modifyDate},
+		</if>
+		<if test="isDeleted != null">
+			<choose>
+				<when test="isDeleted == true">
+					is_deleted  = 1,
+				</when>
+				<otherwise>
+					is_deleted  = 0,
+				</otherwise>
+			</choose>
+		</if>
+		id = #{id}
+		WHERE id = #{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM pj_exam_works_team_subject
+		WHERE id = #{id}
+	</delete>
+
+	
+	<select id="findExamWorksBySubjectCode" resultType="java.util.Map" useCache="false">
+		SELECT
+			ew.name,
+			es.score,
+			pes.average_score,
+			ewt.subject_code,
+			es.team_rank,
+			es.grade_rank,
+			ewt.exam_works_id
+		FROM
+			pj_exam_works_team_subject ewt
+		LEFT JOIN pj_exam_works ew ON ew.id = ewt.exam_works_id
+		LEFT JOIN pj_exam_student es ON es.exam_id = ewt.exam_id
+		LEFT JOIN pj_exam_stat pes on pes.exam_id = es.exam_id
+		WHERE 1=1
+		AND ew.is_deleted=0
+		
+		<if test="args[0] != null">
+			AND ewt.team_id = #{args[0]}
+		</if>
+		<if test="args[1] != null">
+			AND ew.exam_type = #{args[1]}
+		</if>	
+		<if test="args[2] != null">
+			AND es.user_id = #{args[2]}
+		</if>
+		<if test="args[3] != null">
+			AND ewt.subject_code = #{args[3]}
+		</if>
+		AND es.score != -1
+		LIMIT 10
+	</select>
+
+	<select id="findUnique" resultMap="ExamWorksTeamSubjectResult" useCache="false">
+		SELECT * FROM pj_exam_works_team_subject
+		WHERE is_deleted = 0
+		<if test="args[0] != null">
+			AND exam_works_id = #{args[0],javaType=java.lang.Integer}
+	</if>
+		<if test="args[1] != null">
+			AND team_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null">
+			AND subject_code = #{args[2],javaType=java.lang.String}
+		</if>
+	</select>
+
+	<select id="findExamWorksContext" resultMap="ExamWorksTeamSubjectVoResult" useCache="false">
+		SELECT
+			ewts.exam_works_id ,
+			ewts.exam_id ,
+			ewts.grade_id ,
+			ewts.team_id ,
+			ewts.subject_code ,
+			ews.full_score ,
+			ews.high_score ,
+			ews.low_score ,
+			ews.pass_score ,
+			g.`name` grade_name,
+			g.uni_grade_code grade_code,
+			t.`name` team_name,
+			t.team_number ,
+			s.`name` subject_name
+		FROM
+			pj_exam_works_team_subject ewts
+		LEFT JOIN pj_exam_works_subject ews ON ewts.exam_works_id = ews.exam_works_id
+		AND ewts.grade_id = ews.grade_id
+		AND ewts.subject_code = ews.subject_code
+		LEFT JOIN pj_grade g ON ewts.grade_id = g.id
+		LEFT JOIN pj_team t ON ewts.team_id = t.id
+		LEFT JOIN pj_subject s ON ewts.subject_code = s.`code`
+		AND ewts.school_id = s.school_id
+		WHERE
+			1 = 1
+		AND ewts.is_deleted = 0
+		AND ews.is_delteted = 0
+		AND g.is_deleted = 0
+		AND t.is_delete = 0
+		AND s.is_delete = 0
+		AND ewts.exam_works_id = #{args[0],javaType=java.lang.Integer}
+		ORDER BY
+			ewts.grade_id,
+			ewts.team_id,
+			ewts.subject_code
+	</select>
+
+	<insert id="createBatch">
+		INSERT INTO pj_exam_works_team_subject (
+		id,
+		exam_works_id,
+		exam_works_grade_id,
+		exam_id,
+		school_id,
+		grade_id,
+		team_id,
+		subject_code,
+		teacher_id,
+		post_teacher_id,
+		post_time,
+		publish_teacher_id,
+		publish_time,
+		create_date,
+		modify_date,
+		is_deleted
+		)
+		VALUES
+		<foreach collection="args[0]" item="item" index="index" separator="," >
+			(
+				#{item.id},
+				#{item.examWorksId},
+				#{item.examWorksGradeId},
+				#{item.examId},
+				#{item.schoolId},
+				#{item.gradeId},
+				#{item.teamId},
+				#{item.subjectCode},
+				#{item.teacherId},
+				#{item.postTeacherId},
+				#{item.postTime},
+				#{item.publishTeacherId},
+				#{item.publishTime},
+				#{item.createDate},
+				#{item.modifyDate},
+				0
+			)
+		</foreach>
+	</insert>
+	
+	
+	<select id="findGradeRankByGradeId" resultType="java.util.TreeMap" useCache="false">
+		SELECT
+			ew.total_score x,
+			ew.grade_rank y,
+			s.`name`
+			FROM
+				pj_exam_stat_major_student ew
+			LEFT JOIN pj_exam_works_subject ews
+			on ews.exam_works_id = ew.exam_works_id
+			LEFT JOIN pj_student s
+			on s.id = ew.student_id
+			where 1=1
+			and ew.is_deleted = 0
+			and s.is_delete = 0
+			<if test="args[0] != null">
+			and ew.exam_works_id = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+			and ews.grade_id = #{args[1]}
+			</if>
+			and total_score is not null
+			and ews.stat_needed = 1
+			GROUP BY ew.id
+	</select>
+	<select id="findGradeTotalScoreBySubjectCode" resultType="java.lang.Float" useCache="false">
+		SELECT
+			SUM(IF(`total_score` &lt; 0, 0, `total_score`)) gradeTotalScore
+		FROM
+			pj_exam_stat
+		WHERE
+			exam_id IN (
+			SELECT
+				id
+			FROM
+				pj_exam
+			WHERE 1=1
+			<if test="args[0] != null">
+				AND	joint_exam_code = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+				AND subject_code = #{args[1]}
+			</if>
+			<if test="args[2] != null">
+				AND team_id = #{args[2]}
+			</if>
+			)
+	</select>
+	
+	<select id="findGradeStudentCountBySubjectCode" resultType="java.lang.Integer" useCache="false">
+		SELECT
+			count(*) gradeStudentCount
+		FROM
+			pj_exam_student
+		WHERE
+			exam_id IN (
+			SELECT
+				id
+			FROM
+				pj_exam
+			WHERE 1 = 1
+			<if test="args[0] != null">
+				AND joint_exam_code = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+				AND subject_code = #{args[1]}
+			</if>
+			<if test="args[2] != null">
+				AND team_id = #{args[2]}
+			</if>
+			)
+	and score != -1
+	</select>
+	
+	<select id="findGradeRankBySubjectCode" resultType="java.util.TreeMap" useCache="false">
+		SELECT
+			ew.user_id,
+			s.`name`,
+			ew.grade_rank,
+			ew.score
+		FROM
+			pj_exam_student ew
+		LEFT JOIN pj_student s ON s.id = ew.student_id
+		LEFT JOIN pj_exam_works_team_subject ets ON ets.exam_id = ew.exam_id
+		WHERE
+			1 = 1
+		AND s.is_delete = 0
+		AND ew.score !=- 1
+		AND ets.grade_id = #{args[0]}
+		AND ets.subject_code = #{args[1]}
+		AND ets.exam_works_id = #{args[2]}
+		order by ew.grade_rank desc
+	</select>
+	
+
+	<select id="findMajorExamWorksByTeam" resultType="java.util.Map" useCache="false">
+		SELECT
+			ew.id examWorksId,
+			ew.`name`,
+			ew.exam_type examType,
+			ew.exam_date_begin beginDate,
+			ew.exam_date_end endDate,
+			ew.school_year schoolYear,
+			ew.term_code termCode,
+			ewts.id ewtsId,
+			ewts.exam_id examId,
+			ewts.subject_code subjectCode,
+			ewts.grade_id gradeId,
+			ewts.team_id teamId,
+			ewts.post_teacher_id posterId,
+			ewts.post_time postTime,
+			ewts.publish_teacher_id publisherId,
+			ewts.publish_time publishTime,
+			ews.full_score fullScore,
+			ews.high_score highScore,
+			ews.low_score lowScore,
+			ews.pass_score passScore,
+			s.`name` subjectName,
+			e.exam_date examDate,
+			t.`name` poster
+		FROM
+			pj_exam_works_team_subject ewts
+		INNER JOIN pj_exam_works ew ON ewts.exam_works_id = ew.id
+		INNER JOIN pj_exam_works_subject ews ON ewts.exam_works_id = ews.exam_works_id
+			AND ewts.grade_id = ews.grade_id
+			AND ewts.subject_code = ews.subject_code
+		INNER JOIN pj_subject s ON ewts.school_id = s.school_id
+			AND ewts.subject_code = s.`code`
+		INNER JOIN pj_exam e ON ewts.exam_id = e.id
+		LEFT JOIN pj_teacher t ON ewts.post_teacher_id = t.id
+		WHERE
+			1 = 1
+		AND ewts.is_deleted = 0
+		AND ew.is_deleted = 0
+		AND ews.is_delteted = 0
+		AND s.is_delete = 0
+		AND e.is_delete = 0
+		<if test="args[0] != null">
+			AND ewts.exam_works_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND ewts.team_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null">
+			AND ewts.id = #{args[2],javaType=java.lang.Integer}
+		</if>
+		<if test="args[3] != null">
+			<choose>
+				<when test="args[3] == true">
+					AND ews.stat_needed = 1
+				</when>
+				<otherwise>
+					AND ews.stat_needed = 0
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+
+	<select id="findClassExamWorksByTeam" resultType="java.util.Map" useCache="false">
+		SELECT
+			ew.id examWorksId,
+			ew.`name`,
+			ew.exam_type examType,
+			ew.exam_date_begin beginDate,
+			ew.exam_date_end endDate,
+			ew.school_year schoolYear,
+			ew.term_code termCode,
+			ewts.id ewtsId,
+			ewts.exam_id examId,
+			ewts.subject_code subjectCode,
+			ewts.grade_id gradeId,
+			ewts.team_id teamId,
+			ewts.post_teacher_id posterId,
+			ewts.post_time postTime,
+			ewts.publish_teacher_id publisherId,
+			ewts.publish_time publishTime,
+			ews.full_score fullScore,
+			ews.high_score highScore,
+			ews.low_score lowScore,
+			ews.pass_score passScore,
+			s.`name` subjectName,
+			e.exam_date examDate,
+			t.`name` poster
+		FROM
+			pj_exam_works_team_subject ewts
+		INNER JOIN pj_exam_works ew ON ewts.exam_works_id = ew.id
+		INNER JOIN pj_exam_works_subject ews ON ewts.exam_works_id = ews.exam_works_id
+			AND ewts.grade_id = ews.grade_id
+			AND ewts.subject_code = ews.subject_code
+		INNER JOIN pj_subject s ON ewts.school_id = s.school_id
+			AND ewts.subject_code = s.`code`
+		INNER JOIN pj_exam e ON ewts.exam_id = e.id
+		LEFT JOIN pj_teacher t ON ewts.post_teacher_id = t.id
+		WHERE
+			1 = 1
+		AND ewts.is_deleted = 0
+		AND ew.is_deleted = 0
+		AND ews.is_delteted = 0
+		AND s.is_delete = 0
+		AND e.is_delete = 0
+		<if test="args[0] != null">
+			AND ew.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null and args[1] != ''">
+			AND ew.school_year = #{args[1],javaType=java.lang.String}
+		</if>
+		<if test="args[2] != null and args[2] != ''">
+			AND ew.term_code = #{args[2],javaType=java.lang.String}
+		</if>
+		<if test="args[3] != null">
+			AND ew.teacher_id = #{args[3],javaType=java.lang.Integer}
+		</if>
+		<if test="args[4] != null">
+			AND ew.team_id = #{args[4],javaType=java.lang.Integer}
+		</if>
+		<if test="args[5] != null">
+			AND ewts.id = #{args[5],javaType=java.lang.Integer}
+		</if>
+	</select>
+	<select id="findGradeMaxScore" resultType="java.lang.Float" useCache="false">
+		SELECT
+			MAX(highest_score) highestScore
+		FROM
+			pj_exam_stat
+		WHERE
+			exam_id IN (
+				SELECT
+					id
+				FROM
+					pj_exam
+				WHERE 1=1
+			<if test="args[0] != null">
+				and joint_exam_code = #{args[0]}
+			</if>
+			<if test="args[1] != null">
+				and subject_code = #{args[1]}
+			</if>
+	)
+	</select>
+
+	<select id="findScoreOfStudent" resultType="java.util.Map" useCache="false">
+		SELECT * FROM (
+			SELECT
+			es.user_id userId,
+			es.student_id studentId,
+			es.number ,
+			es.`name` ,
+			ewts.subject_code subjectCode,
+			es.score ,
+			es.team_rank teamRank,
+			es.grade_rank gradeRank,
+			SUM(IF(es.score != -1,es.score,0)) totalScore,
+			t.id teamId,
+			t.`name` teamName,
+			s.`name` subjectName,
+			GROUP_CONCAT(ewts.subject_code,',', es.score, ',', IFNULL(es.grade_rank,'-') ORDER BY ewts.subject_code
+			SEPARATOR ';') scores
+			FROM pj_exam_works_team_subject ewts
+			LEFT JOIN pj_exam_works_subject ews
+			ON ewts.exam_works_id = ews.exam_works_id
+			AND ewts.grade_id = ews.grade_id
+			AND ewts.subject_code = ews.subject_code
+			LEFT JOIN pj_exam_student es
+			ON ewts.exam_id = es.exam_id
+			LEFT JOIN pj_team t
+			ON ewts.team_id = t.id
+			LEFT JOIN pj_subject s
+			ON ewts.subject_code = s.`code`
+			AND ewts.school_id = s.school_id
+			WHERE 1=1
+			AND ewts.is_deleted = 0
+			AND ews.is_delteted = 0
+			AND ews.stat_needed = 1
+			<if test="args[0] != null">
+				AND ewts.exam_works_id = #{args[0],javaType=java.lang.Integer}
+			</if>
+			<if test="args[1] != null">
+				AND ewts.grade_id = #{args[1],javaType=java.lang.Integer}
+			</if>
+			<if test="args[2] != null">
+				AND ewts.team_id = #{args[2],javaType=java.lang.Integer}
+			</if>
+			<if test="args[3] != null">
+				and ewts.subject_code = #{args[3],javaType=java.lang.String}
+			</if>
+			GROUP BY es.user_id
+			ORDER BY totalScore DESC
+		) t
+	</select>
+	
+	<select id="findExamWorkStudentRank" resultType="java.lang.Integer">
+		SELECT 
+		  student_id
+		FROM
+		  pj_exam_student es 
+		  JOIN pj_exam_works_team_subject ewts 
+		    ON ewts.exam_id = es.exam_id 
+		  LEFT JOIN pj_exam_works_subject ews 
+		    ON ewts.exam_works_id = ews.exam_works_id 
+		    AND ewts.grade_id = ews.grade_id 
+		    AND ewts.subject_code = ews.subject_code 
+		WHERE ewts.exam_works_id = #{args[0]} 
+		  AND ewts.grade_id = #{args[1]}  
+		  AND ewts.is_deleted = 0 
+		  AND ews.is_delteted = 0 
+		  AND ews.stat_needed = 1 
+		GROUP BY user_id 
+		ORDER BY SUM(IF(es.score != - 1, es.score, 0)) DESC
+	</select>
+	
+	<select id="findExamWorkStudentRankAndTotalScore" resultType="java.util.Map">
+		SELECT 
+		  student_id AS studentId,
+		  name,
+		  SUM(IF(es.score != - 1, es.score, 0)) AS totalScore
+		FROM
+		  pj_exam_student es 
+		  JOIN pj_exam_works_team_subject ewts 
+		    ON ewts.exam_id = es.exam_id 
+		  LEFT JOIN pj_exam_works_subject ews 
+		    ON ewts.exam_works_id = ews.exam_works_id 
+		    AND ewts.grade_id = ews.grade_id 
+		    AND ewts.subject_code = ews.subject_code 
+		WHERE ewts.exam_works_id = #{args[0]} 
+		  AND ewts.grade_id = #{args[1]}  
+		  AND ewts.is_deleted = 0 
+		  AND ews.is_delteted = 0 
+		  AND ews.stat_needed = 1 
+		GROUP BY user_id 
+		ORDER BY totalScore DESC
+	</select>
+	
+	<select id="findStudentScore" resultType="java.util.Map" useCache="false">
+		SELECT 
+		  es.user_id userId,
+		  es.student_id studentId,
+		  es.number,
+		  es.`name`,
+		  ewts.subject_code subjectCode,
+		  es.score,
+		  es.team_rank teamRank,
+		  es.grade_rank gradeRank,
+		  t.id teamId,
+		  t.`name` teamName,
+		  s.`name` subjectName 
+		FROM
+		  pj_exam_works_team_subject ewts 
+		  LEFT JOIN pj_exam_works_subject ews 
+		    ON ewts.exam_works_id = ews.exam_works_id 
+		    AND ewts.grade_id = ews.grade_id 
+		    AND ewts.subject_code = ews.subject_code 
+		  LEFT JOIN pj_exam_student es 
+		    ON ewts.exam_id = es.exam_id 
+		  LEFT JOIN pj_team t 
+		    ON ewts.team_id = t.id 
+		  LEFT JOIN pj_subject s 
+		    ON ewts.subject_code = s.`code` 
+		    AND ewts.school_id = s.school_id 
+		WHERE 1 = 1 
+		  AND ewts.is_deleted = 0 
+		  AND ews.is_delteted = 0 
+		  AND ews.stat_needed = 1 
+		  AND ewts.exam_works_id = #{args[0]}  
+		  AND ewts.grade_id = #{args[1]}  
+		  AND es.`student_id` = #{args[2]} 
+		ORDER BY subjectCode
+	</select>
+
+	<!-- 年级/班级单科平均分趋势 -->
+	<select id="findAvgScoreOfGrade" resultType="java.util.Map" useCache="false">
+		SELECT
+			ew.id examWorksId,
+			ew.`name`,
+			ROUND(SUM(IF(es.total_score is null OR es.total_score &lt; 0, 0, es.total_score))/SUM(IF(es.total_score is null OR es.total_score &lt; 0, 0, es.student_count)), 2) avgScore,
+			ROUND(SUM(IFNULL(es.total_score, 0))/es.student_count, 2) avgTotalScore
+		FROM pj_exam_works ew
+		LEFT JOIN pj_exam_works_team_subject ewts
+		ON ew.id = ewts.exam_works_id
+		LEFT JOIN pj_exam_works_subject ews
+		ON ewts.exam_works_id = ews.exam_works_id
+		AND ewts.grade_id = ews.grade_id
+		AND ewts.subject_code = ews.subject_code
+		LEFT JOIN pj_exam_stat es
+		ON ewts.exam_id = es.exam_id
+		WHERE 1=1
+		AND ew.is_deleted = 0
+		AND ewts.is_deleted = 0
+		AND ews.is_delteted = 0
+		AND ews.stat_needed = 1
+		<if test="args[0] != null">
+			AND ew.school_id = #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			<choose>
+				<when test="args[1] == true">
+					AND ew.is_joint_exam = 1
+				</when>
+				<otherwise>
+					AND ew.is_joint_exam = 0
+				</otherwise>
+			</choose>
+		</if>
+		<if test="args[2] != null">
+			AND ewts.grade_id = #{args[2],javaType=java.lang.Integer}
+		</if>
+		<if test="args[3] != null">
+			AND ewts.team_id = #{args[3],javaType=java.lang.Integer}
+		</if>
+		<if test="args[4] != null and args[4] != ''">
+			AND ewts.subject_code = #{args[4],javaType=java.lang.String}
+		</if>
+		GROUP BY ew.id
+		ORDER BY ew.exam_date_begin desc, ew.id desc
+		LIMIT 10;
+	</select>
+
+	<!-- 学生/班级 单科平均分趋势(仅对小测) -->
+	<select id="findAvgScoreOfStudent" resultType="java.util.Map" useCache="false">
+		SELECT
+			ew.id examWorksId,
+			ew.name,
+			es.score,
+			pes.average_score avgScore,
+			es.team_rank teamRank
+		FROM
+			pj_exam_works_team_subject ewt
+		LEFT JOIN pj_exam_works ew ON ew.id = ewt.exam_works_id
+		LEFT JOIN pj_exam_student es ON es.exam_id = ewt.exam_id
+		LEFT JOIN pj_exam_stat pes on pes.exam_id = es.exam_id
+		WHERE 1=1
+		AND ew.is_deleted=0
+		AND ewt.is_deleted = 0
+		AND ew.is_joint_exam = 0
+		<if test="args[0] != null">
+			AND es.user_id =  #{args[0],javaType=java.lang.Integer}
+		</if>
+		<if test="args[1] != null">
+			AND ewt.team_id = #{args[1],javaType=java.lang.Integer}
+		</if>
+		<if test="args[2] != null and args[2] != ''">
+			AND ewt.subject_code = #{args[2],javaType=java.lang.String}
+		</if>
+		<if test="args[3] != null">
+			AND es.score != -1
+		</if>
+		ORDER BY ew.exam_date_begin DESC
+		LIMIT 10;
+	</select>
+
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd">
+    <tlib-version>1.0</tlib-version>
+    <short-name>paper</short-name>
+    <uri>/WEB-INF/paper</uri>
+    <tag>
+        <description>
+            获取正在学习的用户id
+        </description>
+        <display-name>getStudyUser</display-name>
+        <name>getStudyUser</name>
+        <tag-class>platform.education.paper.tags.GetStudyUser</tag-class>
+        <body-content>JSP</body-content>
+    </tag>
+    <tag>
+        <description>
+            获取试卷关联的书本信息
+        </description>
+        <display-name>getBookInfo</display-name>
+        <name>getBookInfo</name>
+        <tag-class>platform.education.paper.tags.GetBookInfo</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>
+                info
+            </description>
+            <name>info</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>
+                infoId
+            </description>
+            <name>infoId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+</taglib>
