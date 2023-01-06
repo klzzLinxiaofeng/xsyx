@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>platform</groupId>
+        <artifactId>platform</artifactId>
+        <version>0.0.1</version>
+    </parent>
+    <groupId>platform.education</groupId>
+    <artifactId>education</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+        <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>2.10.1</maven-javadoc-plugin.version>
+        <junit.version>4.8</junit.version>
+        <java.version>1.7</java.version>
+
+
+
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>framework</groupId>
+            <artifactId>generic-dao</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-jdbc</artifactId>
+            <version>3.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <!-- JSR-303 validation api -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.1.0.Final</version>
+        </dependency>
+        <!--JSR-303 hibernate implementator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.0.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>2.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--                <version>${maven-javadoc-plugin.version}</version>-->
+<!--                <configuration>-->
+<!--                    <aggregate>true</aggregate>-->
+<!--                    <charset>${project.build.sourceEncoding}</charset>-->
+<!--                    <encoding>${project.build.sourceEncoding}</encoding>-->
+<!--                    <docencoding>${project.build.sourceEncoding}</docencoding>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>attach-javadocs</id>-->
+<!--                        <goals>-->
+<!--                            <goal>jar</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+        </plugins>
+    </build>
+    <modules>
+        <module>generalTeachingAffair</module>
+        <module>service</module>
+        <module>lads</module>
+        <module>oa</module>
+        <module>paper</module>
+        <module>resource</module>
+        <module>hnzxx</module>
+        <module>wechat</module>
+        <module>StartupPage</module>
+        <module>sysBanner</module>
+      <!--  <module>resultsStatistical</module>-->
+        <!--        <module>CanteenRecipes</module>-->
+        <!--        <module>esb</module>-->
+    </modules>
+
+    <repositories>
+
+        <repository>
+            <id>aliyun</id>
+            <url>https://maven.aliyun.com/repository/central</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>nexus</id>
+            <url>http://115.159.157.148:8081/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+<!--        <repository>-->
+<!--            &lt;!&ndash;仓库 id，repositories 可以配置多个仓库，保证 id 不重复&ndash;&gt;-->
+<!--            <id>aliyun</id>-->
+<!--            &lt;!&ndash;仓库地址，即 nexus 仓库组的地址&ndash;&gt;-->
+<!--            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
+<!--            &lt;!&ndash;是否下载 releases 构件&ndash;&gt;-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            &lt;!&ndash;是否下载 snapshots 构件&ndash;&gt;-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            &lt;!&ndash;仓库 id，repositories 可以配置多个仓库，保证 id 不重复&ndash;&gt;-->
+<!--            <id>spring-milestone</id>-->
+<!--            &lt;!&ndash;仓库地址，即 nexus 仓库组的地址&ndash;&gt;-->
+<!--            <url>https://repo.spring.io/milestone</url>-->
+<!--            &lt;!&ndash;是否下载 releases 构件&ndash;&gt;-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            &lt;!&ndash;是否下载 snapshots 构件&ndash;&gt;-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            &lt;!&ndash;仓库 id，repositories 可以配置多个仓库，保证 id 不重复&ndash;&gt;-->
+<!--            <id>spring-libs</id>-->
+<!--            &lt;!&ndash;仓库地址，即 nexus 仓库组的地址&ndash;&gt;-->
+<!--            <url>https://repo.spring.io/libs-release</url>-->
+<!--            &lt;!&ndash;是否下载 releases 构件&ndash;&gt;-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--            &lt;!&ndash;是否下载 snapshots 构件&ndash;&gt;-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>nexus</id>
+            <url>http://115.159.157.148:8081/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
